@@ -1,7 +1,9 @@
-package com.seoulprojet.seoulpoem;
+package com.seoulprojet.seoulpoem.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.seoulprojet.seoulpoem.R;
 
 public class MainActivity extends AppCompatActivity {
 
