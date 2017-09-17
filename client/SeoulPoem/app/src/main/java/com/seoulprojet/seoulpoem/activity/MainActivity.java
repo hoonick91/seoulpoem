@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.model.Poem;
@@ -63,16 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     /***************************************viewPager***********************************************/
-    public void initViewPager(){
-        pcPoems = (PagerContainer) findViewById(R.id.pcPoems);
-        vpPoems = pcPoems.getViewPager();
-        paPoems = new PageAdapterRecentEvents(events);
-        vpRecentEvents.setAdapter(paRecentEvents);
-        vpRecentEvents.setOffscreenPageLimit(paRecentEvents.getCount());
-        vpRecentEvents.setPageMargin(12);
-        vpRecentEvents.setClipChildren(false);
-        vpRecentEvents.setCurrentItem(1);
-    }
 
 
     /******************************************최근행사 어뎁터*****************************************/
