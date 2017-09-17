@@ -20,7 +20,7 @@
                 android:id="@+id/ivHamberger"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/testImg" />
+                android:src="@drawable/testimg" />
         </LinearLayout>
 
 
@@ -34,7 +34,7 @@
                 android:id="@+id/ivPictures"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/testImg" />
+                android:src="@drawable/testimg" />
         </LinearLayout>
 
         <!--검색-->
@@ -48,7 +48,7 @@
                 android:layout_gravity="center"
                 android:layout_width="18dp"
                 android:layout_height="16dp"
-                android:src="@drawable/testImg" />
+                android:src="@drawable/testimg" />
         </LinearLayout>
 
 
