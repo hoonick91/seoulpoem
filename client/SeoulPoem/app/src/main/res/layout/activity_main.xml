@@ -32,11 +32,17 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_below="@+id/llHashTag">
-        <android.support.v4.view.ViewPager
-            android:id="@+id/vp"
+        <com.seoulprojet.seoulpoem.activity.PagerContainer
+            android:id="@+id/pcPoems"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </android.support.v4.view.ViewPager>
+            android:layout_height="match_parent">
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vpPoems"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </android.support.v4.view.ViewPager>
+        </com.seoulprojet.seoulpoem.activity.PagerContainer>
+
     </FrameLayout>
 
 
