@@ -6,5 +6,10 @@ package com.seoulprojet.seoulpoem.model;
 
 public class Poem {
     public int img;
-    public int hashTag;
+    public String hashTag;
+
+    public Poem(int img, String hashTag) {
+        this.img = img;
+        this.hashTag = hashTag;
+    }
 }
