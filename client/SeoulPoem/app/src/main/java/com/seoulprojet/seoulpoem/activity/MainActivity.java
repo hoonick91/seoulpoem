@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     //view pager
     private ViewPager vpPoems;
-    private PagerContainer pcPoems;
+    //private PagerContainer pcPoems;
     private PagerAdapter paPoems;
     private ArrayList<Poem> Poems;
 
@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         findView();
 
         //view pager
-        initViewPager();
     }
 
 
@@ -62,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         ibUpload = (ImageButton) findViewById(R.id.ibUpload);
     }
 
+<<<<<<< HEAD
 
     /***************************************viewPager***********************************************/
 
@@ -136,4 +136,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+=======
+>>>>>>> master
 }
