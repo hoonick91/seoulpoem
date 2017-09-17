@@ -12,7 +12,7 @@ const bcrypt = require('bcryptjs'); //해쉬용 확장모듈, 윈도우에서 �
 const upload = multer({
   storage: multerS3({
     s3: s3,
-    bucket: 'sopt20.server.seminar6',
+    bucket: 'csr1994',
     acl: 'public-read',
     key: function (req, file, cb) {
       cb(null, Date.now() + '.' + file.originalname.split('.').pop());
