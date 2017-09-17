@@ -1,18 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.seoulprojet.seoulpoem.MainActivity">
+    android:layout_height="match_parent">
 
-    <TextView
+    <!--툴바-->
+    <include
+        android:id="@+id/icToolbar"
+        layout="@layout/tool_bar_main"/>
+
+
+    <!--해쉬테그-->
+    <LinearLayout
+        android:id="@+id/llHashTag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/icToolbar">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="#hash tag test"/>
+    </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+
+
+    <!--뷰페이저-->
+    <FrameLayout
+        android:id="@+id/flVp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@+id/llHashTag">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v4.view.ViewPager>
+    </FrameLayout>
+
+
+    <!--동그라미들-->
+    <LinearLayout
+        android:id="@+id/llcircles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/flVp"
+        android:layout_centerInParent="true">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher_round"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher_round"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher_round"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher_round"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher_round"/>
+    </LinearLayout>
+
+    <!--사진들-->
+    <LinearLayout
+        android:id="@+id/llpicturse"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/llcircles">
+
+        <ImageView
+            android:id="@+id/iv01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher_round"/>
+
+        <ImageView
+            android:id="@+id/iv02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher_round"/>
+
+        <ImageView
+            android:id="@+id/iv03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher_round"/>
+
+        <ImageView
+            android:id="@+id/iv04"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher_round"/>
+
+        <ImageView
+            android:id="@+id/iv05"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher_round"/>
+    </LinearLayout>
+
+
+    <!--업로드 버튼-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llpicturse"
+        android:layout_centerInParent="true">
+        <ImageButton
+            android:id="@+id/ibUpload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher_round"/>
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</RelativeLayout>
