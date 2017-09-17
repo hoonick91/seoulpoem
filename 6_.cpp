@@ -31,7 +31,7 @@ void init_visited() {
 			visited[i][j] = 0;
 
 }
-int bomb() {
+int bomb_junhee() {
 	int temp = 0;
 	for (int i = 0; i < M; i++) {
 		for (int j = 0; j < N; j++) {
