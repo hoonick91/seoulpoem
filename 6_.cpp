@@ -46,14 +46,14 @@ int bomb_junhee() {
 }
 
 void combine() {
-	for (int j = 0; j < N; j++) {
-		for (int i = M - 1; i >= 0; i--) {
-			if (map[i][j] == 0) {
-				for (int k = i; k < M; k++)
-					map[k][j] = map[k + 1][j];
-			}
-		}
-	}
+for (int j = 0; j < N; j++) {
+for (int i = M - 1; i >= 0; i--) {
+if (map[i][j] == 0) {
+for (int k = i; k < M; k++)		
+map[k][j] = map[k + 1][j];
+}
+}
+}
 }
 
 
