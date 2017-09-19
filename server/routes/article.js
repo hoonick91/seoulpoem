@@ -72,11 +72,8 @@ router.post('/',upload.single('photo'), async (req, res, next) => {
       let query3 = 'insert into seoul_poem.setting set ?';
       await connection.query(query3, setting);
 
-      /////setting id값 어떻게 뽑을까?
-
-      let query3_1 = 'select idsettings from seoul_poem.setting where font_type =? ';
-      let selected3 = await connection.query(query3_1, req.body.font_type);
-      console.log(selected3[0].idsettings);
+      let query3_1 = 'SELECT idsettings FROM seoul_poem.setting order by idsettings desc limit 1';
+      let selected3 = await connection.query(query3_1);
 
       let article = {
         tags: req.body.tags,
@@ -86,7 +83,7 @@ router.post('/',upload.single('photo'), async (req, res, next) => {
         pictures_idpictures: selected[0].idpictures,
         poem_idpoem: selected2[0].idpoem,
         users_idusers: 1, //나중에 수정할 것!
-        setting_idsettings: 1 //나중에 수정할 것!
+        setting_idsettings: selected3[0].idsettings
       };
 
 
@@ -96,6 +93,57 @@ router.post('/',upload.single('photo'), async (req, res, next) => {
       res.status(201).send({result: "success"});
       await connection.commit();
       //}
+    }
+    catch(err) {
+        console.log(err);
+        res.status(500).send({result: err });
+    }
+    finally {
+        pool.releaseConnection(connection);
+    }
+});
+
+// 글 수정
+router.put('/:idarticles',upload.single('photo'), async (req, res, next) => {
+  try {
+        var connection = await pool.getConnection();
+
+        let picture = {
+          title: req.body.picture_title
+          ////사진은 어떻게 저장??
+        };
+
+        let poem = {
+          title: req.body.poem_title,
+          content: req.body.content
+        };
+
+        let setting = {
+          font_type: req.body.font_type,
+          font_size: req.body.font_size,
+          bold: req.body.bold,
+          inclination: req.body.inclination,
+          underline: req.body.underline,
+          color: req.body.color,
+          sort: req.body.sort
+        };
+
+        let query1 = 'select pictures_idpictures, poem_idpoem, setting_idsettings from seoul_poem.articles where idarticles = ?';
+        let selected = await connection.query(query1, req.params.idarticles);
+
+
+        let query2 = 'update seoul_poem.pictures set ? where idpictures = ?';
+        await connection.query(query2, [picture, selected[0].pictures_idpictures]);
+
+        let query3 = 'update seoul_poem.poem set ? where idpoem = ?';
+        await connection.query(query3, [poem, selected[0].poem_idpoem]);
+
+        let query4 = 'update seoul_poem.setting set ? where idsettings = ?';
+        await connection.query(query4, [setting, selected[0].setting_idsettings]);
+
+
+        res.status(201).send({result: "update article success"});
+
     }
     catch(err) {
         console.log(err);
