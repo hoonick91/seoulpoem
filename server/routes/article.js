@@ -106,4 +106,38 @@ router.post('/',upload.single('photo'), async (req, res, next) => {
     }
 });
 
+
+//글 하나 조회 /article/{articleid}
+router.get('/:idarticles', async (req, res) => {
+    try {
+        //
+        // let token = req.headers.token; //클라이언트에서 헤더에 담아 보낸 토큰을 가져옵니다.
+        // let decoded = jwt.verify(token, req.app.get('jwt-secret')); //보낸 토큰이 유효한 토큰인지 검증합니다.(토큰 발급 시 사용했던 key로);
+        //
+        // if(!decoded) res.status(400).send({ result: 'wrong token '}); //유효하지 않다면 메시지를 보냅니다.
+        // else {
+        // var decoded_pk = jwt.decode(token, {complete: true});
+
+        var connection = await pool.getConnection();
+        await connection.beginTransaction();
+
+        let query1 = 'SELECT * FROM seoul_poem.articles, seoul_poem.poem, seoul_poem.pictures, seoul_poem.setting where seoul_poem.articles.idarticles=? and seoul_poem.articles.poem_idpoem=seoul_poem.poem.idpoem and seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures and seoul_poem.articles.setting_idsettings=seoul_poem.setting.idsettings';
+        let article_list = await connection.query(query1, req.params.idarticles);
+
+        res.status(200).send( { article_list: article_list });
+        await connection.commit();
+        //}
+
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).send( { result: err });
+        connection.rollback();
+    }
+    finally{
+        pool.releaseConnection(connection);
+    }
+
+});
+
 module.exports = router;
