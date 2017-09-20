@@ -12,6 +12,9 @@ var main = require('./routes/main');
 var group = require('./routes/group');
 var event = require('./routes/event');
 var member = require('./routes/member');
+var article = require('./routes/article');
+var bookmark = require('./routes/bookmark');
+var subway = require('./routes/subway');
 var app = express();
 
 // view engine setup
@@ -33,6 +36,9 @@ app.use('/main', main);
 app.use('/group', group);
 app.use('/event', event);
 app.use('/member', member);
+app.use('/article', article);
+app.use('/bookmark', bookmark);
+app.use('/subway', subway);
 app.disable('etag');
 
 
