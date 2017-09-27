@@ -1,5 +1,6 @@
 package com.seoulprojet.seoulpoem.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.seoulprojet.seoulpoem.R;
 
@@ -59,6 +59,14 @@ public class WritePoemActivity extends AppCompatActivity {
         background = (LinearLayout)findViewById(R.id.background);
         back = (Button) findViewById(R.id.back);
         finish = (Button)findViewById(R.id.finish);
+
+        finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),PreviewAcitivity.class);
+                startActivity(intent);
+            }
+        });
 
         tag = new Button[10];
         tagid = new int[]{R.id.tag1,R.id.tag2,R.id.tag3,R.id.tag4,R.id.tag5,R.id.tag6,R.id.tag7,R.id.tag8,R.id.tag9,R.id.tag10};
