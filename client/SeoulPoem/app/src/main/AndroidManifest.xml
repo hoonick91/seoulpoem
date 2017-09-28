@@ -16,11 +16,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MyPage" />
+        <activity android:name=".activity.MyPage">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activity.MyPageSetting" />
         <activity android:name=".activity.WriterList" />
         <activity android:name=".activity.WriterApply" />
-        <activity android:name=".activity.Notice"></activity>
+        <activity android:name=".activity.Notice" />
     </application>
 
 </manifest>
