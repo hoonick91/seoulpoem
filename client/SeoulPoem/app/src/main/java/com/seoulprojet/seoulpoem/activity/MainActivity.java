@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.model.Poem;
