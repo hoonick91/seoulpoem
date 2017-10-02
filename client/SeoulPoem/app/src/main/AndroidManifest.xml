@@ -48,7 +48,7 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-       
+
         <activity android:name=".activity.Login" />
         <activity android:name=".activity.LoginName"></activity>
 
