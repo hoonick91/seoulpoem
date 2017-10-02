@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="360dp"
+    android:layout_height="76dp">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tbProjecHome"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--햄버거-->
+        <LinearLayout
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="16dp">
+
+            <ImageView
+                android:id="@+id/ivHamberger"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/testimg" />
+        </LinearLayout>
+
+
+        <!--사진-->
+        <LinearLayout
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="96dp"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                android:id="@+id/ivPictures"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/testimg" />
+        </LinearLayout>
+
+        <!--검색-->
+        <LinearLayout
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="80dp">
+
+            <ImageView
+                android:id="@+id/ivSearch"
+                android:layout_width="18dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/testimg" />
+        </LinearLayout>
+
+
+    </android.support.v7.widget.Toolbar>
+
+
+</LinearLayout>

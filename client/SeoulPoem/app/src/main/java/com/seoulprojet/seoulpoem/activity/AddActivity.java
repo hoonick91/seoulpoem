@@ -22,6 +22,8 @@ public class AddActivity extends AppCompatActivity {
 
     //tool_bar
     private ImageView ivHamberger;
+    private TextView tvWorkNum;
+
 
     private RecyclerView recyclerView;
     private RecyclerAdapter recyclerAdapter;
@@ -48,6 +50,10 @@ public class AddActivity extends AppCompatActivity {
         //makeDummy
         makeDummy();
 
+        //작품 개수 설정
+        tvWorkNum.setText(String.valueOf(works.size()));
+
+
         //어뎁터 생성, 리사이클러뷰에 붙임
         recyclerAdapter = new RecyclerAdapter(works);
         recyclerView.setAdapter(recyclerAdapter);
@@ -58,8 +64,11 @@ public class AddActivity extends AppCompatActivity {
     /***************************************findView***********************************************/
     public void findView() {
         ivHamberger = (ImageView) findViewById(R.id.ivHamberger);
+        tvWorkNum = (TextView)findViewById(R.id.tvWorkNum);
     }
 
+
+    /***************************************dummy data ***********************************************/
     public void makeDummy() {
         works = new ArrayList<>();
         works.add(new WorkListData(R.drawable.testimg, R.drawable.testimg02, "title01", "content01"));
@@ -72,7 +81,6 @@ public class AddActivity extends AppCompatActivity {
         works.add(new WorkListData(R.drawable.testimg04, R.drawable.testimg05, "title08", "content04fsaddsa"));
         works.add(new WorkListData(R.drawable.testimg, R.drawable.testimg02, "title09", "content01aa"));
         works.add(new WorkListData(R.drawable.testimg02, R.drawable.testimg03, "title01", "content0210"));
-
     }
 
 

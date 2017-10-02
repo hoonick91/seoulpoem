@@ -29,7 +29,6 @@
         android:layout_alignTop="@+id/llLeftImg"
         android:layout_marginLeft="30dp"
         android:layout_toRightOf="@+id/llLeftImg">
-
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ivCirclerImg"
             android:layout_width="wrap_content"
