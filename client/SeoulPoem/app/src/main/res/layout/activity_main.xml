@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <!--툴바-->
     <include
         android:id="@+id/icToolbar"
-        layout="@layout/tool_bar_main"/>
+        layout="@layout/tool_bar_main" />
 
 
     <!--해쉬테그-->
@@ -15,107 +16,87 @@
         android:id="@+id/llHashTag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/icToolbar"
         android:layout_marginLeft="20dp"
-        android:layout_below="@+id/icToolbar">
+        android:layout_marginTop="20dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="#hash tag test"/>
+            android:text="#hash tag test" />
     </LinearLayout>
 
 
-
-    <!--뷰페이저-->
-    <FrameLayout
-        android:id="@+id/flVp"
+    <!--viewpager, indicator-->
+    <RelativeLayout
+        android:id="@+id/rlViewpager"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_below="@+id/llHashTag">
+        android:layout_height="250dp"
+        android:layout_below="@+id/llHashTag"
+        android:layout_marginTop="16dp">
+
         <com.seoulprojet.seoulpoem.activity.PagerContainer
-            android:id="@+id/pcPoems"
+            android:id="@+id/pcPoem"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <android.support.v4.view.ViewPager
                 android:id="@+id/vpPoems"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </android.support.v4.view.ViewPager>
+                android:layout_width="241dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal" />
         </com.seoulprojet.seoulpoem.activity.PagerContainer>
 
-    </FrameLayout>
+    </RelativeLayout>
 
-
-    <!--동그라미들-->
-    <LinearLayout
-        android:id="@+id/llcircles"
-        android:layout_width="wrap_content"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabDots"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/flVp"
-        android:layout_centerInParent="true">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher_round"/>
+        android:layout_below="@+id/rlViewpager"
+        app:tabBackground="@drawable/tab_selector"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher_round"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher_round"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher_round"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher_round"/>
-    </LinearLayout>
 
     <!--사진들-->
     <LinearLayout
         android:id="@+id/llpicturse"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
+        android:layout_below="@+id/rlViewpager"
         android:layout_centerInParent="true"
-        android:layout_below="@+id/llcircles">
+        android:layout_marginTop="50dp">
 
         <ImageView
             android:id="@+id/iv01"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher_round"/>
+            tools:src="@mipmap/ic_launcher_round" />
 
         <ImageView
             android:id="@+id/iv02"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher_round"/>
+            tools:src="@mipmap/ic_launcher_round" />
 
         <ImageView
             android:id="@+id/iv03"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher_round"/>
+            tools:src="@mipmap/ic_launcher_round" />
 
         <ImageView
             android:id="@+id/iv04"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher_round"/>
+            tools:src="@mipmap/ic_launcher_round" />
 
         <ImageView
             android:id="@+id/iv05"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher_round"/>
+            tools:src="@mipmap/ic_launcher_round" />
     </LinearLayout>
 
 
@@ -124,40 +105,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/llpicturse"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:layout_marginTop="30dp">
+
+
         <ImageButton
             android:id="@+id/ibUpload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher_round"/>
+            android:src="@mipmap/ic_launcher_round" />
     </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 </RelativeLayout>

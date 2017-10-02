@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".activity.GalleryActivity"></activity>
         <activity android:name=".activity.sampleActivity"></activity>
         <activity android:name=".activity.MyPage"/>
         <activity android:name=".activity.MyPageSetting" />
@@ -30,7 +30,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-          </activity>
+        </activity>
+        <activity android:name=".activity.AddActivity"></activity>
 
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.WritePoemActivity"

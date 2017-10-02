@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.seoulprojet.seoulpoem.activity.AddActivity">
+
+
+    <!--툴바-->
+    <include
+        android:id="@+id/icToolbar"
+        layout="@layout/tool_bar_add" />
+
+    <!-- '#총' 텍스트-->
+    <LinearLayout
+        android:id="@+id/lltext01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/icToolbar"
+        android:layout_marginLeft="102dp"
+        android:layout_marginTop="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="#총" />
+    </LinearLayout>
+
+    <!-- 실제 개수-->
+    <LinearLayout
+        android:id="@+id/llWorkNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/icToolbar"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@+id/lltext01">
+        <TextView
+            android:id="@+id/tvWorkNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="17" />
+    </LinearLayout>
+
+
+    <!-- '개' 텍스트-->
+    <LinearLayout
+        android:id="@+id/lltext02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/icToolbar"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@+id/llWorkNum">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="개" />
+    </LinearLayout>
+
+
+
+    <!--작품 리스트-->
+    <LinearLayout
+        android:id="@+id/llWorkList"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llWorkNum"
+        android:layout_marginBottom="48dp"
+        android:layout_marginTop="8dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvWorks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
+
+</RelativeLayout>
+
+
+
+
