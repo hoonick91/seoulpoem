@@ -1,19 +1,27 @@
 package com.seoulprojet.seoulpoem.activity;
 
+import android.app.Service;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.seoulprojet.seoulpoem.R;
+
+import org.w3c.dom.Text;
 
 /**
  * Created by minjeong on 2017-09-17.
@@ -22,7 +30,27 @@ import com.seoulprojet.seoulpoem.R;
 
 public class WritePoemActivity extends AppCompatActivity {
 
-    LinearLayout background;
+    RelativeLayout background;
+
+    RelativeLayout toolbar;
+    LinearLayout main_toolbar;
+    TextView font_button;
+    TextView effect_button;
+    TextView sort_button;
+
+    LinearLayout sort_toolbar;
+    TextView back1;
+    Button text_left;
+    Button text_right;
+    Button text_center;
+    Button text_default;
+
+
+
+    LinearLayout font_toolbar;
+    LinearLayout effect_toolbar;
+
+
 
     Button back;
     Button finish;
@@ -30,6 +58,7 @@ public class WritePoemActivity extends AppCompatActivity {
     int[] tagid;
 
     EditText write_title;
+    LinearLayout write_content_wrap;
     EditText write_content;
     Button[] paper;
     int[] paperid;
@@ -51,12 +80,13 @@ public class WritePoemActivity extends AppCompatActivity {
         addTitleTagListener();
         changeBackground();
 
+
     }
 
 
     //xml의 id값들을 java파일의 변수와 연결
     public void setId(){
-        background = (LinearLayout)findViewById(R.id.background);
+        background = (RelativeLayout) findViewById(R.id.background);
         back = (Button) findViewById(R.id.back);
         finish = (Button)findViewById(R.id.finish);
 
@@ -93,7 +123,37 @@ public class WritePoemActivity extends AppCompatActivity {
         }
 
         write_title = (EditText)findViewById(R.id.write_title);
+        write_content_wrap = (LinearLayout)findViewById(R.id.write_content_wrap) ;
         write_content = (EditText)findViewById(R.id.write_content);
+
+                InputMethodManager controlManager = (InputMethodManager) getSystemService(Service.INPUT_METHOD_SERVICE);
+                SoftKeyboard mSoftKeyboard = new SoftKeyboard(write_content_wrap, controlManager);
+                mSoftKeyboard.setSoftKeyboardCallback(new SoftKeyboard.SoftKeyboardChanged() {
+                    @Override
+                    public void onSoftKeyboardHide() {
+                        new Handler(Looper.getMainLooper())
+                                .post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // 키보드 내려왔을때
+                                        toolbar.setVisibility(View.GONE);
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onSoftKeyboardShow() {
+                        new Handler(Looper.getMainLooper())
+                                .post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // 키보드 올라왔을때
+                                        toolbar.setVisibility(View.VISIBLE);
+                                    }
+                                });
+                    }
+                });
+
 
         paper = new Button[4];
         paperid = new int[]{R.id.paper1,R.id.paper2,R.id.paper3,R.id.paper4};
@@ -106,6 +166,64 @@ public class WritePoemActivity extends AppCompatActivity {
         select_tag = (TextView)findViewById(R.id.select_tag);
         write_tag = (EditText)findViewById(R.id.write_tag);
         write_detail = (EditText)findViewById(R.id.write_detail);
+
+        toolbar = (RelativeLayout)findViewById(R.id.keyboard_toolbar);
+
+        main_toolbar = (LinearLayout)findViewById(R.id.main_toolbar);
+        font_button = (TextView)findViewById(R.id.font_button);
+        effect_button = (TextView)findViewById(R.id.effect_button);
+        sort_button = (TextView)findViewById(R.id.sort_button);
+        sort_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                main_toolbar.setVisibility(View.GONE);
+                sort_toolbar.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+        font_toolbar = (LinearLayout)findViewById(R.id.font_toolbar);
+        sort_toolbar = (LinearLayout)findViewById(R.id.sort_toolbar);
+        back1 = (TextView)findViewById(R.id.back1);
+        back1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sort_toolbar.setVisibility(View.GONE);
+                main_toolbar.setVisibility(View.VISIBLE);
+            }
+        });
+        text_center = (Button)findViewById(R.id.text_center);
+        text_center.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                write_content.setGravity(Gravity.CENTER_HORIZONTAL);
+            }
+        });
+        text_left = (Button)findViewById(R.id.text_left);
+        text_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                write_content.setGravity(Gravity.LEFT);
+            }
+        });
+        text_right = (Button)findViewById(R.id.text_right);
+        text_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                write_content.setGravity(Gravity.RIGHT);
+            }
+        });
+        text_default = (Button)findViewById(R.id.text_default);
+        text_default.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                write_content.setGravity(Gravity.NO_GRAVITY);
+            }
+        });
+
+        effect_toolbar = (LinearLayout)findViewById(R.id.effect_toolbar);
+
+
     }
 
   /*  버튼을 눌러 선택한 태그들을 확인하여  태그 edittext에 입력하는 부분.

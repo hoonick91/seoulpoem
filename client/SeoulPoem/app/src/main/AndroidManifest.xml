@@ -24,7 +24,8 @@
 
         </activity>
         <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.WritePoemActivity"></activity>
+        <activity android:name=".activity.WritePoemActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <activity android:name=".activity.PreviewAcitivity"></activity>
 
         <provider
