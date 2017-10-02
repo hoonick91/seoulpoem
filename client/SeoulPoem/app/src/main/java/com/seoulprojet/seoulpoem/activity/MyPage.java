@@ -26,8 +26,9 @@ public class MyPage extends AppCompatActivity {
     private Button mypage_photo_btn;
     private Button mypage_poem_btn;
 
-    View drawerView;
-    DrawerLayout drawerLayout;
+    private Button hamburger_setting_btn, hamburger_mypage_btn, hamburger_scrab_btn, hamburger_today_btn, hamburger_writer_btn,hamburger_notice_btn;
+    private View drawerView;
+    private DrawerLayout drawerLayout;
     ////////////////////////////////////
 
     @Override
@@ -49,15 +50,64 @@ public class MyPage extends AppCompatActivity {
 
 
         ///////////////////////////drawer
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        hamburger_mypage_btn = (Button)findViewById(R.id.hamburger_mypage_btn);
+        hamburger_scrab_btn = (Button)findViewById(R.id.hamburger_scrab_btn);
+        hamburger_today_btn = (Button)findViewById(R.id.hamburger_todayseoul_btn);
+        hamburger_writer_btn = (Button)findViewById(R.id.hamburger_writerlist_btn);
+        hamburger_notice_btn = (Button)findViewById(R.id.hamburger_notice_btn);
+        hamburger_setting_btn = (Button)findViewById(R.id.hamburger_setting_btn);
+
+        drawerLayout = (DrawerLayout)findViewById(R.id.mypage_drawer_layout);
         drawerView = (View)findViewById(R.id.drawer);
         mypage_hamburger_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(drawerView);
-                Toast.makeText(getApplicationContext(), "drawer open", Toast.LENGTH_LONG);
             }
         });
+
+        hamburger_mypage_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                startActivity(intent);
+            }
+        });
+
+        hamburger_today_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TodaySeoul.class);
+                startActivity(intent);
+            }
+        });
+
+        hamburger_setting_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SettingPage.class);
+                startActivity(intent);
+            }
+        });
+
+        hamburger_notice_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                drawerLayout.closeDrawers();
+                Intent intent = new Intent(getApplicationContext(), Notice.class);
+                startActivity(intent);
+            }
+        });
+
+        hamburger_writer_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), WriterList.class);
+                startActivity(intent);
+            }
+        });
+
+        ///////////////////////////////////
 
         /////// 페이지 이동 //////
         mypage_setting_btn.setOnClickListener(new View.OnClickListener(){
@@ -97,6 +147,7 @@ public class MyPage extends AppCompatActivity {
             }
         });
         ////////////////////////////////////////
+
 
     }
 }

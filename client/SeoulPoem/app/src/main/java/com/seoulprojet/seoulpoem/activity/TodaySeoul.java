@@ -9,10 +9,9 @@ import android.widget.Button;
 
 import com.seoulprojet.seoulpoem.R;
 
-public class WriterList extends AppCompatActivity {
+public class TodaySeoul extends AppCompatActivity {
 
-    private Button writerlist_hamburger_btn;
-    private Button writerlist_apply_btn;
+    private Button todayseoul_hamburger_btn;
 
     private Button hamburger_setting_btn, hamburger_mypage_btn, hamburger_scrab_btn, hamburger_today_btn, hamburger_writer_btn,hamburger_notice_btn;
     private View drawerView;
@@ -21,11 +20,10 @@ public class WriterList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_writer_list);
+        setContentView(R.layout.activity_today_seoul);
 
-        /////////////////////////////////
-        writerlist_hamburger_btn = (Button)findViewById(R.id.writerlist_hamburger_btn);
-        writerlist_apply_btn = (Button)findViewById(R.id.writerlist_apply_btn);
+        //////////////
+        todayseoul_hamburger_btn = (Button)findViewById(R.id.todayseoul_hamburger_btn);
         //////////////
 
         ///////////////////////////drawer
@@ -36,9 +34,9 @@ public class WriterList extends AppCompatActivity {
         hamburger_notice_btn = (Button)findViewById(R.id.hamburger_notice_btn);
         hamburger_setting_btn = (Button)findViewById(R.id.hamburger_setting_btn);
 
-        drawerLayout = (DrawerLayout)findViewById(R.id.writerlist_drawer_layout);
+        drawerLayout = (DrawerLayout)findViewById(R.id.todayseoul_drawer_layout);
         drawerView = (View)findViewById(R.id.drawer);
-        writerlist_hamburger_btn.setOnClickListener(new View.OnClickListener(){
+        todayseoul_hamburger_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(drawerView);
@@ -54,19 +52,19 @@ public class WriterList extends AppCompatActivity {
             }
         });
 
-        hamburger_setting_btn.setOnClickListener(new View.OnClickListener(){
+        hamburger_today_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SettingPage.class);
+                Intent intent = new Intent(getApplicationContext(), TodaySeoul.class);
                 startActivity(intent);
                 finish();
             }
         });
 
-        hamburger_today_btn.setOnClickListener(new View.OnClickListener(){
+        hamburger_setting_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), TodaySeoul.class);
+                Intent intent = new Intent(getApplicationContext(), SettingPage.class);
                 startActivity(intent);
                 finish();
             }
@@ -91,18 +89,7 @@ public class WriterList extends AppCompatActivity {
             }
         });
 
+
         ///////////////////////////////////
-
-        //////////페이지 이동///////////
-        writerlist_apply_btn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), WriterApply.class);
-                startActivity(intent);
-            }
-        });
-
-
-
     }
 }

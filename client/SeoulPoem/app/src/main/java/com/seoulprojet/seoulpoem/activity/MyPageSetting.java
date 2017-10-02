@@ -42,6 +42,7 @@ public class MyPageSetting extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplication(), MyPage.class);
                 startActivity(intent);
+                finish();
             }
         });
 
