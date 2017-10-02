@@ -13,7 +13,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.model.Poem;
 
@@ -187,8 +186,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
 
 }
