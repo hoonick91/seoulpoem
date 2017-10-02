@@ -33,13 +33,7 @@ router.post('/',upload.single('photo'), async (req, res, next) => {
       await connection.beginTransaction();
 
       let picture = {
-        title: req.body.picture_title
-        ////사진은 어떻게 저장??
-      };
-
-      let poem = {
-        title: req.body.poem_title,
-        content: req.body.content
+        photo: req.file ? req.file.location : null //요청 값에 파일이 있으면 파일의 주소를, 그렇지 않으면 null.
       };
 
       let setting = {
@@ -53,42 +47,47 @@ router.post('/',upload.single('photo'), async (req, res, next) => {
       };
 
 
-
       let query1 = 'insert into seoul_poem.pictures set ?';
       await connection.query(query1, picture);
 
-      let query1_1 = 'select idpictures from seoul_poem.pictures where title =?';
-      let selected = await connection.query(query1_1, req.body.picture_title);
-      console.log(selected[0].idpictures);
+      let query2 = 'insert into seoul_poem.setting set ?';
+      await connection.query(query2, setting);
 
-      let query2 = 'insert into seoul_poem.poem set ?';
-      await connection.query(query2, poem);
-
-      let query2_1 = 'select idpoem from seoul_poem.poem where title =?';
-      let selected2 = await connection.query(query2_1, req.body.poem_title);
-      console.log(selected2[0].idpoem);
+      let query2_1 = 'SELECT idsettings FROM seoul_poem.setting order by idsettings desc limit 1';
+      let selected = await connection.query(query2_1);
 
 
-      let query3 = 'insert into seoul_poem.setting set ?';
-      await connection.query(query3, setting);
+      let poem = {
+        title: req.body.poem_title,
+        content: req.body.content,
+        setting_idsettings : selected[0].idsettings
+      };
 
-      let query3_1 = 'SELECT idsettings FROM seoul_poem.setting order by idsettings desc limit 1';
-      let selected3 = await connection.query(query3_1);
+      let query3 = 'insert into seoul_poem.poem set ?';
+      await connection.query(query3, poem);
+
+
+
+      let query4 = 'SELECT idpictures FROM seoul_poem.pictures order by idpictures desc limit 1';
+      let selected4 = await connection.query(query4);
+
+      let query5 = 'SELECT idpoem FROM seoul_poem.poem order by idpoem desc limit 1';
+      let selected5 = await connection.query(query5);
+
 
       let article = {
         tags: req.body.tags,
         background: req.body.background,
         inform: req.body.inform,
         date: req.body.date,
-        pictures_idpictures: selected[0].idpictures,
-        poem_idpoem: selected2[0].idpoem,
-        users_idusers: 1, //나중에 수정할 것!
-        setting_idsettings: selected3[0].idsettings
+        pictures_idpictures: selected4[0].idpictures,
+        poem_idpoem: selected5[0].idpoem,
+        users_idusers: 1 //나중에 수정할 것!
       };
 
 
-      let query4 = 'insert into seoul_poem.articles set ?';
-      await connection.query(query4, article);
+      let query6 = 'insert into seoul_poem.articles set ?';
+      await connection.query(query6, article);
 
       res.status(201).send({result: "success"});
       await connection.commit();
@@ -109,8 +108,7 @@ router.put('/:idarticles',upload.single('photo'), async (req, res, next) => {
         var connection = await pool.getConnection();
 
         let picture = {
-          title: req.body.picture_title
-          ////사진은 어떻게 저장??
+          photo: req.file ? req.file.location : null //요청 값에 파일이 있으면 파일의 주소를, 그렇지 않으면 null.
         };
 
         let poem = {
@@ -128,8 +126,12 @@ router.put('/:idarticles',upload.single('photo'), async (req, res, next) => {
           sort: req.body.sort
         };
 
-        let query1 = 'select pictures_idpictures, poem_idpoem, setting_idsettings from seoul_poem.articles where idarticles = ?';
+        let query1 = 'select pictures_idpictures, poem_idpoem from seoul_poem.articles where idarticles = ?';
         let selected = await connection.query(query1, req.params.idarticles);
+
+
+        let query1_1 = 'select setting_idsettings from seoul_poem.poem where idpoem = ?';
+        let selected2 = await connection.query(query1_1, selected[0].poem_idpoem);
 
 
         let query2 = 'update seoul_poem.pictures set ? where idpictures = ?';
@@ -138,8 +140,9 @@ router.put('/:idarticles',upload.single('photo'), async (req, res, next) => {
         let query3 = 'update seoul_poem.poem set ? where idpoem = ?';
         await connection.query(query3, [poem, selected[0].poem_idpoem]);
 
+
         let query4 = 'update seoul_poem.setting set ? where idsettings = ?';
-        await connection.query(query4, [setting, selected[0].setting_idsettings]);
+        await connection.query(query4, [setting, selected2[0].setting_idsettings]);
 
 
         res.status(201).send({result: "update article success"});
@@ -169,7 +172,7 @@ router.get('/:idarticles', async (req, res) => {
         var connection = await pool.getConnection();
         await connection.beginTransaction();
 
-        let query1 = 'SELECT * FROM seoul_poem.articles, seoul_poem.poem, seoul_poem.pictures, seoul_poem.setting where seoul_poem.articles.idarticles=? and seoul_poem.articles.poem_idpoem=seoul_poem.poem.idpoem and seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures and seoul_poem.articles.setting_idsettings=seoul_poem.setting.idsettings';
+        let query1 = 'SELECT * FROM seoul_poem.articles, seoul_poem.poem, seoul_poem.pictures, seoul_poem.setting where seoul_poem.articles.idarticles=? and seoul_poem.articles.poem_idpoem=seoul_poem.poem.idpoem and seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures and seoul_poem.poem.setting_idsettings=seoul_poem.setting.idsettings';
         let article_list = await connection.query(query1, req.params.idarticles);
 
         res.status(200).send( { article_list: article_list });
