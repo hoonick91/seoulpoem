@@ -8,6 +8,7 @@ const router = express.Router();
 aws.config.loadFromPath('./config/aws_config.json');
 const pool = require('../config/db_pool');
 const s3 = new aws.S3();
+
 const upload = multer({
   storage: multerS3({
     s3: s3,
@@ -39,7 +40,7 @@ router.post('/',upload.single('photo'), async (req, res, next) => {
 
       let poem = {
         title: req.body.poem_title,
-        content: req.body.content
+        content: req.body.cont
       };
 
       let setting = {

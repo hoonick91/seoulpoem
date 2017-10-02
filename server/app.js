@@ -9,6 +9,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var config = require('./config/secretKey'); //보안
 var main = require('./routes/main');
+var mypage = require('./routes/mypage');
 var group = require('./routes/group');
 var event = require('./routes/event');
 var member = require('./routes/member');
@@ -39,6 +40,7 @@ app.use('/member', member);
 app.use('/article', article);
 app.use('/bookmark', bookmark);
 app.use('/subway', subway);
+app.use('/mypage', mypage);
 app.disable('etag');
 
 
