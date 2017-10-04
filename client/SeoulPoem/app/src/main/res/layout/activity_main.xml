@@ -5,10 +5,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--전체 배경 어둡게-->
+    <LinearLayout
+        android:id="@+id/llbg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#aaa"
+        android:orientation="horizontal"
+        android:visibility="invisible"></LinearLayout>
+
     <!--툴바-->
     <include
         android:id="@+id/icToolbar"
-        layout="@layout/tool_bar_main" />
+        layout="@layout/tool_bar_main"
+        android:visibility="visible" />
+
+    <!--search bar-->
+    <RelativeLayout
+        android:id="@+id/rlSearchBar"
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:background="#afaa"
+        android:visibility="invisible">
+        <!--검색란-->
+        <LinearLayout
+            android:id="@+id/llEdit"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp">
+
+            <EditText
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="작가/태그별 검색" />
+        </LinearLayout>
+
+
+        <!--검색버튼-->
+        <LinearLayout
+            android:id="@+id/llSearchButton"
+            android:orientation="horizontal"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/llEdit"
+            android:background="@drawable/testimg" />
+    </RelativeLayout>
+
+
+    <!--검색 결과-->
+    <RelativeLayout
+        android:id="@+id/rlSearchResult"
+        android:layout_width="330dp"
+        android:layout_height="460dp"
+        android:layout_below="@+id/rlSearchBar"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:visibility="invisible"
+        android:background="#aff">
+
+
+
+
+    </RelativeLayout>
+
+
+
 
 
     <!--해쉬테그-->
@@ -17,7 +81,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/icToolbar"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="40dp"
         android:layout_marginTop="20dp">
 
         <TextView

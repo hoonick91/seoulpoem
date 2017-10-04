@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lay_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:background="#ffffff"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+
+
+        <!--row01-->
+        <LinearLayout
+            android:id="@+id/llRow01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp">
+            <!--첫번째 이미지-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/text01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="#작품 담기" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <!--row02-->
+        <LinearLayout
+            android:id="@+id/llRow02"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llRow01"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/text02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="작품 담기에 작품을 담았습니다." />
+        </LinearLayout>
+
+
+        <!--row03-->
+        <LinearLayout
+            android:id="@+id/llRow03"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llRow02"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/text03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="작품 담기로 이동하시겠습니까" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--row04-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llRow03"
+            android:layout_marginTop="30dp">
+
+
+
+            <!--이동하기 텍스트-->
+            <LinearLayout
+                android:id="@+id/llMove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp">
+                <Button
+                    android:id="@+id/btnMove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="이동하기"/>
+            </LinearLayout>
+
+            <!--돌아가기 텍스트-->
+            <LinearLayout
+                android:id="@+id/llBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/llMove"
+                android:layout_marginLeft="50dp">
+                <Button
+                    android:id="@+id/btnBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="돌아가기"/>
+            </LinearLayout>
+
+
+
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
+
+

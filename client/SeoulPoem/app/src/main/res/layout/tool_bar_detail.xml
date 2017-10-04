@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="360dp"
+    android:layout_height="76dp">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tbDetailActivity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--뒤로가기-->
+            <LinearLayout
+                android:id="@+id/llBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="16dp">
+
+                <ImageView
+                    android:id="@+id/ivBack"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/testimg" />
+            </LinearLayout>
+
+
+            <!--공유하기-->
+            <LinearLayout
+                android:id="@+id/llShare"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="200dp"
+                android:layout_marginTop="16dp">
+
+                <ImageView
+                    android:id="@+id/ivShare"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/testimg"
+                    android:visibility="invisible"/>
+            </LinearLayout>
+
+            <!--설정-->
+            <LinearLayout
+                android:id="@+id/llSetting"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="16dp"
+                android:layout_toRightOf="@+id/llShare">
+
+                <ImageView
+                    android:id="@+id/ivSetting"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/testimg"
+                    android:visibility="invisible"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+
+</RelativeLayout>

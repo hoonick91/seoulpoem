@@ -1,6 +1,7 @@
 package com.seoulprojet.seoulpoem.activity;
 
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -11,10 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.seoulprojet.seoulpoem.R;
+import com.seoulprojet.seoulpoem.model.GalleryListData;
 import com.seoulprojet.seoulpoem.model.Poem;
 
 import java.util.ArrayList;
@@ -22,7 +26,9 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     //tool_bar
-    private ImageView ivHamberger, ivPictures, ivSearch;
+    private ImageView ivHamberger, ivPictures;
+    private LinearLayout llsearch, llSearchButton;
+    private RelativeLayout rlSearchResult;
 
 
     //viewpager
@@ -57,6 +63,13 @@ public class MainActivity extends AppCompatActivity {
         //업로드 하기 버튼
         clickUplaodButton();
 
+        //겔러리도 이동
+        moveToGallery();
+
+        //검색
+        search01();
+        search02();
+
     }
 
 
@@ -64,7 +77,10 @@ public class MainActivity extends AppCompatActivity {
     public void findView() {
         ivHamberger = (ImageView) findViewById(R.id.ivHamberger);
         ivPictures = (ImageView) findViewById(R.id.ivPictures);
-        ivSearch = (ImageView) findViewById(R.id.ivSearch);
+//        ivSearch = (ImageView) findViewById(R.id.ivSearch);
+        llsearch = (LinearLayout) findViewById(R.id.llsearch);
+        llSearchButton = (LinearLayout) findViewById(R.id.llSearchButton);
+        rlSearchResult = (RelativeLayout) findViewById(R.id.rlSearchResult);
         vpPoems = (ViewPager) findViewById(R.id.vpPoems);
         img01 = (ImageView) findViewById(R.id.iv01);
         img02 = (ImageView) findViewById(R.id.iv02);
@@ -117,15 +133,14 @@ public class MainActivity extends AppCompatActivity {
 //            tvEventName.setText(event.event_title);
 //            tvEventIntro.setText(event.text);
 
-//            //클릭하면 상세로 이동
-//            view.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(HomeActivity.this, EventDetailActivity.class);
-//                    intent.putExtra("event_id", Integer.parseInt(view.getTag().toString()));
-//                    startActivity(intent);
-//                }
-//            });
+            //클릭하면 상세로 이동
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                    startActivity(intent);
+                }
+            });
 
             container.addView(view);
             return view;
@@ -184,6 +199,54 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "업로드로 이동", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    /**********************************gallery move**********************************/
+    public void moveToGallery(){
+        ivPictures.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //갤러리로 이동
+                Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+
+
+    /**********************************search 01**********************************/
+    public void search01(){
+        llsearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //tool bar invisible
+                LinearLayout llTbMain = (LinearLayout) findViewById(R.id.icToolbar);
+                llTbMain.setVisibility(v.INVISIBLE);
+
+                //search bar visible
+                RelativeLayout llSearchBar = (RelativeLayout) findViewById(R.id.rlSearchBar);
+                llSearchBar.setVisibility(v.VISIBLE);
+
+
+                //full gray screen visible
+                LinearLayout llbg = (LinearLayout) findViewById(R.id.llbg);
+                llbg.setVisibility(v.VISIBLE);
+            }
+        });
+    }
+
+    /**********************************search 02**********************************/
+    public void search02(){
+        llSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                rlSearchResult.setVisibility(v.VISIBLE);
             }
         });
     }

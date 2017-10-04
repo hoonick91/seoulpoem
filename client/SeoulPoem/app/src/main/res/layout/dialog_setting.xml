@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lay_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="#ffffff">
+
+
+        <!--row01-->
+        <LinearLayout
+            android:id="@+id/llRow01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <!--첫번째 이미지-->
+            <LinearLayout
+                android:id="@+id/llimg01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/testimg" />
+            </LinearLayout>
+
+            <!--공유하기 텍스트-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@+id/llimg01">
+
+                <TextView
+                    android:id="@+id/tvShare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="공유하기" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <!--row02-->
+        <LinearLayout
+            android:id="@+id/llRow02"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llRow01"
+            android:layout_marginTop="10dp">
+            <!--두번째 이미지-->
+            <LinearLayout
+                android:id="@+id/llimg02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/testimg02" />
+            </LinearLayout>
+
+            <!--상세정보 텍스트-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@+id/llimg02">
+
+                <TextView
+                    android:id="@+id/tvDetailInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="상세정보" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <!--row03-->
+        <LinearLayout
+            android:id="@+id/llRow03"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llRow02"
+            android:layout_marginTop="10dp">
+            <!--세번째 이미지-->
+            <LinearLayout
+                android:id="@+id/llimg03"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/testimg03" />
+            </LinearLayout>
+
+            <!--수정하기 텍스트-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@+id/llimg02">
+
+                <TextView
+                    android:id="@+id/tvModify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="수정하기" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
+
+

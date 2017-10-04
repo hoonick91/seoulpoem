@@ -1,5 +1,6 @@
 package com.seoulprojet.seoulpoem.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -50,6 +51,10 @@ public class GalleryActivity extends AppCompatActivity {
         //어뎁터 생성, 리사이클러뷰에 붙임
         recyclerAdapter = new RecyclerAdapter(gallerys);
         recyclerView.setAdapter(recyclerAdapter);
+
+        //메인으로 이동
+        moveToMain();
+
     }
 
 
@@ -119,6 +124,16 @@ public class GalleryActivity extends AppCompatActivity {
 
             holder.ivPhoto.setImageResource(galleryListData.imgResourceID);
 
+            //detail 화면으로 이동
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(GalleryActivity.this, DetailActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+
         }
 
         @Override
@@ -139,4 +154,19 @@ public class GalleryActivity extends AppCompatActivity {
             ivPhoto = (ImageView) itemView.findViewById(R.id.ivPhoto);
         }
     }
+
+    /**********************************gallery maoin**********************************/
+    public void moveToMain(){
+        ivPictures.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //maoin 이동
+                Intent intent = new Intent(GalleryActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+
+
 }

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context="com.seoulprojet.seoulpoem.activity.GalleryActivity">
+
+    <!--툴바-->
+    <include
+        android:id="@+id/icToolbar"
+        layout="@layout/tool_bar_detail" />
+
+
+    <!--이미지-->
+    <LinearLayout
+        android:id="@+id/llPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_below="@+id/icToolbar"
+        android:layout_marginTop="100dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/testimg" />
+    </LinearLayout>
+
+    <!---->
+
+    <RelativeLayout
+        android:id="@+id/rlBottomPart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llPhoto"
+        android:layout_marginTop="30dp"
+        android:visibility="invisible">
+
+        <!--user img-->
+        <LinearLayout
+            android:id="@+id/llUserImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/testimg" />
+        </LinearLayout>
+
+        <!--user nickname-->
+        <LinearLayout
+            android:id="@+id/llUserNickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/llUserImg"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@id/llUserImg">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="고준희"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+
+        <!--hash tag-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/llUserNickname"
+            android:layout_below="@+id/llUserNickname"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="#aaaa #bbbbb #ccccc"
+                android:textColor="#ffff" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/llup"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/testimg03"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
