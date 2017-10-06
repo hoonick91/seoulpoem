@@ -10,6 +10,8 @@ const bcrypt = require('bcryptjs'); //해쉬용 확장모듈, 윈도우에서 �
 const pool = require('../config/db_pool');
 const s3 = new aws.S3();
 
+
+
 const upload = multer({
     storage: multerS3({
         s3: s3,
@@ -22,9 +24,27 @@ const upload = multer({
 });
 
 
+
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.post('/signin', function(req, res) {
+    req.checkBody('pen_name','필명을 입력해주세요.').notEmpty();
+    req.checkBody('token','토큰이 입력되지 않았습니다.').notEmpty();
+    req.checkBody('type','타입을 입력해주세요.').notEmpty();
+    let errors = req.validationErrors();
+    if(!errors){
+        //연결
+        
+    }
+    else {
+        // error
+    }
+
+
+    var pen_name = req.body.penname;
+    var token_ = req.body.token;
+    var type_ = req.body.type;
+
+
 });
 
 
