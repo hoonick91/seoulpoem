@@ -25,6 +25,7 @@ public class AddActivity extends AppCompatActivity {
     private TextView tvWorkNum;
 
 
+    //recycler
     private RecyclerView recyclerView;
     private RecyclerAdapter recyclerAdapter;
     private LinearLayoutManager layoutManager;

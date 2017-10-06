@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.seoulprojet.seoulpoem.R;
@@ -20,7 +21,7 @@ public class GalleryActivity extends AppCompatActivity {
 
 
     //tool_bar
-    private ImageView ivHamberger, ivPictures, ivSearch;
+    private RelativeLayout rlHamberger, rlPictures, rlSearch;
     private TextView tvPlaceName;
 
     private RecyclerView recyclerView;
@@ -53,16 +54,19 @@ public class GalleryActivity extends AppCompatActivity {
         recyclerView.setAdapter(recyclerAdapter);
 
         //메인으로 이동
-        moveToMain();
+        toMain();
+
+        //검색
+        toSearch();
 
     }
 
 
     /***************************************findView***********************************************/
     public void findView() {
-        ivHamberger = (ImageView) findViewById(R.id.ivHamberger);
-        ivPictures = (ImageView) findViewById(R.id.ivPictures);
-        ivSearch = (ImageView) findViewById(R.id.ivSearch);
+        rlHamberger = (RelativeLayout) findViewById(R.id.rlHamberger);
+        rlPictures = (RelativeLayout) findViewById(R.id.rlPictures);
+        rlSearch = (RelativeLayout) findViewById(R.id.rlSearch);
         tvPlaceName = (TextView) findViewById(R.id.tvPlaceName);
 
     }
@@ -130,7 +134,6 @@ public class GalleryActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(GalleryActivity.this, DetailActivity.class);
                     startActivity(intent);
-                    finish();
                 }
             });
 
@@ -155,15 +158,28 @@ public class GalleryActivity extends AppCompatActivity {
         }
     }
 
-    /**********************************gallery maoin**********************************/
-    public void moveToMain(){
-        ivPictures.setOnClickListener(new View.OnClickListener() {
+    /**********************************to main**********************************/
+    public void toMain(){
+        rlPictures.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //maoin 이동
                 Intent intent = new Intent(GalleryActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+    }
+
+
+    /**********************************search**********************************/
+    public void toSearch() {
+        rlSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //갤러리로 이동
+                Intent intent = new Intent(GalleryActivity.this, SearchActivity.class);
+                startActivity(intent);
             }
         });
     }

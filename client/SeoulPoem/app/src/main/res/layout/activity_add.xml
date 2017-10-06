@@ -16,13 +16,15 @@
         android:id="@+id/lltext01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/icToolbar"
-        android:layout_marginLeft="102dp"
-        android:layout_marginTop="8dp">
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="54dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="#총" />
+            android:text="#총"
+            android:textColor="#5e5e5f"
+            android:textSize="13sp" />
     </LinearLayout>
 
     <!-- 실제 개수-->
@@ -30,13 +32,15 @@
         android:id="@+id/llWorkNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/icToolbar"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="54dp"
         android:layout_toRightOf="@+id/lltext01">
+
         <TextView
             android:id="@+id/tvWorkNum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#5e5e5f"
+            android:textSize="13sp"
             tools:text="17" />
     </LinearLayout>
 
@@ -46,30 +50,30 @@
         android:id="@+id/lltext02"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/icToolbar"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="54dp"
         android:layout_toRightOf="@+id/llWorkNum">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="개" />
+            android:text="개"
+            android:textColor="#5e5e5f"
+            android:textSize="13sp" />
     </LinearLayout>
-
 
 
     <!--작품 리스트-->
     <LinearLayout
         android:id="@+id/llWorkList"
-        android:layout_width="360dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/llWorkNum"
-        android:layout_marginBottom="48dp"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="102dp"
+        android:layout_marginLeft="29dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvWorks"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent" />
     </LinearLayout>
 
 

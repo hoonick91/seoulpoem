@@ -14,53 +14,51 @@
             android:layout_height="match_parent">
 
             <!--뒤로가기-->
-            <LinearLayout
-                android:id="@+id/llBack"
+            <RelativeLayout
+                android:id="@+id/rlBack"
                 android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginLeft="14dp"
-                android:layout_marginTop="16dp">
+                android:layout_height="48dp">
 
                 <ImageView
                     android:id="@+id/ivBack"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/testimg" />
-            </LinearLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/backwhite" />
+            </RelativeLayout>
 
 
             <!--공유하기-->
-            <LinearLayout
-                android:id="@+id/llShare"
+            <RelativeLayout
+                android:id="@+id/rlShare"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginLeft="200dp"
-                android:layout_marginTop="16dp">
+                android:layout_marginLeft="235dp">
 
                 <ImageView
                     android:id="@+id/ivShare"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/testimg"
-                    android:visibility="invisible"/>
-            </LinearLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/share"
+                    android:visibility="invisible" />
+            </RelativeLayout>
 
             <!--설정-->
-            <LinearLayout
-                android:id="@+id/llSetting"
+            <RelativeLayout
+                android:id="@+id/rlSetting"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="16dp"
-                android:layout_toRightOf="@+id/llShare">
+                android:layout_toRightOf="@+id/rlShare">
 
                 <ImageView
                     android:id="@+id/ivSetting"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/testimg"
-                    android:visibility="invisible"/>
-            </LinearLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/setting"
+                    android:visibility="invisible" />
+            </RelativeLayout>
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>

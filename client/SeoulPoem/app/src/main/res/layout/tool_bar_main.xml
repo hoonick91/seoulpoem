@@ -1,54 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="360dp"
-    android:layout_height="76dp"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
     android:visibility="visible">
 
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/tbMainActivity"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/tbMain">
 
         <!--햄버거-->
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/rlHamberger"
             android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginTop="16dp">
+            android:layout_height="48dp">
 
             <ImageView
-                android:id="@+id/ivHamberger"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/testimg" />
-        </LinearLayout>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/hamberger"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
 
 
         <!--사진-->
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/rlPictures"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginLeft="96dp"
-            android:layout_marginTop="20dp">
+            android:layout_marginLeft="210dp">
 
             <ImageView
-                android:id="@+id/ivPictures"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/testimg" />
-        </LinearLayout>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/gallery"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
 
         <!--검색-->
-        <LinearLayout
-            android:id="@+id/llsearch"
+        <RelativeLayout
+            android:id="@+id/rlSearch"
             android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginLeft="80dp"
-            android:background="@drawable/testimg"
-            android:orientation="horizontal">
-        </LinearLayout>
+            android:layout_height="48dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/search"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
 
 
     </android.support.v7.widget.Toolbar>

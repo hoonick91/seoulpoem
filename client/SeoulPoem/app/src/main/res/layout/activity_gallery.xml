@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.seoulprojet.seoulpoem.activity.GalleryActivity">
+    tools:context="com.seoulprojet.seoulpoem.activity.GalleryActivity"
+    android:background="@drawable/mainbg">
 
     <!--툴바-->
     <include
@@ -18,9 +18,8 @@
         android:id="@+id/llSharpText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/icToolbar"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="30dp">
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="105dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,7 +38,7 @@
             android:id="@+id/tvPlaceName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="hangang"/>
+            android:text="그리움"/>
     </LinearLayout>
 
 
@@ -47,9 +46,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/llSharpText"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="30dp">
+        android:layout_marginTop="165dp"
+        android:layout_marginLeft="10dp">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvGallery"
             android:layout_width="match_parent"

@@ -6,11 +6,10 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:background="#ffffff"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+        android:layout_width="270dp"
+        android:layout_height="174dp"
+        android:layout_centerInParent="true"
+        android:background="#ffffff">
 
 
         <!--row01-->
@@ -18,8 +17,8 @@
             android:id="@+id/llRow01"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="23dp">
             <!--첫번째 이미지-->
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -29,6 +28,8 @@
                     android:id="@+id/text01"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textSize="18dp"
                     tools:text="#작품 담기" />
             </LinearLayout>
 
@@ -38,16 +39,18 @@
         <!--row02-->
         <LinearLayout
             android:id="@+id/llRow02"
-            android:layout_width="match_parent"
+            android:layout_width="195dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/llRow01"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="19dp">
 
             <TextView
                 android:id="@+id/text02"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#8a000000"
+                android:textSize="16sp"
                 tools:text="작품 담기에 작품을 담았습니다." />
         </LinearLayout>
 
@@ -58,8 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/llRow02"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginLeft="24dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -69,48 +71,56 @@
                     android:id="@+id/text03"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="작품 담기로 이동하시겠습니까" />
+                    android:textColor="#8a000000"
+                    android:textSize="16sp"
+                    tools:text="작품 담기로 이동하시겠습니까?" />
             </LinearLayout>
         </LinearLayout>
 
         <!--row04-->
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:id="@+id/rlRow04"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/llRow03"
-            android:layout_marginTop="30dp">
-
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp">
 
 
             <!--이동하기 텍스트-->
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/llMove"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp">
-                <Button
+                android:layout_height="48dp">
+
+                <TextView
                     android:id="@+id/btnMove"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="이동하기"/>
-            </LinearLayout>
+                    android:layout_centerInParent="true"
+                    android:text="이동하기"
+                    android:textColor="#8a000000"
+                    android:textSize="16dp" />
+            </RelativeLayout>
 
             <!--돌아가기 텍스트-->
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/llBack"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/llMove"
-                android:layout_marginLeft="50dp">
-                <Button
+                android:layout_height="48dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="74dp"
+                android:layout_toRightOf="@+id/llMove">
+
+                <TextView
                     android:id="@+id/btnBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="돌아가기"/>
-            </LinearLayout>
-
-
-
+                    android:layout_centerInParent="true"
+                    android:text="돌아가기"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+            </RelativeLayout>
 
 
         </RelativeLayout>

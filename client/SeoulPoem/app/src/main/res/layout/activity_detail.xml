@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,24 +17,23 @@
     <LinearLayout
         android:id="@+id/llPhoto"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_below="@+id/icToolbar"
-        android:layout_marginTop="100dp">
+        android:layout_height="240dp"
+        android:layout_centerInParent="true">
 
         <ImageView
+            android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/testimg" />
     </LinearLayout>
 
-    <!---->
-
+    <!--회원 정보-->
     <RelativeLayout
         android:id="@+id/rlBottomPart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/llPhoto"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="70dp"
         android:visibility="invisible">
 
         <!--user img-->
@@ -41,12 +41,10 @@
             android:id="@+id/llUserImg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="30dp">
-
+            android:layout_marginLeft="26dp">
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
                 android:src="@drawable/testimg" />
         </LinearLayout>
 
@@ -56,13 +54,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/llUserImg"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="15dp"
             android:layout_toRightOf="@id/llUserImg">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="고준희"
+                android:text="구덧흐얌"
+                android:textSize="18dp"
                 android:textColor="#ffffff" />
         </LinearLayout>
 
@@ -72,27 +71,29 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/llUserNickname"
             android:layout_below="@+id/llUserNickname"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="#aaaa #bbbbb #ccccc"
-                android:textColor="#ffff" />
+                android:textSize="15sp"
+                android:textColor="#ffffff"/>
         </LinearLayout>
 
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/llup"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/testimg03"/>
-        </LinearLayout>
+                android:src="@drawable/up"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
 
     </RelativeLayout>
 
