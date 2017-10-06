@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -14,15 +15,29 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
+import com.seoulprojet.seoulpoem.model.DetailResult;
+import com.seoulprojet.seoulpoem.model.MainResult;
+import com.seoulprojet.seoulpoem.network.ApplicationController;
+import com.seoulprojet.seoulpoem.network.NetworkService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DetailActivity extends AppCompatActivity {
 
     /***************************************변수***********************************************/
 
     private ImageView ivShare, ivSetting;   //tool bar
-    private AddWorkDialog addWorkDialog;     //작품 담기 다이얼로그
-    private SettingDialog settingDialog;     //작품 담기 다이얼로그
+    private AddWorkDialog addWorkDialog;
+    private SettingDialog settingDialog;
+    private LinearLayout llPhoto;
+    private NetworkService service;
+    private ImageView ivPhoto, ivProfile;
+    private TextView tvName, tvTags;
+    private int articleId;
 
     //작품담기 다이얼로그 리스너
     private View.OnClickListener addDialog_leftListener = new View.OnClickListener() {
@@ -65,6 +80,12 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        service = ApplicationController.getInstance().getNetworkService();
+
+        //해당 프로젝트 id값 가져오기
+        Intent intent = getIntent();
+        articleId = intent.getExtras().getInt("articleId");
+
         //findView
         findView();
 
@@ -79,6 +100,9 @@ public class DetailActivity extends AppCompatActivity {
 
         //설정 다이얼로그
         settingDialog();
+
+        //네트워킹
+        getDetail();
     }
 
     /***************************************findView***********************************************/
@@ -86,12 +110,19 @@ public class DetailActivity extends AppCompatActivity {
         //toolbar
         ivShare = (ImageView) findViewById(R.id.ivShare);
         ivSetting = (ImageView) findViewById(R.id.ivSetting);
+
+        llPhoto = (LinearLayout) findViewById(R.id.llPhoto);
+        ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
+        ivProfile = (ImageView) findViewById(R.id.ivProfile);
+
+        tvName = (TextView) findViewById(R.id.tvName);
+        tvTags = (TextView) findViewById(R.id.tvTags);
+
     }
 
 
     /***************************************click photo***********************************************/
     public void clickPhoto() {
-        LinearLayout llPhoto = (LinearLayout) findViewById(R.id.llPhoto);
 
         llPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,9 +197,9 @@ public class DetailActivity extends AppCompatActivity {
     public class SettingDialog extends Dialog {
 
         private TextView text01, text02, text03;
-        private  String str01, str02, str03;
+        private String str01, str02, str03;
         private View.OnClickListener settingDialog_listener01, settingDialog_listener02, settingDialog_listener03;
-        private  LinearLayout llRow01, llRow02, llRow03;
+        private LinearLayout llRow01, llRow02, llRow03;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -187,9 +218,9 @@ public class DetailActivity extends AppCompatActivity {
             text01 = (TextView) findViewById(R.id.tv01);
             text02 = (TextView) findViewById(R.id.tv02);
             text03 = (TextView) findViewById(R.id.tv03);
-            llRow01 = (LinearLayout)findViewById(R.id.llRow01);
-            llRow02 = (LinearLayout)findViewById(R.id.llRow02);
-            llRow03 = (LinearLayout)findViewById(R.id.llRow03);
+            llRow01 = (LinearLayout) findViewById(R.id.llRow01);
+            llRow02 = (LinearLayout) findViewById(R.id.llRow02);
+            llRow03 = (LinearLayout) findViewById(R.id.llRow03);
 
 
             // 제목과 내용을 생성자에서 셋팅
@@ -264,6 +295,46 @@ public class DetailActivity extends AppCompatActivity {
                         settingDialog_listener03);
                 settingDialog.setCanceledOnTouchOutside(true);
                 settingDialog.show();
+            }
+        });
+    }
+
+
+    /***********************************main 리스트 가져오기*********************************/
+    public void getDetail() {
+        Call<DetailResult> requestDetail = service.getDetail(articleId);
+
+        requestDetail.enqueue(new Callback<DetailResult>() {
+            @Override
+            public void onResponse(Call<DetailResult> call, Response<DetailResult> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().status.equals("success")) {
+
+
+                        //사진 이미지
+                        Glide.with(getApplicationContext())
+                                .load(response.body().data.photo)
+                                .into(ivPhoto);
+
+                        //유저 이미지
+                        Glide.with(getApplicationContext())
+                                .load(response.body().data.profile)
+                                .into(ivProfile);
+
+
+                        //유저 닉네임
+                        tvName.setText(response.body().data.userName.toString());
+
+                        //태그
+                        tvTags.setText(response.body().data.tags.toString());
+                    }
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<DetailResult> call, Throwable t) {
+                Log.i("err", t.getMessage());
             }
         });
     }

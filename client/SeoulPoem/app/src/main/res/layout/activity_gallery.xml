@@ -23,12 +23,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#488ab4"
+            android:textSize="15dp"
             android:text="#"/>
     </LinearLayout>
 
 
     <!--'#' 뒤에 텍스트-->
     <LinearLayout
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/llSharpText"
@@ -38,6 +41,8 @@
             android:id="@+id/tvPlaceName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="#488ab4"
             android:text="그리움"/>
     </LinearLayout>
 
@@ -46,7 +51,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="165dp"
+        android:layout_marginTop="44dp"
+        android:layout_below="@+id/llSharpText"
         android:layout_marginLeft="10dp">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvGallery"

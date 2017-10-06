@@ -21,11 +21,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.model.HashtagListData;
-import com.seoulprojet.seoulpoem.model.Poem;
+import com.seoulprojet.seoulpoem.model.MainResult;
+import com.seoulprojet.seoulpoem.model.PoemListData;
+import com.seoulprojet.seoulpoem.network.ApplicationController;
+import com.seoulprojet.seoulpoem.network.NetworkService;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private PagerContainer pcPoem;
     private ViewPager vpPoems;
     private PagerAdapter paPoem;
-    private ArrayList<Poem> poems;
+    private ArrayList<PoemListData> poems;
     private ImageView ivPoem;
     private TextView tvHashTag;
     private TabLayout tabLayout;
@@ -62,14 +70,22 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayoutManager layoutManager;
     private ArrayList<HashtagListData> hashtags;
 
+    //네트워크
+    NetworkService service;
+
+
     /***************************************START***********************************************/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //서비스 객체 초기화
+        service = ApplicationController.getInstance().getNetworkService();
+
         //findView
         findView();
+
 
         //makeDummy
         makeDummy();
@@ -89,22 +105,16 @@ public class MainActivity extends AppCompatActivity {
         //hash tag
         toHashtag();
 
-        //업로드 하기 버튼
-        toUpload();
-
         //뒷 배경 클릭
         clickBg();
 
+        //recycler setting
+        setRecycler();
 
-        //layout manager setting
-        recyclerView = (RecyclerView) findViewById(R.id.rvHashtags);
-        layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerView.setLayoutManager(layoutManager);
+        //네트워킹
+        poems = new ArrayList<>();
+        getLists();
 
-        //어뎁터 생성, 리사이클러뷰에 붙임
-        recyclerAdapter = new RecyclerAdapter(hashtags);
-        recyclerView.setAdapter(recyclerAdapter);
 
     }
 
@@ -134,13 +144,6 @@ public class MainActivity extends AppCompatActivity {
     /************************************더미 데이터 생성*****************************************/
     private void makeDummy() {
 
-        //view pager
-        poems = new ArrayList<>();
-        poems.add(new Poem(R.drawable.testimg, "#봄"));
-        poems.add(new Poem(R.drawable.testimg02, "#여름"));
-        poems.add(new Poem(R.drawable.testimg03, "#가을"));
-        poems.add(new Poem(R.drawable.testimg04, "#겨울"));
-        poems.add(new Poem(R.drawable.testimg05, "#계절"));
 
         //hash tag
         hashtags = new ArrayList<>();
@@ -157,14 +160,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /***********************************peom Adapter**********************************/
+    /***********************************poem Adapter**********************************/
     public class PageAdapterPoems extends PagerAdapter {
 
-        ArrayList<Poem> poems;
+        ArrayList<PoemListData> poemListDatas;
 
 
-        public PageAdapterPoems(ArrayList<Poem> poems) {
-            this.poems = poems;
+        public PageAdapterPoems(ArrayList<PoemListData> poemListDatas) {
+            this.poemListDatas = poemListDatas;
         }
 
         @Override
@@ -172,20 +175,26 @@ public class MainActivity extends AppCompatActivity {
 
             final View view = LayoutInflater.from(container.getContext()).inflate(R.layout.list_item_poem_home, container, false);
 
-            Poem poem = poems.get(position);
+            final PoemListData poemListData = poemListDatas.get(position);
 
             //findView
             ivPoem = (ImageView) view.findViewById(R.id.ivPoem);
             tvHashTag = (TextView) view.findViewById(R.id.tvHashTag);
 
-            ivPoem.setImageResource(poem.img);
-            tvHashTag.setText(poem.hashTag.toString());
+
+            Glide.with(getApplicationContext())
+                    .load(poemListData.photo)
+                    .into(ivPoem);
+
+
+            tvHashTag.setText(poemListData.title.toString());
 
             //클릭하면 상세로 이동
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                    intent.putExtra("articleId", poemListData.idarticles);
                     startActivity(intent);
                 }
             });
@@ -221,23 +230,25 @@ public class MainActivity extends AppCompatActivity {
     public void setViewPager() {
         pcPoem = (PagerContainer) findViewById(R.id.pcPoem);
         vpPoems = pcPoem.getViewPager();
-        paPoem = new PageAdapterPoems(poems);
-        vpPoems.setAdapter(paPoem);
-        vpPoems.setOffscreenPageLimit(paPoem.getCount());
-        vpPoems.setPageMargin(12);
-        vpPoems.setClipChildren(false);
-        vpPoems.setCurrentItem(2);
+
 
         //indicator 설정
         tabLayout = (TabLayout) findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(vpPoems, true);
 
-        //view pager 밑 이미지 세팅
-        img01.setImageResource(poems.get(0).img);
-        img02.setImageResource(poems.get(1).img);
-        img03.setImageResource(poems.get(2).img);
-        img04.setImageResource(poems.get(3).img);
-        img05.setImageResource(poems.get(4).img);
+    }
+
+    /***********************************recycler setting**********************************/
+    public void setRecycler() {
+        //layout manager setting
+        recyclerView = (RecyclerView) findViewById(R.id.rvHashtags);
+        layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerView.setLayoutManager(layoutManager);
+
+        //어뎁터 생성, 리사이클러뷰에 붙임
+        recyclerAdapter = new RecyclerAdapter(hashtags);
+        recyclerView.setAdapter(recyclerAdapter);
     }
 
 
@@ -274,16 +285,6 @@ public class MainActivity extends AppCompatActivity {
                 //갤러리로 이동
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
-            }
-        });
-    }
-
-    /***********************************upload button**********************************/
-    public void toUpload() {
-        ibUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "업로드로 이동", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -398,5 +399,61 @@ public class MainActivity extends AppCompatActivity {
             ivHashtag = (ImageView) itemView.findViewById(R.id.ivHashtag);
         }
     }
+
+
+    /***********************************main 리스트 가져오기*********************************/
+    public void getLists() {
+        Call<MainResult> requestMainLists = service.getPoems("그리움");
+
+        requestMainLists.enqueue(new Callback<MainResult>() {
+            @Override
+            public void onResponse(Call<MainResult> call, Response<MainResult> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().status.equals("success")) {
+                        poems = response.body().data;
+
+
+                        //view pager 설정
+                        paPoem = new PageAdapterPoems(poems);
+                        vpPoems.setAdapter(paPoem);
+                        vpPoems.setOffscreenPageLimit(paPoem.getCount());
+                        vpPoems.setPageMargin(12);
+                        vpPoems.setClipChildren(false);
+                        vpPoems.setCurrentItem(2);
+
+
+                        //뷰페이저 밑에 이미지들
+                        Glide.with(getApplicationContext())
+                                .load(poems.get(0).photo)
+                                .into(img01);
+
+                        Glide.with(getApplicationContext())
+                                .load(poems.get(1).photo)
+                                .into(img02);
+
+                        Glide.with(getApplicationContext())
+                                .load(poems.get(2).photo)
+                                .into(img03);
+
+                        Glide.with(getApplicationContext())
+                                .load(poems.get(3).photo)
+                                .into(img04);
+
+                        Glide.with(getApplicationContext())
+                                .load(poems.get(4).photo)
+                                .into(img05);
+
+                    }
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<MainResult> call, Throwable t) {
+                Log.i("err", t.getMessage());
+            }
+        });
+    }
+
 
 }

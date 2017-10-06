@@ -1,20 +1,31 @@
 package com.seoulprojet.seoulpoem.activity;
 
 
+import android.content.Intent;
+import android.location.Address;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
-import com.seoulprojet.seoulpoem.model.WorkListData;
+import com.seoulprojet.seoulpoem.model.AddListData;
+import com.seoulprojet.seoulpoem.model.AddResult;
+import com.seoulprojet.seoulpoem.network.ApplicationController;
+import com.seoulprojet.seoulpoem.network.NetworkService;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class AddActivity extends AppCompatActivity {
@@ -29,7 +40,10 @@ public class AddActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerAdapter recyclerAdapter;
     private LinearLayoutManager layoutManager;
-    private ArrayList<WorkListData> works;
+    private ArrayList<AddListData> works;
+
+    //네트워크
+    NetworkService service;
 
 
     @Override
@@ -37,6 +51,8 @@ public class AddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
+        //서비스 객체 초기화
+        service = ApplicationController.getInstance().getNetworkService();
 
         //findView
         findView();
@@ -48,9 +64,6 @@ public class AddActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
 
-        //makeDummy
-        makeDummy();
-
         //작품 개수 설정
         tvWorkNum.setText(String.valueOf(works.size()));
 
@@ -59,43 +72,31 @@ public class AddActivity extends AppCompatActivity {
         recyclerAdapter = new RecyclerAdapter(works);
         recyclerView.setAdapter(recyclerAdapter);
 
+        //네트워킹
+        works = new ArrayList<>();
+        getWorks();
+
     }
 
 
     /***************************************findView***********************************************/
     public void findView() {
         ivHamberger = (ImageView) findViewById(R.id.ivHamberger);
-        tvWorkNum = (TextView)findViewById(R.id.tvWorkNum);
-    }
-
-
-    /***************************************dummy data ***********************************************/
-    public void makeDummy() {
-        works = new ArrayList<>();
-        works.add(new WorkListData(R.drawable.testimg, R.drawable.testimg02, "title01", "content01"));
-        works.add(new WorkListData(R.drawable.testimg02, R.drawable.testimg03, "title02", "content02"));
-        works.add(new WorkListData(R.drawable.testimg03, R.drawable.testimg04, "title03", "content03"));
-        works.add(new WorkListData(R.drawable.testimg04, R.drawable.testimg05, "title04", "content04"));
-        works.add(new WorkListData(R.drawable.testimg, R.drawable.testimg02, "title05", "content01dsfa"));
-        works.add(new WorkListData(R.drawable.testimg02, R.drawable.testimg03, "title06", "content02fsd"));
-        works.add(new WorkListData(R.drawable.testimg03, R.drawable.testimg04, "title07", "content03fsadf"));
-        works.add(new WorkListData(R.drawable.testimg04, R.drawable.testimg05, "title08", "content04fsaddsa"));
-        works.add(new WorkListData(R.drawable.testimg, R.drawable.testimg02, "title09", "content01aa"));
-        works.add(new WorkListData(R.drawable.testimg02, R.drawable.testimg03, "title01", "content0210"));
+        tvWorkNum = (TextView) findViewById(R.id.tvWorkNum);
     }
 
 
     /***********************************Adapter**********************************/
     class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
-        ArrayList<WorkListData> workListDatas;
+        ArrayList<AddListData> addListDatas;
 
-        public RecyclerAdapter(ArrayList<WorkListData> workListDatas) {
-            this.workListDatas = workListDatas;
+        public RecyclerAdapter(ArrayList<AddListData> addListDatas) {
+            this.addListDatas = addListDatas;
         }
 
-        public void setAdapter(ArrayList<WorkListData> workListDatas) {
-            this.workListDatas = workListDatas;
+        public void setAdapter(ArrayList<AddListData> addListDatas) {
+            this.addListDatas = addListDatas;
             notifyDataSetChanged();
         }
 
@@ -108,32 +109,36 @@ public class AddActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
-            WorkListData workListData = workListDatas.get(position);
+            AddListData addListData = addListDatas.get(position);
 
 
-            //leftImage
-            holder.ivLeftImg.setImageResource(workListData.leftImg);
+            //사진 이미지
+            Glide.with(getApplicationContext())
+                    .load(addListData.leftImg)
+                    .into(holder.ivLeftImg.);
 
-            //circleImage
-            holder.ivCirclerImg.setImageResource(workListData.circleImg);
+            //동그란 이미지
+            Glide.with(getApplicationContext())
+                    .load(addListData.circleImg)
+                    .into(holder.ivCirclerImg);
+
             //title
-            holder.tvTitle.setText(workListData.title);
+            holder.tvTitle.setText(addListData.title);
 
             //content
-            holder.tvContent.setText(workListData.content);
+            holder.tvContent.setText(addListData.content);
 
 
-//            //상세 프로필로 이동
-//            //클릭시 상세화면으로 이동, 클릭한 프로젝트 아이디 전달
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(PeopleActivity.this, OtherUserPage.class);
-//                    intent.putExtra("userID", Integer.parseInt(holder.tvUserID.getText().toString()));
-//                    Log.d("userID", "people목록에서 보내는 id 값 : " + Integer.toString(userID));
-//                    startActivity(intent);
-//                }
-//            });
+            //상세 프로필로 이동
+            //클릭시 상세화면으로 이동, 클릭한 프로젝트 아이디 전달
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(AddActivity.this, DetailActivity.class);
+                    intent.putExtra("articleId", );
+                    startActivity(intent);
+                }
+            });
         }
 
         @Override
@@ -161,5 +166,29 @@ public class AddActivity extends AppCompatActivity {
         }
     }
 
+    /***********************************작품 리스트 가져오기*********************************/
+    public void getLists() {
+        Call<AddResult> requestWorkLists = service.getWorks();
+
+        requestWorkLists.enqueue(new Callback<AddResult>() {
+            @Override
+            public void onResponse(Call<AddResult> call, Response<AddResult> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().status.equals("success")) {
+                        works = response.body().data;
+                        recyclerAdapter.setAdapter(works);
+
+
+                    }
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<AddResult> call, Throwable t) {
+                Log.i("err", t.getMessage());
+            }
+        });
+    }
 
 }

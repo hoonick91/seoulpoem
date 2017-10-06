@@ -95,7 +95,8 @@
             android:id="@+id/iv01"
             android:layout_width="35dp"
             android:layout_height="51dp"
-            tools:src="@mipmap/ic_launcher_round" />
+            tools:src="@mipmap/ic_launcher_round"
+            android:scaleType="fitXY"/>
 
         <ImageView
             android:id="@+id/iv02"
@@ -103,7 +104,8 @@
             android:layout_height="51dp"
             android:layout_marginLeft="13dp"
             android:layout_toRightOf="@+id/iv01"
-            tools:src="@mipmap/ic_launcher_round" />
+            tools:src="@mipmap/ic_launcher_round"
+            android:scaleType="fitXY"/>
 
         <ImageView
             android:id="@+id/iv03"
@@ -111,7 +113,8 @@
             android:layout_height="51dp"
             android:layout_marginLeft="13dp"
             android:layout_toRightOf="@+id/iv02"
-            tools:src="@mipmap/ic_launcher_round" />
+            tools:src="@mipmap/ic_launcher_round"
+            android:scaleType="fitXY"/>
 
         <ImageView
             android:id="@+id/iv04"
@@ -119,7 +122,8 @@
             android:layout_height="51dp"
             android:layout_marginLeft="13dp"
             android:layout_toRightOf="@+id/iv03"
-            tools:src="@mipmap/ic_launcher_round" />
+            tools:src="@mipmap/ic_launcher_round"
+            android:scaleType="fitXY"/>
 
         <ImageView
             android:id="@+id/iv05"
@@ -127,7 +131,8 @@
             android:layout_height="51dp"
             android:layout_marginLeft="13dp"
             android:layout_toRightOf="@+id/iv04"
-            tools:src="@mipmap/ic_launcher_round" />
+            tools:src="@mipmap/ic_launcher_round"
+            android:scaleType="fitXY"/>
     </RelativeLayout>
 
 

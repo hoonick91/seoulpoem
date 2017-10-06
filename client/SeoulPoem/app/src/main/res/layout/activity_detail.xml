@@ -21,10 +21,11 @@
         android:layout_centerInParent="true">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/ivPhoto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/testimg" />
+            tools:src="@drawable/testimg"
+            android:scaleType="fitXY"/>
     </LinearLayout>
 
     <!--회원 정보-->
@@ -43,9 +44,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="26dp">
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivProfile"
                 android:layout_width="43dp"
-                android:layout_height="43dp"
-                android:src="@drawable/testimg" />
+                android:layout_height="43dp"/>
         </LinearLayout>
 
         <!--user nickname-->
@@ -58,9 +59,10 @@
             android:layout_toRightOf="@id/llUserImg">
 
             <TextView
+                android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="구덧흐얌"
+                tools:text="구덧흐얌"
                 android:textSize="18dp"
                 android:textColor="#ffffff" />
         </LinearLayout>
@@ -74,9 +76,10 @@
             android:layout_marginTop="5dp">
 
             <TextView
+                android:id="@+id/tvTags"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="#aaaa #bbbbb #ccccc"
+                tools:text="#aaaa #bbbbb #ccccc"
                 android:textSize="15sp"
                 android:textColor="#ffffff"/>
         </LinearLayout>

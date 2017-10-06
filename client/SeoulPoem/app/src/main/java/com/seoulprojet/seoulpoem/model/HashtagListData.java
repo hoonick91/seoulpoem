@@ -10,6 +10,7 @@ public class HashtagListData {
 
     public HashtagListData(int imgResourceID, String text) {
         this.imgResourceID = imgResourceID;
-        this.text = text;
+        this.text = text; //제목 대체할 수 있는 거
+
     }
 }
