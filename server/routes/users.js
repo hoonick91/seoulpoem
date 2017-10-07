@@ -10,7 +10,7 @@ const bcrypt = require('bcryptjs'); //해쉬용 확장모듈, 윈도우에서 �
 const crypto = require("crypto");
 const pool = require('../config/db_pool');
 const s3 = new aws.S3();
-const key = require('../config/secretKey');
+
 
 
 
@@ -39,18 +39,18 @@ router.post('/signin', function(req, res) {
     else {
         // error
     }
-    const cipher = crypto.createCipher('aes-256-cbc',key.secret );
+    const cipher = crypto.createCipher('aes-256-cbc',req.app.get('jwt-secret') );
     let result = cipher.update(req.body.email, 'utf8', 'base64'); // 'HbMtmFdroLU0arLpMflQ'
     result += cipher.final('base64');
 
-    const decipher = crypto.createDecipher('aes-256-cbc', key.secret);
+    const decipher = crypto.createDecipher('aes-256-cbc', req.app.get('jwt-secret'));
     let result2 = decipher.update(result, 'base64', 'utf8'); // 암호화할문 (base64, utf8이 위의 cipher과 반대 순서입니다.)
     result2 += decipher.final('utf8'); // 암호화할문장 (여기도 base64대신 utf8)
 
     console.log(result);
 
 
-    let token = jwt.sign({data : req.body.email},key.secret,{algorithm : 'HS256', expiresIn : 1440});
+    let token = jwt.sign({data : req.body.email},req.app.get('jwt-secret'),{algorithm : 'HS256', expiresIn : 1440});
 
 
     res.status(200);
