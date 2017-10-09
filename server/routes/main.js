@@ -16,7 +16,7 @@ const jwt = require('jsonwebtoken');
             return;
         }
         else{
-        let tag = '#'+req.query.tag+' ';
+        let tag = '%#'+req.query.tag+' %';
         let query1 = 'select seoul_poem.pictures.photo,seoul_poem.articles.idarticles,seoul_poem.articles.title from seoul_poem.pictures, seoul_poem.articles where seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures and seoul_poem.articles.tags like ? order by rand() limit 5;'
         let main_list   = await connection.query(query1,tag);
 
@@ -51,7 +51,7 @@ router.get('/all', async ( req, res) => {
             res.json({status : "fail",msg:err});
             return;
         } else {
-            let tag = '#' + req.query.tag+ ' ';
+            let tag = '%#' + req.query.tag+ ' %';
             let query1 = "select seoul_poem.pictures.photo,seoul_poem.articles.idarticles from seoul_poem.pictures, seoul_poem.articles where seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures and seoul_poem.articles.tags like ? order by seoul_poem.articles.idarticles Desc;"
             let main_list = await connection.query(query1, tag);
 
