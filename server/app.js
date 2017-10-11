@@ -28,8 +28,8 @@ app.set('jwt-secret', config.secret); //시크릿
 
 app.use(expressVaildator());
 app.use(logger('dev'));
+app.use(bodyParser.urlencoded({limit: '10mb', extended: false }));
 app.use(bodyParser.json({limit: '10mb'}));
-app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
