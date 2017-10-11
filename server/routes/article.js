@@ -208,57 +208,6 @@ router.post('/',upload.single('photo'), async (req, res, next) => {
 */
 
 
-    // 글 수정
-    router.put('/:idarticles',upload.single('photo'), async (req, res, next) => {
-      try {
-            var connection = await pool.getConnection();
-
-            let picture = {
-              title: req.body.picture_title
-              ////사진은 어떻게 저장??
-            };
-
-            let poem = {
-              title: req.body.poem_title,
-              content: req.body.content
-            };
-
-            let setting = {
-              font_type: req.body.font_type,
-              font_size: req.body.font_size,
-              bold: req.body.bold,
-              inclination: req.body.inclination,
-              underline: req.body.underline,
-              color: req.body.color,
-              sort: req.body.sort
-            };
-
-            let query1 = 'select pictures_idpictures, poem_idpoem, setting_idsettings from seoul_poem.articles where idarticles = ?';
-            let selected = await connection.query(query1, req.params.idarticles);
-
-
-            let query2 = 'update seoul_poem.pictures set ? where idpictures = ?';
-            await connection.query(query2, [picture, selected[0].pictures_idpictures]);
-
-            let query3 = 'update seoul_poem.poem set ? where idpoem = ?';
-            await connection.query(query3, [poem, selected[0].poem_idpoem]);
-
-            let query4 = 'update seoul_poem.setting set ? where idsettings = ?';
-            await connection.query(query4, [setting, selected[0].setting_idsettings]);
-
-
-            res.status(201).send({result: "update article success"});
-
-        }
-        catch(err) {
-            console.log(err);
-            res.status(500).send({result: err });
-        }
-        finally {
-            pool.releaseConnection(connection);
-        }
-    });
-
 
     //글 하나 조회 /article/{articleid}
     router.get('/:idarticles', async (req, res) => {
@@ -436,7 +385,6 @@ router.get('/:idarticles', async (req, res) => {
 
     });
 
-  
 // 글 수정
 router.put('/:idarticles',upload.single('photo'), async (req, res, next) => {
   try {
@@ -447,7 +395,6 @@ router.put('/:idarticles',upload.single('photo'), async (req, res, next) => {
         };
 
         let poem = {
-          title: req.body.poem_title,
           content: req.body.content
         };
 
@@ -464,28 +411,42 @@ router.put('/:idarticles',upload.single('photo'), async (req, res, next) => {
         let query1 = 'select pictures_idpictures, poem_idpoem from seoul_poem.articles where idarticles = ?';
         let selected = await connection.query(query1, req.params.idarticles);
 
-
         let query1_1 = 'select setting_idsettings from seoul_poem.poem where idpoem = ?';
         let selected2 = await connection.query(query1_1, selected[0].poem_idpoem);
+        console.log(selected2[0].setting_idsettings);
 
 
         let query2 = 'update seoul_poem.pictures set ? where idpictures = ?';
         await connection.query(query2, [picture, selected[0].pictures_idpictures]);
 
-        let query3 = 'update seoul_poem.poem set ? where idpoem = ?';
-        await connection.query(query3, [poem, selected[0].poem_idpoem]);
+
+        let query3 = 'update seoul_poem.setting set ? where idsettings = ?';
+        await connection.query(query3, [setting, selected2[0].setting_idsettings]);
 
 
-        let query4 = 'update seoul_poem.setting set ? where idsettings = ?';
-        await connection.query(query4, [setting, selected2[0].setting_idsettings]);
+        let query4 = 'update seoul_poem.poem set ? where idpoem = ?';
+        await connection.query(query4, [poem, selected[0].poem_idpoem]);
+
+        let article = {
+          title: req.body.title,
+          tags: req.body.tags,
+          background: req.body.background,
+          inform: req.body.inform,
+          date: req.body.date
+        };
+
+        let query5 = 'update seoul_poem.articles set ? where idarticles = ?';
+        await connection.query(query5, [article, req.params.idarticles]);
 
 
         res.status(201).send({result: "update article success"});
+        await connection.commit();
 
     }
     catch(err) {
         console.log(err);
         res.status(500).send({result: err });
+        connection.rollback();
     }
     finally {
         pool.releaseConnection(connection);
@@ -501,11 +462,11 @@ router.delete('/:idarticles', async (req, res, next) => {
       let data1 = await connection.query(query, req.params.idarticles) || null;
       if(data1.length==0) res.status(403).send({result: '존재하지 않는 글 id입니다.'});
 
-      //users_idusers 수정할것!
-      let query1 = 'SELECT * FROM seoul_poem.bookmarks where articles_idarticles=? and users_idusers=1';
+
+      let query1 = 'SELECT * FROM seoul_poem.bookmarks where articles_idarticles=?';
       let data2 = await connection.query(query1, req.params.idarticles) || null;
       if(data2.length>0){
-        let query2 = 'delete from seoul_poem.bookmarks where articles_idarticles = ? and users_idusers=1';
+        let query2 = 'delete from seoul_poem.bookmarks where articles_idarticles = ?';
         await connection.query(query2, req.params.idarticles);
       }
 
@@ -526,8 +487,6 @@ router.delete('/:idarticles', async (req, res, next) => {
 
       let query8 = 'delete from seoul_poem.setting where idsettings = ?';
       await connection.query(query8, selected2[0].idsettings);
-
-
 
 
       res.status(200).send({result: 'delete success'});
