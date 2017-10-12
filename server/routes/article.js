@@ -58,7 +58,6 @@
           var result ="";
           if(req.body.content) { //시가 있으면
               let setting = {
-                  font_type: req.body.font_type,
                   font_size: req.body.font_size,
                   bold: req.body.bold,
                   inclination: req.body.inclination,
@@ -112,7 +111,7 @@
         }
         catch(err) {
             console.log(err);
-            res.status(500).send({status: "fail", msg: err });
+            res.status(500).send({status : "fail", msg: err });
         }
         finally {
             pool.releaseConnection(connection);
@@ -227,12 +226,11 @@ router.post('/',upload.single('photo'), async (req, res, next) => {
                 let query2 = 'SELECT content, setting_idsettings from poem where idpoem = ?'
                 let query2_result = await connection.query(query2,queryresult[0].idpoem);
                 console.log(query2_result);
-                let query3 = 'SELECT font_type,font_size,bold,inclination,underline,color,sort from setting where idsettings = ?'
+                let query3 = 'SELECT font_size,bold,inclination,underline,color,sort from setting where idsettings = ?'
                 let query3_result = await connection.query(query3,query2_result[0].setting_idsettings);
                 console.log(query3_result);
 
                 let setting={};
-                setting.font_type = query3_result[0].font_type;
                 setting.font_size  = query3_result[0].font_size;
                 setting.bold  = query3_result[0].bold;
                 setting.inclination = query3_result[0].inclination;
@@ -296,7 +294,7 @@ router.post('/',upload.single('photo'), async (req, res, next) => {
         }
         catch(err){
             console.log(err);
-            res.status(500).json( {status : "fail", msg : err });
+            res.status(500).send({status : "fail", msg: err });
             connection.rollback();
         }
         finally{
@@ -382,7 +380,7 @@ router.get('/:idarticles', async (req, res) => {
         }
         catch(err){
             console.log(err);
-            res.status(500).send( { result: err });
+            res.status(500).send({status : "fail", msg: err });
             connection.rollback();
         }
         finally{
@@ -405,7 +403,6 @@ router.put('/:idarticles',upload.single('photo'), async (req, res, next) => {
         };
 
         let setting = {
-          font_type: req.body.font_type,
           font_size: req.body.font_size,
           bold: req.body.bold,
           inclination: req.body.inclination,
@@ -451,7 +448,7 @@ router.put('/:idarticles',upload.single('photo'), async (req, res, next) => {
     }
     catch(err) {
         console.log(err);
-        res.status(500).send({result: err });
+        res.status(500).send({status : "fail", msg: err });
         connection.rollback();
     }
     finally {
@@ -501,7 +498,7 @@ router.delete('/:idarticles', async (req, res, next) => {
 
   catch(err){
       console.log(err);
-      res.status(500).send( { result: err });
+      res.status(500).send({status : "fail", msg: err });
       connection.rollback();
   }
   finally{

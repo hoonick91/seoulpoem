@@ -67,9 +67,11 @@ try {
         let check_emailandtype_query = 'Select * from users where email =? and foreign_key_type = ?';
         var check_emailandtype = await connection.query(check_emailandtype_query,[email,type]);
 
-        if(check_emailandtype != 0){
+
+            if(check_emailandtype != 0){
             res.status(200);
             res.json({status: "success", msg: "로그인을 성공하였습니다."});
+            await connection.commit();
         }
         else {
             res.status(200);
@@ -107,7 +109,7 @@ try{
         var connection = await pool.getConnection();
         await connection.beginTransaction();
 
-        let check_penname_query = 'Select * from users where pen_name = ?';
+        let check_penname_query = 'Select * from seoul_poem.users where pen_name = ?';
         var check_penname = await connection.query(check_penname_query, pen_name);
 
         if (check_penname.length != 0) {
@@ -119,15 +121,17 @@ try{
                 foreign_key_type: type,
                 email: email,
                 pen_name: pen_name,
+                author: 0,
                 inform: "",
 
             }
-            let sigin_query = 'insert into users set ?';
+            let sigin_query = 'insert into seoul_poem.users set ?';
             var sigin_result = await connection.query(sigin_query, user);
 
             if (sigin_result){
                 res.status(200);
                 res.json({status: "success", msg: "회원 가입을 성공하였습니다."});
+                await connection.commit();
             }
             else {
                 res.status(500);
@@ -172,7 +176,7 @@ router.post('/modify',multiupload,  async (req, res) => {
             let pen_name = req.body.pen_name;
             let inform = req.body.inform;
 
-            let user_query = 'Select pen_name,profile,background,inform from users where email = ? and foreign_key_type = ?';
+            let user_query = 'Select pen_name,profile,background,inform from seoul_poem.users where email = ? and foreign_key_type = ?';
             var user_before = await connection.query(user_query, [email,type]);
 
             var data_img =[];
@@ -188,7 +192,7 @@ router.post('/modify',multiupload,  async (req, res) => {
                 if(flags==0){
                     cnt += 1;
                     user.pen_name = pen_name;
-                    let check_penname_query = 'Select * from users where pen_name = ?';
+                    let check_penname_query = 'Select * from seoul_poem.users where pen_name = ?';
                     var check_penname = await connection.query(check_penname_query, pen_name);
 
                     if (check_penname.length) {
@@ -257,8 +261,10 @@ router.post('/modify',multiupload,  async (req, res) => {
                             else     console.log(data);           // successful response
                         });
                     }
+
                     res.status(200);
                     res.json({status: "success", msg: "회정 정보 수정 성공", user : user});
+                    await connection.commit();
                 }else {
                     res.status(500);
                     res.json({status: "fail", msg: "회원 정보 수정 실패"});
@@ -279,6 +285,115 @@ router.post('/modify',multiupload,  async (req, res) => {
 });
 
 
+
+router.post('/secession',  async (req, res) => {
+    try{
+        req.checkHeaders('email', '이메일 입력되지 않았습니다.').notEmpty();
+        req.checkHeaders('type', '타입을 입력해주세요.').notEmpty();
+
+        let errors = req.validationErrors();
+        if (!errors) {
+
+            var connection = await pool.getConnection();
+            await connection.beginTransaction();
+
+            let email = req.headers.email;
+            let type = req.headers.type;
+
+            var data_img=[];
+            var cnt = 0;
+
+            let users_select = "select * from seoul_poem.users where email = ? and foreign_key_type = ?";
+            var users_select_result = await connection.query(users_select,[email,type]);
+
+            if(users_select_result.length == 0){
+                res.status(402);
+                res.json({status: "fail", msg: "회원 정보 없음"});
+                return;
+            }
+
+            let article_select = "select articles.poem_idpoem as idpoem, articles.idarticles as idarticles, articles.pictures_idpictures as idpictures from seoul_poem.articles where articles.users_email = ? and articles.users_foreign_key_type = ?";
+            var article_select_result = await connection.query(article_select,[email,type]);
+
+            var counts = article_select_result.length;
+
+
+
+            var i=0;
+            await connection.query("SET FOREIGN_KEY_CHECKS=0;");
+            for(i=0;i<counts ;i++) {
+                if(article_select_result[i].idpoem) {
+
+                    let poem_select = "select poem.setting_idsettings as idset from seoul_poem.poem where idpoem = ?";
+                    var poem_select_result =  await connection.query(poem_select,article_select_result[i].idpoem);
+
+
+                    let delete_setting = "delete from seoul_poem.setting where idsettings = ?";
+                    var delete_setting_result =  await connection.query(delete_setting,poem_select_result[0].idset);
+                    console.log(delete_setting_result);
+
+                    let delete_poem = "delete from seoul_poem.poem where idpoem = ?";
+                    var delete_poem_result =  await connection.query(delete_poem,article_select_result[i].idpoem);
+                    console.log(delete_poem_result);
+                }
+
+                let phoot_select = "select pictures.photo as photo from seoul_poem.pictures where idpictures = ?";
+                var phoot_select_result =  await connection.query(phoot_select,article_select_result[i].idpictures);
+
+                let s3key_select = "select s3key.key_ as key_ from seoul_poem.s3key where location = ?";
+                var s3key_select_result =  await connection.query(s3key_select,phoot_select_result[0].photo);
+                console.log(s3key_select_result);
+
+                if(s3key_select_result[0]) {
+                    let temp2 = {};
+                    temp2.Key = s3key_select_result[0].key_;
+                    data_img[cnt] = temp2;
+                    cnt++;
+                }
+
+                let delete_picture = "delete from seoul_poem.pictures where idpictures = ?";
+                var delete_picture_result =  await connection.query(delete_picture,article_select_result[i].idpictures);
+                console.log(delete_picture_result);
+
+                let delete_bookmarks = "delete from seoul_poem.bookmarks where articles_idarticles = ?";
+                var delete_bookmarks_result =  await connection.query(delete_bookmarks,article_select_result[i].idarticles);
+                console.log(delete_bookmarks_result);
+
+                let delete_articles = "delete from seoul_poem.articles where idarticles = ?";
+                var delete_articles_result =  await connection.query(delete_articles,article_select_result[i].idarticles);
+                console.log(delete_articles_result);
+
+                let delete_s3key = "delete from seoul_poem.s3key where location = ?";
+                var delete_s3key_result =  await connection.query(delete_s3key,phoot_select_result[0].photo);
+                console.log(delete_s3key_result);
+            }
+
+            let delete_bookmarks2 = "delete from seoul_poem.bookmarks where users_email = ? and users_foreign_key_type = ?";
+            var delete_bookmarks2_result =  await connection.query(delete_bookmarks2,[email,type]);
+            console.log(delete_bookmarks2_result);
+
+            let delete_users = "delete from seoul_poem.users where email = ? and foreign_key_type = ?";
+            var delete_users_result =  await connection.query(delete_users,[email,type]);
+            console.log(delete_users_result);
+            await connection.query("SET FOREIGN_KEY_CHECKS=1;");
+
+            res.status(200);
+            res.json({status: "success", msg: "회정 삭제 성공"});
+            await connection.commit();
+
+        }
+        else{
+            res.status(401);
+            res.json({status: "fail", msg: errors});
+        }
+    }catch (err) {
+        console.log(err);
+        res.status(500).json({status:"fail",msg: err });
+    }
+    finally {
+        pool.releaseConnection(connection);
+    }
+});
 
 
 module.exports = router;
