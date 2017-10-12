@@ -21,7 +21,7 @@
         bucket: 'csr1994',
         acl: 'public-read',
         key: function (req, file, cb) {
-            let name_temp =  Date.now().toString() + req.headers.email + file.originalname;
+            let name_temp =  Date.now().toString() +  req.headers.email+ req.headers.type+ file.originalname;
             const cipher = crypto.createCipher('aes-256-cbc',req.app.get('jwt-secret'));
             let result = cipher.update(name_temp, 'utf8', 'base64'); // 'HbMtmFdroLU0arLpMflQ'
             result += cipher.final('base64');
@@ -33,28 +33,24 @@
    });
 
 
+    var s3key_= "insert into s3key set ?";
+    var location_key_q_= "select key_ from s3key where location = ?";
+
     // /article 글 저장 등록
     router.post('/',upload.single('photo'), async (req, res, next) => {
       try {
-          // let token = req.headers.token; //클라이언트에서 헤더에 담아 보낸 토큰을 가져옵니다.
-          // let decoded = jwt.verify(token, req.app.get('jwt-secret')); //보낸 토큰이 유효한 토큰인지 검증합니다.(토큰 발급 시 사용했던 key로);
-          //
-          // if(!decoded) res.status(400).send({ result: 'wrong token '}); //유효하지 않다면 메시지를 보냅니다.
-          // else {
-          // var decoded_pk = jwt.decode(token, {complete: true});
+
           var connection = await pool.getConnection();
           await connection.beginTransaction();
 
           let email = req.headers.email;
+          let type = req.headers.type;
 
           console.log(req.file.location);
 
-          let query_id = 'select idusers as id from seoul_poem.users where seoul_poem.users.email = ?'
-          let ids = await  connection.query(query_id,email);
-
-
           let query_picture = 'insert into seoul_poem.pictures (photo) VALUES (?);';
           let picture_output = await connection.query(query_picture, req.file.location);
+          await connection.query(s3key_,{location : req.file.location, key_ : req.file.key});
 
           var dt = new Date();
           var d = dt.toFormat('YYYY-MM-DD HH24:MI:SS');
@@ -87,7 +83,8 @@
                   title : req.body.title,
                   pictures_idpictures: picture_output.insertId,
                   poem_idpoem: poem_output.insertId,
-                  users_idusers: ids[0].id
+                  users_email: email,
+                  users_foreign_key_type: type
               }
               let article_q = 'insert into seoul_poem.articles set ?;'
               result =  await connection.query(article_q, article);
@@ -100,7 +97,8 @@
                   inform: req.body.inform,
                   date: d,
                   title : req.body.title,
-                  users_idusers: ids[0].id,
+                  users_email: email,
+                  users_foreign_key_type: type,
                   pictures_idpictures: picture_output.insertId
               }
               let article_q = 'insert into seoul_poem.articles set ?;'
@@ -212,18 +210,14 @@ router.post('/',upload.single('photo'), async (req, res, next) => {
     //글 하나 조회 /article/{articleid}
     router.get('/:idarticles', async (req, res) => {
         try {
-            //
-            // let token = req.headers.token; //클라이언트에서 헤더에 담아 보낸 토큰을 가져옵니다.
-            // let decoded = jwt.verify(token, req.app.get('jwt-secret')); //보낸 토큰이 유효한 토큰인지 검증합니다.(토큰 발급 시 사용했던 key로);
-            //
-            // if(!decoded) res.status(400).send({ result: 'wrong token '}); //유효하지 않다면 메시지를 보냅니다.
-            // else {
-            // var decoded_pk = jwt.decode(token, {complete: true});
 
             var connection = await pool.getConnection();
             await connection.beginTransaction();
 
-            let query1 = 'SELECT tags, background,inform,date,title,users_idusers as iduser,pictures_idpictures as idpictures , poem_idpoem as idpoem FROM seoul_poem.articles where seoul_poem.articles.idarticles=?';
+            let type_ = req.headers.type;
+            let email_ = req.headers.email;
+
+            let query1 = 'SELECT tags, background,inform,date,title,users_email as email,users_foreign_key_type as type,pictures_idpictures as idpictures , poem_idpoem as idpoem FROM seoul_poem.articles where seoul_poem.articles.idarticles=?';
             let queryresult = await connection.query(query1, req.params.idarticles);
             console.log(queryresult);
 
@@ -252,6 +246,7 @@ router.post('/',upload.single('photo'), async (req, res, next) => {
             else{
                 article.content = "";
             }
+
             article.tags = queryresult[0].tags;
             article.background = queryresult[0].background;
             article.inform = queryresult[0].inform;
@@ -263,17 +258,18 @@ router.post('/',upload.single('photo'), async (req, res, next) => {
             console.log(query4_result);
             article.photo = query4_result[0].photo;
 
-            let query5 = 'select profile,pen_name from users where idusers = ?'
-            let query5_result = await connection.query(query5,queryresult[0].iduser);
+            let query5 = 'select profile,pen_name from users where email = ? and foreign_key_type = ?'
+            let query5_result = await connection.query(query5,[queryresult[0].email,queryresult[0].type]);
             console.log(query5_result);
 
             let user ={}
             user.profile = query5_result[0].profile;
             user.pen_name = query5_result[0].pen_name;
 
-            let query6 = 'select pictures.photo as photo ,articles.idarticles as idarticles from articles,pictures where articles.users_idusers = ? and articles.idarticles != ? and articles.pictures_idpictures = pictures.idpictures order by articles.idarticles DESC limit 5;'
-            let query6_result = await connection.query(query6,[queryresult[0].iduser,req.params.idarticles]);
+            let query6 = 'select pictures.photo as photo ,articles.idarticles as idarticles from articles,pictures where articles.users_email = ? and articles.users_foreign_key_type = ? and articles.idarticles != ? and articles.pictures_idpictures = pictures.idpictures order by articles.idarticles DESC limit 5;'
+            let query6_result = await connection.query(query6,[queryresult[0].email,queryresult[0].type,req.params.idarticles]);
             console.log(query6_result);
+
             var i;
             let others =[];
             var index=0;
@@ -289,6 +285,9 @@ router.post('/',upload.single('photo'), async (req, res, next) => {
             }
             user.others = others;
             article.user = user;
+            if(type_ == queryresult[0].type && email_ == queryresult[0].email)
+                article.modifiable = 1;
+            else  article.modifiable = 0;
 
             res.status(200).json( {status : "success",article: article});
             await connection.commit();
@@ -352,22 +351,29 @@ router.get('/:idarticles', async (req, res) => {
             var connection = await pool.getConnection();
             await connection.beginTransaction();
 
+            let type_ = req.headers.type;
+            let email_ = req.headers.email;
 
             console.log(req.params.idarticles);
-            let query1 = 'SELECT seoul_poem.pictures.photo as photo, seoul_poem.articles.users_idusers as iduers,seoul_poem.articles.tags as tags FROM seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.idarticles=? and seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures';
+            let query1 = 'SELECT seoul_poem.pictures.photo as photo, seoul_poem.articles.users_email as email,seoul_poem.articles.users_foreign_key_type as type,seoul_poem.articles.tags as tags FROM seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.idarticles=? and seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures';
             console.log(query1);
             let article = await connection.query(query1, req.params.idarticles);
 
             console.log(article[0]);
-            var userid = article[0].iduers;
-            let query2 = 'select seoul_poem.users.profile as profile,seoul_poem.users.pen_name as userName from seoul_poem.users where seoul_poem.users.idusers = ?'
-            let author = await connection.query(query2,userid);
+            var email = article[0].email;
+            var type = article[0].type;
+            let query2 = 'select seoul_poem.users.profile as profile,seoul_poem.users.pen_name as userName from seoul_poem.users where seoul_poem.users.email = ? and seoul_poem.users.foreign_key_type = ?'
+            let author = await connection.query(query2,[email,type]);
 
             let detail_={};
             detail_.photo = article[0].photo;
             detail_.tags=article[0].tags;
             detail_.profile =author[0].profile;
             detail_.userName = author[0].userName;
+
+            if(type_ ==article[0].type && email_ == article[0].email)
+                detail_.modifiable = 1;
+            else  detail_.modifiable = 0;
 
             res.status(200);
             res.json({status:"success", data: detail_});

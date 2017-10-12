@@ -20,7 +20,6 @@ const upload = multer({
   })
 });
 
-
 // 프로필 정보 조회
 router.post('/', async (req, res, next) => {
   try {

@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
         await connection.beginTransaction();
 
         req.checkQuery({tag : {notEmpty: true,errorMessage : 'error message'}});
+
         let errors = req.validationErrors();
         if (errors) {
             res.status(501);
@@ -93,25 +94,26 @@ router.get('/search',async(req, res) => {
         {
             let tag ='%'+ req.query.tag+'%';
 
-            let query2 = "select seoul_poem.users.pen_name as pen_name,seoul_poem.users.idusers as idusers,seoul_poem.users.profile as profile from seoul_poem.users where seoul_poem.users.pen_name like ? order by seoul_poem.users.idusers Desc limit 3"
+            let query2 = "select seoul_poem.users.pen_name as pen_name,seoul_poem.users.email as email,seoul_poem.users.profile as profile,seoul_poem.users.foreign_key_type as type from seoul_poem.users where seoul_poem.users.pen_name like ? limit 3"
             let author_list = await connection.query(query2,tag);
 
             let counts_author = author_list.length;
 
             let i;
-            let query3 = "select count(*) as count from seoul_poem.articles, seoul_poem.poem where seoul_poem.articles.users_idusers = ? and seoul_poem.articles.poem_idpoem = seoul_poem.poem.idpoem";
-            let query4 = "select count(*) as count from seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.users_idusers = ? and seoul_poem.articles.pictures_idpictures = seoul_poem.pictures.idpictures";
+            let query3 = "select count(*) as count from seoul_poem.articles, seoul_poem.poem where seoul_poem.articles.users_email = ? and seoul_poem.articles.users_foreign_key_type = ? and seoul_poem.articles.poem_idpoem = seoul_poem.poem.idpoem";
+            let query4 = "select count(*) as count from seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.users_email = ? and seoul_poem.articles.users_foreign_key_type = ? and seoul_poem.articles.pictures_idpictures = seoul_poem.pictures.idpictures";
 
             let arr1 = [];
 
             for (i=0;i<counts_author;i++){
                 let author = {};
                 author.name_ = author_list[i].pen_name;
-                let search_key = author_list[i].idusers;
+                let email = author_list[i].email;
+                let type = author_list[i].type;
                 author.profile =author_list[i].profile;
-                let article_count = await connection.query(query3,search_key);
+                let article_count = await connection.query(query3,[email,type]);
                 author.ac = article_count[0].count;
-                let poem_count =  await connection.query(query4,search_key);
+                let poem_count =  await connection.query(query4,[email,type]);
                 author.pc = poem_count[0].count;
                 arr1[i] = author;
          }
