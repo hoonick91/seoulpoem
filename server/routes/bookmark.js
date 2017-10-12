@@ -69,7 +69,6 @@ router.get('/search', async (req, res) => {
       let email = req.headers.email;
       let type = req.headers.type;
 
-
       let query1 = "SELECT seoul_poem.bookmarks.articles_idarticles as idarticles FROM seoul_poem.bookmarks, seoul_poem.users where seoul_poem.users.email = ? and seoul_poem.users.foreign_key_type = ? and seoul_poem.users.foreign_key_type = seoul_poem.bookmarks.users_foreign_key_type and seoul_poem.users.email = seoul_poem.bookmarks.users_email";
       var selected = await connection.query(query1,[email,type]);
       // 이메일과 타입으로 북마크에 대한 정보를 얻어낸다.
