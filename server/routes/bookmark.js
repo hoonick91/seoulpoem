@@ -17,27 +17,29 @@ router.post('/:idarticles', async (req, res) => {
       await connection.beginTransaction();
 
       let email =req.headers.email;
+      let type = req.headers.type;
 
-      let query1 = 'select articles.pictures_idpictures as idpic, articles.idarticles as ida, articles.users_idusers as iduser from seoul_poem.articles where idarticles = ?';
+      let query1 = 'select articles.pictures_idpictures as idpic, articles.idarticles as ida, articles.users_email as article_email, articles.users_foreign_key_type as article_type from seoul_poem.articles where idarticles = ?';
+
       let selected = await connection.query(query1, req.params.idarticles);
 
-      let query2 = 'select users.idusers as users from seoul_poem.users where email = ?';
-
-      let userinfo = await connection.query(query2,email);
 
       let bookmark= {
-          users_idusers: userinfo[0].users,
+          users_email: email,
+          users_foreign_key_type: type,
           articles_idarticles : selected[0].ida,
           articles_pictures_idpictures : selected[0].idpic,
-          articles_users_idusers : selected[0].iduser
+          articles_users_email: selected[0].article_email,
+          articles_users_foreign_key_type: selected[0].article_type
       };
 
-      let query4 = 'select * from bookmarks where users_idusers = ? and articles_idarticles = ?'
-      let check_db = await connection.query(query4, [userinfo[0].users,selected[0].ida]);
+      let query4 = 'select * from bookmarks where users_email = ? and users_foreign_key_type = ? and articles_idarticles = ?'
+      let check_db = await connection.query(query4, [email,type,selected[0].ida]);
+
       console.log (check_db);
       if(check_db.length != 0 ){
-          let query3 = 'delete from seoul_poem.bookmarks where users_idusers = ? and articles_idarticles = ?';
-          await connection.query(query3, [userinfo[0].users,selected[0].ida]);
+          let query3 = 'delete from seoul_poem.bookmarks where users_email = ? and users_foreign_key_type = ? and articles_idarticles = ?';
+          await connection.query(query3, [email,type,selected[0].ida]);
           res.status(201).json({status : "success", mag: "bookmark delete"});
       }
       else{
@@ -66,13 +68,12 @@ router.post('/:idarticles', async (req, res) => {
       await connection.query(query3, bookmark);
 */
 
-
       await connection.commit();
 
     }
     catch(err) {
         console.log(err);
-        res.status(500).send({result: err });
+        res.status(500).json({status: "fail", msg: err });
     }
     finally {
         pool.releaseConnection(connection);
@@ -86,13 +87,14 @@ router.get('/search', async (req, res) => {
       await connection.beginTransaction();
 
       let email = req.headers.email;
-      //userid로 변경할 것!!
+      let type = req.headers.type;
 
-      let query1 = "SELECT seoul_poem.bookmarks.articles_idarticles as idarticles FROM seoul_poem.bookmarks, seoul_poem.users where seoul_poem.users.email = ? and seoul_poem.bookmarks.users_idusers = seoul_poem.users.idusers";
-      var selected = await connection.query(query1,email);
+      let query1 = "SELECT seoul_poem.bookmarks.articles_idarticles as idarticles FROM seoul_poem.bookmarks, seoul_poem.users where seoul_poem.users.email = ? and seoul_poem.users.foreign_key_type = ? and seoul_poem.users.foreign_key_type = seoul_poem.bookmarks.users_foreign_key_type and seoul_poem.users.email = seoul_poem.bookmarks.users_email";
+      var selected = await connection.query(query1,[email,type]);
+      // 이메일과 타입으로 북마크에 대한 정보를 얻어낸다.
 
-      let query2 = 'SELECT articles.idarticles as idarticles, pictures.photo as photo, users.profile as profile,users.pen_name as pen_name, articles.title as title,articles.poem_idpoem as idpoem FROM seoul_poem.articles, seoul_poem.users ,seoul_poem.pictures where idarticles = ? and articles.users_idusers = users.idusers and articles.pictures_idpictures = pictures.idpictures;';
-      let bookmark_list=[]
+      let query2 = 'SELECT articles.idarticles as idarticles, pictures.photo as photo, users.profile as profile,users.pen_name as pen_name, articles.title as title,articles.poem_idpoem as idpoem FROM seoul_poem.articles, seoul_poem.users ,seoul_poem.pictures where idarticles = ? and articles.users_email = users.email and articles.users_foreign_key_type = users.foreign_key_type and articles.pictures_idpictures = pictures.idpictures;';
+      let bookmark_list=[];
       let query3 = "SELECT poem.content as content from poem where idpoem = ?"
       let len_ = selected.length;
       for(var i=0; i<len_; i++){
