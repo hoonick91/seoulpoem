@@ -8,8 +8,7 @@
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,26 +18,47 @@
 
     <!-- vertical 수직 -->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="뒤로가기" />
+            <RelativeLayout
+                android:id="@+id/back"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_marginLeft="25dp">
 
-        <Button
-            android:id="@+id/finish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="확인" />
+                <Button
+                    android:id="@+id/page_back"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:background="@drawable/path" />
 
-    </LinearLayout>
+            </RelativeLayout>
 
-    <TextView
+
+            <RelativeLayout
+                android:id="@+id/finish"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_marginLeft="264dp">
+
+                <Button
+                    android:layout_width="18dp"
+                    android:layout_height="14dp"
+                    android:background="@drawable/path_2" />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <TextView
+        android:layout_marginLeft="25dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="태그를 선택하세요" />
@@ -50,45 +70,65 @@
 
         <!-- 태그 버튼 5개 있는 레이아웃1-->
         <LinearLayout
-
+            android:layout_marginTop="11dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="56dp"
+                android:layout_height="29dp"
+                android:layout_marginLeft="26dp"
                 android:id="@+id/tag1"
                 android:tag="1"
-                android:text="태그1"/>
+                android:text="그리움"
+                android:textSize="13sp"
+                android:textColor="#95989a"
+                android:background="@drawable/rectangle_path"/>
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="56dp"
+                android:layout_height="29dp"
+                android:layout_marginLeft="7dp"
                 android:id="@+id/tag2"
                 android:tag="0"
-                android:text="태그2"/>
+                android:text="불안"
+                android:textSize="13sp"
+                android:textColor="#95989a"
+                android:background="@drawable/rectangle_path"/>
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="56dp"
+                android:layout_height="29dp"
+                android:layout_marginLeft="7dp"
                 android:id="@+id/tag3"
                 android:tag="0"
-                android:text="태그3"/>
+                android:text="감정"
+                android:textSize="13sp"
+                android:textColor="#95989a"
+                android:background="@drawable/rectangle_path"/>
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="56dp"
+                android:layout_height="29dp"
+                android:layout_marginLeft="7dp"
                 android:id="@+id/tag4"
                 android:tag="0"
-                android:text="태그4"/>
+                android:text="절제"
+                android:textSize="13sp"
+                android:textColor="#95989a"
+                android:background="@drawable/rectangle_path"/>
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="56dp"
+                android:layout_height="29dp"
+                android:layout_marginLeft="7dp"
                 android:id="@+id/tag5"
                 android:tag="0"
-                android:text="태그5"/>
+                android:text="사랑"
+                android:textSize="13sp"
+                android:textColor="#95989a"
+                android:background="@drawable/rectangle_path"/>
 
         </LinearLayout>
 
@@ -96,59 +136,85 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="6dp">
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="56dp"
+                android:layout_height="29dp"
+                android:layout_marginLeft="26dp"
                 android:id="@+id/tag6"
                 android:tag="0"
-                android:text="태그6"/>
+                android:text="강남역"
+                android:textSize="13sp"
+                android:textColor="#95989a"
+                android:background="@drawable/rectangle_path"/>
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="56dp"
+                android:layout_height="29dp"
+                android:layout_marginLeft="7dp"
                 android:id="@+id/tag7"
                 android:tag="0"
-                android:text="태그7"/>
+                android:text="빌딩숲"
+                android:textSize="13sp"
+                android:textColor="#95989a"
+                android:background="@drawable/rectangle_path"/>
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="56dp"
+                android:layout_height="29dp"
+                android:layout_marginLeft="7dp"
                 android:id="@+id/tag8"
                 android:tag="0"
-                android:text="태그8"/>
+                android:text="여의나루"
+                android:textSize="13sp"
+                android:textColor="#95989a"
+                android:background="@drawable/rectangle_path"/>
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="56dp"
+                android:layout_height="29dp"
+                android:layout_marginLeft="7dp"
                 android:id="@+id/tag9"
                 android:tag="0"
-                android:text="태그9"/>
+                android:text="한강"
+                android:textSize="13sp"
+                android:textColor="#95989a"
+                android:background="@drawable/rectangle_path"/>
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="56dp"
+                android:layout_height="29dp"
+                android:layout_marginLeft="7dp"
                 android:id="@+id/tag10"
                 android:tag="0"
-                android:text="태그10"/>
+                android:text="기타"
+                android:textSize="13sp"
+                android:textColor="#95989a"
+                android:background="@drawable/rectangle_path"/>
         </LinearLayout>
     </LinearLayout>
 
         <EditText
             android:id="@+id/write_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="308dp"
+            android:layout_height="45.5dp"
+            android:layout_marginLeft="25dp"
+            android:textSize="14sp"
             android:hint="제목을 입력하세요"/>
 
         <LinearLayout
             android:id="@+id/write_content_wrap"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="256.5dp">
             <EditText
                 android:id="@+id/write_content"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_width="308dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="25dp"
+                android:textSize="14sp"
+                android:gravity="top"
                 android:hint="내용을 입력하세요"/>
         </LinearLayout>
 
@@ -161,53 +227,68 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_marginLeft="25dp"
                 android:text="배경을 선택하세요"/>
 
             <Button
                 android:id="@+id/paper1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_width="40dp"
+                android:layout_height="29dp"
                 android:tag="1"
-                android:text="배경1"/>
+                android:background="@drawable/paper_01"/>
 
             <Button
                 android:id="@+id/paper2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_width="40dp"
+                android:layout_height="29dp"
                 android:tag="2"
-                android:text="배경2"/>
+                android:background="@drawable/paper_01"/>
 
             <Button
                 android:id="@+id/paper3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_width="40dp"
+                android:layout_height="29dp"
                 android:tag="3"
-                android:text="배경3"/>
+                android:background="@drawable/paper_01"/>
 
             <Button
                 android:id="@+id/paper4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_width="40dp"
+                android:layout_height="29dp"
                 android:tag="4"
-                android:text="배경4"/>
+                android:background="@drawable/paper_01"/>
 
         </LinearLayout>
 
         <TextView
             android:id="@+id/select_tag"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp"
+            android:textColor="#488ab4"
+            android:textStyle="bold"/>
+        <EditText
+            android:layout_width="308dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
             android:id="@+id/write_tag"
             android:bufferType="spannable"
+            android:textSize="14sp"
             android:hint="태그를 입력하세요"/>
 
         <EditText
-            android:layout_width="match_parent"
+            android:layout_width="308dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
             android:id="@+id/write_detail"
+            android:textSize="14sp"
             android:hint="기타 상세정보를 입력하세요"/>
 
 
@@ -217,34 +298,56 @@
     <RelativeLayout
         android:id="@+id/keyboard_toolbar"
         android:layout_width="fill_parent"
-        android:layout_height="30dp"
+        android:layout_height="48dp"
         android:layout_alignParentBottom="true"
         android:visibility="gone"
-        android:background="#ffff00" >
+        android:background="#e2e2e3" >
 
     <LinearLayout
         android:id="@+id/main_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
         <TextView
             android:id="@+id/font_button"
-            android:layout_width="wrap_content"
+            android:layout_width="117dp"
             android:layout_height="match_parent"
+            android:textSize="14sp"
+            android:textColor="#37474f"
+           android:gravity="center_horizontal|center_vertical"
             android:text="폰트/사이즈"/>
+        
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="2dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ui_divider_dark_1"/>
 
         <TextView
             android:id="@+id/effect_button"
-            android:layout_width="wrap_content"
+            android:layout_width="122dp"
             android:layout_height="match_parent"
+            android:textSize="14sp"
+            android:textColor="#37474f"
+            android:gravity="center_horizontal|center_vertical"
             android:text="효과"/>
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="2dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ui_divider_dark_1"/>
 
         <TextView
             android:id="@+id/sort_button"
-            android:layout_width="wrap_content"
+            android:layout_width="117dp"
             android:layout_height="match_parent"
+            android:textSize="14sp"
+            android:textColor="#37474f"
+            android:gravity="center_horizontal|center_vertical"
             android:text="정렬"/>
 
 
@@ -259,6 +362,44 @@
         android:layout_alignParentBottom="true"
         android:visibility="gone">
 
+        <RelativeLayout
+            android:id="@+id/back2"
+            android:layout_marginLeft="10dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center_horizontal|center_vertical">
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="12dp"
+                android:src="@drawable/path_8"/>
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:layout_width="180dp"
+            android:layout_height="match_parent"
+            android:textSize="14sp"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="폰트/사이즈"/>
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="2dp"
+            android:layout_height="28dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:src="@drawable/ui_divider_dark_1"/>
+
+        <Spinner
+            android:id="@+id/size_spinner"
+            android:layout_width="89dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:entries="@array/fontsize"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -268,6 +409,76 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:visibility="gone">
+
+        <RelativeLayout
+            android:id="@+id/back3"
+            android:layout_marginLeft="10dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center_horizontal|center_vertical">
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="12dp"
+                android:src="@drawable/path_8"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="효과"/>
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="2dp"
+            android:layout_height="28dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:src="@drawable/ui_divider_dark_1"/>
+
+            <Button
+                android:id="@+id/bold"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="20dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:gravity="center_horizontal|center_vertical"
+                android:background="@drawable/path_10"/>
+
+
+            <Button
+                android:id="@+id/italic"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="17dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:gravity="center_horizontal|center_vertical"
+                android:background="@drawable/path_9"/>
+
+
+            <Button
+                android:id="@+id/underline"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="17dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:gravity="center_horizontal|center_vertical"
+                android:background="@drawable/path_11"/>
+
+
+        <Spinner
+            android:background="#e4e7e8"
+            android:id="@+id/paint_spinner"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center_horizontal|center_vertical" />
+
 
     </LinearLayout>
 
@@ -279,35 +490,73 @@
         android:layout_alignParentBottom="true"
         android:visibility="gone">
 
-        <TextView
+        <RelativeLayout
             android:id="@+id/back1"
+            android:layout_marginLeft="10dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center_horizontal|center_vertical">
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="12dp"
+                android:src="@drawable/path_8"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_marginLeft="33dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center_horizontal|center_vertical"
+            android:textSize="14sp"
             android:text="정렬"/>
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="2dp"
+            android:layout_height="28dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:src="@drawable/ui_divider_dark_1"/>
 
         <Button
             android:id="@+id/text_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="왼쪽"/>
+            android:layout_marginLeft="27dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center_horizontal|center_vertical"
+            android:background="@drawable/path_12"/>
 
         <Button
             android:id="@+id/text_center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="가운데"/>
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/path_13"/>
 
         <Button
             android:id="@+id/text_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="오른쪽"/>
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/path_14"/>
 
         <Button
             android:id="@+id/text_default"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="기본"/>
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginLeft="30dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center_horizontal|center_vertical"
+            android:background="@drawable/path_15"/>
 
 
 

@@ -1,8 +1,12 @@
 package com.seoulprojet.seoulpoem.activity;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,18 +14,26 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.seoulprojet.seoulpoem.R;
 
-import org.w3c.dom.Text;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by minjeong on 2017-09-17.
@@ -32,6 +44,8 @@ public class WritePoemActivity extends AppCompatActivity {
 
     RelativeLayout background;
 
+    Button page_back;
+
     RelativeLayout toolbar;
     LinearLayout main_toolbar;
     TextView font_button;
@@ -39,21 +53,27 @@ public class WritePoemActivity extends AppCompatActivity {
     TextView sort_button;
 
     LinearLayout sort_toolbar;
-    TextView back1;
+    RelativeLayout back1;
     Button text_left;
     Button text_right;
     Button text_center;
     Button text_default;
 
-
-
     LinearLayout font_toolbar;
+    RelativeLayout back2;
+    Spinner size_spinner;
+
     LinearLayout effect_toolbar;
+    RelativeLayout back3;
+    Button bold;
+    Button italic;
+    Button underline;
+    Spinner paint_spinner;
+    AdapterSpinner adapterSpinner;
+    boolean style_check[];
 
-
-
-    Button back;
-    Button finish;
+    RelativeLayout back;
+    RelativeLayout finish;
     Button[] tag;
     int[] tagid;
 
@@ -87,8 +107,8 @@ public class WritePoemActivity extends AppCompatActivity {
     //xml의 id값들을 java파일의 변수와 연결
     public void setId(){
         background = (RelativeLayout) findViewById(R.id.background);
-        back = (Button) findViewById(R.id.back);
-        finish = (Button)findViewById(R.id.finish);
+        back = (RelativeLayout) findViewById(R.id.back);
+        finish = (RelativeLayout)findViewById(R.id.finish);
 
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,7 +191,21 @@ public class WritePoemActivity extends AppCompatActivity {
 
         main_toolbar = (LinearLayout)findViewById(R.id.main_toolbar);
         font_button = (TextView)findViewById(R.id.font_button);
+        font_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                main_toolbar.setVisibility(View.GONE);
+                font_toolbar.setVisibility(View.VISIBLE);
+            }
+        });
         effect_button = (TextView)findViewById(R.id.effect_button);
+        effect_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                main_toolbar.setVisibility(View.GONE);
+                effect_toolbar.setVisibility(View.VISIBLE);
+            }
+        });
         sort_button = (TextView)findViewById(R.id.sort_button);
         sort_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,8 +217,37 @@ public class WritePoemActivity extends AppCompatActivity {
 
 
         font_toolbar = (LinearLayout)findViewById(R.id.font_toolbar);
+        back2 = (RelativeLayout) findViewById(R.id.back2);
+        back2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                font_toolbar.setVisibility(View.GONE);
+                main_toolbar.setVisibility(View.VISIBLE);
+            }
+        });
+        size_spinner = (Spinner)findViewById(R.id.size_spinner);
+        size_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                write_content.setTextSize(Integer.parseInt(parent.getItemAtPosition(position).toString()));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        page_back = (Button)findViewById(R.id.page_back);
+        page_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         sort_toolbar = (LinearLayout)findViewById(R.id.sort_toolbar);
-        back1 = (TextView)findViewById(R.id.back1);
+        back1 = (RelativeLayout)findViewById(R.id.back1);
         back1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -222,6 +285,80 @@ public class WritePoemActivity extends AppCompatActivity {
         });
 
         effect_toolbar = (LinearLayout)findViewById(R.id.effect_toolbar);
+        back3 = (RelativeLayout)findViewById(R.id.back3);
+        back3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                effect_toolbar.setVisibility(View.GONE);
+                main_toolbar.setVisibility(View.VISIBLE);
+            }
+        });
+        style_check = new boolean[]{false,false,false};
+        bold = (Button)findViewById(R.id.bold);
+        bold.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(style_check[0] == false) {
+                    Log.e("굵게현재상황 : ",""+style_check[0]);
+                    if(style_check[1]==false)
+                        write_content.setTypeface(null, Typeface.BOLD);
+                    else
+                        write_content.setTypeface(null, Typeface.BOLD_ITALIC);
+                    style_check[0] = true;
+                }else{
+                    if(style_check[1]==false)
+                        write_content.setTypeface(null, Typeface.NORMAL);
+                    else
+                        write_content.setTypeface(null, Typeface.ITALIC);
+                    style_check[0] = false;
+                }
+
+            }
+        });
+
+        italic = (Button)findViewById(R.id.italic);
+        italic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(style_check[1] == false) {
+                    Log.e("기울임현재상황 : ",""+style_check[1]);
+                    if(style_check[0]==false)
+                        write_content.setTypeface(null, Typeface.ITALIC);
+                    else
+                        write_content.setTypeface(null, Typeface.BOLD_ITALIC);
+                    style_check[1] = true;
+                }else{
+                    if(style_check[0]==false)
+                        write_content.setTypeface(null, Typeface.NORMAL);
+                    else
+                        write_content.setTypeface(null, Typeface.BOLD);
+                    style_check[1] = false;
+                }
+
+            }
+        });
+        underline = (Button)findViewById(R.id.underline);
+        underline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("밑줄현재상황 : ",""+style_check[2]);
+                if(style_check[2] == false) {
+                    write_content.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+                    style_check[2] = true;
+                }else{
+                    write_content.setPaintFlags(0);
+                    style_check[2] = false;
+                }
+
+            }
+        });
+        paint_spinner = (Spinner)findViewById(R.id.paint_spinner);
+        List<String> data = new ArrayList<>();
+        data.add("빨강");
+        data.add("검정");
+        adapterSpinner = new AdapterSpinner(this, data);
+        paint_spinner.setAdapter(adapterSpinner);
+
 
 
     }
@@ -235,14 +372,14 @@ public class WritePoemActivity extends AppCompatActivity {
         select_tag.setText("#"+write_title.getText().toString()+" ");
         for(int i=0;i<10;i++){
             if(tag[i].getTag().toString().equals("1")){ //선택되어있는 경우
-                tag[i].setBackgroundColor(Color.BLACK); //이부분 나중에는 setbackgroundImage로 변경
+                tag[i].setBackgroundResource(R.drawable.check128);
                 tag[i].setTextColor(Color.WHITE);
                 String tag_text = select_tag.getText().toString();
                 select_tag.setText("#"+tag[i].getText().toString()+" "+tag_text);
             }
             else{ //선택되어있지 않은 경우
-                tag[i].setBackgroundColor(Color.GRAY); //이부분 나중에는 setbackgroundImage로 변경
-                tag[i].setTextColor(Color.BLACK);
+                tag[i].setBackgroundResource(R.drawable.rectangle_path);
+                tag[i].setTextColor(Color.parseColor("#95989a"));
             }
         }
 
@@ -284,5 +421,71 @@ public class WritePoemActivity extends AppCompatActivity {
             });
         }
     }
+
+    public class AdapterSpinner extends BaseAdapter {
+
+        Context context;
+        List<String> data;
+        LayoutInflater inflater;
+
+        public AdapterSpinner(Context context, List<String> data){
+            this.context = context;
+            this.data = data;
+            inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public int getCount() {
+            if(data!=null) return data.size();
+            else return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if(convertView==null) {
+                convertView = inflater.inflate(R.layout.spinner_normal, parent, false);
+            }
+
+            if(data!=null){
+                //데이터세팅
+                String text = data.get(position);
+                int color;
+                if(text.equals("빨강")){
+                    color = Color.RED;
+                }else{
+                    color = Color.BLACK;
+                }
+                ((ImageView)convertView.findViewById(R.id.spinnerColor)).setBackgroundColor(color);
+                write_content.setTextColor(color);
+            }
+
+            return convertView;
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            if(convertView==null){
+                convertView = inflater.inflate(R.layout.spinner_dropdown, parent, false);
+            }
+
+            //데이터세팅
+            String text = data.get(position);
+            ((TextView)convertView.findViewById(R.id.spinnerText)).setText(text);
+
+            return convertView;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return data.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+    }
+
+    public void 
 
 }
