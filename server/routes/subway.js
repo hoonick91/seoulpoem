@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
         var connection = await pool.getConnection();
         await connection.beginTransaction();
 
-        let query1 = 'SELECT idsubway, title FROM seoul_poem.subway_poem;';
+        let query1 = 'SELECT idnotices, title FROM seoul_poem.subway_poem;';
         let subway_list = await connection.query(query1);
 
         res.status(200).send( { subway_list: subway_list });
@@ -34,13 +34,13 @@ router.get('/', async (req, res) => {
 });
 
 //지하철시 하나 조회
-router.get('/:idsubway', async (req, res) => {
+router.get('/:idnotices', async (req, res) => {
     try {
         var connection = await pool.getConnection();
         await connection.beginTransaction();
 
-        let query1 = 'SELECT * FROM seoul_poem.subway_poem where idsubway = ?';
-        let subway_list = await connection.query(query1, req.params.idsubway);
+        let query1 = 'SELECT * FROM seoul_poem.subway_poem where idnotices = ?';
+        let subway_list = await connection.query(query1, req.params.idnotices);
 
         res.status(200).send( { subway_list: subway_list });
         await connection.commit();
