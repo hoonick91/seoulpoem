@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,10 +22,12 @@ import java.util.List;
 
 public class WriterList extends AppCompatActivity {
 
-    private Button writerlist_hamburger_btn;
-    private Button writerlist_apply_btn;
+    private ImageButton writerlist_hamburger_btn;
+    private ImageButton writerlist_apply_btn;
 
-    private Button hamburger_setting_btn, hamburger_mypage_btn, hamburger_scrab_btn, hamburger_today_btn, hamburger_writer_btn,hamburger_notice_btn;
+    private TextView writerNum_tv;
+
+    private ImageButton hamburger_setting_btn, hamburger_mypage_btn, hamburger_scrab_btn, hamburger_today_btn, hamburger_writer_btn,hamburger_notice_btn;
     private View drawerView;
     private DrawerLayout drawerLayout;
 
@@ -39,17 +42,18 @@ public class WriterList extends AppCompatActivity {
         setContentView(R.layout.activity_writer_list);
 
         /////////////////////////////////
-        writerlist_hamburger_btn = (Button)findViewById(R.id.writerlist_hamburger_btn);
-        writerlist_apply_btn = (Button)findViewById(R.id.writerlist_apply_btn);
+        writerlist_hamburger_btn = (ImageButton)findViewById(R.id.writerlist_hamburger_btn);
+        writerlist_apply_btn = (ImageButton)findViewById(R.id.writerlist_apply_btn);
+        writerNum_tv = (TextView)findViewById(R.id.writerlist_writer_num);
         //////////////
 
         ///////////////////////////drawer
-        hamburger_mypage_btn = (Button)findViewById(R.id.hamburger_mypage_btn);
-        hamburger_scrab_btn = (Button)findViewById(R.id.hamburger_scrab_btn);
-        hamburger_today_btn = (Button)findViewById(R.id.hamburger_todayseoul_btn);
-        hamburger_writer_btn = (Button)findViewById(R.id.hamburger_writerlist_btn);
-        hamburger_notice_btn = (Button)findViewById(R.id.hamburger_notice_btn);
-        hamburger_setting_btn = (Button)findViewById(R.id.hamburger_setting_btn);
+        hamburger_mypage_btn = (ImageButton)findViewById(R.id.hamburger_mypage_btn);
+        hamburger_scrab_btn = (ImageButton)findViewById(R.id.hamburger_scrab_btn);
+        hamburger_today_btn = (ImageButton)findViewById(R.id.hamburger_todayseoul_btn);
+        hamburger_writer_btn = (ImageButton)findViewById(R.id.hamburger_writerlist_btn);
+        hamburger_notice_btn = (ImageButton)findViewById(R.id.hamburger_notice_btn);
+        hamburger_setting_btn = (ImageButton)findViewById(R.id.hamburger_setting_btn);
 
         drawerLayout = (DrawerLayout)findViewById(R.id.writerlist_drawer_layout);
         drawerView = (View)findViewById(R.id.drawer);
@@ -131,6 +135,8 @@ public class WriterList extends AppCompatActivity {
         ////make adapter
         recyclerAdapter = new RecyclerAdapter(writerListDatas);
         recyclerView.setAdapter(recyclerAdapter);
+        writerNum_tv.setText("# 총 " + recyclerAdapter.getItemCount() + "명의 작가");
+
 
     }
 

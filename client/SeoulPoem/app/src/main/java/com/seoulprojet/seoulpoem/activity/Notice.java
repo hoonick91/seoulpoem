@@ -6,14 +6,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.seoulprojet.seoulpoem.R;
 
 public class Notice extends AppCompatActivity {
 
-    private Button notice_hamburger_btn;
+    private ImageButton notice_hamburger_btn;
 
-    private Button hamburger_setting_btn, hamburger_mypage_btn, hamburger_scrab_btn, hamburger_today_btn, hamburger_writer_btn,hamburger_notice_btn;
+    private ImageButton hamburger_setting_btn, hamburger_mypage_btn, hamburger_scrab_btn, hamburger_today_btn, hamburger_writer_btn,hamburger_notice_btn;
     private View drawerView;
     private DrawerLayout drawerLayout;
 
@@ -22,15 +23,15 @@ public class Notice extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice);
 
-        notice_hamburger_btn = (Button)findViewById(R.id.notice_hamburger_btn);
+        notice_hamburger_btn = (ImageButton)findViewById(R.id.notice_hamburger_btn);
 
         ///////////////////////////drawer
-        hamburger_mypage_btn = (Button)findViewById(R.id.hamburger_mypage_btn);
-        hamburger_scrab_btn = (Button)findViewById(R.id.hamburger_scrab_btn);
-        hamburger_today_btn = (Button)findViewById(R.id.hamburger_todayseoul_btn);
-        hamburger_writer_btn = (Button)findViewById(R.id.hamburger_writerlist_btn);
-        hamburger_notice_btn = (Button)findViewById(R.id.hamburger_notice_btn);
-        hamburger_setting_btn = (Button)findViewById(R.id.hamburger_setting_btn);
+        hamburger_mypage_btn = (ImageButton)findViewById(R.id.hamburger_mypage_btn);
+        hamburger_scrab_btn = (ImageButton)findViewById(R.id.hamburger_scrab_btn);
+        hamburger_today_btn = (ImageButton)findViewById(R.id.hamburger_todayseoul_btn);
+        hamburger_writer_btn = (ImageButton)findViewById(R.id.hamburger_writerlist_btn);
+        hamburger_notice_btn = (ImageButton)findViewById(R.id.hamburger_notice_btn);
+        hamburger_setting_btn = (ImageButton)findViewById(R.id.hamburger_setting_btn);
 
         drawerLayout = (DrawerLayout)findViewById(R.id.notice_drawer_layout);
         drawerView = (View)findViewById(R.id.drawer);

@@ -22,11 +22,12 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <Button
+            <ImageButton
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="back"
+                android:src="@drawable/black_back_btn"
+                android:background="@android:color/transparent"
                 android:id="@+id/writerapply_back_btn" />
 
             <TextView
@@ -38,11 +39,12 @@
                 android:paddingLeft="20dp"
                 android:textSize="16dp"/>
 
-            <Button
+            <ImageButton
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="OK"
+                android:src="@drawable/black_check_btn"
+                android:background="@android:color/transparent"
                 android:id="@+id/writerapply_ok_btn"/>
 
         </LinearLayout>
@@ -59,15 +61,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
+                android:textSize="15sp"
                 android:text="한 줄 소개"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:padding="12dp"
                 android:hint="한 줄 소개를 입력해주세요"
                 android:id="@+id/writerapply_message_et"
-                android:textSize="12dp"/>
+                android:textSize="15sp"/>
 
         </LinearLayout>
     </LinearLayout>

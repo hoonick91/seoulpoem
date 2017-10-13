@@ -28,21 +28,26 @@
                 android:gravity="center_vertical"
                 android:layout_weight="1">
 
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="햄버거"
-                    android:id="@+id/notice_hamburger_btn" />
-
-                <TextView
+                <ImageButton
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="5"
-                    android:text="소식"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="20dp"
-                    android:textSize="16dp"/>
+                    android:layout_weight="1"
+                    android:src="@drawable/black_menu_btn"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/notice_hamburger_btn" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5">
+
+                    <ImageView
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/notice_share"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
 
             </LinearLayout>
 

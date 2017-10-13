@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.seoulprojet.seoulpoem.R;
@@ -19,9 +20,9 @@ import java.util.ArrayList;
 
 public class TodaySeoul extends AppCompatActivity {
 
-    private Button todayseoul_hamburger_btn;
+    private ImageButton todayseoul_hamburger_btn;
 
-    private Button hamburger_setting_btn, hamburger_mypage_btn, hamburger_scrab_btn, hamburger_today_btn, hamburger_writer_btn,hamburger_notice_btn;
+    private ImageButton hamburger_setting_btn, hamburger_mypage_btn, hamburger_scrab_btn, hamburger_today_btn, hamburger_writer_btn,hamburger_notice_btn;
     private View drawerView;
     private DrawerLayout drawerLayout;
 
@@ -36,13 +37,13 @@ public class TodaySeoul extends AppCompatActivity {
         setContentView(R.layout.activity_today_seoul);
 
         //********************drawer*******************//
-        todayseoul_hamburger_btn = (Button)findViewById(R.id.todayseoul_hamburger_btn);
-        hamburger_mypage_btn = (Button)findViewById(R.id.hamburger_mypage_btn);
-        hamburger_scrab_btn = (Button)findViewById(R.id.hamburger_scrab_btn);
-        hamburger_today_btn = (Button)findViewById(R.id.hamburger_todayseoul_btn);
-        hamburger_writer_btn = (Button)findViewById(R.id.hamburger_writerlist_btn);
-        hamburger_notice_btn = (Button)findViewById(R.id.hamburger_notice_btn);
-        hamburger_setting_btn = (Button)findViewById(R.id.hamburger_setting_btn);
+        todayseoul_hamburger_btn = (ImageButton)findViewById(R.id.todayseoul_hamburger_btn);
+        hamburger_mypage_btn = (ImageButton)findViewById(R.id.hamburger_mypage_btn);
+        hamburger_scrab_btn = (ImageButton)findViewById(R.id.hamburger_scrab_btn);
+        hamburger_today_btn = (ImageButton)findViewById(R.id.hamburger_todayseoul_btn);
+        hamburger_writer_btn = (ImageButton)findViewById(R.id.hamburger_writerlist_btn);
+        hamburger_notice_btn = (ImageButton)findViewById(R.id.hamburger_notice_btn);
+        hamburger_setting_btn = (ImageButton)findViewById(R.id.hamburger_setting_btn);
 
         drawerLayout = (DrawerLayout)findViewById(R.id.todayseoul_drawer_layout);
         drawerView = (View)findViewById(R.id.drawer);
@@ -112,7 +113,6 @@ public class TodaySeoul extends AppCompatActivity {
         //make adapter
         recyclerAdapter = new RecyclerAdapter(poemListDatas);
         recyclerView.setAdapter(recyclerAdapter);
-
 
     }
 

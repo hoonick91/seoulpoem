@@ -5,15 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.seoulprojet.seoulpoem.activity.WriterList">
-    
+
     <android.support.v4.widget.DrawerLayout
+        android:id="@+id/writerlist_drawer_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:id="@+id/writerlist_drawer_layout">
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -26,24 +28,54 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:gravity="center_vertical"
-                android:layout_weight="1">
+                android:layout_weight="1.5"
+                android:gravity="center_vertical">
 
-                <Button
+                <ImageButton
+                    android:id="@+id/writerlist_hamburger_btn"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="14dp"
                     android:layout_weight="1"
-                    android:text="햄버거"
-                    android:id="@+id/writerlist_hamburger_btn" />
+                    android:background="@android:color/transparent"
+                    android:scaleType="center"
+                    android:src="@drawable/black_menu_btn" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="5"
-                    android:text="작가 목록"
                     android:gravity="center_vertical"
-                    android:paddingLeft="20dp"
-                    android:textSize="16dp"/>
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/writerlist_title" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/writerlist_writer_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="# 총 5명의 작가" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="30dp"
+                            android:background="@android:color/transparent"
+                            android:id="@+id/writerlist_apply_btn"
+                            android:src="@drawable/writerlist_apply" />
+                    </RelativeLayout>
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -51,37 +83,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="7.5"
-                android:paddingTop="10dp"
+                android:layout_weight="8.5"
                 android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:paddingLeft="20dp">
-                
+                android:paddingTop="10dp">
+
                 <android.support.v7.widget.RecyclerView
+                    android:id="@+id/writerlist_rv"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/writerlist_rv"></android.support.v7.widget.RecyclerView>
+                    android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
             </LinearLayout>
 
-            <!-- 작가신청하기 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1.5"
-                android:gravity="center">
-
-                <Button
-                    android:layout_width="240dp"
-                    android:layout_height="wrap_content"
-                    android:text="작가 신청하기"
-                    android:id="@+id/writerlist_apply_btn"/>
-
-            </LinearLayout>
 
         </LinearLayout>
 
-        <include
-            layout="@layout/hamburger_drawer"></include>
+        <include layout="@layout/hamburger_drawer"></include>
 
     </android.support.v4.widget.DrawerLayout>
 

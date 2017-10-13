@@ -1,7 +1,12 @@
 package com.seoulprojet.seoulpoem.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +16,7 @@ import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,15 +24,15 @@ import android.widget.Toast;
 public class MyPage extends AppCompatActivity {
 
     private ImageView mypage_profile_img;
-    private Button mypage_hamburger_btn;
-    private Button mypage_setting_btn;
+    private ImageButton mypage_hamburger_btn;
+    private ImageButton mypage_setting_btn;
     private TextView mypage_name_txt;
     private TextView mypage_message_txt;
-    private Button mypage_upload_btn;
+    private ImageButton mypage_upload_btn;
     private Button mypage_photo_btn;
     private Button mypage_poem_btn;
 
-    private Button hamburger_setting_btn, hamburger_mypage_btn, hamburger_scrab_btn, hamburger_today_btn, hamburger_writer_btn,hamburger_notice_btn;
+    private ImageButton hamburger_setting_btn, hamburger_mypage_btn, hamburger_scrab_btn, hamburger_today_btn, hamburger_writer_btn,hamburger_notice_btn;
     private View drawerView;
     private DrawerLayout drawerLayout;
     ////////////////////////////////////
@@ -38,11 +44,11 @@ public class MyPage extends AppCompatActivity {
 
         ////////////////////////////////
         mypage_profile_img = (ImageView)findViewById(R.id.mypage_profile_img);
-        mypage_hamburger_btn = (Button)findViewById(R.id.mypage_hamburger_btn);
-        mypage_setting_btn = (Button)findViewById(R.id.mypage_setting_btn);
+        mypage_hamburger_btn = (ImageButton)findViewById(R.id.mypage_hamburger_btn);
+        mypage_setting_btn = (ImageButton)findViewById(R.id.mypage_setting_btn);
         mypage_name_txt = (TextView)findViewById(R.id.mypage_name_txt);
         mypage_message_txt = (TextView)findViewById(R.id.mypage_message_txt);
-        mypage_upload_btn = (Button)findViewById(R.id.mypage_upload_btn);
+        mypage_upload_btn = (ImageButton)findViewById(R.id.mypage_upload_btn);
         mypage_photo_btn = (Button)findViewById(R.id.mypage_photo_btn);
         mypage_poem_btn = (Button)findViewById(R.id.mypage_poem_btn);
 
@@ -50,12 +56,12 @@ public class MyPage extends AppCompatActivity {
 
 
         ///////////////////////////drawer
-        hamburger_mypage_btn = (Button)findViewById(R.id.hamburger_mypage_btn);
-        hamburger_scrab_btn = (Button)findViewById(R.id.hamburger_scrab_btn);
-        hamburger_today_btn = (Button)findViewById(R.id.hamburger_todayseoul_btn);
-        hamburger_writer_btn = (Button)findViewById(R.id.hamburger_writerlist_btn);
-        hamburger_notice_btn = (Button)findViewById(R.id.hamburger_notice_btn);
-        hamburger_setting_btn = (Button)findViewById(R.id.hamburger_setting_btn);
+        hamburger_mypage_btn = (ImageButton)findViewById(R.id.hamburger_mypage_btn);
+        hamburger_scrab_btn = (ImageButton)findViewById(R.id.hamburger_scrab_btn);
+        hamburger_today_btn = (ImageButton)findViewById(R.id.hamburger_todayseoul_btn);
+        hamburger_writer_btn = (ImageButton)findViewById(R.id.hamburger_writerlist_btn);
+        hamburger_notice_btn = (ImageButton)findViewById(R.id.hamburger_notice_btn);
+        hamburger_setting_btn = (ImageButton)findViewById(R.id.hamburger_setting_btn);
 
         drawerLayout = (DrawerLayout)findViewById(R.id.mypage_drawer_layout);
         drawerView = (View)findViewById(R.id.drawer);
@@ -148,6 +154,15 @@ public class MyPage extends AppCompatActivity {
         });
         ////////////////////////////////////////
 
+        /****** show image  *******/
 
+        mypage_profile_img.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MyPageShowImage.class);
+                startActivity(intent);
+            }
+        });
     }
+
 }
