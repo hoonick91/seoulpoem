@@ -10,9 +10,16 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
+import com.seoulprojet.seoulpoem.model.MyPagePoemResult;
+import com.seoulprojet.seoulpoem.model.MyPageResult;
+import com.seoulprojet.seoulpoem.network.ApplicationController;
+import com.seoulprojet.seoulpoem.network.NetworkService;
 
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +27,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MyPage extends AppCompatActivity {
 
@@ -33,17 +46,26 @@ public class MyPage extends AppCompatActivity {
     private ImageView mypage_bg_iv;
     private Button mypage_poem_btn;
 
+    // drawer
     private ImageButton hamburger_setting_btn, hamburger_mypage_btn, hamburger_scrab_btn, hamburger_today_btn, hamburger_writer_btn,hamburger_notice_btn;
     private View drawerView;
     private DrawerLayout drawerLayout;
-    ////////////////////////////////////
+
+    // network
+    NetworkService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_page);
 
-        ////////////////find view////////////////
+        // 서비스 객체 초기화
+        service = ApplicationController.getInstance().getNetworkService();
+
+        // network
+        getMypage();
+
+        // find view
         mypage_profile_img = (ImageView)findViewById(R.id.mypage_profile_img);
         mypage_hamburger_btn = (ImageButton)findViewById(R.id.mypage_hamburger_btn);
         mypage_setting_btn = (ImageButton)findViewById(R.id.mypage_setting_btn);
@@ -54,10 +76,7 @@ public class MyPage extends AppCompatActivity {
         mypage_poem_btn = (Button)findViewById(R.id.mypage_poem_btn);
         mypage_bg_iv = (ImageView)findViewById(R.id.mypage_bg_iv);
 
-        ////////////////////////////////
-
-
-        ///////////////////////////drawer
+        // drawer
         hamburger_mypage_btn = (ImageButton)findViewById(R.id.hamburger_mypage_btn);
         hamburger_scrab_btn = (ImageButton)findViewById(R.id.hamburger_scrab_btn);
         hamburger_today_btn = (ImageButton)findViewById(R.id.hamburger_todayseoul_btn);
@@ -115,9 +134,8 @@ public class MyPage extends AppCompatActivity {
             }
         });
 
-        ///////////////////////////////////
 
-        /////// 페이지 이동 //////
+        // 페이지 이동
         mypage_setting_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -126,8 +144,8 @@ public class MyPage extends AppCompatActivity {
              }
         });
 
-        /////////fragment////////
 
+        // fragment
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.mypage_fragment, new MyPagePhotoFragment())
@@ -154,9 +172,9 @@ public class MyPage extends AppCompatActivity {
                         .commit();
             }
         });
-        ////////////////////////////////////////
 
-        /****** show image  *******/
+
+        // 이미지 디테일
 
         mypage_profile_img.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -176,6 +194,35 @@ public class MyPage extends AppCompatActivity {
             }
         });
 
+    }
+
+    /******************* mypage 정보 가져오기 ******************/
+    public void getMypage(){
+        Call<MyPageResult> requestMyPage = service.getMyPage("godz33@naver.com", 1);
+
+        requestMyPage.enqueue(new Callback<MyPageResult>() {
+            @Override
+            public void onResponse(Call<MyPageResult> call, Response<MyPageResult> response) {
+                if(response.isSuccessful()){
+                    Log.d("error", "xxx");
+                    if(response.body().status.equals("success")){
+                        mypage_name_txt.setText(response.body().msg.pen_name);
+                        mypage_message_txt.setText(response.body().msg.inform);
+                        Glide.with(getApplicationContext())
+                                .load(response.body().msg.profile)
+                                .into(mypage_profile_img);
+                        Glide.with(getApplicationContext())
+                                .load(response.body().msg.background)
+                                .into(mypage_bg_iv);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MyPageResult> call, Throwable t) {
+                Log.i("mypage error", t.getMessage());
+            }
+        });
     }
 
 }

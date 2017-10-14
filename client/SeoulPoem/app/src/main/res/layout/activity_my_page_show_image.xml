@@ -33,7 +33,8 @@
                 android:layout_weight="1"
                 android:src="@drawable/white_back_btn"
                 android:id="@+id/mypage_show_back_btn"
-                android:padding="30dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:background="@android:color/transparent"/>
 
         </LinearLayout>

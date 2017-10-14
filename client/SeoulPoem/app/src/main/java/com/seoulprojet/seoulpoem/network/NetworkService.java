@@ -1,7 +1,15 @@
 package com.seoulprojet.seoulpoem.network;
 
 
+import com.seoulprojet.seoulpoem.model.MyPagePoemResult;
+import com.seoulprojet.seoulpoem.model.MyPageResult;
+
+import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -29,5 +37,14 @@ public interface NetworkService {
     Call<AddResult> getWorks(@Path("articleid") int articleid);
     */
 
-    // mypage 데이터 가져오기
+    // mypage
+    @GET("/mypage/poem")
+    Call<MyPagePoemResult> getMyPoem(@Header("email") String email,
+                                     @Header("type") int type);
+
+    // mypage 프로필 정보
+    @GET("/mypage")
+    Call<MyPageResult> getMyPage(@Header("email") String email,
+                                 @Header("type") int type);
+
 }

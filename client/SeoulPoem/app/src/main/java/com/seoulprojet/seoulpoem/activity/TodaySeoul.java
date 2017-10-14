@@ -9,12 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.seoulprojet.seoulpoem.R;
-import com.seoulprojet.seoulpoem.model.PoemListData;
+import com.seoulprojet.seoulpoem.model.MyPagePoemListData;
 
 import java.util.ArrayList;
 
@@ -27,9 +26,9 @@ public class TodaySeoul extends AppCompatActivity {
     private DrawerLayout drawerLayout;
 
     private RecyclerView recyclerView;
-    private RecyclerAdapter recyclerAdapter;
+    //private RecyclerAdapter recyclerAdapter;
     private LinearLayoutManager layoutManager;
-    private ArrayList<PoemListData> poemListDatas;
+    private ArrayList<MyPagePoemListData> myPagePoemListDatas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,39 +107,40 @@ public class TodaySeoul extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         //make dummy
-        makeDummy();
+        //makeDummy();
 
         //make adapter
-        recyclerAdapter = new RecyclerAdapter(poemListDatas);
-        recyclerView.setAdapter(recyclerAdapter);
+        //recyclerAdapter = new RecyclerAdapter(myPagePoemListDatas);
+        //recyclerView.setAdapter(recyclerAdapter);
 
     }
 
 
     //************dummy*************//
-    public void makeDummy(){
-        poemListDatas = new ArrayList<>();
-        poemListDatas.add(new PoemListData("너와 나"));
-        poemListDatas.add(new PoemListData("나야 나"));
-        poemListDatas.add(new PoemListData("활활"));
-        poemListDatas.add(new PoemListData("크라이치즈버거 맛있는데"));
-        poemListDatas.add(new PoemListData("정처기 웩!"));
-        poemListDatas.add(new PoemListData("룰루랄ㄹ라~"));
-        poemListDatas.add(new PoemListData("서울시"));
-        poemListDatas.add(new PoemListData("퐝퐈파파퐝"));
-        poemListDatas.add(new PoemListData("포피 햄버거"));
+/*    public void makeDummy(){
+        myPagePoemListDatas = new ArrayList<>();
+        myPagePoemListDatas.add(new MyPagePoemListData("너와 나"));
+        myPagePoemListDatas.add(new MyPagePoemListData("나야 나"));
+        myPagePoemListDatas.add(new MyPagePoemListData("활활"));
+        myPagePoemListDatas.add(new MyPagePoemListData("크라이치즈버거 맛있는데"));
+        myPagePoemListDatas.add(new MyPagePoemListData("정처기 웩!"));
+        myPagePoemListDatas.add(new MyPagePoemListData("룰루랄ㄹ라~"));
+        myPagePoemListDatas.add(new MyPagePoemListData("서울시"));
+        myPagePoemListDatas.add(new MyPagePoemListData("퐝퐈파파퐝"));
+        myPagePoemListDatas.add(new MyPagePoemListData("포피 햄버거"));
     }
-
+*/
     //************adapter*************//
+    /*
     class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>{
-        ArrayList<PoemListData> poemListDatas;
+        ArrayList<MyPagePoemListData> myPagePoemListDatas;
 
-        public RecyclerAdapter(ArrayList<PoemListData> poemListDatas){
-            this.poemListDatas = poemListDatas;
+        public RecyclerAdapter(ArrayList<MyPagePoemListData> myPagePoemListDatas){
+            this.myPagePoemListDatas = myPagePoemListDatas;
         }
 
-        public void setAdapter(ArrayList<PoemListData> poemListDatas){
-            this.poemListDatas = poemListDatas;
+        public void setAdapter(ArrayList<MyPagePoemListData> myPagePoemListDatas){
+            this.myPagePoemListDatas = myPagePoemListDatas;
             notifyDataSetChanged();
         }
 
@@ -152,18 +152,18 @@ public class TodaySeoul extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
-            PoemListData poemListData = poemListDatas.get(position);
+            MyPagePoemListData myPagePoemListData = myPagePoemListDatas.get(position);
 
-            holder.poemTitle.setText(poemListData.poemTitle);
+            holder.poemTitle.setText(myPagePoemListData.poemTitle);
         }
 
         @Override
         public int getItemCount() {
-            return poemListDatas != null ? poemListDatas.size() : 0;
+            return myPagePoemListDatas != null ? myPagePoemListDatas.size() : 0;
         }
     }
 
-    //***********viewHolder***********//
+    //***********viewHolder***********
     class MyViewHolder extends  RecyclerView.ViewHolder{
         TextView poemTitle;
 
@@ -173,4 +173,5 @@ public class TodaySeoul extends AppCompatActivity {
             poemTitle = (TextView)itemView.findViewById(R.id.item_poem_title_txt);
         }
     }
+    */
 }

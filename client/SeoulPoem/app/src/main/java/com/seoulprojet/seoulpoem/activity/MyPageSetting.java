@@ -14,8 +14,12 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.ImageViewTargetFactory;
 import com.seoulprojet.seoulpoem.R;
+import com.seoulprojet.seoulpoem.model.MyPageResult;
+import com.seoulprojet.seoulpoem.network.ApplicationController;
+import com.seoulprojet.seoulpoem.network.NetworkService;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +33,11 @@ import android.widget.Toast;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MyPageSetting extends AppCompatActivity {
 
@@ -42,22 +51,28 @@ public class MyPageSetting extends AppCompatActivity {
     private EditText mypage_setting_name_et;
     private EditText mypage_setting_message_et;
 
+    // network
+    NetworkService service;
+    private ArrayList<MyPageResult> myPageResults;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_page_setting);
 
-        //////////////////////////
+        // 객체 초기화
         mypage_setting_back_btn = (ImageButton)findViewById(R.id.mypage_setting_back_btn);
         mypage_setting_ok_btn = (ImageButton)findViewById(R.id.mypage_setting_ok_btn);
         mypage_setting_background_img = (ImageView)findViewById(R.id.mypage_setting_background_img);
         mypage_setting_profile_img = (ImageView)findViewById(R.id.mypage_setting_profile_img);
         mypage_setting_name_et = (EditText)findViewById(R.id.mypage_setting_name_et);
         mypage_setting_message_et = (EditText)findViewById(R.id.mypage_setting_message_et);
-        /////////////////////////////
+
+        service = ApplicationController.getInstance().getNetworkService();
+        getMyPagePhotos();
 
 
-        /************ 이미지 변경 *************/
+        // 이미지 변경
         mypage_setting_background_img.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -75,7 +90,7 @@ public class MyPageSetting extends AppCompatActivity {
             }
         });
 
-        //////////페이지 이동/////////
+        // 페이지 이동
         mypage_setting_back_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -86,6 +101,35 @@ public class MyPageSetting extends AppCompatActivity {
         });
     }
 
+    /****************** mypage 정보 가져오기 *****************/
+    public void getMyPagePhotos(){
+        final Call<MyPageResult> requestPhoto = service.getMyPage("godz33@naver.com", 1);
+        requestPhoto.enqueue(new Callback<MyPageResult>() {
+            @Override
+            public void onResponse(Call<MyPageResult> call, Response<MyPageResult> response) {
+                if(response.isSuccessful()){
+                    if(response.body().status.equals("success")){
+
+                        Glide.with(getApplicationContext())
+                                .load(response.body().msg.background)
+                                .into(mypage_setting_background_img);
+                        Glide.with(getApplicationContext())
+                                .load(response.body().msg.profile)
+                                .into(mypage_setting_profile_img);
+
+
+                        mypage_setting_name_et.setHint(response.body().msg.pen_name);
+                        mypage_setting_message_et.setHint(response.body().msg.inform);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MyPageResult> call, Throwable t) {
+                Log.i("error", t.getMessage());
+            }
+        });
+    }
 
     /******************cam dailog******************/
     private void showCamDialog(){
@@ -114,7 +158,7 @@ public class MyPageSetting extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(camNum == 1){
-                    mypage_setting_background_img.setImageBitmap(null);
+                    mypage_setting_background_img.setImageResource(R.drawable.profile_background);
                     camDialog.dismiss();
                 }
 
@@ -198,7 +242,7 @@ public class MyPageSetting extends AppCompatActivity {
             }
         }
         else{
-            Toast.makeText(this, "wrong result code", Toast.LENGTH_LONG);
+            Log.i("wrong result code", "");
         }
     }
 }
