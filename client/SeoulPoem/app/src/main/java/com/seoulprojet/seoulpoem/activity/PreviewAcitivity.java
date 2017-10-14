@@ -1,8 +1,12 @@
 package com.seoulprojet.seoulpoem.activity;
 
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,6 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.seoulprojet.seoulpoem.R;
+import com.seoulprojet.seoulpoem.component.Preview;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
 
 /**
  * Created by minjeong on 2017-09-27.
@@ -57,7 +64,40 @@ public class PreviewAcitivity extends AppCompatActivity{
         });
     }
     protected void setItem(){
-        String title = WritePoemActivity
-        preview_title.setText();
+
+        preview_img.setImageURI(Preview.photo);
+        preview_title.setText(Preview.title);
+        preview_content.setText(Preview.content);
+        preview_content.setTextSize(Preview.font_size);
+        Log.e("폰트사이즈 : ",""+Preview.font_size);
+        preview_content.setTextColor(Preview.color);
+        if(Preview.sortinfo == 1)
+            preview_content.setGravity(Gravity.LEFT);
+        else if(Preview.sortinfo == 2)
+            preview_content.setGravity(Gravity.RIGHT);
+        else if(Preview.sortinfo == 3)
+            preview_content.setGravity(Gravity.CENTER_HORIZONTAL);
+        else
+            preview_content.setGravity(Gravity.NO_GRAVITY);
+
+
+        if(Preview.bold == 1){
+            preview_content.setTypeface(null, Typeface.BOLD);
+            if (Preview.inclination == 1){
+                preview_content.setTypeface(null, Typeface.BOLD_ITALIC);
+                if(Preview.underline == 1) {
+                    preview_content.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+                }
+                else{
+                    preview_content.setPaintFlags(0);
+                }
+            }else{}
+        }else{
+        }
+        int[] paper = new int[]{R.id.paper1,R.id.paper2,R.id.paper3,R.id.paper4};
+       // paper_background.setBackgroundResource(paper[Preview.background-1]);
+
     }
+
+
 }

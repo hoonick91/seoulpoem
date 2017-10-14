@@ -26,8 +26,9 @@
 
             <RelativeLayout
                 android:id="@+id/back"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:gravity="center_horizontal|center_vertical"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_marginLeft="25dp">
 
@@ -42,10 +43,11 @@
 
             <RelativeLayout
                 android:id="@+id/finish"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:gravity="center_horizontal|center_vertical"
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_marginLeft="264dp">
+                android:layout_marginLeft="230dp">
 
                 <Button
                     android:layout_width="18dp"
@@ -237,7 +239,7 @@
                 android:layout_width="40dp"
                 android:layout_height="29dp"
                 android:tag="1"
-                android:background="@drawable/paper_01"/>
+                android:background="@drawable/paper1_mini"/>
 
             <Button
                 android:id="@+id/paper2"
@@ -245,7 +247,7 @@
                 android:layout_width="40dp"
                 android:layout_height="29dp"
                 android:tag="2"
-                android:background="@drawable/paper_01"/>
+                android:background="@drawable/paper2_mini"/>
 
             <Button
                 android:id="@+id/paper3"
@@ -253,7 +255,7 @@
                 android:layout_width="40dp"
                 android:layout_height="29dp"
                 android:tag="3"
-                android:background="@drawable/paper_01"/>
+                android:background="@drawable/paper3_mini"/>
 
             <Button
                 android:id="@+id/paper4"
@@ -261,7 +263,7 @@
                 android:layout_width="40dp"
                 android:layout_height="29dp"
                 android:tag="4"
-                android:background="@drawable/paper_01"/>
+                android:background="@drawable/paper4_mini"/>
 
         </LinearLayout>
 

@@ -22,10 +22,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.seoulprojet.seoulpoem.R;
+import com.seoulprojet.seoulpoem.component.Preview;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +47,7 @@ public class sampleActivity extends AppCompatActivity {
     private static final int CROP_FROM_CAMERA = 3;
 
     //최종 결과물 파일(사진)이 담겨있는 uri
-    private Uri photoUri;
+     Uri photoUri;
 
     private String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -188,6 +188,7 @@ public class sampleActivity extends AppCompatActivity {
                         }
                     });
         } else if (requestCode == CROP_FROM_CAMERA) {
+            Preview.photo = photoUri;
           Toast.makeText(sampleActivity.this,"사진이 저장되었습니다.",Toast.LENGTH_LONG).show();
             Intent intent = new Intent(sampleActivity.this, WritePoemActivity.class);
             startActivity(intent);
@@ -284,5 +285,7 @@ public class sampleActivity extends AppCompatActivity {
         dialog.show();    // 알림창 띄우기
 
     }
+
+
 
 }

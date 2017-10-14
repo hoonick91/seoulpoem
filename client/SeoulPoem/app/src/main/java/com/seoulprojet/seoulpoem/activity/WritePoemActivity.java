@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -31,6 +30,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.seoulprojet.seoulpoem.R;
+import com.seoulprojet.seoulpoem.component.Preview;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +43,8 @@ import java.util.List;
 public class WritePoemActivity extends AppCompatActivity {
 
     RelativeLayout background;
-
+    int backgroundId = 1;
     Button page_back;
-
     RelativeLayout toolbar;
     LinearLayout main_toolbar;
     TextView font_button;
@@ -54,10 +53,11 @@ public class WritePoemActivity extends AppCompatActivity {
 
     LinearLayout sort_toolbar;
     RelativeLayout back1;
-    Button text_left;
-    Button text_right;
-    Button text_center;
-    Button text_default;
+    Button text_left; //1
+    Button text_right; //2
+    Button text_center; //3
+    Button text_default; //4
+    int gravity=0;
 
     LinearLayout font_toolbar;
     RelativeLayout back2;
@@ -91,6 +91,8 @@ public class WritePoemActivity extends AppCompatActivity {
     int check_cnt = 1;
 
 
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +115,27 @@ public class WritePoemActivity extends AppCompatActivity {
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Preview.title = write_title.getText().toString();
+                Preview.content = write_content.getText().toString();
+                Preview.font_size = (int)write_content.getTextSize();
+                if(style_check[0]== true)
+                    Preview.bold = 1;
+                else
+                    Preview.bold = 0;
+                if(style_check[1]== true)
+                    Preview.inclination = 1;
+                else
+                    Preview.inclination = 0;
+                if(style_check[2]== true)
+                    Preview.underline = 1;
+                else
+                    Preview.underline = 0;
+                Preview.color = write_content.getTextColors().getDefaultColor();
+                Preview.sortinfo = gravity;
+                Preview.tags = write_tag.getText().toString();
+                Preview.inform = write_detail.getText().toString();
+                Preview.background = backgroundId;
+
                 Intent intent = new Intent(getApplicationContext(),PreviewAcitivity.class);
                 startActivity(intent);
             }
@@ -260,6 +283,7 @@ public class WritePoemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 write_content.setGravity(Gravity.CENTER_HORIZONTAL);
+                gravity = 3;
             }
         });
         text_left = (Button)findViewById(R.id.text_left);
@@ -267,6 +291,7 @@ public class WritePoemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 write_content.setGravity(Gravity.LEFT);
+                gravity = 1;
             }
         });
         text_right = (Button)findViewById(R.id.text_right);
@@ -274,6 +299,7 @@ public class WritePoemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 write_content.setGravity(Gravity.RIGHT);
+                gravity = 2;
             }
         });
         text_default = (Button)findViewById(R.id.text_default);
@@ -281,6 +307,7 @@ public class WritePoemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 write_content.setGravity(Gravity.NO_GRAVITY);
+                gravity = 4;
             }
         });
 
@@ -414,8 +441,8 @@ public class WritePoemActivity extends AppCompatActivity {
             paper[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //후에 색이 아닌 이미지로 바꿔야 함.
                     background.setBackgroundColor(paper_resource[Integer.parseInt(v.getTag().toString())-1]);
+                    backgroundId = Integer.parseInt(v.getTag().toString());
                    
                 }
             });
@@ -486,6 +513,5 @@ public class WritePoemActivity extends AppCompatActivity {
         }
     }
 
-    public void 
 
 }
