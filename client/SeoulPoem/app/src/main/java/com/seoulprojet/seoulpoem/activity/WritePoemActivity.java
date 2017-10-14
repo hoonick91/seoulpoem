@@ -73,7 +73,7 @@ public class WritePoemActivity extends AppCompatActivity {
     boolean style_check[];
 
     RelativeLayout back;
-    RelativeLayout finish;
+    Button finish;
     Button[] tag;
     int[] tagid;
 
@@ -83,6 +83,7 @@ public class WritePoemActivity extends AppCompatActivity {
     Button[] paper;
     int[] paperid;
     int[] paper_resource;
+    int[] paper_resource_orign;
 
     TextView select_tag;
     EditText write_tag;
@@ -109,15 +110,15 @@ public class WritePoemActivity extends AppCompatActivity {
     //xml의 id값들을 java파일의 변수와 연결
     public void setId(){
         background = (RelativeLayout) findViewById(R.id.background);
-        back = (RelativeLayout) findViewById(R.id.back);
-        finish = (RelativeLayout)findViewById(R.id.finish);
+        finish = (Button)findViewById(R.id.finish);
 
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Preview.title = write_title.getText().toString();
                 Preview.content = write_content.getText().toString();
-                Preview.font_size = (int)write_content.getTextSize();
+                //만약 기기마다 다르다면 /3말고 폰트사이즈 변경하는 부분에서 Preview.font_size를 바꿀것.
+                Preview.font_size = ((int)write_content.getTextSize())/3;
                 if(style_check[0]== true)
                     Preview.bold = 1;
                 else
@@ -198,13 +199,16 @@ public class WritePoemActivity extends AppCompatActivity {
                 });
 
 
+
+
         paper = new Button[4];
         paperid = new int[]{R.id.paper1,R.id.paper2,R.id.paper3,R.id.paper4};
+        paper_resource_orign = new int[]{R.drawable.paper1_mini,R.drawable.paper2_mini,R.drawable.paper3_mini,R.drawable.paper4_mini};
 
         for(int i=0;i<4;i++){
             paper[i] = (Button)findViewById(paperid[i]);
         }
-        paper_resource = new int[]{Color.BLACK, Color.RED, Color.BLUE, Color.YELLOW};
+        paper_resource = new int[]{R.drawable.outline1,R.drawable.outline2,R.drawable.outline3,R.drawable.outline4};
 
         select_tag = (TextView)findViewById(R.id.select_tag);
         write_tag = (EditText)findViewById(R.id.write_tag);
@@ -381,11 +385,21 @@ public class WritePoemActivity extends AppCompatActivity {
         });
         paint_spinner = (Spinner)findViewById(R.id.paint_spinner);
         List<String> data = new ArrayList<>();
-        data.add("빨강");
-        data.add("검정");
-        adapterSpinner = new AdapterSpinner(this, data);
+        data.add("#ffffff");
+        data.add("#888888");
+        data.add("#765745");
+        data.add("#773511");
+        data.add("#000000");
+        List<Integer> img = new ArrayList<>();
+        img.add(R.drawable.oval_1);
+        img.add(R.drawable.oval_2);
+        img.add(R.drawable.oval_3);
+        img.add(R.drawable.oval_4);
+        img.add(R.drawable.oval_5);
+        adapterSpinner = new AdapterSpinner(this, data,img);
         paint_spinner.setAdapter(adapterSpinner);
-
+        adapterSpinner.notifyDataSetChanged();
+        paint_spinner.setSelection(4);
 
 
     }
@@ -441,9 +455,14 @@ public class WritePoemActivity extends AppCompatActivity {
             paper[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    background.setBackgroundColor(paper_resource[Integer.parseInt(v.getTag().toString())-1]);
+                  //  background.setBackgroundColor(paper_resource[Integer.parseInt(v.getTag().toString())-1]);
                     backgroundId = Integer.parseInt(v.getTag().toString());
-                   
+                    for(int j=0; j<4; j++) {
+                        if(j == backgroundId-1)
+                            paper[j].setBackgroundResource(paper_resource[j]);
+                        else
+                            paper[j].setBackgroundResource(paper_resource_orign[j]);
+                    }
                 }
             });
         }
@@ -453,11 +472,13 @@ public class WritePoemActivity extends AppCompatActivity {
 
         Context context;
         List<String> data;
+        List<Integer> img;
         LayoutInflater inflater;
 
-        public AdapterSpinner(Context context, List<String> data){
+        public AdapterSpinner(Context context, List<String> data, List<Integer> img){
             this.context = context;
             this.data = data;
+            this.img = img;
             inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
@@ -476,14 +497,9 @@ public class WritePoemActivity extends AppCompatActivity {
             if(data!=null){
                 //데이터세팅
                 String text = data.get(position);
-                int color;
-                if(text.equals("빨강")){
-                    color = Color.RED;
-                }else{
-                    color = Color.BLACK;
-                }
-                ((ImageView)convertView.findViewById(R.id.spinnerColor)).setBackgroundColor(color);
-                write_content.setTextColor(color);
+                ((ImageView)convertView.findViewById(R.id.spinnerColor)).setBackgroundColor(Color.parseColor(text));
+                write_content.setTextColor(Color.parseColor(text));
+
             }
 
             return convertView;
@@ -496,8 +512,8 @@ public class WritePoemActivity extends AppCompatActivity {
             }
 
             //데이터세팅
-            String text = data.get(position);
-            ((TextView)convertView.findViewById(R.id.spinnerText)).setText(text);
+            int color = img.get(position);
+            ((ImageView)convertView.findViewById(R.id.colorImg)).setImageResource(color);
 
             return convertView;
         }

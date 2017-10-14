@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.component.Preview;
 
+import static android.R.attr.id;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
 
 /**
@@ -94,8 +95,8 @@ public class PreviewAcitivity extends AppCompatActivity{
             }else{}
         }else{
         }
-        int[] paper = new int[]{R.id.paper1,R.id.paper2,R.id.paper3,R.id.paper4};
-       // paper_background.setBackgroundResource(paper[Preview.background-1]);
+        int[] paper = new int[]{R.drawable.paper1,R.drawable.paper2,R.drawable.paper3,R.drawable.paper4};
+        paper_background.setBackgroundResource(paper[Preview.background-1]);
 
     }
 
