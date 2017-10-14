@@ -51,8 +51,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="4"
-                    android:padding="5dp"
                     android:background="#ffa6be">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/profile_background"
+                        android:id="@+id/mypage_bg_iv"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -104,14 +110,14 @@
                             android:layout_marginTop="8dp"
                             android:text="이름"
                             android:textSize="18sp"
-                            android:textColor="#000000" />
+                            android:textColor="#ffffff" />
 
                         <TextView
                             android:id="@+id/mypage_message_txt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="상태메세지"
-                            android:textColor="#000000"
+                            android:textColor="#ffffff"
                             android:textSize="15sp" />
 
                     </LinearLayout>

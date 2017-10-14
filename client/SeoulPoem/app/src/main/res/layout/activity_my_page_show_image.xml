@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.seoulprojet.seoulpoem.activity.MyPageShowImage">
 
-
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -16,20 +15,30 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:background="#000000">
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/white_back_btn"
-            android:id="@+id/mypage_show_back_btn"
-            android:padding="30dp"
-            android:background="@android:color/transparent"/>
-
         <ImageView
-            android:layout_centerInParent="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/mypage_show_image"/>
+            android:id="@+id/mypage_show_image"
+            android:layout_centerInParent="true"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="10">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:src="@drawable/white_back_btn"
+                android:id="@+id/mypage_show_back_btn"
+                android:padding="30dp"
+                android:background="@android:color/transparent"/>
+
+        </LinearLayout>
 
     </RelativeLayout>
+
 
 </android.support.constraint.ConstraintLayout>

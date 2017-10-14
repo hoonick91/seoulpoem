@@ -123,6 +123,12 @@ public class TodaySeoul extends AppCompatActivity {
         poemListDatas.add(new PoemListData("너와 나"));
         poemListDatas.add(new PoemListData("나야 나"));
         poemListDatas.add(new PoemListData("활활"));
+        poemListDatas.add(new PoemListData("크라이치즈버거 맛있는데"));
+        poemListDatas.add(new PoemListData("정처기 웩!"));
+        poemListDatas.add(new PoemListData("룰루랄ㄹ라~"));
+        poemListDatas.add(new PoemListData("서울시"));
+        poemListDatas.add(new PoemListData("퐝퐈파파퐝"));
+        poemListDatas.add(new PoemListData("포피 햄버거"));
     }
 
     //************adapter*************//

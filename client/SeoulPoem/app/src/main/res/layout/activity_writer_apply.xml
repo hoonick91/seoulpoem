@@ -67,7 +67,13 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:padding="12dp"
+                android:textCursorDrawable="@android:color/black"
+                android:maxLength="45"
+                android:maxLines="3"
+                android:backgroundTint="#95989a"
                 android:hint="한 줄 소개를 입력해주세요"
                 android:id="@+id/writerapply_message_et"
                 android:textSize="15sp"/>

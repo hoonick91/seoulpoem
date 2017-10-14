@@ -30,6 +30,7 @@ public class MyPage extends AppCompatActivity {
     private TextView mypage_message_txt;
     private ImageButton mypage_upload_btn;
     private Button mypage_photo_btn;
+    private ImageView mypage_bg_iv;
     private Button mypage_poem_btn;
 
     private ImageButton hamburger_setting_btn, hamburger_mypage_btn, hamburger_scrab_btn, hamburger_today_btn, hamburger_writer_btn,hamburger_notice_btn;
@@ -42,7 +43,7 @@ public class MyPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_page);
 
-        ////////////////////////////////
+        ////////////////find view////////////////
         mypage_profile_img = (ImageView)findViewById(R.id.mypage_profile_img);
         mypage_hamburger_btn = (ImageButton)findViewById(R.id.mypage_hamburger_btn);
         mypage_setting_btn = (ImageButton)findViewById(R.id.mypage_setting_btn);
@@ -51,6 +52,7 @@ public class MyPage extends AppCompatActivity {
         mypage_upload_btn = (ImageButton)findViewById(R.id.mypage_upload_btn);
         mypage_photo_btn = (Button)findViewById(R.id.mypage_photo_btn);
         mypage_poem_btn = (Button)findViewById(R.id.mypage_poem_btn);
+        mypage_bg_iv = (ImageView)findViewById(R.id.mypage_bg_iv);
 
         ////////////////////////////////
 
@@ -160,9 +162,20 @@ public class MyPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyPageShowImage.class);
+                intent.putExtra("status", "profile");
                 startActivity(intent);
             }
         });
+
+        mypage_bg_iv.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MyPageShowImage.class);
+                intent.putExtra("status", "background");
+                startActivity(intent);
+            }
+        });
+
     }
 
 }
