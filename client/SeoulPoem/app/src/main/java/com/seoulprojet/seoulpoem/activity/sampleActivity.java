@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -47,7 +48,7 @@ public class sampleActivity extends AppCompatActivity {
     private static final int CROP_FROM_CAMERA = 3;
 
     //최종 결과물 파일(사진)이 담겨있는 uri
-     Uri photoUri;
+     Uri photoUri, albumUri;
 
     private String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -121,7 +122,7 @@ public class sampleActivity extends AppCompatActivity {
             storageDir.mkdirs();
         }
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
-        Preview.photoName = image.getName();
+       // Preview.photoName = image.getName();
         mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         return image;
     }
@@ -178,10 +179,12 @@ public class sampleActivity extends AppCompatActivity {
                 return;
             }
             photoUri = data.getData();
+            Log.e("Before crop photoUri",""+photoUri);
+            getImageNameToUri(photoUri);
+
             cropImage();
         } else if (requestCode == PICK_FROM_CAMERA) {
             cropImage();
-            // 갤러리에 나타나게->작동안됨.
             MediaScannerConnection.scanFile(sampleActivity.this,
                     new String[]{photoUri.getPath()}, null,
                     new MediaScannerConnection.OnScanCompletedListener() {
@@ -189,7 +192,8 @@ public class sampleActivity extends AppCompatActivity {
                         }
                     });
         } else if (requestCode == CROP_FROM_CAMERA) {
-            Preview.photo = photoUri;
+            photoUri=data.getData();
+            Log.e("final crop photoUripath",""+photoUri);
           Toast.makeText(sampleActivity.this,"사진이 저장되었습니다.",Toast.LENGTH_LONG).show();
             Intent intent = new Intent(sampleActivity.this, WritePoemActivity.class);
             startActivity(intent);
@@ -237,8 +241,16 @@ public class sampleActivity extends AppCompatActivity {
             File tempFile = new File(folder.toString(), croppedFileName.getName());
             Log.e("folder",tempFile.getPath());
 
+            albumUri = Uri.fromFile(croppedFileName);
+            Log.e("albumUri",""+albumUri);
+
+            Preview.photo = albumUri;
+            Preview.photoName = tempFile.getName();
+
             photoUri = FileProvider.getUriForFile(sampleActivity.this,
                     "com.seoulprojet.seoulpoem.activity.provider", tempFile);
+            Log.e("after cropphotoUripath",""+photoUri);
+
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -286,7 +298,19 @@ public class sampleActivity extends AppCompatActivity {
         dialog.show();    // 알림창 띄우기
 
     }
+    /**************************이미지 파일 이름 가져오기******************************************/
 
+    public String getImageNameToUri(Uri data) {
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = managedQuery(data, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 
+        cursor.moveToFirst();
+
+        String imgPath = cursor.getString(column_index);
+        String imgName = imgPath.substring(imgPath.lastIndexOf("/") + 1);
+
+        return imgName;
+    }
 
 }

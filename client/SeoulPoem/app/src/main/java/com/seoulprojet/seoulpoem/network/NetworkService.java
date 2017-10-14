@@ -27,7 +27,6 @@ public interface NetworkService {
                                   @Header("type") int type,
                                   @Part MultipartBody.Part photo,
                                   @Part("title") RequestBody title,
-                                  @Part("font_type") RequestBody font_type,
                                   @Part("font_size") RequestBody font_size,
                                   @Part("bold") RequestBody bold,
                                   @Part("inclination") RequestBody inclination,

@@ -150,7 +150,7 @@ public class PreviewAcitivity extends AppCompatActivity{
         RequestBody inform = RequestBody.create(MediaType.parse("multipart/form-data"), Preview.inform);
         RequestBody background = RequestBody.create(MediaType.parse("multipart/form-data"), ""+Preview.background);
 
-        MultipartBody.Part photo;
+        MultipartBody.Part photo = null;
 
         if (Preview.photo == null) {
             photo = null;
@@ -163,26 +163,46 @@ public class PreviewAcitivity extends AppCompatActivity{
             InputStream in = null; // here, you need to get your context.
             try {
                 in = getContentResolver().openInputStream(Preview.photo);
+
             } catch (FileNotFoundException e) {
+                Log.e("error!!!!","");
                 e.printStackTrace();
             }
 
             Bitmap bitmap = BitmapFactory.decodeStream(in, null, options);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+
+
             RequestBody photoBody = RequestBody.create(MediaType.parse("image/jpg"), baos.toByteArray());
-
-
-            // 가져온 파일의 이름을 알아내려고 사용합니다
-            //String imgName = getImageNameToUri(Preview.photo);
 
             // MultipartBody.Part 실제 파일의 이름을 보내기 위해 사용!!
             photo = MultipartBody.Part.createFormData("image", Preview.photoName, photoBody);
+
+           /* // https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
+            // use the FileUtils to get the actual file by uri
+            File file = File.getFile(this, Preview.photo);
+
+            // create RequestBody instance from file
+            RequestBody requestFile =
+                    RequestBody.create(
+                            MediaType.parse(getContentResolver().getType(Preview.photo)),
+                            file);
+
+            // MultipartBody.Part is used to send also the actual file name
+            photo =
+                    MultipartBody.Part.createFormData("picture", Preview.photoName, requestFile);
+
+*/
+
+
+            Log.e("photoname",Preview.photoName);
+            Log.e("photo uri",""+Preview.photo);
         }
 
         /****************************************서버에 정보 보냄**************************************/
         Call<SavePoemResult> request = service.savePoem("godz33@naver.com",1,
-                photo,title,font_type,font_size,bold,inclination,underline,
+                photo,title,font_size,bold,inclination,underline,
                 color,sortinfo,content,tags,inform,background);
         request.enqueue(new Callback<SavePoemResult>() {
             @Override
@@ -195,7 +215,7 @@ public class PreviewAcitivity extends AppCompatActivity{
 
                     }
                 } else {
-                    Log.e("Posterr",response.toString());
+                    Log.e("Posterr",response.message());
                 }
             }
 
@@ -218,6 +238,7 @@ public class PreviewAcitivity extends AppCompatActivity{
 
         String imgPath = cursor.getString(column_index);
         String imgName = imgPath.substring(imgPath.lastIndexOf("/") + 1);
+
 
         return imgName;
     }
