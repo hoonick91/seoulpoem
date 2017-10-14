@@ -19,9 +19,10 @@ var subway = require('./routes/subway');
 var author = require('./routes/author');
 var notice = require('./routes/notice');
 var expressVaildator = require('express-validator');
+
 var app = express();
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'vi   ews'));
 app.set('view engine', 'ejs');
 app.set('jwt-secret', config.secret); //시크릿
 

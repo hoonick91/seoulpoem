@@ -36,21 +36,22 @@
     var s3key_= "insert into s3key set ?";
     var location_key_q_= "select key_ from s3key where location = ?";
 
+    var multiupload = upload.fields([{name:'photo',maxCount:1}]);
     // /article 글 저장 등록
-    router.post('/',upload.single('photo'), async (req, res, next) => {
+    router.post('/',multiupload, async (req, res, next) => {
       try {
-
           var connection = await pool.getConnection();
           await connection.beginTransaction();
 
+
+          console.log(req.files['photo'][0].location);
           let email = req.headers.email;
           let type = req.headers.type;
 
-          console.log(req.file.location);
 
           let query_picture = 'insert into seoul_poem.pictures (photo) VALUES (?);';
-          let picture_output = await connection.query(query_picture, req.file.location);
-          await connection.query(s3key_,{location : req.file.location, key_ : req.file.key});
+          let picture_output = await connection.query(query_picture, req.files['photo'][0].location);
+          await connection.query(s3key_,{location : req.files['photo'][0].location, key_ : req.files['photo'][0].key});
 
           var dt = new Date();
           var d = dt.toFormat('YYYY-MM-DD HH24:MI:SS');
@@ -69,7 +70,7 @@
               let output_ = await connection.query(query, setting);
               let poem = {
                   content: req.body.content,
-                  setting_idsettings : output_.insertId
+                   setting_idsettings : output_.insertId
               };
               let query_poem = 'insert into seoul_poem.poem set ?;';
               let poem_output = await connection.query(query_poem, poem);
