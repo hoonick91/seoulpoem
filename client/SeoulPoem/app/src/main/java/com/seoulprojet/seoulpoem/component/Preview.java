@@ -7,6 +7,7 @@ import android.net.Uri;
  */
 
 public class Preview {
+    public static String photoName;
     public static Uri photo;
     public static String title;
     public static int font_size;

@@ -121,6 +121,7 @@ public class sampleActivity extends AppCompatActivity {
             storageDir.mkdirs();
         }
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        Preview.photoName = image.getName();
         mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         return image;
     }

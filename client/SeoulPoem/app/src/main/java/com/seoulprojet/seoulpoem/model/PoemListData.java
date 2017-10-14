@@ -6,7 +6,6 @@ package com.seoulprojet.seoulpoem.model;
 
 public class PoemListData {
     public String poemTitle;
-
     public PoemListData(String poemTitle){
         this.poemTitle = poemTitle;
     }
