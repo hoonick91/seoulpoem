@@ -46,6 +46,21 @@
                     android:layout_marginTop="230.7dp"
                     android:layout_marginLeft="51dp"
                     android:text="테스트"/>
+                
+                <ImageButton
+                    android:id="@+id/poem_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+
+                    android:src="@drawable/path2"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="26dp"
+                    android:layout_marginLeft="174dp"
+                    android:paddingTop="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingBottom="15dp"
+                    android:paddingRight="15dp"/>
 
             </RelativeLayout>
 
@@ -58,12 +73,26 @@
         <RelativeLayout
             android:id="@+id/dragView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="480dp"
             android:clickable="true"
             android:focusable="true"
             android:orientation="vertical"
             android:background="#ffff00">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#f99999">
+
+                <TextView
+                    android:id="@+id/poem_content"
+                    android:layout_marginTop="45dp"
+                    android:layout_marginLeft="51dp"
+                    android:layout_width="206dp"
+                    android:layout_height="300dp" />
+
+            </LinearLayout>
         </RelativeLayout>
 
 

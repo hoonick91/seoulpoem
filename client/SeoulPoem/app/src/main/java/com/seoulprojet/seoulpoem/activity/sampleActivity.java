@@ -122,7 +122,6 @@ public class sampleActivity extends AppCompatActivity {
             storageDir.mkdirs();
         }
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
-       // Preview.photoName = image.getName();
         mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         return image;
     }
@@ -244,12 +243,14 @@ public class sampleActivity extends AppCompatActivity {
             albumUri = Uri.fromFile(croppedFileName);
             Log.e("albumUri",""+albumUri);
 
-            Preview.photo = albumUri;
+            Preview.photo_location = tempFile.getPath();
             Preview.photoName = tempFile.getName();
 
             photoUri = FileProvider.getUriForFile(sampleActivity.this,
                     "com.seoulprojet.seoulpoem.activity.provider", tempFile);
             Log.e("after cropphotoUripath",""+photoUri);
+
+            Preview.photo = photoUri;
 
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

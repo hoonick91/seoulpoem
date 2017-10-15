@@ -1,8 +1,6 @@
 package com.seoulprojet.seoulpoem.activity;
 
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -25,9 +23,7 @@ import com.seoulprojet.seoulpoem.model.SavePoemResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.File;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -156,7 +152,7 @@ public class PreviewAcitivity extends AppCompatActivity{
             photo = null;
         } else {
 
-            //resizing
+            /*//resizing
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = 4; //얼마나 줄일지 설정하는 옵션 4--> 1/4로 줄이겠다
 
@@ -177,25 +173,14 @@ public class PreviewAcitivity extends AppCompatActivity{
             RequestBody photoBody = RequestBody.create(MediaType.parse("image/jpg"), baos.toByteArray());
 
             // MultipartBody.Part 실제 파일의 이름을 보내기 위해 사용!!
-            photo = MultipartBody.Part.createFormData("image", Preview.photoName, photoBody);
+            photo = MultipartBody.Part.createFormData("image", Preview.photoName, photoBody);*/
 
-           /* // https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
-            // use the FileUtils to get the actual file by uri
-            File file = File.getFile(this, Preview.photo);
-
-            // create RequestBody instance from file
-            RequestBody requestFile =
-                    RequestBody.create(
-                            MediaType.parse(getContentResolver().getType(Preview.photo)),
-                            file);
-
-            // MultipartBody.Part is used to send also the actual file name
-            photo =
-                    MultipartBody.Part.createFormData("picture", Preview.photoName, requestFile);
-
-*/
+            File file = new File(Preview.photo_location);
+            RequestBody fileBody = RequestBody.create(MediaType.parse("image/*"), file);
+            photo = MultipartBody.Part.createFormData("image", file.getName(), fileBody);
 
 
+            Log.e("photofile",Preview.photo_location);
             Log.e("photoname",Preview.photoName);
             Log.e("photo uri",""+Preview.photo);
         }
