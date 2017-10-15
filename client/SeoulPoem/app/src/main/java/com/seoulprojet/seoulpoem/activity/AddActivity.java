@@ -64,10 +64,6 @@ public class AddActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
 
-        //작품 개수 설정
-        tvWorkNum.setText(String.valueOf(works.size()));
-
-
         //어뎁터 생성, 리사이클러뷰에 붙임
         recyclerAdapter = new RecyclerAdapter(works);
         recyclerView.setAdapter(recyclerAdapter);
@@ -75,6 +71,7 @@ public class AddActivity extends AppCompatActivity {
         //네트워킹
         works = new ArrayList<>();
         getWorks();
+
 
     }
 
@@ -109,17 +106,17 @@ public class AddActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
-            AddListData addListData = addListDatas.get(position);
+            final AddListData addListData = addListDatas.get(position);
 
 
             //사진 이미지
             Glide.with(getApplicationContext())
-                    .load(addListData.leftImg)
-                    .into(holder.ivLeftImg.);
+                    .load(addListData.photo)
+                    .into(holder.ivLeftImg);
 
             //동그란 이미지
             Glide.with(getApplicationContext())
-                    .load(addListData.circleImg)
+                    .load(addListData.profile)
                     .into(holder.ivCirclerImg);
 
             //title
@@ -135,7 +132,7 @@ public class AddActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(AddActivity.this, DetailActivity.class);
-                    intent.putExtra("articleId", );
+                    intent.putExtra("articleId", addListData.idarticles);
                     startActivity(intent);
                 }
             });
@@ -167,16 +164,19 @@ public class AddActivity extends AppCompatActivity {
     }
 
     /***********************************작품 리스트 가져오기*********************************/
-    public void getLists() {
-        Call<AddResult> requestWorkLists = service.getWorks();
+    public void getWorks() {
+        Call<AddResult> requestWorkLists = service.getWorks("godz33@naver.com", 1);
 
         requestWorkLists.enqueue(new Callback<AddResult>() {
             @Override
             public void onResponse(Call<AddResult> call, Response<AddResult> response) {
                 if (response.isSuccessful()) {
                     if (response.body().status.equals("success")) {
-                        works = response.body().data;
+                        works = response.body().bookmark_list;
                         recyclerAdapter.setAdapter(works);
+
+                        //작품 개수 설정
+                        tvWorkNum.setText(String.valueOf(works.size()));
 
 
                     }

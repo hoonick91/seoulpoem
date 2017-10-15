@@ -43,6 +43,7 @@
             android:layout_height="wrap_content"
             android:text="# 그리움"
             android:textColor="#488ab4"
+            android:textStyle="bold"
             android:textSize="15dp" />
     </LinearLayout>
 

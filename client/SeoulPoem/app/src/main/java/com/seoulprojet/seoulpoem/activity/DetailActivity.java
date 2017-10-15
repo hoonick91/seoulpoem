@@ -30,7 +30,7 @@ public class DetailActivity extends AppCompatActivity {
 
     /***************************************변수***********************************************/
 
-    private ImageView ivShare, ivSetting;   //tool bar
+    private ImageView ivShare, ivSetting;
     private AddWorkDialog addWorkDialog;
     private SettingDialog settingDialog;
     private LinearLayout llPhoto;
@@ -107,7 +107,6 @@ public class DetailActivity extends AppCompatActivity {
 
     /***************************************findView***********************************************/
     public void findView() {
-        //toolbar
         ivShare = (ImageView) findViewById(R.id.ivShare);
         ivSetting = (ImageView) findViewById(R.id.ivSetting);
 

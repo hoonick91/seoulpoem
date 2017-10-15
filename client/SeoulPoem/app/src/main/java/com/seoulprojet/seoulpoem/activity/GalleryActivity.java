@@ -68,8 +68,10 @@ public class GalleryActivity extends AppCompatActivity {
         recyclerAdapter = new RecyclerAdapter(gallerys);
         recyclerView.setAdapter(recyclerAdapter);
 
+        Log.d("test", "before method call");
         //네트워크
         getPhotos();
+        Log.d("test", "after method call");
 
         //메인으로
         toMain();
@@ -183,12 +185,14 @@ public class GalleryActivity extends AppCompatActivity {
     /***********************************갤러리 리스트 가져오기*********************************/
     public void getPhotos() {
         Call<GalleryResult> requestGalleryLists = service.getPhotos("그리움");
-
+        Log.d("test", "before galley call");
         requestGalleryLists.enqueue(new Callback<GalleryResult>() {
             @Override
             public void onResponse(Call<GalleryResult> call, Response<GalleryResult> response) {
+                Log.d("test", "before galley success");
                 if (response.isSuccessful()) {
                     if (response.body().sucess.equals("success")) {
+                        Log.d("test", "after galley success");
                         gallerys = response.body().data;
                         Log.d("tag", gallerys.get(0).photo);
                         Log.d("tag", "fsddfa");

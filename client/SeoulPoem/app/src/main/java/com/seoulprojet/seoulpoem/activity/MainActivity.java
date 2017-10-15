@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -26,6 +25,7 @@ import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.model.HashtagListData;
 import com.seoulprojet.seoulpoem.model.MainResult;
 import com.seoulprojet.seoulpoem.model.PoemListData;
+import com.seoulprojet.seoulpoem.model.TestResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
 
@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
     //view pager 밑 부분
     private ImageView img01, img02, img03, img04, img05;
-    private ImageButton ibUpload;
 
     //recycler
     private RecyclerView recyclerView;
@@ -83,9 +82,12 @@ public class MainActivity extends AppCompatActivity {
         //서비스 객체 초기화
         service = ApplicationController.getInstance().getNetworkService();
 
+        //test networtk
+        //testAPI();
+
+
         //findView
         findView();
-
 
         //makeDummy
         makeDummy();
@@ -111,11 +113,10 @@ public class MainActivity extends AppCompatActivity {
         //recycler setting
         setRecycler();
 
+
         //네트워킹
         poems = new ArrayList<>();
         getLists();
-
-
     }
 
 
@@ -137,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
         img03 = (ImageView) findViewById(R.id.iv03);
         img04 = (ImageView) findViewById(R.id.iv04);
         img05 = (ImageView) findViewById(R.id.iv05);
-        ibUpload = (ImageButton) findViewById(R.id.ibUpload);
     }
 
 
@@ -404,14 +404,17 @@ public class MainActivity extends AppCompatActivity {
     /***********************************main 리스트 가져오기*********************************/
     public void getLists() {
         Call<MainResult> requestMainLists = service.getPoems("그리움");
+        Log.d("test", "before call");
 
         requestMainLists.enqueue(new Callback<MainResult>() {
             @Override
             public void onResponse(Call<MainResult> call, Response<MainResult> response) {
+                Log.d("test", "after call");
                 if (response.isSuccessful()) {
                     if (response.body().status.equals("success")) {
                         poems = response.body().data;
 
+                        Log.d("test", "after success");
 
                         //view pager 설정
                         paPoem = new PageAdapterPoems(poems);
@@ -420,7 +423,6 @@ public class MainActivity extends AppCompatActivity {
                         vpPoems.setPageMargin(12);
                         vpPoems.setClipChildren(false);
                         vpPoems.setCurrentItem(2);
-
 
                         //뷰페이저 밑에 이미지들
                         Glide.with(getApplicationContext())
@@ -444,12 +446,42 @@ public class MainActivity extends AppCompatActivity {
                                 .into(img05);
 
                     }
+                } else {
+                    Log.d("test", response.toString());
                 }
             }
 
 
             @Override
             public void onFailure(Call<MainResult> call, Throwable t) {
+                Log.i("test -> err : ", t.getMessage());
+            }
+        });
+    }
+
+
+    /***********************************test*********************************/
+    public void testAPI() {
+        Call<TestResult> requestTest = service.getTest();
+        Log.d("test", "before test call");
+
+        requestTest.enqueue(new Callback<TestResult>() {
+            @Override
+            public void onResponse(Call<TestResult> call, Response<TestResult> response) {
+                Log.d("test", "after call");
+                if (response.isSuccessful()) {
+                    if (response.body().status.equals("success")) {
+                        Log.d("test", "test is sucess");
+
+                    }
+                } else {
+                    Log.d("test", response.toString());
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<TestResult> call, Throwable t) {
                 Log.i("err", t.getMessage());
             }
         });

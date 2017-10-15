@@ -7,19 +7,34 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.model.SearchListData;
+import com.seoulprojet.seoulpoem.model.SearchListDataArticle;
+import com.seoulprojet.seoulpoem.model.SearchListDataAuthor;
+import com.seoulprojet.seoulpoem.model.SearchResult;
+import com.seoulprojet.seoulpoem.network.ApplicationController;
+import com.seoulprojet.seoulpoem.network.NetworkService;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -28,16 +43,28 @@ public class SearchActivity extends AppCompatActivity {
     EditText et;
 
     //recycler
-    private RecyclerView recyclerView;
-    private RecyclerAdapter recyclerAdapter;
-    private LinearLayoutManager layoutManager;
-    private ArrayList<SearchListData> results;
+    private RecyclerView rvWriter, rvTtile;
+    private RecyclerAdapterWriter raWriter;
+    private RecyclerAdapterTitle raTtile;
+    private LinearLayoutManager layoutManager01, layoutManager02;
+    private ArrayList<SearchListDataAuthor> authors;
+    private ArrayList<SearchListDataArticle> articles;
+    private LinearLayout llTv01, llTv02, llRv01, llRv02;
+    private RelativeLayout rlSearchButton;
+
+
+    //네트워크
+    NetworkService service;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+
+        //서비스 객체 초기화
+        service = ApplicationController.getInstance().getNetworkService();
 
         //find view
         findView();
@@ -48,24 +75,30 @@ public class SearchActivity extends AppCompatActivity {
         //배경 누르면
         onTouchBg();
 
-        //검색하면
-        settingTextWatcher();
+
+        //작가별 리사이클러뷰 설정
+        rvWriter = (RecyclerView) findViewById(R.id.rvWrites);
+        layoutManager01 = new LinearLayoutManager(this);
+        layoutManager01.setOrientation(LinearLayoutManager.VERTICAL);
+        rvWriter.setLayoutManager(layoutManager01);
+        raWriter = new RecyclerAdapterWriter(authors);
+        rvWriter.setAdapter(raWriter);
 
 
-        //layout manager setting
-        recyclerView = (RecyclerView) findViewById(R.id.rvWrites);
-        layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
+        //제목별 리사이클러뷰 설정
+        rvTtile = (RecyclerView) findViewById(R.id.rvTitile);
+        layoutManager02 = new LinearLayoutManager(this);
+        layoutManager02.setOrientation(LinearLayoutManager.VERTICAL);
+        rvTtile.setLayoutManager(layoutManager02);
+        raTtile = new RecyclerAdapterTitle(articles);
+        rvTtile.setAdapter(raTtile);
 
 
-        //makeDummy
-        makeDummy();
+        authors = new ArrayList<>();
+        articles = new ArrayList<>();
 
-        //어뎁터 생성, 리사이클러뷰에 붙임
-        recyclerAdapter = new RecyclerAdapter(results);
-        recyclerView.setAdapter(recyclerAdapter);
-
+        //검색 버튼 누르면
+        search();
 
     }
 
@@ -77,7 +110,11 @@ public class SearchActivity extends AppCompatActivity {
         et = (EditText) findViewById(R.id.et);
         tv01 = (TextView) findViewById(R.id.tv01);
         tv02 = (TextView) findViewById(R.id.tv02);
-
+        llTv01 = (LinearLayout) findViewById(R.id.llText01);
+        llTv02 = (LinearLayout) findViewById(R.id.llText02);
+        llRv01 = (LinearLayout) findViewById(R.id.llRv01);
+        llRv02 = (LinearLayout) findViewById(R.id.llRv02);
+        rlSearchButton = (RelativeLayout) findViewById(R.id.rlSearchButton);
     }
 
 
@@ -102,121 +139,177 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    /***********************************검색하면**********************************/
-    public void settingTextWatcher() {
-        TextWatcher textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                tv01.setVisibility(View.INVISIBLE);
-                tv02.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (editable.toString().equals("")) {
-                    tv01.setVisibility(View.VISIBLE);
-                    tv02.setVisibility(View.VISIBLE);
-                }
-            }
-        };
-
-        et.addTextChangedListener(textWatcher);
-
-    }
-
-
-    /***************************************dummy data ***********************************************/
-    public void makeDummy() {
-        results = new ArrayList<>();
-        results.add(new SearchListData(R.drawable.testimg, "구덧흐얌", 13, 10, "구슬모아 당구장", "구슬모아구슬모아"));
-        results.add(new SearchListData(R.drawable.testimg02, "구덧흐얌", 13, 10, "구슬모아 당구장", "구슬모아구슬모아"));
-        results.add(new SearchListData(R.drawable.testimg03, "구덧흐얌", 13, 10, "구슬모아 당구장", "구슬모아구슬모아"));
-        results.add(new SearchListData(R.drawable.testimg04, "구덧흐얌", 13, 10, "구슬모아 당구장", "구슬모아구슬모아"));
-        results.add(new SearchListData(R.drawable.testimg05, "구덧흐얌", 13, 10, "구슬모아 당구장", "구슬모아구슬모아"));
-        results.add(new SearchListData(R.drawable.testimg, "구덧흐얌", 13, 10, "구슬모아 당구장", "구슬모아구슬모아"));
-    }
-
 
     /***********************************Adapter**********************************/
-    class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> {
+    class RecyclerAdapterWriter extends RecyclerView.Adapter<MyViewHolderWriter> {
 
-        ArrayList<SearchListData> searchListDatas;
+        ArrayList<SearchListDataAuthor> searchListDataAuthors;
 
-        public RecyclerAdapter(ArrayList<SearchListData> searchListDatas) {
-            this.searchListDatas = searchListDatas;
+        public RecyclerAdapterWriter(ArrayList<SearchListDataAuthor> searchListDataAuthors) {
+            this.searchListDataAuthors = searchListDataAuthors;
         }
 
-        public void setAdapter(ArrayList<SearchListData> searchListDatas) {
-            this.searchListDatas = searchListDatas;
+        public void setAdapter(ArrayList<SearchListDataAuthor> searchListDataAuthors) {
+            this.searchListDataAuthors = searchListDataAuthors;
             notifyDataSetChanged();
         }
 
         @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public MyViewHolderWriter onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_writer, parent, false);
-            MyViewHolder viewHolder = new MyViewHolder(view);
+            MyViewHolderWriter viewHolder = new MyViewHolderWriter(view);
             return viewHolder;
         }
 
         @Override
-        public void onBindViewHolder(final MyViewHolder holder, int position) {
-            SearchListData searchListData = searchListDatas.get(position);
-
-//
-//            //leftImage
-//            holder.ivLeftImg.setImageResource(workListData.leftImg);
-//
-//            //circleImage
-//            holder.ivCirclerImg.setImageResource(workListData.circleImg);
-//            //title
-//            holder.tvTitle.setText(workListData.title);
-//
-//            //content
-//            holder.tvContent.setText(workListData.content);
+        public void onBindViewHolder(final MyViewHolderWriter holder, int position) {
+            SearchListDataAuthor searchListDataAuthor = searchListDataAuthors.get(position);
 
 
-//            //상세 프로필로 이동
-//            //클릭시 상세화면으로 이동, 클릭한 프로젝트 아이디 전달
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(PeopleActivity.this, OtherUserPage.class);
-//                    intent.putExtra("userID", Integer.parseInt(holder.tvUserID.getText().toString()));
-//                    Log.d("userID", "people목록에서 보내는 id 값 : " + Integer.toString(userID));
-//                    startActivity(intent);
-//                }
-//            });
+            //사진 이미지
+            Glide.with(getApplicationContext())
+                    .load(searchListDataAuthor.profile)
+                    .into(holder.ivLeftImg);
+
+            //title
+            holder.tvName.setText(searchListDataAuthor.name_);
+
+            //content
+            holder.tvPhotoNum.setText(String.valueOf(searchListDataAuthor.ac));
+
+
+            //content
+            holder.tvPoemNum.setText(String.valueOf(searchListDataAuthor.pc));
+
+
         }
 
         @Override
         public int getItemCount() {
-            return results != null ? results.size() : 0;
+            return authors != null ? authors.size() : 0;
         }
     }
 
 
     /**********************************ViewHolder********************************/
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolderWriter extends RecyclerView.ViewHolder {
 
-        TextView tvName, tvPoemNum, tvPhotoNum;
-        ImageView writerImg;
+        ImageView ivLeftImg;
+        TextView tvName, tvPhotoNum, tvPoemNum;
 
 
-        public MyViewHolder(View itemView) {
+        public MyViewHolderWriter(View itemView) {
             super(itemView);
-
+            ivLeftImg = (ImageView) itemView.findViewById(R.id.ivLeftImg);
             tvName = (TextView) itemView.findViewById(R.id.tvName);
             tvPhotoNum = (TextView) itemView.findViewById(R.id.tvPhotoNum);
             tvPoemNum = (TextView) itemView.findViewById(R.id.tvPoemNum);
 
         }
+    }
+
+
+    /***********************************Adapter**********************************/
+    class RecyclerAdapterTitle extends RecyclerView.Adapter<MyViewHolderTitle> {
+
+        ArrayList<SearchListDataArticle> searchListDataArticles;
+
+        public RecyclerAdapterTitle(ArrayList<SearchListDataArticle> searchListDataArticles) {
+            this.searchListDataArticles = searchListDataArticles;
+        }
+
+        public void setAdapter(ArrayList<SearchListDataArticle> searchListDataArticles) {
+            this.searchListDataArticles = searchListDataArticles;
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public MyViewHolderTitle onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_title, parent, false);
+            MyViewHolderTitle viewHolder = new MyViewHolderTitle(view);
+            return viewHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(final MyViewHolderTitle holder, int position) {
+            SearchListDataArticle searchListDataArticle = searchListDataArticles.get(position);
+
+
+            Log.d("test",searchListDataArticle.title );
+            Log.d("test",searchListDataArticle.contents );
+            holder.tvTitle.setText(searchListDataArticle.title);
+            holder.tvContent.setText(searchListDataArticle.contents);
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return articles != null ? articles.size() : 0;
+        }
+    }
+
+
+    /**********************************ViewHolder********************************/
+
+    class MyViewHolderTitle extends RecyclerView.ViewHolder {
+
+        TextView tvTitle, tvContent;
+
+
+        public MyViewHolderTitle(View itemView) {
+            super(itemView);
+            tvTitle = (TextView) itemView.findViewById(R.id.tvTitlee);
+            tvContent = (TextView) itemView.findViewById(R.id.tvContentt);
+
+        }
+    }
+
+
+    /***********************************검색 결과 가져오기*********************************/
+    public void getResults(String tag) {
+        Call<SearchResult> requestSearchResult = service.getSearchResults(tag);
+
+        requestSearchResult.enqueue(new Callback<SearchResult>() {
+            @Override
+            public void onResponse(Call<SearchResult> call, Response<SearchResult> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().status.equals("success")) {
+
+                        llTv01.setVisibility(View.INVISIBLE);
+                        llTv02.setVisibility(View.INVISIBLE);
+                        llRv01.setVisibility(View.VISIBLE);
+                        llRv02.setVisibility(View.VISIBLE);
+
+                        authors = response.body().author_list;
+                        raWriter.setAdapter(authors);
+
+                        articles = response.body().article_list;
+                        raTtile.setAdapter(articles);
+
+                    }
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<SearchResult> call, Throwable t) {
+                Log.i("err", t.getMessage());
+            }
+        });
+    }
+
+
+    /***********************************검색 버튼 클릭**********************************/
+    public void search() {
+        rlSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getResults(et.getText().toString());
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+            }
+        });
     }
 
 
