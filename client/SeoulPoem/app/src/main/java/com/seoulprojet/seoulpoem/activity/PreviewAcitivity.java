@@ -1,6 +1,9 @@
 package com.seoulprojet.seoulpoem.activity;
 
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -23,7 +26,9 @@ import com.seoulprojet.seoulpoem.model.SavePoemResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
 
-import java.io.File;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -148,13 +153,13 @@ public class PreviewAcitivity extends AppCompatActivity{
 
         MultipartBody.Part photo = null;
 
-        if (Preview.photo == null) {
+        if (Preview.photo_location == null) {
             photo = null;
         } else {
 
-            /*//resizing
+            //resizing
             BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 4; //얼마나 줄일지 설정하는 옵션 4--> 1/4로 줄이겠다
+            options.inSampleSize = 2; //얼마나 줄일지 설정하는 옵션 4--> 1/4로 줄이겠다
 
             InputStream in = null; // here, you need to get your context.
             try {
@@ -170,15 +175,14 @@ public class PreviewAcitivity extends AppCompatActivity{
             bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
 
 
-            RequestBody photoBody = RequestBody.create(MediaType.parse("image/jpg"), baos.toByteArray());
+            RequestBody photoBody = RequestBody.create(MediaType.parse("image/*"), baos.toByteArray());
 
             // MultipartBody.Part 실제 파일의 이름을 보내기 위해 사용!!
-            photo = MultipartBody.Part.createFormData("image", Preview.photoName, photoBody);*/
+            photo = MultipartBody.Part.createFormData("photo", Preview.photoName, photoBody);
 
-            File file = new File(Preview.photo_location);
-            RequestBody fileBody = RequestBody.create(MediaType.parse("image/*"), file);
-            photo = MultipartBody.Part.createFormData("image", file.getName(), fileBody);
-
+       /*     File file = new File(Preview.photo_location);
+            RequestBody fileBody = RequestBody.create(MediaType.parse("image*//*"), file);
+            photo = MultipartBody.Part.createFormData("photo", file.getName(), fileBody);*/
 
             Log.e("photofile",Preview.photo_location);
             Log.e("photoname",Preview.photoName);
@@ -195,8 +199,10 @@ public class PreviewAcitivity extends AppCompatActivity{
                 if (response.isSuccessful()) {
                     if (response.body().status.equals("success")) {
                         Toast.makeText(PreviewAcitivity.this, "등록이 완료되었습니다!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(PreviewAcitivity.this,ReadingPoemActivity.class);
+                        intent.putExtra("articles_id",response.body().articles_id);
+                        startActivity(intent);
                     } else {
-
 
                     }
                 } else {

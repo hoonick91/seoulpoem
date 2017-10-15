@@ -41,7 +41,7 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".activity.ReadingPoem">
+        <activity android:name=".activity.ReadingPoemActivity">
 
            </activity>
     </application>

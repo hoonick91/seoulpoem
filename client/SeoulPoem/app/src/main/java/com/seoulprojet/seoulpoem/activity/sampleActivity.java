@@ -35,6 +35,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET;
+import static android.content.Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED;
+
 /**
  * Created by minjeong on 2017-09-27.
  */

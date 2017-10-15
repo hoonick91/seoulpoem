@@ -7,5 +7,6 @@ package com.seoulprojet.seoulpoem.model;
 public class SavePoemResult {
 
     public String status;
+    public String articles_id;
 
 }

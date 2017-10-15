@@ -28,43 +28,43 @@
                     android:id="@+id/poem_img"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#ff0000"/>
+                    android:scaleType="centerCrop" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="51dp"
                     android:layout_marginTop="187dp"
-                    android:textSize="28sp"
-                    android:text="#"/>
+                    android:text="#"
+                    android:textColor="#ffffff"
+                    android:textSize="28sp" />
 
                 <TextView
                     android:id="@+id/poem_title"
-                    android:textSize="30sp"
                     android:layout_width="190dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="230.7dp"
                     android:layout_marginLeft="51dp"
-                    android:text="테스트"/>
-                
+                    android:layout_marginTop="230.7dp"
+                    android:text="테스트"
+                    android:textColor="#ffffff"
+                    android:textSize="30sp" />
+
                 <ImageButton
                     android:id="@+id/poem_path"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-
-                    android:src="@drawable/path2"
                     android:layout_alignParentBottom="true"
+
                     android:layout_marginBottom="26dp"
                     android:layout_marginLeft="174dp"
-                    android:paddingTop="15dp"
-                    android:paddingLeft="15dp"
+                    android:background="@android:color/transparent"
                     android:paddingBottom="15dp"
-                    android:paddingRight="15dp"/>
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="15dp"
+                    android:src="@drawable/path2" />
 
             </RelativeLayout>
-
-
 
 
         </LinearLayout>
