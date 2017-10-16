@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     /***************************************변수***********************************************/
 
     //tool_bar
-    private RelativeLayout rlHamberger, rlPictures, rlSearch;
+    private RelativeLayout rlHamberger, rlSearch;
     private Toolbar tbMain;
 
     //hash tag
@@ -59,15 +59,17 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvHashTag;
     private TabLayout tabLayout;
 
+    private  RelativeLayout rlMore;
 
-    //view pager 밑 부분
-    private ImageView img01, img02, img03, img04, img05;
 
     //recycler
     private RecyclerView recyclerView;
     private RecyclerAdapter recyclerAdapter;
     private LinearLayoutManager layoutManager;
     private ArrayList<HashtagListData> hashtags;
+
+    //to Write
+    private RelativeLayout rlToWrite;
 
     //네트워크
     NetworkService service;
@@ -82,9 +84,6 @@ public class MainActivity extends AppCompatActivity {
         //서비스 객체 초기화
         service = ApplicationController.getInstance().getNetworkService();
 
-        //test networtk
-        //testAPI();
-
 
         //findView
         findView();
@@ -98,20 +97,15 @@ public class MainActivity extends AppCompatActivity {
         //햄버거 toggle
         toHamberger();
 
-        //겔러리도 이동
-        toGallery();
-
         //검색
         toSearch();
 
-        //hash tag
-        toHashtag();
-
-        //뒷 배경 클릭
-        clickBg();
 
         //recycler setting
         setRecycler();
+
+        //작성하기로
+        toWrite();
 
 
         //네트워킹
@@ -126,24 +120,19 @@ public class MainActivity extends AppCompatActivity {
         rlMainBg = (RelativeLayout) findViewById(R.id.rlMainBg);
         tbMain = (Toolbar) findViewById(R.id.tbMain);
         rlHamberger = (RelativeLayout) findViewById(R.id.rlHamberger);
-        rlPictures = (RelativeLayout) findViewById(R.id.rlPictures);
         rlSearch = (RelativeLayout) findViewById(R.id.rlSearch);
 
         llHashTag = (LinearLayout) findViewById(R.id.llHashTag);
         rlHashTagToggle = (RelativeLayout) findViewById(R.id.rlHashTagToggle);
 
         vpPoems = (ViewPager) findViewById(R.id.vpPoems);
-        img01 = (ImageView) findViewById(R.id.iv01);
-        img02 = (ImageView) findViewById(R.id.iv02);
-        img03 = (ImageView) findViewById(R.id.iv03);
-        img04 = (ImageView) findViewById(R.id.iv04);
-        img05 = (ImageView) findViewById(R.id.iv05);
+        rlToWrite = (RelativeLayout) findViewById(R.id.rlToWrite);
+        rlMore = (RelativeLayout)findViewById(R.id.rlMore);
     }
 
 
     /************************************더미 데이터 생성*****************************************/
     private void makeDummy() {
-
 
         //hash tag
         hashtags = new ArrayList<>();
@@ -252,85 +241,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /***********************************hamberger**********************************/
-
-    public void toHamberger() {
-        rlHamberger.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "hamberger open", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    /**********************************gallery move**********************************/
-    public void toGallery() {
-        rlPictures.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //갤러리로 이동
-                Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-    }
-
-
-    /**********************************search**********************************/
-    public void toSearch() {
-        rlSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //갤러리로 이동
-                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-
-    /***********************************Hash Tag**********************************/
-    public void toHashtag() {
-        llHashTag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                switch (rlHashTagToggle.getVisibility()) {
-                    case View.VISIBLE:
-                        Log.d("test", "11111");
-                        rlHashTagToggle.setVisibility(View.INVISIBLE);
-                        tbMain.setVisibility(View.VISIBLE);
-                        break;
-                    case View.INVISIBLE:
-                        rlHashTagToggle.setVisibility(View.VISIBLE);
-                        tbMain.setVisibility(View.INVISIBLE);
-
-                        break;
-
-                }
-            }
-        });
-    }
-
-
-    /***********************************뒷 배경 클릭**********************************/
-    public void clickBg() {
-        rlMainBg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (rlHashTagToggle.getVisibility() == View.VISIBLE) {
-                    rlHashTagToggle.setVisibility(View.INVISIBLE);
-                    tbMain.setVisibility(View.VISIBLE);
-                } else {
-
-                }
-            }
-        });
-    }
-
-
     /***********************************Adapter**********************************/
     class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
@@ -424,27 +334,6 @@ public class MainActivity extends AppCompatActivity {
                         vpPoems.setClipChildren(false);
                         vpPoems.setCurrentItem(2);
 
-                        //뷰페이저 밑에 이미지들
-                        Glide.with(getApplicationContext())
-                                .load(poems.get(0).photo)
-                                .into(img01);
-
-                        Glide.with(getApplicationContext())
-                                .load(poems.get(1).photo)
-                                .into(img02);
-
-                        Glide.with(getApplicationContext())
-                                .load(poems.get(2).photo)
-                                .into(img03);
-
-                        Glide.with(getApplicationContext())
-                                .load(poems.get(3).photo)
-                                .into(img04);
-
-                        Glide.with(getApplicationContext())
-                                .load(poems.get(4).photo)
-                                .into(img05);
-
                     }
                 } else {
                     Log.d("test", response.toString());
@@ -459,30 +348,40 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /***********************************hamberger**********************************/
 
-    /***********************************test*********************************/
-    public void testAPI() {
-        Call<TestResult> requestTest = service.getTest();
-        Log.d("test", "before test call");
-
-        requestTest.enqueue(new Callback<TestResult>() {
+    public void toHamberger() {
+        rlHamberger.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onResponse(Call<TestResult> call, Response<TestResult> response) {
-                Log.d("test", "after call");
-                if (response.isSuccessful()) {
-                    if (response.body().status.equals("success")) {
-                        Log.d("test", "test is sucess");
-
-                    }
-                } else {
-                    Log.d("test", response.toString());
-                }
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "hamberger open", Toast.LENGTH_SHORT).show();
             }
+        });
+    }
 
 
+    /**********************************search**********************************/
+    public void toSearch() {
+        rlSearch.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFailure(Call<TestResult> call, Throwable t) {
-                Log.i("err", t.getMessage());
+            public void onClick(View v) {
+                //검색으로 이동
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+
+    /**********************************Write**********************************/
+    public void toWrite() {
+        rlToWrite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //작성하기로 이동
+                //Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                //startActivity(intent);
+                Toast.makeText(MainActivity.this, "call write activity", Toast.LENGTH_SHORT).show();
             }
         });
     }

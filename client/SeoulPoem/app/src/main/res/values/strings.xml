@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SeoulPoem</string>
+    <string name="app_name">서울,시</string>
     <string name="choice01">공유하기</string>
     <string name="choice02">상세정보</string>
     <string name="choice03">수정하기</string>

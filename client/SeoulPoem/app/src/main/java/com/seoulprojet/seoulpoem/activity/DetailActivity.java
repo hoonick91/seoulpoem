@@ -30,9 +30,11 @@ public class DetailActivity extends AppCompatActivity {
 
     /***************************************변수***********************************************/
 
-    private ImageView ivShare, ivSetting;
+    private ImageView ivShare, ivShare02, ivSetting;
     private AddWorkDialog addWorkDialog;
     private SettingDialog settingDialog;
+    private SettingDialog02 settingDialog02;
+    private InfoDialog infoDialog;
     private LinearLayout llPhoto;
     private NetworkService service;
     private ImageView ivPhoto, ivProfile;
@@ -54,23 +56,20 @@ public class DetailActivity extends AppCompatActivity {
     };
 
     //설정 다이얼로그 리스너
-    private View.OnClickListener settingDialog_listener01 = new View.OnClickListener() {
-        public void onClick(View v) {
-            Toast.makeText(DetailActivity.this, "111", Toast.LENGTH_SHORT).show();
-        }
-    };
-
     private View.OnClickListener settingDialog_listener02 = new View.OnClickListener() {
         public void onClick(View v) {
-            Toast.makeText(DetailActivity.this, "222", Toast.LENGTH_SHORT).show();
+            //원래 뜬 다이얼로그 없애고
+            settingDialog02.dismiss();
 
+            infoDialog = new InfoDialog(DetailActivity.this);
+            infoDialog.setCanceledOnTouchOutside(true);
+            infoDialog.show();
         }
     };
 
     private View.OnClickListener settingDialog_listener03 = new View.OnClickListener() {
         public void onClick(View v) {
             Toast.makeText(DetailActivity.this, "333", Toast.LENGTH_SHORT).show();
-
         }
     };
 
@@ -108,6 +107,8 @@ public class DetailActivity extends AppCompatActivity {
     /***************************************findView***********************************************/
     public void findView() {
         ivShare = (ImageView) findViewById(R.id.ivShare);
+        ivShare02 = (ImageView) findViewById(R.id.ivShare02);
+
         ivSetting = (ImageView) findViewById(R.id.ivSetting);
 
         llPhoto = (LinearLayout) findViewById(R.id.llPhoto);
@@ -116,7 +117,6 @@ public class DetailActivity extends AppCompatActivity {
 
         tvName = (TextView) findViewById(R.id.tvName);
         tvTags = (TextView) findViewById(R.id.tvTags);
-
     }
 
 
@@ -126,8 +126,10 @@ public class DetailActivity extends AppCompatActivity {
         llPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //담은 작품인지, 담지 않은 작품인지에 따라서 나누어야함
                 //우측 상단 visible
-                ivShare.setVisibility(v.VISIBLE);
+                ivShare02.setVisibility(v.VISIBLE);
                 ivSetting.setVisibility(v.VISIBLE);
 
                 //하단 visible
@@ -136,7 +138,6 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
     }
-
 
     /***************************************작품 담기 다이얼로그***********************************************/
 
@@ -195,10 +196,10 @@ public class DetailActivity extends AppCompatActivity {
 
     public class SettingDialog extends Dialog {
 
-        private TextView text01, text02, text03;
-        private String str01, str02, str03;
-        private View.OnClickListener settingDialog_listener01, settingDialog_listener02, settingDialog_listener03;
-        private LinearLayout llRow01, llRow02, llRow03;
+        private TextView text02, text03;
+        private String str02, str03;
+        private View.OnClickListener settingDialog_listener02, settingDialog_listener03;
+        private LinearLayout llRow02, llRow03;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -214,40 +215,106 @@ public class DetailActivity extends AppCompatActivity {
             setContentView(R.layout.dialog_setting);
 
             //findView
-            text01 = (TextView) findViewById(R.id.tv01);
             text02 = (TextView) findViewById(R.id.tv02);
             text03 = (TextView) findViewById(R.id.tv03);
-            llRow01 = (LinearLayout) findViewById(R.id.llRow01);
             llRow02 = (LinearLayout) findViewById(R.id.llRow02);
             llRow03 = (LinearLayout) findViewById(R.id.llRow03);
 
 
             // 제목과 내용을 생성자에서 셋팅
-            text01.setText(str01);
             text02.setText(str02);
             text03.setText(str03);
 
             // 클릭 이벤트 셋팅
-            llRow01.setOnClickListener(settingDialog_listener01);
             llRow02.setOnClickListener(settingDialog_listener02);
             llRow03.setOnClickListener(settingDialog_listener03);
         }
 
 
         // 생성자
-        public SettingDialog(Context context, String str01, String str02, String str03,
-                             View.OnClickListener settingDialog_listener01,
+        public SettingDialog(Context context, String str02, String str03,
                              View.OnClickListener settingDialog_listener02,
                              View.OnClickListener settingDialog_listener03) {
             super(context, android.R.style.Theme_Translucent_NoTitleBar);
-            this.str01 = str01;
             this.str02 = str02;
             this.str03 = str03;
-            this.settingDialog_listener01 = settingDialog_listener01;
             this.settingDialog_listener02 = settingDialog_listener02;
             this.settingDialog_listener03 = settingDialog_listener03;
         }
     }
+
+    /***************************************설정 다이얼로그02***********************************************/
+
+    public class SettingDialog02 extends Dialog {
+
+        private TextView text02;
+        private String str02;
+        private View.OnClickListener settingDialog_listener02;
+        private LinearLayout llRow02;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            // 다이얼로그 외부 화면 흐리게 표현
+            WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
+            lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            lpWindow.dimAmount = 0.8f;
+            getWindow().setAttributes(lpWindow);
+
+            //view mapping
+            setContentView(R.layout.dialog_setting02);
+
+            //findView
+            text02 = (TextView) findViewById(R.id.tv02);
+            llRow02 = (LinearLayout) findViewById(R.id.llRow02);
+
+
+            // 제목과 내용을 생성자에서 셋팅
+            text02.setText(str02);
+
+            // 클릭 이벤트 셋팅
+            llRow02.setOnClickListener(settingDialog_listener02);
+        }
+
+
+        // 생성자
+        public SettingDialog02(Context context, String str02,
+                               View.OnClickListener settingDialog_listener02) {
+            super(context, android.R.style.Theme_Translucent_NoTitleBar);
+            this.str02 = str02;
+            this.settingDialog_listener02 = settingDialog_listener02;
+        }
+    }
+
+
+    /***************************************상세정보 다이얼로그***********************************************/
+
+    public class InfoDialog extends Dialog {
+
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            // 다이얼로그 외부 화면 흐리게 표현
+            WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
+            lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            lpWindow.dimAmount = 0.8f;
+            getWindow().setAttributes(lpWindow);
+
+            //view mapping
+            setContentView(R.layout.dialog_info);
+
+        }
+
+
+        // 생성자
+        public InfoDialog(Context context) {
+            super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        }
+    }
+
 
     /***************************************툴바에서 뒤로가기 누르면***********************************************/
     public void goBack() {
@@ -285,15 +352,23 @@ public class DetailActivity extends AppCompatActivity {
         rlSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                settingDialog = new SettingDialog(DetailActivity.this,
-                        "공유하기",
+
+                //작품을 쓴 사람이 현재 사용자라면
+//                settingDialog = new SettingDialog(DetailActivity.this,
+//                        "상세정보",
+//                        "수정하기",
+//                        settingDialog_listener02,
+//                        settingDialog_listener03);
+//                settingDialog.setCanceledOnTouchOutside(true);
+//                settingDialog.show();
+
+                //작품을 쓴 쓴 사람이 현재 사용자가 아니라면
+                settingDialog02 = new SettingDialog02(DetailActivity.this,
                         "상세정보",
-                        "수정하기",
-                        settingDialog_listener01,
-                        settingDialog_listener02,
-                        settingDialog_listener03);
-                settingDialog.setCanceledOnTouchOutside(true);
-                settingDialog.show();
+                        settingDialog_listener02);
+                settingDialog02.setCanceledOnTouchOutside(true);
+                settingDialog02.show();
+
             }
         });
     }
@@ -338,3 +413,5 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 }
+
+

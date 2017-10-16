@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
@@ -30,7 +31,7 @@ public class GalleryActivity extends AppCompatActivity {
 
 
     //tool_bar
-    private RelativeLayout rlHamberger, rlPictures, rlSearch;
+    private RelativeLayout rlBack, rlSearch;
     private TextView tvPlaceName;
 
     private RecyclerView recyclerView;
@@ -38,6 +39,8 @@ public class GalleryActivity extends AppCompatActivity {
     private GridLayoutManager layoutManager;
 
     private ArrayList<GalleryListData> gallerys;
+
+    private RelativeLayout rlToWrite;
 
 
     //네트워크
@@ -68,16 +71,17 @@ public class GalleryActivity extends AppCompatActivity {
         recyclerAdapter = new RecyclerAdapter(gallerys);
         recyclerView.setAdapter(recyclerAdapter);
 
-        Log.d("test", "before method call");
         //네트워크
         getPhotos();
-        Log.d("test", "after method call");
 
         //메인으로
         toMain();
 
-        //검색
+        //검색으로
         toSearch();
+
+        //작성하기로
+        toWrite();
 
 
     }
@@ -85,10 +89,10 @@ public class GalleryActivity extends AppCompatActivity {
 
     /***************************************findView***********************************************/
     public void findView() {
-        rlHamberger = (RelativeLayout) findViewById(R.id.rlHamberger);
-        rlPictures = (RelativeLayout) findViewById(R.id.rlPictures);
+        rlBack = (RelativeLayout) findViewById(R.id.rlBack);
         rlSearch = (RelativeLayout) findViewById(R.id.rlSearch);
         tvPlaceName = (TextView) findViewById(R.id.tvPlaceName);
+        rlToWrite = (RelativeLayout) findViewById(R.id.rlToWrite);
 
     }
 
@@ -155,32 +159,6 @@ public class GalleryActivity extends AppCompatActivity {
         }
     }
 
-    /**********************************to main**********************************/
-    public void toMain() {
-        rlPictures.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //main 이동
-                Intent intent = new Intent(GalleryActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-    }
-
-
-    /**********************************search**********************************/
-    public void toSearch() {
-        rlSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //갤러리로 이동
-                Intent intent = new Intent(GalleryActivity.this, SearchActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
 
     /***********************************갤러리 리스트 가져오기*********************************/
     public void getPhotos() {
@@ -205,6 +183,46 @@ public class GalleryActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<GalleryResult> call, Throwable t) {
                 Log.i("err", t.getMessage());
+            }
+        });
+    }
+
+
+    /**********************************to main**********************************/
+    public void toMain() {
+        rlBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //main 이동
+                Intent intent = new Intent(GalleryActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+
+
+    /**********************************search**********************************/
+    public void toSearch() {
+        rlSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //갤러리로 이동
+                Intent intent = new Intent(GalleryActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    /**********************************Write**********************************/
+    public void toWrite() {
+        rlToWrite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //작성하기로 이동
+                //Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                //startActivity(intent);
+                Toast.makeText(GalleryActivity.this, "call write activity", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -276,8 +276,19 @@ public class SearchActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body().status.equals("success")) {
 
-                        llTv01.setVisibility(View.INVISIBLE);
-                        llTv02.setVisibility(View.INVISIBLE);
+                        if(response.body().author_list.size()==0 && response.body().article_list.size()==0 ) {
+                            llTv01.setVisibility(View.VISIBLE);
+                            llTv02.setVisibility(View.VISIBLE);
+                        }else if(response.body().author_list.size()!=0 && response.body().article_list.size()==0 ) {
+                            llTv02.setVisibility(View.VISIBLE);
+                        }else if(response.body().author_list.size()==0 && response.body().article_list.size()!=0 ){
+                            llTv01.setVisibility(View.VISIBLE);
+                        }else{
+                            llTv01.setVisibility(View.INVISIBLE);
+                            llTv02.setVisibility(View.INVISIBLE);
+                        }
+
+
                         llRv01.setVisibility(View.VISIBLE);
                         llRv02.setVisibility(View.VISIBLE);
 

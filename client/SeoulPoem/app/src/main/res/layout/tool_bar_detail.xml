@@ -42,7 +42,17 @@
                     android:layout_centerInParent="true"
                     android:src="@drawable/share"
                     android:visibility="invisible" />
+
+                <ImageView
+                    android:id="@+id/ivShare02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/share02"
+                    android:visibility="invisible" />
             </RelativeLayout>
+
+
 
             <!--설정-->
             <RelativeLayout

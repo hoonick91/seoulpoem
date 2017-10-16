@@ -11,39 +11,26 @@
         android:layout_height="match_parent"
         android:id="@+id/tbMain">
 
-        <!--햄버거-->
+        <!--뒤로가기-->
         <RelativeLayout
-            android:id="@+id/rlHamberger"
+            android:id="@+id/rlBack"
             android:layout_width="48dp"
             android:layout_height="48dp">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/hamberger"
+                android:src="@drawable/back"
                 android:layout_centerInParent="true"/>
         </RelativeLayout>
 
-
-        <!--사진-->
-        <RelativeLayout
-            android:id="@+id/rlPictures"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginLeft="210dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/tomain"
-                android:layout_centerInParent="true"/>
-        </RelativeLayout>
 
         <!--검색-->
         <RelativeLayout
             android:id="@+id/rlSearch"
             android:layout_width="48dp"
-            android:layout_height="48dp">
+            android:layout_height="48dp"
+            android:layout_marginLeft="260dp">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

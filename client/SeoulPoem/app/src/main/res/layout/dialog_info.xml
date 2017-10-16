@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lay_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="281dp"
+        android:layout_height="181dp"
+        android:layout_centerInParent="true"
+        android:background="#ffffff">
+
+
+        <!--#상세 정보=-->
+        <LinearLayout
+            android:id="@+id/llrow01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="27dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="# 상세정보"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+
+        <!--태크정보-->
+        <LinearLayout
+            android:id="@+id/llTagText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/llrow01"
+            android:layout_below="@+id/llrow01"
+            android:layout_marginTop="25dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="태그정보"
+                android:textColor="#8a000000"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!--태그-->
+        <LinearLayout
+            android:id="@+id/llTags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/llTagText"
+            android:layout_marginLeft="11dp"
+            android:layout_toRightOf="@+id/llTagText">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#383838"
+                android:textSize="14sp"
+                android:text="#자연 #거리 #너와 나
+#찜닭 #먹고싶다" />
+        </LinearLayout>
+
+
+        <!--추가정보-->
+        <LinearLayout
+            android:id="@+id/llINfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/llrow01"
+            android:layout_below="@+id/llTags"
+            android:layout_marginTop="22dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="추가정보"
+                android:textColor="#8a000000"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!--추가정보-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/llINfo"
+            android:layout_marginLeft="11dp"
+            android:layout_toRightOf="@+id/llINfo">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#383838"
+                android:textSize="14sp"
+                android:text="서울 어딘가, 갤럭스 6S촬영,
+모델이름 000" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
+
+

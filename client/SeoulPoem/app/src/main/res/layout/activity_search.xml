@@ -34,8 +34,8 @@
         <!--입력란-->
         <RelativeLayout
             android:id="@+id/llEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="280dp"
+            android:layout_height="48dp"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/rlSearch">
 
@@ -45,7 +45,8 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:hint="작가/태그별 검색"
-                android:textCursorDrawable="@color/black" />
+                android:textCursorDrawable="@color/black"
+                android:layout_centerInParent="true"/>
         </RelativeLayout>
 
         <!--검색 버튼-->
@@ -108,7 +109,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="visible">
+            android:visibility="invisible">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -165,7 +166,7 @@
             android:id="@+id/llText02"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="invisible"
             android:layout_centerInParent="true">
 
             <TextView
