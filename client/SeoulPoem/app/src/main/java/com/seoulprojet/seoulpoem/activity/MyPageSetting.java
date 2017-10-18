@@ -141,9 +141,9 @@ public class MyPageSetting extends AppCompatActivity {
         camDialog.setContentView(dialogLayout);
         camDialog.show();
 
-        Button cam_album_btn = (Button)dialogLayout.findViewById(R.id.cam_album_btn);
-        Button cam_default_btn = (Button)dialogLayout.findViewById(R.id.cam_default_btn);
-        Button cam_cancel_btn = (Button)dialogLayout.findViewById(R.id.cam_cancel_btn);
+        ImageButton cam_album_btn = (ImageButton)dialogLayout.findViewById(R.id.cam_album_btn);
+        ImageButton cam_default_btn = (ImageButton)dialogLayout.findViewById(R.id.cam_default_btn);
+        ImageButton cam_cancel_btn = (ImageButton)dialogLayout.findViewById(R.id.cam_cancel_btn);
 
         cam_album_btn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -192,21 +192,6 @@ public class MyPageSetting extends AppCompatActivity {
 
                 int height = selectedImage.getHeight();
                 int width = selectedImage.getWidth();
-
-                // 이미지 비율
-                    /*
-                    if(height == width){
-                        mypage_setting_background_img.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    }
-
-                    else if(height > width){
-                        mypage_setting_background_img.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    }
-
-                    else{
-                        mypage_setting_background_img.setScaleType(ImageView.ScaleType.FIT_XY);
-                    }*/
-
 
                 // resize 및 imageview 지정
                 if(width > 1080){

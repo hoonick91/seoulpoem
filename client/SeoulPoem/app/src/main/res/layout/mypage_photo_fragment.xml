@@ -10,6 +10,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/mypage_photo_num_tv"
         android:text="#총 n장"
         android:layout_marginBottom="10dp"/>
 
@@ -18,6 +19,9 @@
         android:layout_height="match_parent"
         android:verticalSpacing="10dp"
         android:horizontalSpacing="10dp"
+        android:id="@+id/mypage_photo_rv"
+        android:overScrollMode="never"
+        android:scrollbars="none"
         android:numColumns="3"
         android:gravity="center"></GridView>
 

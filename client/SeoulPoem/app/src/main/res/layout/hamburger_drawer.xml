@@ -24,6 +24,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:id="@+id/hamburger_bg"
+                android:scaleType="centerCrop"
                 android:background="#ffa6be" />
 
         </LinearLayout>
@@ -33,6 +34,7 @@
             android:layout_width="82dp"
             android:layout_height="82dp"
             android:src="@drawable/profile_tmp"
+            android:scaleType="centerCrop"
             android:layout_centerInParent="true" />
 
         <LinearLayout
@@ -48,6 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="별명"
+                android:id="@+id/hamburger_name"
                 android:textColor="#000000"
                 android:textSize="18sp" />
 
@@ -55,6 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
+                android:id="@+id/hamburger_message"
                 android:text="꽃과 시"
                 android:textColor="#000000"
                 android:textSize="15sp" />

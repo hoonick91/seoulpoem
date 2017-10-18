@@ -3,6 +3,10 @@ package com.seoulprojet.seoulpoem.network;
 
 import com.seoulprojet.seoulpoem.model.MyPagePoemResult;
 import com.seoulprojet.seoulpoem.model.MyPageResult;
+import com.seoulprojet.seoulpoem.model.NoticeDetailResult;
+import com.seoulprojet.seoulpoem.model.NoticeResult;
+import com.seoulprojet.seoulpoem.model.TodayResult;
+import com.seoulprojet.seoulpoem.model.WriterListResult;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -47,4 +51,19 @@ public interface NetworkService {
     Call<MyPageResult> getMyPage(@Header("email") String email,
                                  @Header("type") int type);
 
+    // notice
+    @GET("/notice")
+    Call<NoticeResult> getNotice();
+
+    // notice detail
+    @GET("/notice/{idnotices}")
+    Call<NoticeDetailResult> getNoticeDetail(@Path("idnotices") int idnotices);
+
+    // writer list
+    @GET("/author")
+    Call<WriterListResult> getWriterList();
+
+    // today seoul
+    @GET("/subway")
+    Call<TodayResult> getToday();
 }

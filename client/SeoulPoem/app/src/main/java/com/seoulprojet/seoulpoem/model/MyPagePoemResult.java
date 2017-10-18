@@ -14,6 +14,6 @@ public class MyPagePoemResult {
 
     public class PoemMessage{
         public int counts;
-        public ArrayList<MyPagePoemResult> poems;
+        public ArrayList<MyPagePoemListData> poems;
     }
 }

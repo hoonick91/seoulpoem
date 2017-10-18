@@ -48,6 +48,8 @@ public class MyPage extends AppCompatActivity {
 
     // drawer
     private ImageButton hamburger_setting_btn, hamburger_mypage_btn, hamburger_scrab_btn, hamburger_today_btn, hamburger_writer_btn,hamburger_notice_btn;
+    private TextView hamburger_name, hamburger_message;
+    private ImageView hamburger_profile, hamburger_bg;
     private View drawerView;
     private DrawerLayout drawerLayout;
 
@@ -64,6 +66,7 @@ public class MyPage extends AppCompatActivity {
 
         // network
         getMypage();
+        getMenuMypage();
 
         // find view
         mypage_profile_img = (ImageView)findViewById(R.id.mypage_profile_img);
@@ -77,62 +80,7 @@ public class MyPage extends AppCompatActivity {
         mypage_bg_iv = (ImageView)findViewById(R.id.mypage_bg_iv);
 
         // drawer
-        hamburger_mypage_btn = (ImageButton)findViewById(R.id.hamburger_mypage_btn);
-        hamburger_scrab_btn = (ImageButton)findViewById(R.id.hamburger_scrab_btn);
-        hamburger_today_btn = (ImageButton)findViewById(R.id.hamburger_todayseoul_btn);
-        hamburger_writer_btn = (ImageButton)findViewById(R.id.hamburger_writerlist_btn);
-        hamburger_notice_btn = (ImageButton)findViewById(R.id.hamburger_notice_btn);
-        hamburger_setting_btn = (ImageButton)findViewById(R.id.hamburger_setting_btn);
-
-        drawerLayout = (DrawerLayout)findViewById(R.id.mypage_drawer_layout);
-        drawerView = (View)findViewById(R.id.drawer);
-        mypage_hamburger_btn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                drawerLayout.openDrawer(drawerView);
-            }
-        });
-
-        hamburger_mypage_btn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MyPage.class);
-                startActivity(intent);
-            }
-        });
-
-        hamburger_today_btn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), TodaySeoul.class);
-                startActivity(intent);
-            }
-        });
-
-        hamburger_setting_btn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SettingPage.class);
-                startActivity(intent);
-            }
-        });
-
-        hamburger_notice_btn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                drawerLayout.closeDrawers();
-                Intent intent = new Intent(getApplicationContext(), Notice.class);
-                startActivity(intent);
-            }
-        });
-
-        hamburger_writer_btn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), WriterList.class);
-                startActivity(intent);
-            }
-        });
+        showHamburger();
 
 
         // 페이지 이동
@@ -225,4 +173,101 @@ public class MyPage extends AppCompatActivity {
         });
     }
 
+    /********* drawer **********/
+    public void showHamburger(){
+
+        hamburger_mypage_btn = (ImageButton)findViewById(R.id.hamburger_mypage_btn);
+        hamburger_scrab_btn = (ImageButton)findViewById(R.id.hamburger_scrab_btn);
+        hamburger_today_btn = (ImageButton)findViewById(R.id.hamburger_todayseoul_btn);
+        hamburger_writer_btn = (ImageButton)findViewById(R.id.hamburger_writerlist_btn);
+        hamburger_notice_btn = (ImageButton)findViewById(R.id.hamburger_notice_btn);
+        hamburger_setting_btn = (ImageButton)findViewById(R.id.hamburger_setting_btn);
+        hamburger_name = (TextView)findViewById(R.id.hamburger_name);
+        hamburger_message = (TextView)findViewById(R.id.hamburger_message);
+        hamburger_profile = (ImageView)findViewById(R.id.hamburger_profile_img);
+        hamburger_bg = (ImageView)findViewById(R.id.hamburger_bg);
+
+        drawerLayout = (DrawerLayout)findViewById(R.id.mypage_drawer_layout);
+        drawerView = (View)findViewById(R.id.drawer);
+        mypage_hamburger_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(drawerView);
+            }
+        });
+
+        hamburger_mypage_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                startActivity(intent);
+            }
+        });
+
+        hamburger_today_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TodaySeoul.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        hamburger_setting_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SettingPage.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        hamburger_notice_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                drawerLayout.closeDrawers();
+                Intent intent = new Intent(getApplicationContext(), Notice.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        hamburger_writer_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), WriterList.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+
+    /******************* mypage 정보 가져오기 ******************/
+    public void getMenuMypage(){
+        Call<MyPageResult> requestMyPage = service.getMyPage("godz33@naver.com", 1);
+
+        requestMyPage.enqueue(new Callback<MyPageResult>() {
+            @Override
+            public void onResponse(Call<MyPageResult> call, Response<MyPageResult> response) {
+                if(response.isSuccessful()){
+                    Log.d("error", "xxx");
+                    if(response.body().status.equals("success")){
+                        hamburger_name.setText(response.body().msg.pen_name);
+                        hamburger_message.setText(response.body().msg.inform);
+                        Glide.with(getApplicationContext())
+                                .load(response.body().msg.profile)
+                                .into(hamburger_profile);
+                        Glide.with(getApplicationContext())
+                                .load(response.body().msg.background)
+                                .into(hamburger_bg);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MyPageResult> call, Throwable t) {
+                Log.i("mypage error", t.getMessage());
+            }
+        });
+    }
 }

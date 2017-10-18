@@ -13,11 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity"></activity>
+        <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.MyPage" />
         <activity android:name=".activity.MyPageSetting" />
         <activity android:name=".activity.WriterList" />
-        <activity android:name=".activity.WriterApply" />
         <activity android:name=".activity.Notice" />
         <activity android:name=".activity.SettingPage" />
         <activity android:name=".activity.TodaySeoul" />
@@ -30,7 +29,8 @@
         </activity>
         <activity android:name=".activity.Login" />
         <activity android:name=".activity.LoginName" />
-        <activity android:name=".activity.MyPageShowImage"></activity>
+        <activity android:name=".activity.MyPageShowImage" />
+        <activity android:name=".activity.NoticeDetail"></activity>
     </application>
 
 </manifest>

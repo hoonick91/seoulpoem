@@ -36,12 +36,11 @@ public class MyPagePoemFragment extends Fragment {
     private RecyclerAdapter recyclerAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    private int poemNum = 0;
 
     // network
     NetworkService service;
     private ArrayList<MyPagePoemResult> myPagePoemResults;
-    private ArrayList<MyPagePoemListData> myPagePoemListDatas;
+    private ArrayList<MyPagePoemListData> poemResults;
 
     @Nullable
     @Override
@@ -55,38 +54,22 @@ public class MyPagePoemFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         // service
-       // service = ApplicationController.getInstance().getNetworkService();
-
-        // networking
-        // myPagePoemListDatas = new ArrayList<>();
-        // getMyPoems();
-
-        // make adapter
-        recyclerAdapter = new RecyclerAdapter(myPagePoemListDatas);
-        recyclerView.setAdapter(recyclerAdapter);
-        poemCount.setText("# 총 " + poemNum + "개");
+       service = ApplicationController.getInstance().getNetworkService();
+        getPoem();
 
         return view;
     }
 
-    //************dummy*************//
-    /*public void makeDummy(){
-        myPagePoemListDatas = new ArrayList<>();
-        myPagePoemListDatas.add(new MyPagePoemListData(1, "너와 나"));
-        myPagePoemListDatas.add(new MyPagePoemListData(2, "나야 나"));
-        myPagePoemListDatas.add(new MyPagePoemListData(3, "활활"));
-    }*/
-
     /******************** adapter *****************************/
     class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>{
-        ArrayList<MyPagePoemListData> myPagePoemListDatas;
+        ArrayList<MyPagePoemListData> poemResults;
 
-        public RecyclerAdapter(ArrayList<MyPagePoemListData> myPagePoemListDatas){
-            this.myPagePoemListDatas = myPagePoemListDatas;
+        public RecyclerAdapter(ArrayList<MyPagePoemListData> poemResults){
+            this.poemResults = poemResults;
         }
 
-        public void setAdapter(ArrayList<MyPagePoemListData> myPagePoemListDatas){
-            this.myPagePoemListDatas = myPagePoemListDatas;
+        public void setAdapter(ArrayList<MyPagePoemListData> poemResults){
+            this.poemResults = poemResults;
             notifyDataSetChanged();
         }
 
@@ -98,14 +81,14 @@ public class MyPagePoemFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
-            MyPagePoemListData myPagePoemListData = myPagePoemListDatas.get(position);
+            MyPagePoemListData poemResult = poemResults.get(position);
 
-            holder.poemTitle.setText(myPagePoemListData.title);
+            holder.poemTitle.setText(poemResult.title);
         }
 
         @Override
         public int getItemCount() {
-            return myPagePoemListDatas != null ? myPagePoemListDatas.size() : 0;
+            return poemResults != null ? poemResults.size() : 0;
         }
     }
 
@@ -121,5 +104,22 @@ public class MyPagePoemFragment extends Fragment {
     }
 
     /****************** 시 리스트 가져오기 **********************/
+    private void getPoem(){
+        Call<MyPagePoemResult> requestPoem = service.getMyPoem("godz33@naver.com", 1);
 
+        requestPoem.enqueue(new Callback<MyPagePoemResult>() {
+            @Override
+            public void onResponse(Call<MyPagePoemResult> call, Response<MyPagePoemResult> response) {
+                poemResults = response.body().msg.poems;
+                poemCount.setText("# 총 " + response.body().msg.counts + "개");
+                recyclerAdapter = new RecyclerAdapter(poemResults);
+                recyclerView.setAdapter(recyclerAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<MyPagePoemResult> call, Throwable t) {
+                Log.i("mypage poem", t.getMessage());
+            }
+        });
+    }
 }
