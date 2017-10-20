@@ -3,8 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="20dp"
+    android:paddingTop="10dp"
     android:paddingLeft="10dp"
+    android:paddingBottom="10dp"
     android:paddingRight="10dp">
 
     <TextView
@@ -19,7 +20,7 @@
         android:layout_height="match_parent"
         android:verticalSpacing="10dp"
         android:horizontalSpacing="10dp"
-        android:id="@+id/mypage_photo_rv"
+        android:id="@+id/mypage_photo_gv"
         android:overScrollMode="never"
         android:scrollbars="none"
         android:numColumns="3"

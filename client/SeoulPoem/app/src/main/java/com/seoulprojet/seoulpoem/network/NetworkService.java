@@ -1,6 +1,7 @@
 package com.seoulprojet.seoulpoem.network;
 
 
+import com.seoulprojet.seoulpoem.model.MyPagePhotoResult;
 import com.seoulprojet.seoulpoem.model.MyPagePoemResult;
 import com.seoulprojet.seoulpoem.model.MyPageResult;
 import com.seoulprojet.seoulpoem.model.NoticeDetailResult;
@@ -41,10 +42,14 @@ public interface NetworkService {
     Call<AddResult> getWorks(@Path("articleid") int articleid);
     */
 
-    // mypage
+    // mypage poem
     @GET("/mypage/poem")
     Call<MyPagePoemResult> getMyPoem(@Header("email") String email,
                                      @Header("type") int type);
+
+    @GET("/mypage/photo")
+    Call<MyPagePhotoResult> getMyPhoto(@Header("email") String email,
+                                       @Header("type") int type);
 
     // mypage 프로필 정보
     @GET("/mypage")

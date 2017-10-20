@@ -42,9 +42,9 @@ public class MyPage extends AppCompatActivity {
     private TextView mypage_name_txt;
     private TextView mypage_message_txt;
     private ImageButton mypage_upload_btn;
-    private Button mypage_photo_btn;
+    private ImageButton mypage_photo_btn;
     private ImageView mypage_bg_iv;
-    private Button mypage_poem_btn;
+    private ImageButton mypage_poem_btn;
 
     // drawer
     private ImageButton hamburger_setting_btn, hamburger_mypage_btn, hamburger_scrab_btn, hamburger_today_btn, hamburger_writer_btn,hamburger_notice_btn;
@@ -75,8 +75,8 @@ public class MyPage extends AppCompatActivity {
         mypage_name_txt = (TextView)findViewById(R.id.mypage_name_txt);
         mypage_message_txt = (TextView)findViewById(R.id.mypage_message_txt);
         mypage_upload_btn = (ImageButton)findViewById(R.id.mypage_upload_btn);
-        mypage_photo_btn = (Button)findViewById(R.id.mypage_photo_btn);
-        mypage_poem_btn = (Button)findViewById(R.id.mypage_poem_btn);
+        mypage_photo_btn = (ImageButton)findViewById(R.id.mypage_photo_btn);
+        mypage_poem_btn = (ImageButton)findViewById(R.id.mypage_poem_btn);
         mypage_bg_iv = (ImageView)findViewById(R.id.mypage_bg_iv);
 
         // drawer
@@ -103,6 +103,8 @@ public class MyPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                mypage_poem_btn.setImageResource(R.drawable.mypage_poem_un_btn);
+                mypage_photo_btn.setImageResource(R.drawable.mypage_photo_on_btn);
                getFragmentManager()
                        .beginTransaction()
                        .replace(R.id.mypage_fragment, new MyPagePhotoFragment())
@@ -114,6 +116,8 @@ public class MyPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                mypage_poem_btn.setImageResource(R.drawable.mypage_poem_on_btn);
+                mypage_photo_btn.setImageResource(R.drawable.mypage_photo_un);
                 getFragmentManager()
                         .beginTransaction()
                         .replace(R.id.mypage_fragment, new MyPagePoemFragment())
