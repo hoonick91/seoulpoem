@@ -7,13 +7,18 @@
         android:layout_width="match_parent"
         android:layout_height="160dp">
 
-        <Button
+        <ImageButton
             android:id="@+id/back"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginLeft="29dp"
             android:layout_marginTop="31dp"
-            android:background="@drawable/path_112"/>
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/path_112"/>
 
         <ImageView
             android:id="@+id/preview_img"

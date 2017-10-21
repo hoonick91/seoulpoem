@@ -23,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -30,7 +31,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.component.Preview;
 import com.seoulprojet.seoulpoem.model.ReadingPoem;
@@ -48,8 +48,6 @@ import static android.graphics.Typeface.BOLD;
 import static android.graphics.Typeface.BOLD_ITALIC;
 import static android.graphics.Typeface.ITALIC;
 import static android.graphics.Typeface.NORMAL;
-import static com.seoulprojet.seoulpoem.R.id.poem_img;
-import static java.lang.System.load;
 
 /**
  * Created by minjeong on 2017-09-17.
@@ -63,7 +61,7 @@ public class WritePoemActivity extends AppCompatActivity {
 
     RelativeLayout background;
     int backgroundId = 1;
-    Button page_back;
+    ImageButton page_back;
     RelativeLayout toolbar;
     LinearLayout main_toolbar;
     TextView font_button;
@@ -92,7 +90,7 @@ public class WritePoemActivity extends AppCompatActivity {
     boolean style_check[];
 
     RelativeLayout back;
-    Button finish;
+    ImageButton finish;
     Button[] tag;
     int[] tagid;
 
@@ -111,6 +109,11 @@ public class WritePoemActivity extends AppCompatActivity {
     int check_cnt = 1;
     int article_id;
 
+    String text;
+    StringBuffer sb;
+    boolean text_change=false;
+
+
 
 
 
@@ -122,6 +125,7 @@ public class WritePoemActivity extends AppCompatActivity {
         setId();
         CheckSelectedTag();
         addTitleTagListener();
+        addTagListener();
         changeBackground();
 
         Intent intent = getIntent();
@@ -133,6 +137,8 @@ public class WritePoemActivity extends AppCompatActivity {
         }
 
     }
+
+
 
     /****************************************네트워크 초기화*****************************************/
     private void initNetwork() {
@@ -230,7 +236,7 @@ public class WritePoemActivity extends AppCompatActivity {
     //xml의 id값들을 java파일의 변수와 연결
     public void setId(){
         background = (RelativeLayout) findViewById(R.id.background);
-        finish = (Button)findViewById(R.id.finish);
+        finish = (ImageButton)findViewById(R.id.finish);
 
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -307,7 +313,7 @@ public class WritePoemActivity extends AppCompatActivity {
         write_content = (EditText)findViewById(R.id.write_content);
 
 
-                InputMethodManager controlManager = (InputMethodManager) getSystemService(Service.INPUT_METHOD_SERVICE);
+               /* InputMethodManager controlManager = (InputMethodManager) getSystemService(Service.INPUT_METHOD_SERVICE);
                 SoftKeyboard mSoftKeyboard = new SoftKeyboard(write_content_wrap, controlManager);
                 mSoftKeyboard.setSoftKeyboardCallback(new SoftKeyboard.SoftKeyboardChanged() {
                     @Override
@@ -334,6 +340,16 @@ public class WritePoemActivity extends AppCompatActivity {
                                 });
                     }
                 });
+*/
+        write_content.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        public void onFocusChange(View v, boolean hasFocus) {
+                    if(hasFocus == false) {
+                       toolbar.setVisibility(View.GONE);
+                    }else{
+                        toolbar.setVisibility(View.VISIBLE);
+                    }
+                 }
+        });
 
 
 
@@ -402,7 +418,7 @@ public class WritePoemActivity extends AppCompatActivity {
             }
         });
 
-        page_back = (Button)findViewById(R.id.page_back);
+        page_back = (ImageButton)findViewById(R.id.page_back);
         page_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -563,7 +579,7 @@ public class WritePoemActivity extends AppCompatActivity {
 
     }
 
-    //제목 작성지 필수태그에 제목 추가하기 and 태그에 #표시 붙이기
+    //제목 작성지 필수태그에 제목 추가하기
     public void  addTitleTagListener(){
         write_title.addTextChangedListener(new TextWatcher() {
 
@@ -583,8 +599,27 @@ public class WritePoemActivity extends AppCompatActivity {
                 // 입력하기 전에
             }
         });
+    }
 
+    //태그에 #표시 붙이기
+    private void addTagListener(){
+        write_tag.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                CheckSpace();
+
+            }
+        });
     }
 
     public void changeBackground(){
@@ -739,21 +774,35 @@ public class WritePoemActivity extends AppCompatActivity {
         }
         }
 
-        private void CheckSpace(){
-            String text = write_tag.getText().toString();
-            StringBuffer sb = new StringBuffer(text);
+        private void CheckSpace() {
+            if (write_tag.getText().toString().contains(" ")) {
+                text = write_tag.getText().toString();
+                sb = new StringBuffer(text);
 
-            if(text.charAt(0) != '#')//맨처음에 #이 없을시
-                sb.insert(0,"#");
-                    text = "#" + text ;
-
-            for(int i=0;i<text.length();i++) {
-                if (text.charAt(i) == ' ') { //공백이 있을때
-                    sb.insert(i + 1, "#");
+                if (text.charAt(0) != '#'){//맨처음에 #이 없을시
+                    sb.insert(0,"#");
+                    text_change = true;
                 }
-            }
+                for (int i = 0; i < text.length()-1; i++) {
+                    if (text.charAt(i) == ' ') { //공백이 있을때
+                        if(i != text.length()-2) {
+                            if (text.charAt(i + 1) != '#') {
+                                sb.insert(i + 1, "#");
+                                text_change = true;
+                            }
+                        }else{
+                            sb.insert(i+1,"#");
+                        }
+                    }
+                }
 
-            write_tag.setText(sb.toString());
+                if(text_change){
+                    text_change = false;
+                    write_tag.setText(sb.toString());
+                    write_tag.setSelection(sb.length());
+                }
+
+            }
         }
 
 }

@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,8 +43,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static java.lang.System.in;
-
 /**
  * Created by minjeong on 2017-09-27.
  */
@@ -53,7 +52,7 @@ public class PreviewAcitivity extends AppCompatActivity {
     //네트워킹
     NetworkService service;
 
-    Button back; //뒤로가기 버튼
+    ImageButton back; //뒤로가기 버튼
     TextView preview_title; //제목
     TextView preview_content; //내용
     ImageView preview_img; //이미지파일
@@ -84,7 +83,7 @@ public class PreviewAcitivity extends AppCompatActivity {
 
     /****************************************아이디값 연결*****************************************/
     private void setId() {
-        back = (Button) findViewById(R.id.back);
+        back = (ImageButton) findViewById(R.id.back);
         preview_title = (TextView) findViewById(R.id.preview_title);
         preview_content = (TextView) findViewById(R.id.preview_content);
         preview_img = (ImageView) findViewById(R.id.preview_img);
