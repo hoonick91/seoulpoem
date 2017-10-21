@@ -28,12 +28,28 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.component.Preview;
+import com.seoulprojet.seoulpoem.model.ReadingPoem;
+import com.seoulprojet.seoulpoem.network.ApplicationController;
+import com.seoulprojet.seoulpoem.network.NetworkService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static android.graphics.Typeface.BOLD;
+import static android.graphics.Typeface.BOLD_ITALIC;
+import static android.graphics.Typeface.ITALIC;
+import static android.graphics.Typeface.NORMAL;
+import static com.seoulprojet.seoulpoem.R.id.poem_img;
+import static java.lang.System.load;
 
 /**
  * Created by minjeong on 2017-09-17.
@@ -41,6 +57,9 @@ import java.util.List;
 
 
 public class WritePoemActivity extends AppCompatActivity {
+
+    //네트워킹
+    NetworkService service;
 
     RelativeLayout background;
     int backgroundId = 1;
@@ -57,7 +76,7 @@ public class WritePoemActivity extends AppCompatActivity {
     Button text_right; //2
     Button text_center; //3
     Button text_default; //4
-    int gravity=0;
+    int gravity = 4;
 
     LinearLayout font_toolbar;
     RelativeLayout back2;
@@ -90,6 +109,7 @@ public class WritePoemActivity extends AppCompatActivity {
     EditText write_detail;
 
     int check_cnt = 1;
+    int article_id;
 
 
 
@@ -98,13 +118,113 @@ public class WritePoemActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_poem);
+        initNetwork();
         setId();
         CheckSelectedTag();
         addTitleTagListener();
         changeBackground();
 
+        Intent intent = getIntent();
+        String type = intent.getStringExtra("type");
+        article_id = Integer.parseInt(type);
+        if(article_id != 0 ){ //글쓰기가 아닌 글 수정인 경우 내용 받아오기
+           Log.e("article",""+article_id);
+            getContent();
+        }
 
     }
+
+    /****************************************네트워크 초기화*****************************************/
+    private void initNetwork() {
+        service = ApplicationController.getInstance().getNetworkService();
+    }
+
+    /****************************************서버에 정보 받음**************************************/
+    private void getContent(){
+        Call<ReadingPoem> request = service.readPoem("godz33@naver.com",1, article_id);
+        request.enqueue(new Callback<ReadingPoem>() {
+            @Override
+            public void onResponse(Call<ReadingPoem> call, Response<ReadingPoem> response) {
+                if (response.isSuccessful()) {
+                    Preview.photo_location = response.body().article.photo;
+                   write_title.setText(response.body().article.title);
+                   write_content.setTextSize(response.body().article.setting.font_size);
+                   if (response.body().article.setting.bold == 1){
+                       if( response.body().article.setting.inclination == 1){
+                           write_content.setTypeface(null, BOLD_ITALIC);
+                           style_check[0] = true;
+                           style_check[1] = true;
+
+                       }else {
+                           style_check[0] = true;
+                           write_content.setTypeface(null, BOLD);
+                       }
+                   }else{
+                       if( response.body().article.setting.inclination == 1){
+                           style_check[1] = true;
+                           write_content.setTypeface(null, ITALIC);
+                       }else {
+                           write_content.setTypeface(null, NORMAL);
+                       }
+                   };
+                   if(response.body().article.setting.underline == 1){
+                       style_check[2] = true;
+                       write_content.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+                   }
+                   else {
+                       write_content.setPaintFlags(0);
+                   }
+
+                    if(response.body().article.setting.color == 1)
+                        write_content.setTextColor(Color.parseColor("#ffffff"));
+                    else if(response.body().article.setting.color == 2)
+                        write_content.setTextColor(Color.parseColor("#773511"));
+                    else  if(response.body().article.setting.color == 3)
+                        write_content.setTextColor(Color.parseColor("#765745"));
+                    else  if(response.body().article.setting.color == 4)
+                        write_content.setTextColor(Color.parseColor("#888888"));
+                    else
+                        write_content.setTextColor(Color.parseColor("#000000"));
+
+                    if(response.body().article.setting.sort==1){
+                        write_content.setGravity(Gravity.LEFT);
+                        gravity = 1;
+                    }else if(response.body().article.setting.sort==2){
+                        write_content.setGravity(Gravity.RIGHT);
+                        gravity = 2;
+                    }else if(response.body().article.setting.sort ==3){
+                        write_content.setGravity(Gravity.CENTER_HORIZONTAL);
+                        gravity = 3;
+                    }else{
+                        write_content.setGravity(Gravity.NO_GRAVITY);
+                        gravity = 4;
+                    };
+
+                    write_content.setText(response.body().article.content);
+                    write_tag.setText(response.body().article.tags);
+                    EditTag();
+                    write_detail.setText(response.body().article.inform);
+
+                    backgroundId = Integer.parseInt(response.body().article.background);
+                    for(int j=0; j<4; j++) {
+                        if(j == backgroundId-1)
+                            paper[j].setBackgroundResource(paper_resource[j]);
+                        else
+                            paper[j].setBackgroundResource(paper_resource_orign[j]);
+                    }
+
+                } else {
+                    Log.e("err",response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReadingPoem> call, Throwable t) {
+
+            }
+        });
+    }
+
 
 
     //xml의 id값들을 java파일의 변수와 연결
@@ -115,8 +235,10 @@ public class WritePoemActivity extends AppCompatActivity {
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("photo?",""+Preview.photo_location);
                 Preview.title = write_title.getText().toString();
                 Preview.content = write_content.getText().toString();
+                Log.e("content?",""+Preview.content);
                 //만약 기기마다 다르다면 /3말고 폰트사이즈 변경하는 부분에서 Preview.font_size를 바꿀것.
                 Preview.font_size = ((int)write_content.getTextSize())/3;
                 if(style_check[0]== true)
@@ -131,13 +253,25 @@ public class WritePoemActivity extends AppCompatActivity {
                     Preview.underline = 1;
                 else
                     Preview.underline = 0;
-                Preview.color = write_content.getTextColors().getDefaultColor();
+                if(write_content.getCurrentTextColor() == Color.parseColor("#ffffff"))
+                    Preview.color = 1;
+                else if(write_content.getCurrentTextColor() == Color.parseColor("#773511"))
+                    Preview.color = 2;
+                else if(write_content.getCurrentTextColor() == Color.parseColor("#765745"))
+                    Preview.color = 3;
+                else if(write_content.getCurrentTextColor() == Color.parseColor("#888888"))
+                    Preview.color = 4;
+                else
+                    Preview.color = 5;
+
                 Preview.sortinfo = gravity;
+                Log.e("sortinfo?",""+Preview.sortinfo);
                 Preview.tags = write_tag.getText().toString();
                 Preview.inform = write_detail.getText().toString();
                 Preview.background = backgroundId;
 
                 Intent intent = new Intent(getApplicationContext(),PreviewAcitivity.class);
+                intent.putExtra("type",""+article_id);
                 startActivity(intent);
             }
         });
@@ -332,7 +466,7 @@ public class WritePoemActivity extends AppCompatActivity {
                 if(style_check[0] == false) {
                     Log.e("굵게현재상황 : ",""+style_check[0]);
                     if(style_check[1]==false)
-                        write_content.setTypeface(null, Typeface.BOLD);
+                        write_content.setTypeface(null, BOLD);
                     else
                         write_content.setTypeface(null, Typeface.BOLD_ITALIC);
                     style_check[0] = true;
@@ -340,7 +474,7 @@ public class WritePoemActivity extends AppCompatActivity {
                     if(style_check[1]==false)
                         write_content.setTypeface(null, Typeface.NORMAL);
                     else
-                        write_content.setTypeface(null, Typeface.ITALIC);
+                        write_content.setTypeface(null, ITALIC);
                     style_check[0] = false;
                 }
 
@@ -354,7 +488,7 @@ public class WritePoemActivity extends AppCompatActivity {
                 if(style_check[1] == false) {
                     Log.e("기울임현재상황 : ",""+style_check[1]);
                     if(style_check[0]==false)
-                        write_content.setTypeface(null, Typeface.ITALIC);
+                        write_content.setTypeface(null, ITALIC);
                     else
                         write_content.setTypeface(null, Typeface.BOLD_ITALIC);
                     style_check[1] = true;
@@ -362,7 +496,7 @@ public class WritePoemActivity extends AppCompatActivity {
                     if(style_check[0]==false)
                         write_content.setTypeface(null, Typeface.NORMAL);
                     else
-                        write_content.setTypeface(null, Typeface.BOLD);
+                        write_content.setTypeface(null, BOLD);
                     style_check[1] = false;
                 }
 
@@ -530,4 +664,74 @@ public class WritePoemActivity extends AppCompatActivity {
     }
 
 
+    private void EditTag(){
+        if(write_tag.getText().toString().contains("#그리움 ")){
+        if (tag[0].getTag().toString().equals("0")){ //태그 추가인 경우
+        tag[0].setTag("1");
+        check_cnt++;
+        CheckSelectedTag();
+        }
+        } else if(write_tag.getText().toString().contains("#불안 ")) {
+        if (tag[1].getTag().toString().equals("0")) { //태그 추가인 경우
+        tag[1].setTag("1");
+        check_cnt++;
+        CheckSelectedTag();
+        }
+        }else if(write_tag.getText().toString().contains("#감정 ")) {
+        if (tag[2].getTag().toString().equals("0")) { //태그 추가인 경우
+        tag[2].setTag("1");
+        check_cnt++;
+        CheckSelectedTag();
+        }
+        }
+        else if(write_tag.getText().toString().contains("#절제 ")) {
+        if (tag[3].getTag().toString().equals("0")) { //태그 추가인 경우
+        tag[3].setTag("1");
+        check_cnt++;
+        CheckSelectedTag();
+        }
+        }
+        else if(write_tag.getText().toString().contains("#사랑 ")) {
+        if (tag[4].getTag().toString().equals("0")) { //태그 추가인 경우
+        tag[4].setTag("1");
+        check_cnt++;
+        CheckSelectedTag();
+        }
+        }
+        else if(write_tag.getText().toString().contains("#강남역 ")) {
+        if (tag[5].getTag().toString().equals("0")) { //태그 추가인 경우
+        tag[5].setTag("1");
+        check_cnt++;
+        CheckSelectedTag();
+        }
+        }
+        else if(write_tag.getText().toString().contains("#빌딩숲 ")) {
+        if (tag[6].getTag().toString().equals("0")) { //태그 추가인 경우
+        tag[6].setTag("1");
+        check_cnt++;
+        CheckSelectedTag();
+        }
+        }
+        else if(write_tag.getText().toString().contains("#여의나루 ")) {
+        if (tag[7].getTag().toString().equals("0")) { //태그 추가인 경우
+        tag[7].setTag("1");
+        check_cnt++;
+        CheckSelectedTag();
+        }
+        }
+        else if(write_tag.getText().toString().contains("#한강 ")) {
+        if (tag[8].getTag().toString().equals("0")) { //태그 추가인 경우
+        tag[8].setTag("1");
+        check_cnt++;
+        CheckSelectedTag();
+        }
+        }
+        else if(write_tag.getText().toString().contains("#기타 ")) {
+        if (tag[9].getTag().toString().equals("0")) { //태그 추가인 경우
+        tag[9].setTag("1");
+        check_cnt++;
+        CheckSelectedTag();
+        }
+        }
+        }
 }

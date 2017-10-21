@@ -200,14 +200,16 @@
             android:id="@+id/write_content_wrap"
             android:layout_width="match_parent"
             android:layout_height="256.5dp">
+
             <EditText
                 android:id="@+id/write_content"
                 android:layout_width="308dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="25dp"
-                android:textSize="14sp"
                 android:gravity="top"
-                android:hint="내용을 입력하세요"/>
+                android:hint="내용을 입력하세요"
+                android:textColor="#000000"
+                android:textSize="14sp" />
         </LinearLayout>
 
         
@@ -229,7 +231,7 @@
                 android:layout_width="40dp"
                 android:layout_height="29dp"
                 android:tag="1"
-                android:background="@drawable/paper1_mini"/>
+                android:background="@drawable/outline1"/>
 
             <Button
                 android:id="@+id/paper2"

@@ -1,53 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/sliding_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        sothree:umanoDragView="@+id/dragView"
-        sothree:umanoOverlay="true"
-        sothree:umanoPanelHeight="0dp"
-        sothree:umanoParalaxOffset="0dp"
-        sothree:umanoShadowHeight="4dp">
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+    <ScrollView
+        android:id="@+id/scroll_poem"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/poem_img"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop" />
+                    android:layout_height="620dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter" />
 
-                <TextView
+                <RelativeLayout
+                    android:id="@+id/title_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="51dp"
-                    android:layout_marginTop="187dp"
-                    android:text="#"
-                    android:textColor="#ffffff"
-                    android:textSize="28sp" />
+                    android:layout_marginTop="187dp">
 
-                <TextView
-                    android:id="@+id/poem_title"
-                    android:layout_width="190dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="51dp"
-                    android:layout_marginTop="230.7dp"
-                    android:text="테스트"
-                    android:textColor="#ffffff"
-                    android:textSize="30sp" />
+                    <TextView
+                        android:id="@+id/startTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="#"
+                        android:textColor="#ffffff"
+                        android:textSize="28sp" />
+
+                    <TextView
+                        android:id="@+id/poem_title"
+                        android:layout_width="190dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/startTitle"
+                        android:text="테스트"
+                        android:textColor="#ffffff"
+                        android:textSize="30sp" />
+                </RelativeLayout>
+
+
+
 
                 <ImageButton
                     android:id="@+id/poem_path"
@@ -55,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
 
-                    android:layout_marginBottom="26dp"
+                    android:layout_marginBottom="38dp"
                     android:layout_marginLeft="174dp"
                     android:background="@android:color/transparent"
                     android:paddingBottom="15dp"
@@ -67,36 +71,56 @@
             </RelativeLayout>
 
 
-        </LinearLayout>
-
-        <!-- SLIDING LAYOUT -->
-        <RelativeLayout
-            android:id="@+id/dragView"
-            android:layout_width="match_parent"
-            android:layout_height="480dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="vertical"
-            android:background="#ffff00">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="620dp"
                 android:orientation="vertical"
                 android:background="#f99999">
 
                 <TextView
                     android:id="@+id/poem_content"
-                    android:layout_marginTop="45dp"
-                    android:layout_marginLeft="51dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_width="206dp"
-                    android:layout_height="300dp" />
+                    android:layout_height="360dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp">
+
+                    <ImageButton
+                        android:id="@+id/download"
+                        android:src="@drawable/download"
+                        android:background="@android:color/transparent"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:paddingRight="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:layout_marginLeft="276dp"/>
+
+                    <ImageButton
+                        android:id="@+id/another"
+                        android:src="@drawable/another"
+                        android:background="@android:color/transparent"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:paddingRight="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:layout_marginLeft="319dp"/>
+
+                </RelativeLayout>
+
+
 
             </LinearLayout>
-        </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+    </LinearLayout>
 
 
-    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
-
-</RelativeLayout>
 

@@ -92,6 +92,9 @@ public class sampleActivity extends AppCompatActivity {
         sample_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               /* Intent intent = new Intent(sampleActivity.this, ReadingPoemActivity.class);
+                intent.putExtra("articles_id","0");
+                startActivity(intent);*/
                 dialog();
                 /*Intent intent = new Intent(getApplicationContext(), WritePoemActivity.class);
                 startActivity(intent);*/
@@ -198,6 +201,7 @@ public class sampleActivity extends AppCompatActivity {
             Log.e("final crop photoUripath",""+photoUri);
           Toast.makeText(sampleActivity.this,"사진이 저장되었습니다.",Toast.LENGTH_LONG).show();
             Intent intent = new Intent(sampleActivity.this, WritePoemActivity.class);
+            intent.putExtra("type","0");
             startActivity(intent);
         }
     }
@@ -228,8 +232,8 @@ public class sampleActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             }
             intent.putExtra("crop", "true");
-            intent.putExtra("aspectX", 1);
-            intent.putExtra("aspectY", 1);
+            intent.putExtra("aspectX", 10);
+            intent.putExtra("aspectY", 17);
             intent.putExtra("scale", true);
             File croppedFileName = null;
             try {

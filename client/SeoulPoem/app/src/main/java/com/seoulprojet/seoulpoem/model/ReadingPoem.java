@@ -15,12 +15,14 @@ public class ReadingPoem {
 
         public Settinginfo setting;
         public String content;
+        public String tags;
         public String background;
         public String inform;
         public String date;
         public String title;
         public String photo;
         public Userinfo user;
+        public int modifiable;
 
     }
 
