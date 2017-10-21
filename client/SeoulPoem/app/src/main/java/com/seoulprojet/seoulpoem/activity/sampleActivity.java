@@ -92,10 +92,10 @@ public class sampleActivity extends AppCompatActivity {
         sample_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Intent intent = new Intent(sampleActivity.this, ReadingPoemActivity.class);
-                intent.putExtra("articles_id","0");
-                startActivity(intent);*/
-                dialog();
+                Intent intent = new Intent(sampleActivity.this, ReadingPoemActivity.class);
+                intent.putExtra("articles_id","96");
+                startActivity(intent);
+               // dialog();
                 /*Intent intent = new Intent(getApplicationContext(), WritePoemActivity.class);
                 startActivity(intent);*/
             }
