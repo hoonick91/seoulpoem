@@ -235,44 +235,46 @@ public class WritePoemActivity extends AppCompatActivity {
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("photo?",""+Preview.photo_location);
-                Preview.title = write_title.getText().toString();
-                Preview.content = write_content.getText().toString();
-                Log.e("content?",""+Preview.content);
-                //만약 기기마다 다르다면 /3말고 폰트사이즈 변경하는 부분에서 Preview.font_size를 바꿀것.
-                Preview.font_size = ((int)write_content.getTextSize())/3;
-                if(style_check[0]== true)
-                    Preview.bold = 1;
-                else
-                    Preview.bold = 0;
-                if(style_check[1]== true)
-                    Preview.inclination = 1;
-                else
-                    Preview.inclination = 0;
-                if(style_check[2]== true)
-                    Preview.underline = 1;
-                else
-                    Preview.underline = 0;
-                if(write_content.getCurrentTextColor() == Color.parseColor("#ffffff"))
-                    Preview.color = 1;
-                else if(write_content.getCurrentTextColor() == Color.parseColor("#773511"))
-                    Preview.color = 2;
-                else if(write_content.getCurrentTextColor() == Color.parseColor("#765745"))
-                    Preview.color = 3;
-                else if(write_content.getCurrentTextColor() == Color.parseColor("#888888"))
-                    Preview.color = 4;
-                else
-                    Preview.color = 5;
+                if(write_title.getText().length() == 0){
+                    Toast.makeText(getApplicationContext(),"제목을 입력해주세요", Toast.LENGTH_LONG).show();
+                }else {
+                    Preview.title = write_title.getText().toString();
+                    Preview.content = write_content.getText().toString();
+                    //만약 기기마다 다르다면 /3말고 폰트사이즈 변경하는 부분에서 Preview.font_size를 바꿀것.
+                    Preview.font_size = ((int) write_content.getTextSize()) / 3;
+                    if (style_check[0] == true)
+                        Preview.bold = 1;
+                    else
+                        Preview.bold = 0;
+                    if (style_check[1] == true)
+                        Preview.inclination = 1;
+                    else
+                        Preview.inclination = 0;
+                    if (style_check[2] == true)
+                        Preview.underline = 1;
+                    else
+                        Preview.underline = 0;
+                    if (write_content.getCurrentTextColor() == Color.parseColor("#ffffff"))
+                        Preview.color = 1;
+                    else if (write_content.getCurrentTextColor() == Color.parseColor("#773511"))
+                        Preview.color = 2;
+                    else if (write_content.getCurrentTextColor() == Color.parseColor("#765745"))
+                        Preview.color = 3;
+                    else if (write_content.getCurrentTextColor() == Color.parseColor("#888888"))
+                        Preview.color = 4;
+                    else
+                        Preview.color = 5;
 
-                Preview.sortinfo = gravity;
-                Log.e("sortinfo?",""+Preview.sortinfo);
-                Preview.tags = write_tag.getText().toString();
-                Preview.inform = write_detail.getText().toString();
-                Preview.background = backgroundId;
+                    Preview.sortinfo = gravity;
+                    Log.e("sortinfo?", "" + Preview.sortinfo);
+                    Preview.tags = write_tag.getText().toString();
+                    Preview.inform = write_detail.getText().toString();
+                    Preview.background = backgroundId;
 
-                Intent intent = new Intent(getApplicationContext(),PreviewAcitivity.class);
-                intent.putExtra("type",""+article_id);
-                startActivity(intent);
+                    Intent intent = new Intent(getApplicationContext(), PreviewAcitivity.class);
+                    intent.putExtra("type", "" + article_id);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -303,6 +305,7 @@ public class WritePoemActivity extends AppCompatActivity {
         write_title = (EditText)findViewById(R.id.write_title);
         write_content_wrap = (LinearLayout)findViewById(R.id.write_content_wrap) ;
         write_content = (EditText)findViewById(R.id.write_content);
+
 
                 InputMethodManager controlManager = (InputMethodManager) getSystemService(Service.INPUT_METHOD_SERVICE);
                 SoftKeyboard mSoftKeyboard = new SoftKeyboard(write_content_wrap, controlManager);
@@ -560,7 +563,7 @@ public class WritePoemActivity extends AppCompatActivity {
 
     }
 
-    //제목 작성지 필수태그에 제목 추가하기
+    //제목 작성지 필수태그에 제목 추가하기 and 태그에 #표시 붙이기
     public void  addTitleTagListener(){
         write_title.addTextChangedListener(new TextWatcher() {
 
@@ -580,6 +583,7 @@ public class WritePoemActivity extends AppCompatActivity {
                 // 입력하기 전에
             }
         });
+
 
     }
 
@@ -734,4 +738,22 @@ public class WritePoemActivity extends AppCompatActivity {
         }
         }
         }
+
+        private void CheckSpace(){
+            String text = write_tag.getText().toString();
+            StringBuffer sb = new StringBuffer(text);
+
+            if(text.charAt(0) != '#')//맨처음에 #이 없을시
+                sb.insert(0,"#");
+                    text = "#" + text ;
+
+            for(int i=0;i<text.length();i++) {
+                if (text.charAt(i) == ' ') { //공백이 있을때
+                    sb.insert(i + 1, "#");
+                }
+            }
+
+            write_tag.setText(sb.toString());
+        }
+
 }

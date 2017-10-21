@@ -42,6 +42,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static java.lang.System.in;
+
 /**
  * Created by minjeong on 2017-09-27.
  */
@@ -270,13 +272,22 @@ public class PreviewAcitivity extends AppCompatActivity {
             photo = null;
         } else {
 
-            //resizing
+            BitmapFactory.Options temp_option = new BitmapFactory.Options();
+            temp_option.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(Preview.photo_location, temp_option);
+
+            //resizing. 저장되는 파일이 아닌 전송하는 파일만 사이즈를 줄임. height를 1000에 맞춤
             BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 1; //얼마나 줄일지 설정하는 옵션 4--> 1/4로 줄이겠다
+
+            if(temp_option.outWidth>1000 && temp_option.outHeight>1000) {
+                int size = temp_option.outHeight / 1000;
+                options.inSampleSize = size; //얼마나 줄일지 설정하는 옵션 4--> 1/4로 줄이겠다
+            }
 
             InputStream in = null; // here, you need to get your context.
             try {
                 in = getContentResolver().openInputStream(Preview.photo);
+
 
             } catch (FileNotFoundException e) {
                 Log.e("error!!!!", "");
@@ -285,7 +296,11 @@ public class PreviewAcitivity extends AppCompatActivity {
 
             Bitmap bitmap = BitmapFactory.decodeStream(in, null, options);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+          /*  if(bitmap.getHeight()>1000) {
+                bitmap = Bitmap.createScaledBitmap(bitmap, 588, 1000, true);
+                Log.e("width",""+bitmap.getWidth());
+            }*/
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); //1~ 100 품질
 
 
             RequestBody photoBody = RequestBody.create(MediaType.parse("image/*"), baos.toByteArray());
