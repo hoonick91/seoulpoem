@@ -17,6 +17,7 @@ import android.os.Bundle;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.ImageViewTargetFactory;
 import com.seoulprojet.seoulpoem.R;
+import com.seoulprojet.seoulpoem.model.MyPageModify;
 import com.seoulprojet.seoulpoem.model.MyPageResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
@@ -30,11 +31,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,9 +56,13 @@ public class MyPageSetting extends AppCompatActivity {
     private EditText mypage_setting_name_et;
     private EditText mypage_setting_message_et;
 
+    private String inform = null;
+    private String penName = null;
+    private File profile = null;
+    private File background = null;
+
     // network
     NetworkService service;
-    private ArrayList<MyPageResult> myPageResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +76,9 @@ public class MyPageSetting extends AppCompatActivity {
         mypage_setting_profile_img = (ImageView)findViewById(R.id.mypage_setting_profile_img);
         mypage_setting_name_et = (EditText)findViewById(R.id.mypage_setting_name_et);
         mypage_setting_message_et = (EditText)findViewById(R.id.mypage_setting_message_et);
+
+        inform = mypage_setting_name_et.getHint().toString();
+        penName = mypage_setting_message_et.getHint().toString();
 
         service = ApplicationController.getInstance().getNetworkService();
         getMyPagePhotos();
@@ -154,16 +166,23 @@ public class MyPageSetting extends AppCompatActivity {
             }
         });
 
+        // default
         cam_default_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                Uri fileUri;
+
                 if(camNum == 1){
                     mypage_setting_background_img.setImageResource(R.drawable.profile_background);
+
+                    Log.i("bg default", "bg def" + background);
                     camDialog.dismiss();
                 }
 
                 else if(camNum == 2){
                     mypage_setting_profile_img.setImageResource(R.drawable.profile_tmp);
+
+                    Log.i("profile default", "prof def" + profile);
                     camDialog.dismiss();
                 }
             }
@@ -177,6 +196,7 @@ public class MyPageSetting extends AppCompatActivity {
         });
     }
 
+    // album
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -193,6 +213,8 @@ public class MyPageSetting extends AppCompatActivity {
                 int height = selectedImage.getHeight();
                 int width = selectedImage.getWidth();
 
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
                 // resize 및 imageview 지정
                 if(width > 1080){
                     Bitmap resized = null;
@@ -205,19 +227,31 @@ public class MyPageSetting extends AppCompatActivity {
 
                     if(camNum == 1){
                         mypage_setting_background_img.setImageBitmap(resized);
+
+                        resized.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+
+                        Log.i("bg album", "bg album" + background);
                     }
 
                     else if(camNum == 2){
                         mypage_setting_profile_img.setImageBitmap(resized);
+
+                        resized.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+
+                        Log.i("profile album", "prof album" + profile);
                     }
                 }
 
                 else{
                     if(camNum == 1){
                         mypage_setting_background_img.setImageBitmap(selectedImage);
+
+                        Log.i("bg album", "bg album " + background);
                     }
                     else if(camNum == 2){
                         mypage_setting_profile_img.setImageBitmap(selectedImage);
+
+                        Log.i("profile album", "prof album" + profile);
                     }
                 }
 
@@ -229,5 +263,14 @@ public class MyPageSetting extends AppCompatActivity {
         else{
             Log.i("wrong result code", "");
         }
+    }
+
+    /********************* post mypage ************************/
+    private void postMyPage(){
+        RequestBody informBody = RequestBody.create(MediaType.parse("multipart/form-data"),"" + inform);
+        RequestBody penNameBody = RequestBody.create(MediaType.parse("multipart/form-data"),"" + penName);
+        RequestBody profileBody;
+        RequestBody backgroundBody;
+
     }
 }

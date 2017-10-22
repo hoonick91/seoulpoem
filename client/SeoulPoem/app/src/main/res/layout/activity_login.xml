@@ -24,21 +24,20 @@
             android:src="@drawable/login_title"
             android:layout_marginLeft="20dp"/>
 
-        <ImageButton
-            android:layout_marginTop="30dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/login_google_btn"
-            android:background="@android:color/transparent"
-            android:id="@+id/login_google_btn"/>
 
-        <ImageButton
-            android:layout_marginTop="10dp"
+        <com.google.android.gms.common.SignInButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/login_facebook_btn"
-            android:background="@android:color/transparent"
-            android:id="@+id/login_facebook_btn"/>
+            android:id="@+id/sign_in_button"
+            android:visibility="visible"
+            android:layout_marginTop="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textSize="18sp"
+            android:id="@+id/login_tv"/>
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

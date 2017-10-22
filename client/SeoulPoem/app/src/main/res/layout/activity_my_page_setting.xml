@@ -127,7 +127,6 @@
                 android:focusableInTouchMode="true"
                 android:hint="필명을 입력해주세요"
                 android:textCursorDrawable="@android:color/black"
-                android:padding="12dp"
                 android:backgroundTint="#95989a"
                 android:textSize="15sp" />
 
@@ -146,7 +145,6 @@
                 android:hint="한 줄 소개를 입력해주세요"
                 android:maxLines="3"
                 android:maxLength="45"
-                android:padding="12dp"
                 android:backgroundTint="#95989a"
                 android:focusable="true"
                 android:textCursorDrawable="@android:color/black"

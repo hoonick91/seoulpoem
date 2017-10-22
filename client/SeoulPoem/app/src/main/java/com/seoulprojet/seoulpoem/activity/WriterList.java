@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.model.MyPageResult;
+import com.seoulprojet.seoulpoem.model.WriterApplyResult;
 import com.seoulprojet.seoulpoem.model.WriterListResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
@@ -82,7 +83,7 @@ public class WriterList extends AppCompatActivity {
         writerlist_apply_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                showDialog();
+                postWriterApply();
             }
         });
 
@@ -258,6 +259,24 @@ public class WriterList extends AppCompatActivity {
         });
     }
 
+    private void alreadyDialog(){
+        LayoutInflater dialog = LayoutInflater.from(this);
+        final View dialogLayout = dialog.inflate(R.layout.writer_apply_already_dialog, null);
+        final Dialog alreadyDialog = new Dialog(this);
+
+        alreadyDialog.setContentView(dialogLayout);
+        alreadyDialog.show();
+
+        ImageButton dialog_back_btn = (ImageButton)dialogLayout.findViewById(R.id.writerapply_already_dialog_back_btn);
+
+        dialog_back_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                alreadyDialog.dismiss();
+            }
+        });
+    }
+
     /******************* writer list ****************************/
     private void getWriterList(){
         Call<WriterListResult> requestList = service.getWriterList();
@@ -281,6 +300,33 @@ public class WriterList extends AppCompatActivity {
             @Override
             public void onFailure(Call<WriterListResult> call, Throwable t) {
                 Log.i("writer list error" , t.getMessage());
+            }
+        });
+    }
+
+    /***************** post writer apply **********************/
+    private void postWriterApply(){
+        Call<WriterApplyResult> requestApply = service.postWriterApply("godz33@naver.com");
+
+        requestApply.enqueue(new Callback<WriterApplyResult>() {
+            @Override
+            public void onResponse(Call<WriterApplyResult> call, Response<WriterApplyResult> response) {
+                if(response.isSuccessful()){
+                    if(response.body().result.equals("already")){
+                        alreadyDialog();
+                    }
+                    else{
+                        showDialog();
+                    }
+                }
+                else{
+                    Log.i("fail response", "응답코드 : " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WriterApplyResult> call, Throwable t) {
+                Log.i("fail call", t.getMessage());
             }
         });
     }

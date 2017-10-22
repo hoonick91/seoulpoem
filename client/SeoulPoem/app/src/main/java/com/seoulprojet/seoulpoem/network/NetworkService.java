@@ -1,15 +1,23 @@
 package com.seoulprojet.seoulpoem.network;
 
 
+import com.seoulprojet.seoulpoem.model.LoginResult;
+import com.seoulprojet.seoulpoem.model.MyPageModify;
 import com.seoulprojet.seoulpoem.model.MyPagePhotoResult;
 import com.seoulprojet.seoulpoem.model.MyPagePoemResult;
 import com.seoulprojet.seoulpoem.model.MyPageResult;
 import com.seoulprojet.seoulpoem.model.NoticeDetailResult;
 import com.seoulprojet.seoulpoem.model.NoticeResult;
+import com.seoulprojet.seoulpoem.model.SignInResult;
 import com.seoulprojet.seoulpoem.model.TodayResult;
+import com.seoulprojet.seoulpoem.model.WriterApplyResult;
 import com.seoulprojet.seoulpoem.model.WriterListResult;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -42,6 +50,19 @@ public interface NetworkService {
     Call<AddResult> getWorks(@Path("articleid") int articleid);
     */
 
+    // login
+    @POST("/users/login")
+    Call<LoginResult> postLogin(@Header("email") String email,
+                               @Header("type") int type,
+                               @Header("Content-Type") String Content_type);
+
+    // login (필명 입력)
+    @Multipart
+    @POST("/users/signin")
+    Call<SignInResult> postName(@Header("type") int type,
+                          @Header("email") String email,
+                          @Part ("pen_name") RequestBody pen_name);
+
     // mypage poem
     @GET("/mypage/poem")
     Call<MyPagePoemResult> getMyPoem(@Header("email") String email,
@@ -56,6 +77,15 @@ public interface NetworkService {
     Call<MyPageResult> getMyPage(@Header("email") String email,
                                  @Header("type") int type);
 
+    // mypage 수정
+    @POST("/users/modify")
+    Call<MyPageModify> postMyPage(@Header("email") String email,
+                                  @Header("type") int type,
+                                  @Part("inform") RequestBody inform,
+                                  @Part("pen_name") RequestBody pen_name,
+                                  @Part("profile")MultipartBody.Part profile,
+                                  @Part("background") MultipartBody.Part background);
+
     // notice
     @GET("/notice")
     Call<NoticeResult> getNotice();
@@ -67,6 +97,10 @@ public interface NetworkService {
     // writer list
     @GET("/author")
     Call<WriterListResult> getWriterList();
+
+    // writer apply
+    @POST("/author")
+    Call<WriterApplyResult> postWriterApply(@Header ("email") String email);
 
     // today seoul
     @GET("/subway")
