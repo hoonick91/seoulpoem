@@ -1,12 +1,12 @@
 package com.seoulprojet.seoulpoem.model;
 
 /**
- * Created by lynn on 2017-10-02.
+ * Created by junhee on 2017. 9. 17..
  */
 
 public class PoemListData {
-    public String poemTitle;
-    public PoemListData(String poemTitle){
-        this.poemTitle = poemTitle;
-    }
+
+    public String photo;
+    public int idarticles;
+    public String title;
 }

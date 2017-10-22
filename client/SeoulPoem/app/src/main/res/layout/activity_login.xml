@@ -18,26 +18,26 @@
         android:paddingLeft="60dp"
         android:paddingRight="60dp">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/login_title"
+            android:layout_marginLeft="20dp"/>
+
+
+        <com.google.android.gms.common.SignInButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sign_in_button"
+            android:visibility="visible"
+            android:layout_marginTop="30dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="# 시작하기"
-            android:textSize="20dp"
-            android:layout_marginLeft="20dp"/>
-
-        <Button
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Google Login"
-            android:id="@+id/login_google_btn"/>
-
-        <Button
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Facebook Login"
-            android:id="@+id/login_facebook_btn"/>
+            android:text="TextView"
+            android:textSize="18sp"
+            android:id="@+id/login_tv"/>
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
