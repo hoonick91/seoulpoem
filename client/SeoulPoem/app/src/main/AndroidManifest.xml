@@ -2,25 +2,28 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.seoulprojet.seoulpoem">
 
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
 
+    >>>>>>> 1482d8e1ea4cac0c6ef556b81fa5d366e82086fe
 
-    <application android:name=".network.ApplicationController" android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher" android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round" android:supportsRtl="true"
+    <application
+        android:name=".network.ApplicationController"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".activity.sampleActivity"></activity>
+        <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.MyPage" />
+        <activity android:name=".activity.sampleActivity"></activity>
         <activity android:name=".activity.MyPageSetting" />
         <activity android:name=".activity.WriterList" />
-        <activity android:name=".activity.WriterApply" />
         <activity android:name=".activity.Notice" />
         <activity android:name=".activity.SettingPage" />
         <activity android:name=".activity.TodaySeoul" />
@@ -37,21 +40,26 @@
         <activity android:name=".activity.DetailActivity" />
         <activity android:name=".activity.AddActivity" />
         <activity android:name=".activity.SearchActivity"></activity>
-        <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.WritePoemActivity"
+        <activity
+            android:name=".activity.WritePoemActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <activity android:name=".activity.PreviewAcitivity"></activity>
 
-        <provider android:name="android.support.v4.content.FileProvider"
+        <provider
+            android:name="android.support.v4.content.FileProvider"
             android:authorities="com.seoulprojet.seoulpoem.activity.provider"
-            android:exported="false" android:grantUriPermissions="true">
-            <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
 
 
         <activity android:name=".activity.Login" />
-        <activity android:name=".activity.LoginName"></activity>
+        <activity android:name=".activity.LoginName" />
+        <activity android:name=".activity.MyPageShowImage" />
+        <activity android:name=".activity.NoticeDetail"></activity>
 
     </application>
 

@@ -3,13 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="20dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="#총 n개"/>
+        android:text="#총 n개"
+        android:id="@+id/poem_frag_count_txt"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:id="@+id/poem_frag_rv">
+
+    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>
