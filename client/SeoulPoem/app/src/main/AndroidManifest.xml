@@ -19,11 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.sampleActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".activity.MyPage"/>
         <activity android:name=".activity.MyPageSetting" />
@@ -33,7 +29,11 @@
         <activity android:name=".activity.TodaySeoul" />
 
         <activity android:name=".activity.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".activity.DetailActivity" />
@@ -61,6 +61,7 @@
         <activity android:name=".activity.LoginName" />
         <activity android:name=".activity.MyPageShowImage" />
         <activity android:name=".activity.NoticeDetail"></activity>
+        <activity android:name=".activity.SubwayPoemActivity"></activity>
 
     </application>
 

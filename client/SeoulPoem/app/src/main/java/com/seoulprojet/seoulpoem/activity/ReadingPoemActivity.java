@@ -103,7 +103,7 @@ public class ReadingPoemActivity extends AppCompatActivity {
         poem_path.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!openPoem) {
+                if(!openPoem) { //세로긴화면 -> 가로긴화면으로 축소시
                     ViewGroup.LayoutParams params = poem_img.getLayoutParams();
                     params.height = poem_img.getHeight() / 4;
                     poem_img.setLayoutParams(params);
@@ -116,7 +116,7 @@ public class ReadingPoemActivity extends AppCompatActivity {
                     poem_title.setTextSize(18);
                     poem_path.setImageResource(R.drawable.path3);
                     openPoem = true;
-                }else{
+                }else{  //세로긴화면 -> 가로긴화면으로 축소시
                     ViewGroup.LayoutParams params = poem_img.getLayoutParams();
                     params.height = poem_img.getHeight() * 4;
                     poem_img.setLayoutParams(params);
@@ -294,6 +294,7 @@ public class ReadingPoemActivity extends AppCompatActivity {
                     Intent intent = new Intent(ReadingPoemActivity.this, ReadingPoemActivity.class);
                     intent.putExtra("articles_id",holder.itemView.getTag().toString());
                     startActivity(intent);
+                    finish();
                 }
             });
         }

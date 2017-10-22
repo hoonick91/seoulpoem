@@ -232,8 +232,8 @@ public class sampleActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
          //   }
             intent.putExtra("crop", "true");
-            intent.putExtra("aspectX", 10);
-            intent.putExtra("aspectY", 17);
+            intent.putExtra("aspectX", 1);
+            intent.putExtra("aspectY", 1);
             intent.putExtra("scale", true);
             File croppedFileName = null;
             try {
@@ -324,29 +324,6 @@ public class sampleActivity extends AppCompatActivity {
         return imgName;
     }
 
-    private void storeCropImage(Bitmap bitmap, String filePath) {
-        File copyFile = new File(filePath);
-        BufferedOutputStream out = null;
-
-
-        try {
-
-            copyFile.createNewFile();
-            out = new BufferedOutputStream(new FileOutputStream(copyFile));
-
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-
-            out.flush();
-
-            out.close();
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-        }
-
-    }
 
 
 }

@@ -14,6 +14,7 @@ import com.seoulprojet.seoulpoem.model.MyPageResult;
 import com.seoulprojet.seoulpoem.model.NoticeDetailResult;
 import com.seoulprojet.seoulpoem.model.NoticeResult;
 import com.seoulprojet.seoulpoem.model.SignInResult;
+import com.seoulprojet.seoulpoem.model.SubwayPoem;
 import com.seoulprojet.seoulpoem.model.TodayResult;
 import com.seoulprojet.seoulpoem.model.WriterApplyResult;
 import com.seoulprojet.seoulpoem.model.WriterListResult;
@@ -172,4 +173,8 @@ public interface NetworkService {
     // today seoul
     @GET("/subway")
     Call<TodayResult> getToday();
+
+    //today seoul poem
+    @GET("/subway/{article_id}")
+    Call<SubwayPoem> getSubwayPoem(  @Path("article_id") int article_id);
 }

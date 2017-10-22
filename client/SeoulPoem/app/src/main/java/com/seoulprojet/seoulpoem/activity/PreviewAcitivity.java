@@ -304,6 +304,7 @@ public class PreviewAcitivity extends AppCompatActivity {
 
             RequestBody photoBody = RequestBody.create(MediaType.parse("image/*"), baos.toByteArray());
 
+
             // MultipartBody.Part 실제 파일의 이름을 보내기 위해 사용!!
             photo = MultipartBody.Part.createFormData("photo", Preview.photoName, photoBody);
 
