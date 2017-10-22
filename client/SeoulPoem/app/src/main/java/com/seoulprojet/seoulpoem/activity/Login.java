@@ -158,12 +158,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                     Log.i("status", "status" + response.body().status);
 
                     // login 상태가 fail일 경우 회원가입(필명 입력)으로 이동
-<<<<<<< HEAD
-                    if (loginResults.status.equals("fail")) {
-=======
                     if(loginResults.status.equals("fail")){
 
->>>>>>> ef80cdc5c782b28a157a8f4c313cd2a65db20e02
                         Intent intent = new Intent(getApplicationContext(), LoginName.class);
 
                         intent.putExtra("userEmail", userGoogleEmail);
@@ -173,7 +169,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                         startActivity(intent);
                         finish();
                     } else {
-                        Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.putExtra("userEmail", userGoogleEmail);
                         intent.putExtra("loginType", loginType);
                         startActivity(intent);

@@ -73,6 +73,8 @@ public class MyPage extends AppCompatActivity {
 
     // network
     NetworkService service;
+
+    //유저 정보
     private String userEmail = null;
     private int loginType = 0;
 
@@ -96,6 +98,7 @@ public class MyPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_page);
 
+        //유저 정보 가져오기
         Intent intent = getIntent();
         userEmail = intent.getExtras().getString("userEmail");
         loginType = intent.getExtras().getInt("loginType");

@@ -21,7 +21,7 @@
         <activity android:name=".activity.sampleActivity">
 
         </activity>
-        <activity android:name=".activity.MyPage"/>
+        <activity android:name=".activity.MyPage" />
         <activity android:name=".activity.MyPageSetting" />
         <activity android:name=".activity.WriterList" />
         <activity android:name=".activity.Notice" />
@@ -39,14 +39,10 @@
         <activity android:name=".activity.DetailActivity" />
         <activity android:name=".activity.AddActivity" />
         <activity android:name=".activity.SearchActivity"></activity>
-<<<<<<< HEAD
-=======
         <activity android:name=".activity.MainActivity" />
->>>>>>> ef80cdc5c782b28a157a8f4c313cd2a65db20e02
         <activity
             android:name=".activity.WritePoemActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <activity android:name=".activity.PreviewAcitivity" />
 
         <provider
@@ -58,8 +54,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-        <activity android:name=".activity.ReadingPoemActivity">
-        </activity>
+
+        <activity android:name=".activity.ReadingPoemActivity"></activity>
         <activity android:name=".activity.Login" />
         <activity android:name=".activity.LoginName" />
         <activity android:name=".activity.MyPageShowImage" />

@@ -20,11 +20,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-<<<<<<< HEAD
 import android.support.v4.widget.DrawerLayout;
-=======
 import android.support.v7.app.AlertDialog;
->>>>>>> ef80cdc5c782b28a157a8f4c313cd2a65db20e02
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -122,13 +119,10 @@ public class MainActivity extends AppCompatActivity {
     private View drawerView;
     private DrawerLayout drawerLayout;
 
-    //my page
-    private TextView mypage_name_txt;
-    private TextView mypage_message_txt;
-    private ImageView mypage_profile_img;
-    private ImageView mypage_bg_iv;
 
-
+    //유저 정보
+    private String userEmail = null;
+    private int loginType = 0;
 
 
     /***************************************START***********************************************/
@@ -136,6 +130,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //유저 정보 가져오기
+        Intent intent = getIntent();
+        userEmail = intent.getExtras().getString("userEmail");
+        loginType = intent.getExtras().getInt("loginType");
+
 
         //서비스 객체 초기화
         service = ApplicationController.getInstance().getNetworkService();
@@ -149,9 +149,6 @@ public class MainActivity extends AppCompatActivity {
 
         //view pager 설정
         setViewPager();
-
-        //햄버거 toggle
-        //toHamberger();
 
         //검색
         toSearch();
@@ -174,9 +171,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /******************* mypage 정보 가져오기 ******************/
+    /********************************* mypage 정보 가져오기 ****************************************/
     public void getMenuMypage() {
         Call<MyPageResult> requestMyPage = service.getMyPage("godz33@naver.com", 1);
+        //Call<MyPageResult> requestMyPage = service.getMyPage(userEmail, loginType);
 
         requestMyPage.enqueue(new Callback<MyPageResult>() {
             @Override
@@ -219,10 +217,6 @@ public class MainActivity extends AppCompatActivity {
         rlToWrite = (RelativeLayout) findViewById(R.id.rlToWrite);
         rlMore = (RelativeLayout) findViewById(R.id.rlMore);
 
-        mypage_profile_img = (ImageView) findViewById(R.id.mypage_profile_img);
-        mypage_name_txt = (TextView) findViewById(R.id.mypage_name_txt);
-        mypage_message_txt = (TextView) findViewById(R.id.mypage_message_txt);
-        mypage_bg_iv = (ImageView) findViewById(R.id.mypage_bg_iv);
 
     }
 
@@ -280,6 +274,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                     intent.putExtra("articleId", poemListData.idarticles);
+                    intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("loginType", loginType);
                     startActivity(intent);
                 }
             });
@@ -369,18 +365,6 @@ public class MainActivity extends AppCompatActivity {
             //img
             holder.ivHashtag.setImageResource(hashtagListData.imgResourceID);
 
-
-//            //상세 프로필로 이동
-//            //클릭시 상세화면으로 이동, 클릭한 프로젝트 아이디 전달
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(PeopleActivity.this, OtherUserPage.class);
-//                    intent.putExtra("userID", Integer.parseInt(holder.tvUserID.getText().toString()));
-//                    Log.d("userID", "people목록에서 보내는 id 값 : " + Integer.toString(userID));
-//                    startActivity(intent);
-//                }
-//            });
         }
 
         @Override
@@ -445,7 +429,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /**********************************search**********************************/
+    /*******************************************search******************************************/
     public void toSearch() {
         rlSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -458,7 +442,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /**********************************Write**********************************/
+    /*************************************Write*************************************************/
     public void toWrite() {
         rlToWrite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -469,8 +453,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-<<<<<<< HEAD
-    /********* drawer **********/
+    /******************************************* drawer ******************************************/
     public void showHamburger() {
 
         hamburger_mypage_btn = (ImageButton) findViewById(R.id.hamburger_mypage_btn);
@@ -499,6 +482,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
             }
         });
@@ -507,6 +492,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), AddActivity.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
             }
         });
@@ -516,6 +503,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TodaySeoul.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -525,6 +514,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SettingPage.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -535,6 +526,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 drawerLayout.closeDrawers();
                 Intent intent = new Intent(getApplicationContext(), Notice.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -544,11 +537,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), WriterList.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
         });
-=======
+    }
+
     private boolean checkPermissions() {
         int result;
         List<String> permissionList = new ArrayList<>();
@@ -565,21 +561,21 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void dialog(){
+    public void dialog() {
         final CharSequence[] items = {"카메라", "갤러리"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);     // 여기서 this는 Activity의 this
 
         // 여기서 부터는 알림창의 속성 설정
         builder.setTitle("")        // 제목 설정
-                .setItems(items, new DialogInterface.OnClickListener(){    // 목록 클릭시 설정
-                    public void onClick(DialogInterface dialog, int index){
-                        if(index == 0) { // 카메라 클릭시
+                .setItems(items, new DialogInterface.OnClickListener() {    // 목록 클릭시 설정
+                    public void onClick(DialogInterface dialog, int index) {
+                        if (index == 0) { // 카메라 클릭시
                             takePhoto();
 
-                        }else{ //갤러리 클릭시
+                        } else { //갤러리 클릭시
                             goToAlbum();
-                            Log.e("**갤러리","갤러리시작");
+                            Log.e("**갤러리", "갤러리시작");
 
                         }
                     }
@@ -624,7 +620,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
-        Log.e("**gotoalbum","startActivity");
+        Log.e("**gotoalbum", "startActivity");
     }
 
     @Override
@@ -673,7 +669,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             photoUri = data.getData();
-            Log.e("**Before crop photoUri",""+photoUri);
+            Log.e("**Before crop photoUri", "" + photoUri);
             getImageNameToUri(photoUri);
 
             cropImage();
@@ -686,11 +682,11 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
         } else if (requestCode == CROP_FROM_CAMERA) {
-            photoUri=data.getData();
-            Log.e("**final crop photoUri",""+photoUri);
-            Toast.makeText(MainActivity.this,"사진이 저장되었습니다.",Toast.LENGTH_LONG).show();
+            photoUri = data.getData();
+            Log.e("**final crop photoUri", "" + photoUri);
+            Toast.makeText(MainActivity.this, "사진이 저장되었습니다.", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(MainActivity.this, WritePoemActivity.class);
-            intent.putExtra("type","0");
+            intent.putExtra("type", "0");
             startActivity(intent);
         }
     }
@@ -732,12 +728,12 @@ public class MainActivity extends AppCompatActivity {
             }
 
             File folder = new File(Environment.getExternalStorageDirectory() + "/SeoulPoem/");
-            Log.e("**folder",folder.getPath());
+            Log.e("**folder", folder.getPath());
             File tempFile = new File(folder.toString(), croppedFileName.getName());
-            Log.e("**tempFile",tempFile.getPath());
+            Log.e("**tempFile", tempFile.getPath());
 
             albumUri = Uri.fromFile(croppedFileName);
-            Log.e("**albumUri",""+albumUri);
+            Log.e("**albumUri", "" + albumUri);
 
             Preview.photo_location = tempFile.getPath();
             Preview.photoName = tempFile.getName();
@@ -746,7 +742,7 @@ public class MainActivity extends AppCompatActivity {
                     "com.seoulprojet.seoulpoem.activity.provider", tempFile);
 
 
-            Log.e("**aftercropphotoUripath",""+photoUri);
+            Log.e("**aftercropphotoUripath", "" + photoUri);
 
             Preview.photo = photoUri;
 
@@ -773,6 +769,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(i, CROP_FROM_CAMERA);
         }
     }
+
     /**************************이미지 파일 이름 가져오기******************************************/
 
     public String getImageNameToUri(Uri data) {
@@ -786,7 +783,6 @@ public class MainActivity extends AppCompatActivity {
         String imgName = imgPath.substring(imgPath.lastIndexOf("/") + 1);
 
         return imgName;
->>>>>>> ef80cdc5c782b28a157a8f4c313cd2a65db20e02
     }
 
 

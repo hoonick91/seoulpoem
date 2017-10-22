@@ -42,10 +42,16 @@ public class DetailActivity extends AppCompatActivity {
     private int articleId;
     private RelativeLayout llup;
 
+    //유저 정보
+    private String userEmail = null;
+    private int loginType = 0;
+
     //작품담기 다이얼로그 리스너
     private View.OnClickListener addDialog_leftListener = new View.OnClickListener() {
         public void onClick(View v) {
             Intent intent = new Intent(DetailActivity.this, AddActivity.class);
+            intent.putExtra("userEmail", userEmail);
+            intent.putExtra("loginType", loginType);
             startActivity(intent);
             addWorkDialog.dismiss();
         }
@@ -82,9 +88,11 @@ public class DetailActivity extends AppCompatActivity {
 
         service = ApplicationController.getInstance().getNetworkService();
 
-        //해당 프로젝트 id값 가져오기
+        //해당 프로젝트 id값, 유저 정보 가져오기
         Intent intent = getIntent();
         articleId = intent.getExtras().getInt("articleId");
+        userEmail = intent.getExtras().getString("userEmail");
+        loginType = intent.getExtras().getInt("loginType");
 
         //findView
         findView();
@@ -122,7 +130,7 @@ public class DetailActivity extends AppCompatActivity {
         tvName = (TextView) findViewById(R.id.tvName);
         tvTags = (TextView) findViewById(R.id.tvTags);
 
-        llup = (RelativeLayout)findViewById(R.id.llup);
+        llup = (RelativeLayout) findViewById(R.id.llup);
     }
 
 
@@ -418,13 +426,14 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
     }
+
     /***************************업버튼 눌렀을시 시 내용 보기 화면으로 넘어가**********************/
-    public void clickUpButton(){
+    public void clickUpButton() {
         llup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),ReadingPoemActivity.class);
-                intent.putExtra("articles_id",""+articleId);
+                Intent intent = new Intent(getApplicationContext(), ReadingPoemActivity.class);
+                intent.putExtra("articles_id", "" + articleId);
                 startActivity(intent);
             }
         });
