@@ -212,10 +212,21 @@ public class TodaySeoul extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(MyViewHolder holder, int position) {
+        public void onBindViewHolder(final MyViewHolder holder, int position) {
             TodayResult.SubwayList subwayList = subwayLists.get(position);
 
             holder.poemTitle.setText(subwayLists.get(position).title);
+            holder.poemTitle.setTag(subwayLists.get(position).idnotices);
+
+            holder.poemTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(TodaySeoul.this, SubwayPoemActivity.class);
+                    intent.putExtra("articles_id",holder.poemTitle.getTag().toString());
+                    startActivity(intent);
+                    finish();
+                }
+            });
         }
 
         @Override

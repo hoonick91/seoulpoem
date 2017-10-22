@@ -1,6 +1,7 @@
 package com.seoulprojet.seoulpoem.activity;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +18,6 @@ import com.seoulprojet.seoulpoem.model.MyPagePoemResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -82,6 +82,16 @@ public class MyPagePoemFragment extends Fragment {
 
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_poem_title, parent, false);
+            view.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    int position = recyclerView.getChildLayoutPosition(v);
+                    int notice_id = poemResults.get(position).idarticles;
+                    Intent intent = new Intent(getActivity().getApplicationContext(), ReadingPoemActivity.class);
+                    intent.putExtra("articles_id", ""+notice_id);
+                    startActivity(intent);
+                }
+            });
             MyViewHolder viewHolder = new MyViewHolder(view);
             return viewHolder;
         }

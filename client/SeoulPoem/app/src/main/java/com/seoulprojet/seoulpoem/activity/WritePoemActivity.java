@@ -273,7 +273,8 @@ public class WritePoemActivity extends AppCompatActivity {
 
                     Preview.sortinfo = gravity;
                     Log.e("sortinfo?", "" + Preview.sortinfo);
-                    Preview.tags = write_tag.getText().toString();
+                    Preview.tags = select_tag.getText().toString();
+                    Preview.tags += write_tag.getText().toString();
                     Preview.inform = write_detail.getText().toString();
                     Preview.background = backgroundId;
 
