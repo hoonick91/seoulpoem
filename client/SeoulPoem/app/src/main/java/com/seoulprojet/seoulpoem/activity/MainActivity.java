@@ -172,24 +172,37 @@ public class MainActivity extends AppCompatActivity {
 
 
     /********************************* mypage 정보 가져오기 ****************************************/
-    public void getMenuMypage() {
-        Call<MyPageResult> requestMyPage = service.getMyPage("godz33@naver.com", 1);
-        //Call<MyPageResult> requestMyPage = service.getMyPage(userEmail, loginType);
+    public void getMenuMypage(){
+        Call<MyPageResult> requestMyPage = service.getMyPage(userEmail, loginType);
 
         requestMyPage.enqueue(new Callback<MyPageResult>() {
             @Override
             public void onResponse(Call<MyPageResult> call, Response<MyPageResult> response) {
-                if (response.isSuccessful()) {
+                if(response.isSuccessful()){
                     Log.d("error", "xxx");
-                    if (response.body().status.equals("success")) {
+                    if(response.body().status.equals("success")){
                         hamburger_name.setText(response.body().msg.pen_name);
                         hamburger_message.setText(response.body().msg.inform);
-                        Glide.with(getApplicationContext())
-                                .load(response.body().msg.profile)
-                                .into(hamburger_profile);
-                        Glide.with(getApplicationContext())
-                                .load(response.body().msg.background)
-                                .into(hamburger_bg);
+
+                        if(response.body().msg.profile == null){
+                            hamburger_profile.setImageResource(R.drawable.profile_tmp);
+                        }
+
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().msg.profile)
+                                    .into(hamburger_profile);
+                        }
+
+                        if(response.body().msg.background == null){
+                            hamburger_bg.setImageResource(R.drawable.profile_background);
+                        }
+
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().msg.background)
+                                    .into(hamburger_bg);
+                        }
                     }
                 }
             }
