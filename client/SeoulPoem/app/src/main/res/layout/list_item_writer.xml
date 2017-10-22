@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp">
+
+
+    <!--왼쪽 이미지-->
+    <LinearLayout
+        android:id="@+id/llLeftImg"
+        android:layout_width="38dp"
+        android:layout_height="38dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivLeftImg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:src="@drawable/testimg02" />
+    </LinearLayout>
+
+
+    <!--이름-->
+    <LinearLayout
+        android:id="@+id/llname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/llLeftImg"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@+id/llLeftImg">
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#59595a"
+            android:textSize="15sp"
+            tools:text="구덧흐얌" />
+    </LinearLayout>
+
+    <!--'사진' 텍스트-->
+    <LinearLayout
+        android:id="@+id/llPhotoTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/llname"
+        android:layout_below="@+id/llname"
+        android:layout_marginTop="1dp"
+        android:layout_toRightOf="@+id/llLeftImg">
+
+        <TextView
+            android:id="@+id/tv01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="사진 "
+            android:textColor="#95989a"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <!--실제 개수-->
+    <LinearLayout
+        android:id="@+id/llPhotoNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/llPhotoTxt"
+        android:layout_toRightOf="@+id/llPhotoTxt">
+
+        <TextView
+            android:id="@+id/tvPhotoNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="13"
+            android:textColor="#95989a"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <!--'개, 시' 텍스트-->
+    <LinearLayout
+        android:id="@+id/lltxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/llPhotoNum"
+        android:layout_toRightOf="@+id/llPhotoNum">
+
+        <TextView
+            android:id="@+id/tv02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="개, 시 "
+            android:textColor="#95989a"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <!--실제 시 개수-->
+    <LinearLayout
+        android:id="@+id/llPoemNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/lltxt"
+        android:layout_toRightOf="@+id/lltxt">
+
+        <TextView
+            android:id="@+id/tvPoemNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="20"
+            android:textColor="#95989a"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <!--'개' 텍스트-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/llPoemNum"
+        android:layout_toRightOf="@+id/llPoemNum">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#95989a"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

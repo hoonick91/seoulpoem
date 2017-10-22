@@ -1,6 +1,7 @@
 package com.seoulprojet.seoulpoem.network;
 
 
+<<<<<<< HEAD
 import com.seoulprojet.seoulpoem.model.LoginPenName;
 import com.seoulprojet.seoulpoem.model.LoginResult;
 import com.seoulprojet.seoulpoem.model.MyPageModify;
@@ -27,6 +28,22 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
+=======
+import com.seoulprojet.seoulpoem.model.AddResult;
+import com.seoulprojet.seoulpoem.model.DetailResult;
+import com.seoulprojet.seoulpoem.model.GalleryResult;
+import com.seoulprojet.seoulpoem.model.MainResult;
+import com.seoulprojet.seoulpoem.model.SearchResult;
+import com.seoulprojet.seoulpoem.model.TestResult;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
+
+
+>>>>>>> 1482d8e1ea4cac0c6ef556b81fa5d366e82086fe
 /**
  * Created by pc on 2017-05-14.
  */
@@ -34,7 +51,10 @@ import retrofit2.http.Query;
 public interface NetworkService {
 
     //main 리스트 가져오기
+<<<<<<< HEAD
     /* 준희
+=======
+>>>>>>> 1482d8e1ea4cac0c6ef556b81fa5d366e82086fe
     @GET("/main")
     Call<MainResult> getPoems(@Query("tag") String tag);
 
@@ -47,6 +67,7 @@ public interface NetworkService {
     Call<DetailResult> getDetail(@Path("articleid") int articleid);
 
     //작품 리스트 가져오기
+<<<<<<< HEAD
     @GET("/article/simple/{articleid}")
     Call<AddResult> getWorks(@Path("articleid") int articleid);
     */
@@ -101,6 +122,22 @@ public interface NetworkService {
     // writer apply
     @POST("/author")
     Call<WriterApplyResult> postWriterApply(@Header ("email") String email);
+=======
+    @GET("/bookmark/search")
+    Call<AddResult> getWorks(@Header("email") String email,
+                             @Header("type") int type);
+
+    //test
+    @GET("/main/test")
+    Call<TestResult> getTest();
+
+
+    //search
+    @GET("/main/search")
+    Call<SearchResult> getSearchResults(@Query("tag") String tag);
+
+
+>>>>>>> 1482d8e1ea4cac0c6ef556b81fa5d366e82086fe
 
     // today seoul
     @GET("/subway")

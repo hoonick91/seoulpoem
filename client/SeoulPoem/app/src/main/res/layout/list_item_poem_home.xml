@@ -1,29 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:id="@+id/a"
+    android:layout_width="261dp"
+    android:layout_height="299dp"
+    android:background="@drawable/vpbg">
+
 
     <!--시 이미지-->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:id="@+id/llPoemImg"
+        android:layout_width="227dp"
+        android:layout_height="227dp"
+        android:layout_marginLeft="17dp"
+        android:layout_marginTop="20dp">
+
         <ImageView
+            android:id="@+id/ivPoem"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:src="@drawable/testimg"/>
+            android:scaleType="fitXY"
+            tools:src="@drawable/testimg" />
     </LinearLayout>
 
     <!--시 헤쉬테그-->
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/llPoemImg"
+        android:layout_below="@+id/llPoemImg"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="10dp">
+
         <TextView
+            android:id="@+id/tvHashTag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="#hangang"/>
+            android:textColor="#777777"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            tools:text="너와 나" />
     </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

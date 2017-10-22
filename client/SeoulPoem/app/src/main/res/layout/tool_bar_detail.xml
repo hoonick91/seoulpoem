@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="360dp"
+    android:layout_height="76dp">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tbDetailActivity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--뒤로가기-->
+            <RelativeLayout
+                android:id="@+id/rlBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp">
+
+                <ImageView
+                    android:id="@+id/ivBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/backwhite" />
+            </RelativeLayout>
+
+
+            <!--공유하기-->
+            <RelativeLayout
+                android:id="@+id/rlShare"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="235dp">
+
+                <ImageView
+                    android:id="@+id/ivShare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/share"
+                    android:visibility="invisible" />
+
+                <ImageView
+                    android:id="@+id/ivShare02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/share02"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+
+
+
+            <!--설정-->
+            <RelativeLayout
+                android:id="@+id/rlSetting"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_toRightOf="@+id/rlShare">
+
+                <ImageView
+                    android:id="@+id/ivSetting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/setting"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+
+</RelativeLayout>
