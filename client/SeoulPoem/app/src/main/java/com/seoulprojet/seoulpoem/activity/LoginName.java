@@ -43,7 +43,7 @@ public class LoginName extends AppCompatActivity {
         // get intent
         Intent intent = getIntent();
         userEmail = intent.getExtras().getString("userEmail");
-        loginType = intent.getExtras().getInt("type");
+        loginType = intent.getExtras().getInt("loginType");
         contentType = intent.getExtras().getString("contentType");
 
         // find view
@@ -84,6 +84,8 @@ public class LoginName extends AppCompatActivity {
                 }
                 else{
                     Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                    intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("loginType", loginType);
                     startActivity(intent);
                     finish();
                 }

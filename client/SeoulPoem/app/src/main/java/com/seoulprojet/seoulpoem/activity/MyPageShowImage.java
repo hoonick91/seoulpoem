@@ -30,6 +30,9 @@ public class MyPageShowImage extends AppCompatActivity {
     private ImageView showImage, imgView;
     private String status = "";
 
+    private String userEmail = null;
+    private int loginType = 0;
+
     // network
     private ArrayList<MyPageResult> myPageResults;
     NetworkService service;
@@ -43,6 +46,8 @@ public class MyPageShowImage extends AppCompatActivity {
 
         Intent intent = getIntent();
         status = intent.getStringExtra("status");
+        userEmail = intent.getStringExtra("userEmail");
+        loginType = intent.getExtras().getInt("loginType");
 
         image_back_btn = (ImageButton)findViewById(R.id.mypage_show_back_btn);
         showImage = (ImageView)findViewById(R.id.mypage_show_image);
@@ -59,7 +64,7 @@ public class MyPageShowImage extends AppCompatActivity {
 
     /*************** 이미지 가져오기 *******************/
     public void getMyPagePhotos(){
-        final Call<MyPageResult> requestPhoto = service.getMyPage("godz33@naver.com", 1);
+        final Call<MyPageResult> requestPhoto = service.getMyPage(userEmail, loginType);
         requestPhoto.enqueue(new Callback<MyPageResult>() {
             @Override
             public void onResponse(Call<MyPageResult> call, Response<MyPageResult> response) {
@@ -68,15 +73,29 @@ public class MyPageShowImage extends AppCompatActivity {
 
                         if(status.equals("background")){
                             Log.i("background img", "");
-                            Glide.with(getApplicationContext())
-                                    .load(response.body().msg.background)
-                                    .into(showImage);
+
+                            if(response.body().msg.background == null){
+                                showImage.setImageResource(R.drawable.profile_background);
+                            }
+
+                            else{
+                                Glide.with(getApplicationContext())
+                                        .load(response.body().msg.background)
+                                        .into(showImage);
+                            }
                         }
                         else if(status.equals("profile")){
                             Log.i("profile img", "");
-                            Glide.with(getApplicationContext())
-                                    .load(response.body().msg.profile)
-                                    .into(showImage);
+
+                            if(response.body().msg.profile == null){
+                                showImage.setImageResource(R.drawable.profile_tmp);
+                            }
+
+                            else{
+                                Glide.with(getApplicationContext())
+                                        .load(response.body().msg.profile)
+                                        .into(showImage);
+                            }
                         }
                     }
                 }
