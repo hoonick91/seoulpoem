@@ -311,16 +311,12 @@ public class WriterList extends AppCompatActivity {
         requestApply.enqueue(new Callback<WriterApplyResult>() {
             @Override
             public void onResponse(Call<WriterApplyResult> call, Response<WriterApplyResult> response) {
-                if(response.isSuccessful()){
-                    if(response.body().result.equals("already")){
-                        alreadyDialog();
-                    }
-                    else{
-                        showDialog();
-                    }
+
+                if(response.code() == 403){
+                    alreadyDialog();
                 }
                 else{
-                    Log.i("fail response", "응답코드 : " + response.code());
+                    showDialog();
                 }
             }
 
