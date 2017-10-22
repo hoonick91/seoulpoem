@@ -40,6 +40,7 @@ public class DetailActivity extends AppCompatActivity {
     private ImageView ivPhoto, ivProfile;
     private TextView tvName, tvTags;
     private int articleId;
+    private RelativeLayout llup;
 
     //작품담기 다이얼로그 리스너
     private View.OnClickListener addDialog_leftListener = new View.OnClickListener() {
@@ -91,6 +92,9 @@ public class DetailActivity extends AppCompatActivity {
         //photo click
         clickPhoto();
 
+        //up Button click
+        clickUpButton();
+
         //뒤로가기
         goBack();
 
@@ -117,6 +121,8 @@ public class DetailActivity extends AppCompatActivity {
 
         tvName = (TextView) findViewById(R.id.tvName);
         tvTags = (TextView) findViewById(R.id.tvTags);
+
+        llup = (RelativeLayout)findViewById(R.id.llup);
     }
 
 
@@ -409,6 +415,17 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<DetailResult> call, Throwable t) {
                 Log.i("err", t.getMessage());
+            }
+        });
+    }
+    /***************************업버튼 눌렀을시 시 내용 보기 화면으로 넘어가**********************/
+    public void clickUpButton(){
+        llup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),ReadingPoemActivity.class);
+                intent.putExtra("articles_id",""+articleId);
+                startActivity(intent);
             }
         });
     }

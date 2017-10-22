@@ -1,44 +1,34 @@
 package com.seoulprojet.seoulpoem.activity;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.ExifInterface;
 import android.net.Uri;
-import android.opengl.GLES10;
-import android.opengl.GLES20;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.ImageViewTargetFactory;
 import com.seoulprojet.seoulpoem.R;
-import com.seoulprojet.seoulpoem.model.MyPageModify;
 import com.seoulprojet.seoulpoem.model.MyPageResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.Toast;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,7 +37,7 @@ import retrofit2.Response;
 public class MyPageSetting extends AppCompatActivity {
 
     private static int GALLERY_CODE = 1;
-    private int camNum = 1;
+    private int camNum = 1; //1-bg 2-profile
 
     private ImageButton mypage_setting_back_btn;
     private ImageButton mypage_setting_ok_btn;
@@ -60,6 +50,8 @@ public class MyPageSetting extends AppCompatActivity {
     private String penName = null;
     private File profile = null;
     private File background = null;
+
+    private  Uri imageUri;
 
     // network
     NetworkService service;
@@ -203,7 +195,7 @@ public class MyPageSetting extends AppCompatActivity {
 
         if(resultCode == RESULT_OK){
             try{
-                final Uri imageUri = data.getData();
+                imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
 
                 BitmapFactory.Options options = new BitmapFactory.Options();
@@ -228,7 +220,7 @@ public class MyPageSetting extends AppCompatActivity {
                     if(camNum == 1){
                         mypage_setting_background_img.setImageBitmap(resized);
 
-                        resized.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                //        resized.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 
                         Log.i("bg album", "bg album" + background);
                     }
@@ -236,7 +228,7 @@ public class MyPageSetting extends AppCompatActivity {
                     else if(camNum == 2){
                         mypage_setting_profile_img.setImageBitmap(resized);
 
-                        resized.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                     //   resized.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 
                         Log.i("profile album", "prof album" + profile);
                     }
@@ -269,8 +261,17 @@ public class MyPageSetting extends AppCompatActivity {
     private void postMyPage(){
         RequestBody informBody = RequestBody.create(MediaType.parse("multipart/form-data"),"" + inform);
         RequestBody penNameBody = RequestBody.create(MediaType.parse("multipart/form-data"),"" + penName);
-        RequestBody profileBody;
-        RequestBody backgroundBody;
 
+    }
+
+    /**************************이미지 파일 이름 가져오기()******************************************/
+    public String getImageNameToUri(Uri data) {
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = managedQuery(data, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String imgPath = cursor.getString(column_index);
+        String imgName = imgPath.substring(imgPath.lastIndexOf("/") + 1);
+        return imgName;
     }
 }

@@ -1,12 +1,11 @@
 package com.seoulprojet.seoulpoem.activity;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,18 +19,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
-import com.seoulprojet.seoulpoem.model.SearchListData;
 import com.seoulprojet.seoulpoem.model.SearchListDataArticle;
 import com.seoulprojet.seoulpoem.model.SearchListDataAuthor;
 import com.seoulprojet.seoulpoem.model.SearchResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -240,6 +235,16 @@ public class SearchActivity extends AppCompatActivity {
             Log.d("test",searchListDataArticle.contents );
             holder.tvTitle.setText(searchListDataArticle.title);
             holder.tvContent.setText(searchListDataArticle.contents);
+            holder.itemView.setTag(searchListDataArticle.idarticles);
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(),ReadingPoemActivity.class);
+                    intent.putExtra("articles_id",holder.itemView.getTag().toString());
+                    startActivity(intent);
+                }
+            });
 
         }
 
