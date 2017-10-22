@@ -21,7 +21,7 @@
         <activity android:name=".activity.sampleActivity">
 
         </activity>
-        <activity android:name=".activity.MyPage"/>
+        <activity android:name=".activity.MyPage" />
         <activity android:name=".activity.MyPageSetting" />
         <activity android:name=".activity.WriterList" />
         <activity android:name=".activity.Notice" />
@@ -42,8 +42,7 @@
         <activity android:name=".activity.MainActivity" />
         <activity
             android:name=".activity.WritePoemActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <activity android:name=".activity.PreviewAcitivity" />
 
         <provider
@@ -55,8 +54,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-        <activity android:name=".activity.ReadingPoemActivity">
-        </activity>
+
+        <activity android:name=".activity.ReadingPoemActivity"></activity>
         <activity android:name=".activity.Login" />
         <activity android:name=".activity.LoginName" />
         <activity android:name=".activity.MyPageShowImage" />
