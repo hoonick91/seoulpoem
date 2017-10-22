@@ -40,6 +40,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private String userGoogleEmail = null;
     private int loginType = -1;
     private String contentType = null;
+    private String penName = null;
 
     private NetworkService service;
     private LoginResult loginResults;
@@ -110,6 +111,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
             // idToken = acct.getIdToken();
             // mStatusTextView.setText("ID token : " + idToken);
+            penName = acct.getDisplayName();
             userGoogleEmail = acct.getEmail();
             Log.e("", "userEmail : " + userGoogleEmail);
             loginType = 1;
@@ -161,6 +163,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
                         intent.putExtra("userEmail", userGoogleEmail);
                         intent.putExtra("loginType", loginType);
+                        intent.putExtra("penName", penName);
                         intent.putExtra("contentType", "application/x-www-form-urlencoded");
 
                         startActivity(intent);

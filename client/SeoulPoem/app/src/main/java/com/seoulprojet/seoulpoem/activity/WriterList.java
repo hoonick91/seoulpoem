@@ -129,9 +129,16 @@ public class WriterList extends AppCompatActivity {
         public void onBindViewHolder(MyViewHolder holder, int position) {
             WriterListResult.AuthorList writerListData = writerListDatas.get(position);
 
-            Glide.with(getApplicationContext())
-                    .load(writerListData.profile)
-                    .into(holder.profImg);
+            if(writerListData.profile == null){
+                holder.profImg.setImageResource(R.drawable.profile_tmp);
+            }
+
+            else{
+                Glide.with(getApplicationContext())
+                        .load(writerListData.profile)
+                        .into(holder.profImg);
+            }
+
             // holder.profImg.setImageResource(writerListData.profile);
             holder.writerName_tv.setText(writerListData.pen_name);
             holder.writerMessage_tv.setText(writerListData.inform);
@@ -240,12 +247,26 @@ public class WriterList extends AppCompatActivity {
                     if(response.body().status.equals("success")){
                         hamburger_name.setText(response.body().msg.pen_name);
                         hamburger_message.setText(response.body().msg.inform);
-                        Glide.with(getApplicationContext())
-                                .load(response.body().msg.profile)
-                                .into(hamburger_profile);
-                        Glide.with(getApplicationContext())
-                                .load(response.body().msg.background)
-                                .into(hamburger_bg);
+
+                        if(response.body().msg.profile == null){
+                            hamburger_profile.setImageResource(R.drawable.profile_tmp);
+                        }
+
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().msg.profile)
+                                    .into(hamburger_profile);
+                        }
+
+                        if(response.body().msg.background == null){
+                            hamburger_bg.setImageResource(R.drawable.profile_background);
+                        }
+
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().msg.background)
+                                    .into(hamburger_bg);
+                        }
                     }
                 }
             }
@@ -323,7 +344,7 @@ public class WriterList extends AppCompatActivity {
 
     /***************** post writer apply **********************/
     private void postWriterApply(){
-        Call<WriterApplyResult> requestApply = service.postWriterApply("godz33@naver.com");
+        Call<WriterApplyResult> requestApply = service.postWriterApply(userEmail);
 
         requestApply.enqueue(new Callback<WriterApplyResult>() {
             @Override
