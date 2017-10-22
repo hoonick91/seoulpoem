@@ -1,6 +1,7 @@
 package com.seoulprojet.seoulpoem.network;
 
 
+import com.seoulprojet.seoulpoem.model.LoginPenName;
 import com.seoulprojet.seoulpoem.model.LoginResult;
 import com.seoulprojet.seoulpoem.model.MyPageModify;
 import com.seoulprojet.seoulpoem.model.MyPagePhotoResult;
@@ -56,12 +57,11 @@ public interface NetworkService {
                                @Header("type") int type,
                                @Header("Content-Type") String Content_type);
 
-    // login (필명 입력)
-    @Multipart
+    // login (필명 입력)=
     @POST("/users/signin")
     Call<SignInResult> postName(@Header("type") int type,
                           @Header("email") String email,
-                          @Part ("pen_name") RequestBody pen_name);
+                          @Body LoginPenName pen_name);
 
     // mypage poem
     @GET("/mypage/poem")

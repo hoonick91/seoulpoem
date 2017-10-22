@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.seoulprojet.seoulpoem.R;
+import com.seoulprojet.seoulpoem.model.LoginPenName;
 import com.seoulprojet.seoulpoem.model.SignInResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
@@ -28,6 +29,7 @@ public class LoginName extends AppCompatActivity {
     private int loginType;
     private String contentType;
     private RequestBody penName;
+    private LoginPenName loginPenName;
 
     private TextView tempView;
     private ImageButton next_btn;
@@ -55,7 +57,8 @@ public class LoginName extends AppCompatActivity {
         next_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                penName = RequestBody.create(MediaType.parse("part/x-www-form-urlencoded"), "" + inputName_et.getText().toString());
+                loginPenName = new LoginPenName();
+                loginPenName.pen_name = inputName_et.getText().toString();
                 postName();
             }
         });
@@ -63,7 +66,7 @@ public class LoginName extends AppCompatActivity {
 
     /***************** post name ******************/
     private void postName(){
-        Call<SignInResult> requestName = service.postName(loginType, userEmail, penName);
+        Call<SignInResult> requestName = service.postName(loginType, userEmail, loginPenName);
 
         requestName.enqueue(new Callback<SignInResult>() {
             @Override
