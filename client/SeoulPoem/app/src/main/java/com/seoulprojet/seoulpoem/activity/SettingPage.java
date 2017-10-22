@@ -78,19 +78,29 @@ public class SettingPage extends AppCompatActivity {
             }
         });
 
+        // logout
         logout_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                        new ResultCallback<Status>() {
-                            @Override
-                            public void onResult(@NonNull Status status) {
-                                Log.i("logout", userEmail + "logout");
-                                Intent intent = new Intent(getApplicationContext(), Login.class);
-                                startActivity(intent);
+
+                // google logout
+                if(loginType == 1){
+                    Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                            new ResultCallback<Status>() {
+                                @Override
+                                public void onResult(@NonNull Status status) {
+                                    Log.i("logout", userEmail + "logout");
+                                    Intent intent = new Intent(getApplicationContext(), Login.class);
+                                    startActivity(intent);
+                                }
                             }
-                        }
-                );
+                    );
+                }
+
+                // facebook logout
+                else{
+
+                }
             }
         });
     }
