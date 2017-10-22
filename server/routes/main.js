@@ -3,106 +3,161 @@ const router = express.Router();
 const pool = require('../config/db_pool');
 const jwt = require('jsonwebtoken');
 
-/*promise-mysql로 메인화면에서 id가 속한 모임의 최근 행사들과 내가 참여한 모임 보여주기*/
-router.get('/', async (req, res) => {
-    try {
+    router.get('/', async (req, res) => {
+    try{
+        var connection = await pool.getConnection();
+        await connection.beginTransaction();
 
-        let token = req.headers.token; //클라이언트에서 헤더에 담아 보낸 토큰을 가져옵니다.
-        // get the decoded payload and header
-        var decoded = jwt.decode(token, {complete: true});
-        console.log( decoded.payload.pk); //토큰에서 pk 받아오기 ~~~~~
+        req.checkQuery({tag : {notEmpty: true,errorMessage : 'error message'}});
+
+        let errors = req.validationErrors();
+        if (errors) {
+            res.status(501);
+            res.json({status : "fail",msg:err});
+            return;
+        }
+        else{
+        let tag = '%#'+req.query.tag+' %';
+        let query1 = 'select seoul_poem.pictures.photo,seoul_poem.articles.idarticles,seoul_poem.articles.title from seoul_poem.pictures, seoul_poem.articles where seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures and seoul_poem.articles.tags like ? order by rand() limit 5;'
+        let main_list   = await connection.query(query1,tag);
+
+            res.status(200);
+            res.json({status:"success", data: main_list});
+            await connection.commit();
+        }
+    }catch(err){
+        console.log(err);
+        res.status(500);
+        res.json({status : "fail",msg:err});
+        connection.rollback();
+
+    }finally{
+        pool.releaseConnection(connection);
+    }
+});
+
+//태그내에 모든 사진들을 보여줌
+
+router.get('/all', async ( req, res) => {
+    try{
 
         var connection = await pool.getConnection();
         await connection.beginTransaction();
-        // let query1 = 'update post set view_number = view_number + 1 where id = ?';
-        // await connection.query(query1, req.params.id);
-        let query1 = 'SELECT event.id, event.title as event_title, managerNa_aj.group.title as group_title ,event.text, event.place, event.start_date, event.photo FROM managerNa_aj.event, managerNa_aj.group WHERE group_id IN ( SELECT group_id FROM managerNa_aj.group_has_user, managerNa_aj.group, managerNa_aj.user WHERE managerNa_aj.user.pk = ? and managerNa_aj.group_has_user.user_id = managerNa_aj.user.pk and managerNa_aj.group.id =  managerNa_aj.group_has_user.group_id) and managerNa_aj.group.id = managerNa_aj.event.group_id order by start_date desc limit 5';
-        let events = await connection.query(query1, decoded.payload.pk);
-        let query2 = 'SELECT managerNa_aj.group.id, managerNa_aj.group.title, managerNa_aj.group.photo, group_has_user.is_new, group_has_user.is_chairman FROM managerNa_aj.group_has_user, managerNa_aj.group,managerNa_aj.user WHERE managerNa_aj.user.pk = ? and managerNa_aj.group.id =  managerNa_aj.group_has_user.group_id and managerNa_aj.group_has_user.user_id = managerNa_aj.user.pk order by title limit 17;';
 
-        let groups = await connection.query(query2, decoded.payload.pk);
+        req.checkQuery({tag : {notEmpty: true,errorMessage : 'error message'}});
 
+        let errors = req.validationErrors();
+        if (errors) {
+            res.status(501);
+            res.json({status : "fail",msg:err});
+            return;
+        } else {
+            let tag = '%#' + req.query.tag+ ' %';
+            let query1 = "select seoul_poem.pictures.photo,seoul_poem.articles.idarticles from seoul_poem.pictures, seoul_poem.articles where seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures and seoul_poem.articles.tags like ? order by seoul_poem.articles.idarticles Desc;"
+            let main_list = await connection.query(query1, tag);
 
+            res.status(200);
+            res.json({sucess:"success", data: main_list});
+            await connection.commit();
+        }
 
-        res.status(200).send(  { events: events, groups: groups });
-        await connection.commit();
-    }
-    catch(err){
+    }catch(err){
         console.log(err);
-        res.status(500).send( { result: err });
+        res.status(500);
+        res.json({status : "fail",msg:err});
         connection.rollback();
-    }
-    finally{
+
+    }finally{
         pool.releaseConnection(connection);
     }
-
 });
 
-//마이페이지 조회
-router.get('/mypage', async (req, res) => {
-    try {
 
-        let token = req.headers.token; //클라이언트에서 헤더에 담아 보낸 토큰을 가져옵니다.
-        let decoded = jwt.verify(token, req.app.get('jwt-secret')); //보낸 토큰이 유효한 토큰인지 검증합니다.(토큰 발급 시 사용했던 key로);
-        var decoded_pk = jwt.decode(token, {complete: true});
-        if(!decoded) res.status(400).send({ result: 'wrong token '}); //유효하지 않다면 메시지를 보냅니다.
-        else {
-         var connection = await pool.getConnection();
+
+//태그나 작가별 검색에 이용 (3개씩 보여주며)
+
+router.get('/search',async(req, res) => {
+
+    try{
+
+        var connection = await pool.getConnection();
         await connection.beginTransaction();
+        req.checkQuery({tag : {notEmpty: true,errorMessage : 'error message'}});
 
-        let query1 = 'SELECT name, email, photo, ph  FROM managerNa_aj.user where user.pk= ?';
-        let my_profile = await connection.query(query1, decoded_pk.payload.pk);
-        let query2 = 'SELECT event.id, event.group_id, event.photo, managerNa_aj.group.title as group_title, event.title as event_title, event.start_date, user_has_event.deposit_status FROM managerNa_aj.event , managerNa_aj.group, managerNa_aj.user , managerNa_aj.user_has_event WHERE managerNa_aj.user.pk = ? and managerNa_aj.group.id = managerNa_aj.event.group_id and managerNa_aj.user.pk =  managerNa_aj.user_has_event.user_pk and managerNa_aj.user_has_event.event_id = managerNa_aj.event.id';
-        let participate_in = await connection.query(query2, decoded_pk.payload.pk);
-
-        let query3 = 'select event.id, event.group_id, event.title as event_title, event.photo, event.start_date, managerNa_aj.group.title as group_title from managerNa_aj.event, managerNa_aj.group where event.id in (select user_has_event.event_id from managerNa_aj.user_has_event where user_has_event.user_pk = ? and user_has_event.is_manager = 1) and managerNa_aj.group.id = event.group_id ;';
-        let my_event = await connection.query(query3, decoded_pk.payload.pk);
-
-        let query4 = 'select managerNa_aj.group.id, managerNa_aj.group.photo, managerNa_aj.group.title from managerNa_aj.group where id in (select group_id from group_has_user, user where group_has_user.is_chairman = 1 and user.pk = ? and user.pk= group_has_user.user_id)';
-        let my_group = await connection.query(query4, decoded_pk.payload.pk);
-
-
-        function repeater(i){//node는 비동기화이기때문에 반복문을 사용하기위해 재귀함수를 이용함
-          if(i<my_event.length)//받아온 행사길이 만큼 재귀 돌려버림~
-          {
-
-
-            connection.query('select count(user_pk) as count from managerNa_aj.user_has_event where deposit_status = 0 and user_has_event.event_id = ?;', my_event[i]['id'] ,function(error,row){
-            if(error){
-              console.log("connection error"+error);
-              res.status(500).send({result:'FAIL'});
-            }
-            else{
-              my_event[i]['count'] = row[0].count
-            }
-            repeater(i+1);
-          });
-          }
-          if(i == my_event.length)//반복문이 끝났을 시
-          {
-              res.status(200).send( { my_profile: my_profile[0], participate_in: participate_in, my_event:my_event, my_group:my_group  });
-          }
+        let errors = req.validationErrors();
+        if (errors) {
+            res.status(501);
+            res.json({status : "fail",msg:err});
+            return;
         }
-        repeater(0);
+        else
+        {
+            let tag ='%'+ req.query.tag+'%';
 
+            let query2 = "select seoul_poem.users.pen_name as pen_name,seoul_poem.users.email as email,seoul_poem.users.profile as profile,seoul_poem.users.foreign_key_type as type from seoul_poem.users where seoul_poem.users.pen_name like ? limit 3"
+            let author_list = await connection.query(query2,tag);
 
+            let counts_author = author_list.length;
 
+            let i;
+            let query3 = "select count(*) as count from seoul_poem.articles, seoul_poem.poem where seoul_poem.articles.users_email = ? and seoul_poem.articles.users_foreign_key_type = ? and seoul_poem.articles.poem_idpoem = seoul_poem.poem.idpoem";
+            let query4 = "select count(*) as count from seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.users_email = ? and seoul_poem.articles.users_foreign_key_type = ? and seoul_poem.articles.pictures_idpictures = seoul_poem.pictures.idpictures";
 
+            let arr1 = [];
 
+            for (i=0;i<counts_author;i++){
+                let author = {};
+                author.name_ = author_list[i].pen_name;
+                let email = author_list[i].email;
+                let type = author_list[i].type;
+                author.profile =author_list[i].profile;
+                let article_count = await connection.query(query3,[email,type]);
+                author.ac = article_count[0].count;
+                let poem_count =  await connection.query(query4,[email,type]);
+                author.pc = poem_count[0].count;
+                arr1[i] = author;
+         }
+
+            let query1 = "select seoul_poem.articles.idarticles as idarticles,seoul_poem.articles.title as title,seoul_poem.articles.poem_idpoem as idpoem from seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures and seoul_poem.articles.tags like ? order by seoul_poem.articles.idarticles Desc limit 3;"
+
+            let article_list = await connection.query(query1,tag);
+
+            let counting = article_list.length;
+
+            let arr2 = [];
+
+            let query5 = "select seoul_poem.poem.content as content from  seoul_poem.poem where seoul_poem.poem.idpoem = ?";
+            console.log(counting);
+
+            for(i=0 ; i<counting;i++){
+                let articlelist= {};
+                articlelist.idarticles = article_list[i].idarticles;
+                articlelist.title = article_list[i].title;
+                if (article_list[i].idpoem == null){
+                    articlelist.contents=""
+                }
+                else {
+                    let poem_ = await connection.query(query5,article_list[i].idpoem);
+                    articlelist.contents= poem_[0].content;
+                }
+
+                arr2[i] = articlelist;
+            }
+        console.log(arr2);
+        res.status(200);
+        res.json( { status : "success",author_list : arr1 , article_list : arr2});
         await connection.commit();
         }
 
-    }
-    catch(err){
+    }catch(err){
         console.log(err);
-        res.status(500).send( { result: err });
+        res.status(500);
+        res.json({status : "fail",msg:err});
         connection.rollback();
     }
-    finally{
+    finally {
         pool.releaseConnection(connection);
     }
-
 });
-
 
 module.exports = router;

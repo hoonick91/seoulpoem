@@ -8,5 +8,4 @@ public class PoemListData {
     public String photo;
     public int idarticles;
     public String title;
-
 }

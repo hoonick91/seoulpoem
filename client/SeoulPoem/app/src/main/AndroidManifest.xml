@@ -2,10 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.seoulprojet.seoulpoem">
 
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
 
 
     <application
@@ -17,7 +20,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.sampleActivity"></activity>
+        <activity android:name=".activity.MyPage"/>
+        <activity android:name=".activity.MyPageSetting" />
+        <activity android:name=".activity.WriterList" />
+        <activity android:name=".activity.WriterApply" />
+        <activity android:name=".activity.Notice" />
+        <activity android:name=".activity.SettingPage" />
+        <activity android:name=".activity.TodaySeoul" />
+        <activity android:name=".activity.Splash">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,8 +38,28 @@
         </activity>
         <activity android:name=".activity.DetailActivity" />
         <activity android:name=".activity.AddActivity" />
-        <activity android:name=".activity.GalleryActivity" />
         <activity android:name=".activity.SearchActivity"></activity>
+        <activity android:name=".activity.AddActivity"></activity>
+
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.WritePoemActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <activity android:name=".activity.PreviewAcitivity"></activity>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.seoulprojet.seoulpoem.activity.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+
+        <activity android:name=".activity.Login" />
+        <activity android:name=".activity.LoginName"></activity>
+
     </application>
 
 </manifest>
