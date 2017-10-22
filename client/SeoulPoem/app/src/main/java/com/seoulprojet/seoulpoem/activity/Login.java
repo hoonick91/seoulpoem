@@ -66,19 +66,19 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        google_btn = (SignInButton)findViewById(R.id.sign_in_button);
+        google_btn = (SignInButton) findViewById(R.id.sign_in_button);
         google_btn.setSize(SignInButton.SIZE_WIDE);
         google_btn.setScopes(gso.getScopeArray());
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-        mStatusTextView = (TextView)findViewById(R.id.login_tv);
+        mStatusTextView = (TextView) findViewById(R.id.login_tv);
 
         // facebook login
     }
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.sign_in_button:
                 signIn();
                 break;
@@ -102,10 +102,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         }
     }
 
+
+
+
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
+            // Signed in successfully, show authenticafted UI.
             GoogleSignInAccount acct = result.getSignInAccount();
 
             // idToken = acct.getIdToken();
@@ -136,24 +139,24 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     }
 
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(getApplicationContext(), ""+connectionResult, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "" + connectionResult, Toast.LENGTH_SHORT).show();
     }
 
     /*************** post google login *******************/
-    private void postLogin(){
+    private void postLogin() {
         Call<LoginResult> requestLogin = service.postLogin(userGoogleEmail, loginType, "application/x-www-form-urlencoded");
 
         requestLogin.enqueue(new Callback<LoginResult>() {
             @Override
             public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     loginResults = new LoginResult();
                     loginResults = response.body();
 
                     Log.i("success response", "success response");
 
                     // login 상태가 fail일 경우 회원가입(필명 입력)으로 이동
-                    if(loginResults.status.equals("fail")){
+                    if (loginResults.status.equals("fail")) {
                         Intent intent = new Intent(getApplicationContext(), LoginName.class);
 
                         intent.putExtra("userEmail", userGoogleEmail);
@@ -162,15 +165,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
                         startActivity(intent);
                         finish();
-                    }
-
-                    else{
+                    } else {
                         Intent intent = new Intent(getApplicationContext(), MyPage.class);
                         startActivity(intent);
                         finish();
                     }
-                }
-                else{
+                } else {
                     Log.i("fail response", "code : " + response.code());
                 }
             }

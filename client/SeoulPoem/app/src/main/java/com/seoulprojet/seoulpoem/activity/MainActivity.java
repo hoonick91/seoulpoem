@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -24,6 +26,7 @@ import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.model.HashtagListData;
 import com.seoulprojet.seoulpoem.model.MainResult;
+import com.seoulprojet.seoulpoem.model.MyPageResult;
 import com.seoulprojet.seoulpoem.model.PoemListData;
 import com.seoulprojet.seoulpoem.model.TestResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
@@ -59,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvHashTag;
     private TabLayout tabLayout;
 
-    private  RelativeLayout rlMore;
+    private RelativeLayout rlMore;
 
 
     //recycler
@@ -73,6 +76,19 @@ public class MainActivity extends AppCompatActivity {
 
     //네트워크
     NetworkService service;
+
+    // drawer
+    private ImageButton hamburger_setting_btn, hamburger_mypage_btn, hamburger_scrab_btn, hamburger_today_btn, hamburger_writer_btn, hamburger_notice_btn;
+    private TextView hamburger_name, hamburger_message;
+    private ImageView hamburger_profile, hamburger_bg;
+    private View drawerView;
+    private DrawerLayout drawerLayout;
+
+    //my page
+    private TextView mypage_name_txt;
+    private TextView mypage_message_txt;
+    private ImageView mypage_profile_img;
+    private ImageView mypage_bg_iv;
 
 
     /***************************************START***********************************************/
@@ -95,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         setViewPager();
 
         //햄버거 toggle
-        toHamberger();
+        //toHamberger();
 
         //검색
         toSearch();
@@ -111,6 +127,40 @@ public class MainActivity extends AppCompatActivity {
         //네트워킹
         poems = new ArrayList<>();
         getLists();
+
+
+        // drawer
+        showHamburger();
+    }
+
+
+    /******************* mypage 정보 가져오기 ******************/
+    public void getMenuMypage() {
+        Call<MyPageResult> requestMyPage = service.getMyPage("godz33@naver.com", 1);
+
+        requestMyPage.enqueue(new Callback<MyPageResult>() {
+            @Override
+            public void onResponse(Call<MyPageResult> call, Response<MyPageResult> response) {
+                if (response.isSuccessful()) {
+                    Log.d("error", "xxx");
+                    if (response.body().status.equals("success")) {
+                        hamburger_name.setText(response.body().msg.pen_name);
+                        hamburger_message.setText(response.body().msg.inform);
+                        Glide.with(getApplicationContext())
+                                .load(response.body().msg.profile)
+                                .into(hamburger_profile);
+                        Glide.with(getApplicationContext())
+                                .load(response.body().msg.background)
+                                .into(hamburger_bg);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MyPageResult> call, Throwable t) {
+                Log.i("mypage error", t.getMessage());
+            }
+        });
     }
 
 
@@ -127,7 +177,13 @@ public class MainActivity extends AppCompatActivity {
 
         vpPoems = (ViewPager) findViewById(R.id.vpPoems);
         rlToWrite = (RelativeLayout) findViewById(R.id.rlToWrite);
-        rlMore = (RelativeLayout)findViewById(R.id.rlMore);
+        rlMore = (RelativeLayout) findViewById(R.id.rlMore);
+
+        mypage_profile_img = (ImageView) findViewById(R.id.mypage_profile_img);
+        mypage_name_txt = (TextView) findViewById(R.id.mypage_name_txt);
+        mypage_message_txt = (TextView) findViewById(R.id.mypage_message_txt);
+        mypage_bg_iv = (ImageView) findViewById(R.id.mypage_bg_iv);
+
     }
 
 
@@ -348,17 +404,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /***********************************hamberger**********************************/
-
-    public void toHamberger() {
-        rlHamberger.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "hamberger open", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
 
     /**********************************search**********************************/
     public void toSearch() {
@@ -382,6 +427,86 @@ public class MainActivity extends AppCompatActivity {
                 //Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 //startActivity(intent);
                 Toast.makeText(MainActivity.this, "call write activity", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /********* drawer **********/
+    public void showHamburger() {
+
+        hamburger_mypage_btn = (ImageButton) findViewById(R.id.hamburger_mypage_btn);
+        hamburger_scrab_btn = (ImageButton) findViewById(R.id.hamburger_scrab_btn);
+        hamburger_today_btn = (ImageButton) findViewById(R.id.hamburger_todayseoul_btn);
+        hamburger_writer_btn = (ImageButton) findViewById(R.id.hamburger_writerlist_btn);
+        hamburger_notice_btn = (ImageButton) findViewById(R.id.hamburger_notice_btn);
+        hamburger_setting_btn = (ImageButton) findViewById(R.id.hamburger_setting_btn);
+        hamburger_name = (TextView) findViewById(R.id.hamburger_name);
+        hamburger_message = (TextView) findViewById(R.id.hamburger_message);
+        hamburger_profile = (ImageView) findViewById(R.id.hamburger_profile_img);
+        hamburger_bg = (ImageView) findViewById(R.id.hamburger_bg);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.mypage_drawer_layout02);
+        drawerView = findViewById(R.id.drawer);
+        rlHamberger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //햄버거 내 정보 가져오기
+                getMenuMypage();
+                drawerLayout.openDrawer(drawerView);
+            }
+        });
+
+        hamburger_mypage_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                startActivity(intent);
+            }
+        });
+
+        hamburger_scrab_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        hamburger_today_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TodaySeoul.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        hamburger_setting_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SettingPage.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        hamburger_notice_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.closeDrawers();
+                Intent intent = new Intent(getApplicationContext(), Notice.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        hamburger_writer_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), WriterList.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

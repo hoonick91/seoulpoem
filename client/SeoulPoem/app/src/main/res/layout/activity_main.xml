@@ -6,124 +6,136 @@
     android:layout_height="match_parent"
     android:background="@drawable/mainbg">
 
-    <RelativeLayout
-        android:id="@+id/llup"
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/mypage_drawer_layout02"
         android:layout_width="match_parent"
-        android:layout_height="143dp"
-        android:background="#ffffff"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
 
-        <!--툴바-->
-        <include
-            android:id="@+id/icToolbar"
-            layout="@layout/tool_bar_main" />
-
-        <!--hash tag toggle-->
         <RelativeLayout
-            android:id="@+id/rlHashTagToggle"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="70dp">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvHashtags"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </RelativeLayout>
-
-
-    </RelativeLayout>
-
-
-
-
-
-
-    <!--해쉬테그-->
-    <LinearLayout
-        android:id="@+id/llHashTag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/llup"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="31dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="# 그리움"
-            android:textColor="#488ab4"
-            android:textStyle="bold"
-            android:textSize="15dp" />
-    </LinearLayout>
-
-
-    <!--viewpager, indicator-->
-    <RelativeLayout
-        android:id="@+id/rlViewpager"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_below="@+id/llHashTag"
-        android:layout_marginTop="15dp">
-
-        <com.seoulprojet.seoulpoem.activity.PagerContainer
-            android:id="@+id/pcPoem"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/vpPoems"
-                android:layout_width="260dp"
+            <RelativeLayout
+                android:id="@+id/llup"
+                android:layout_width="match_parent"
+                android:layout_height="143dp"
+                android:background="#ffffff">
+
+
+                <!--툴바-->
+                <include
+                    android:id="@+id/icToolbar"
+                    layout="@layout/tool_bar_main" />
+
+                <!--hash tag toggle-->
+                <RelativeLayout
+                    android:id="@+id/rlHashTagToggle"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="70dp">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvHashtags"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+
+            <!--해쉬테그-->
+            <LinearLayout
+                android:id="@+id/llHashTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/llup"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="31dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="# 그리움"
+                    android:textColor="#488ab4"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+            <!--viewpager, indicator-->
+            <RelativeLayout
+                android:id="@+id/rlViewpager"
+                android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:layout_gravity="center_horizontal" />
-        </com.seoulprojet.seoulpoem.activity.PagerContainer>
+                android:layout_below="@+id/llHashTag"
+                android:layout_marginTop="15dp">
 
-    </RelativeLayout>
+                <com.seoulprojet.seoulpoem.activity.PagerContainer
+                    android:id="@+id/pcPoem"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-    <!--더보기-->
-    <RelativeLayout
-        android:id="@+id/rlMore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/rlViewpager"
-        android:layout_marginTop="340dp">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/more"/>
-    </RelativeLayout>
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/vpPoems"
+                        android:layout_width="260dp"
+                        android:layout_height="300dp"
+                        android:layout_gravity="center_horizontal" />
+                </com.seoulprojet.seoulpoem.activity.PagerContainer>
 
-    <!--to Write-->
-    <RelativeLayout
-        android:id="@+id/rlToWrite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/llup"
-        android:layout_marginTop="345dp"
-        android:layout_marginLeft="242dp">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/towrite" />
-    </RelativeLayout>
+            </RelativeLayout>
 
+            <!--더보기-->
+            <RelativeLayout
+                android:id="@+id/rlMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="340dp"
+                android:layout_toRightOf="@+id/rlViewpager">
 
-    <!--indicator-->
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabDots"
-        android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:layout_below="@+id/rlViewpager"
-        android:layout_marginTop="60dp"
-        app:tabBackground="@drawable/tab_selector"
-        app:tabGravity="center"
-        app:tabIndicatorHeight="0dp" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/more" />
+            </RelativeLayout>
 
+            <!--to Write-->
+            <RelativeLayout
+                android:id="@+id/rlToWrite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/llup"
+                android:layout_marginLeft="242dp"
+                android:layout_marginTop="345dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/towrite" />
+            </RelativeLayout>
 
 
+            <!--indicator-->
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabDots"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:layout_below="@+id/rlViewpager"
+                android:layout_marginTop="60dp"
+                app:tabBackground="@drawable/tab_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp" />
 
 
+        </RelativeLayout>
+        <include layout="@layout/hamburger_drawer" />
+
+    </android.support.v4.widget.DrawerLayout>
 
 
 </RelativeLayout>
