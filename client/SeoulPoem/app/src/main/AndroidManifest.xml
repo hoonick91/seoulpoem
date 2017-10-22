@@ -18,8 +18,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.sampleActivity"></activity>
+        <activity android:name=".activity.sampleActivity">
+
+        </activity>
         <activity android:name=".activity.MyPage"/>
         <activity android:name=".activity.MyPageSetting" />
         <activity android:name=".activity.WriterList" />
@@ -38,6 +39,10 @@
         <activity android:name=".activity.DetailActivity" />
         <activity android:name=".activity.AddActivity" />
         <activity android:name=".activity.SearchActivity"></activity>
+<<<<<<< HEAD
+=======
+        <activity android:name=".activity.MainActivity" />
+>>>>>>> ef80cdc5c782b28a157a8f4c313cd2a65db20e02
         <activity
             android:name=".activity.WritePoemActivity"
             android:windowSoftInputMode="stateHidden|adjustResize">
@@ -59,6 +64,7 @@
         <activity android:name=".activity.LoginName" />
         <activity android:name=".activity.MyPageShowImage" />
         <activity android:name=".activity.NoticeDetail"></activity>
+        <activity android:name=".activity.SubwayPoemActivity"></activity>
 
     </application>
 

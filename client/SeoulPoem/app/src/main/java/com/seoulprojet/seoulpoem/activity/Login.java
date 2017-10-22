@@ -114,6 +114,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
             // idToken = acct.getIdToken();
             // mStatusTextView.setText("ID token : " + idToken);
             userGoogleEmail = acct.getEmail();
+            Log.e("", "userEmail : " + userGoogleEmail);
             loginType = 1;
 
 
@@ -154,19 +155,27 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                     loginResults = response.body();
 
                     Log.i("success response", "success response");
+                    Log.i("status", "status" + response.body().status);
 
                     // login 상태가 fail일 경우 회원가입(필명 입력)으로 이동
+<<<<<<< HEAD
                     if (loginResults.status.equals("fail")) {
+=======
+                    if(loginResults.status.equals("fail")){
+
+>>>>>>> ef80cdc5c782b28a157a8f4c313cd2a65db20e02
                         Intent intent = new Intent(getApplicationContext(), LoginName.class);
 
                         intent.putExtra("userEmail", userGoogleEmail);
-                        intent.putExtra("type", loginType);
+                        intent.putExtra("loginType", loginType);
                         intent.putExtra("contentType", "application/x-www-form-urlencoded");
 
                         startActivity(intent);
                         finish();
                     } else {
                         Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                        intent.putExtra("userEmail", userGoogleEmail);
+                        intent.putExtra("loginType", loginType);
                         startActivity(intent);
                         finish();
                     }

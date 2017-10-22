@@ -1,6 +1,7 @@
 package com.seoulprojet.seoulpoem.activity;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +18,6 @@ import com.seoulprojet.seoulpoem.model.MyPagePoemResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -29,6 +29,9 @@ import retrofit2.Response;
  */
 
 public class MyPagePoemFragment extends Fragment {
+
+    private String userEmail = null;
+    private int loginType = 0;
 
     private TextView poemCount;
 
@@ -48,6 +51,10 @@ public class MyPagePoemFragment extends Fragment {
 
       View view = inflater.inflate(R.layout.mypage_poem_fragment, container, false);
       poemCount = (TextView)view.findViewById(R.id.poem_frag_count_txt);
+
+        Bundle extra = getArguments();
+        userEmail = extra.getString("userEmail");
+        loginType = extra.getInt("loginType");
 
         recyclerView = (RecyclerView)view.findViewById(R.id.poem_frag_rv);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -75,6 +82,16 @@ public class MyPagePoemFragment extends Fragment {
 
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_poem_title, parent, false);
+            view.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    int position = recyclerView.getChildLayoutPosition(v);
+                    int notice_id = poemResults.get(position).idarticles;
+                    Intent intent = new Intent(getActivity().getApplicationContext(), ReadingPoemActivity.class);
+                    intent.putExtra("articles_id", ""+notice_id);
+                    startActivity(intent);
+                }
+            });
             MyViewHolder viewHolder = new MyViewHolder(view);
             return viewHolder;
         }
@@ -105,7 +122,7 @@ public class MyPagePoemFragment extends Fragment {
 
     /****************** 시 리스트 가져오기 **********************/
     private void getPoem(){
-        Call<MyPagePoemResult> requestPoem = service.getMyPoem("godz33@naver.com", 1);
+        Call<MyPagePoemResult> requestPoem = service.getMyPoem(userEmail, loginType);
 
         requestPoem.enqueue(new Callback<MyPagePoemResult>() {
             @Override

@@ -31,6 +31,9 @@ import retrofit2.Response;
 
 public class WriterList extends AppCompatActivity {
 
+    private String userEmail = null;
+    private int loginType = 0;
+
     private ImageButton writerlist_hamburger_btn;
     private ImageButton writerlist_apply_btn;
 
@@ -56,6 +59,10 @@ public class WriterList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writer_list);
+
+        Intent intent = getIntent();
+        userEmail = intent.getStringExtra("userEmail");
+        loginType = intent.getExtras().getInt("loginType");
 
         // network
         service = ApplicationController.getInstance().getNetworkService();
@@ -168,6 +175,8 @@ public class WriterList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -177,6 +186,8 @@ public class WriterList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TodaySeoul.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -186,6 +197,8 @@ public class WriterList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SettingPage.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -196,6 +209,8 @@ public class WriterList extends AppCompatActivity {
             public void onClick(View v) {
                 drawerLayout.closeDrawers();
                 Intent intent = new Intent(getApplicationContext(), Notice.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -205,6 +220,8 @@ public class WriterList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), WriterList.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -213,7 +230,7 @@ public class WriterList extends AppCompatActivity {
 
     /******************* mypage 정보 가져오기 ******************/
     public void getMenuMypage(){
-        Call<MyPageResult> requestMyPage = service.getMyPage("godz33@naver.com", 1);
+        Call<MyPageResult> requestMyPage = service.getMyPage(userEmail, loginType);
 
         requestMyPage.enqueue(new Callback<MyPageResult>() {
             @Override
@@ -311,16 +328,12 @@ public class WriterList extends AppCompatActivity {
         requestApply.enqueue(new Callback<WriterApplyResult>() {
             @Override
             public void onResponse(Call<WriterApplyResult> call, Response<WriterApplyResult> response) {
-                if(response.isSuccessful()){
-                    if(response.body().result.equals("already")){
-                        alreadyDialog();
-                    }
-                    else{
-                        showDialog();
-                    }
+
+                if(response.code() == 403){
+                    alreadyDialog();
                 }
                 else{
-                    Log.i("fail response", "응답코드 : " + response.code());
+                    showDialog();
                 }
             }
 

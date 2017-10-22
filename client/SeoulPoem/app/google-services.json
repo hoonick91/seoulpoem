@@ -13,7 +13,11 @@
       },
       "oauth_client": [
         {
+<<<<<<< HEAD
           "client_id": "666717725695-qulon4kh0g30pi1ett07eoev5i61qpp8.apps.googleusercontent.com",
+=======
+          "client_id": "666717725695-21498eop061vjrc626flncfm19s1jkgi.apps.googleusercontent.com",
+>>>>>>> ef80cdc5c782b28a157a8f4c313cd2a65db20e02
           "client_type": 1,
           "android_info": {
             "package_name": "com.seoulprojet.seoulpoem",
