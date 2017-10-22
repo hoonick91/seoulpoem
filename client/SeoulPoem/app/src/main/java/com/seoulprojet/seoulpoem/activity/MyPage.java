@@ -1,5 +1,9 @@
 package com.seoulprojet.seoulpoem.activity;
 
+
+import android.app.Dialog;
+import android.app.FragmentTransaction;
+import android.content.Context;
 import android.Manifest;
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -46,6 +50,9 @@ import retrofit2.Response;
 
 public class MyPage extends AppCompatActivity {
 
+    private MyPagePhotoFragment fragmentPhoto;
+    private MyPagePoemFragment fragmentPoem;
+
     private ImageView mypage_profile_img;
     private ImageButton mypage_hamburger_btn;
     private ImageButton mypage_setting_btn;
@@ -66,6 +73,8 @@ public class MyPage extends AppCompatActivity {
 
     // network
     NetworkService service;
+    private String userEmail = null;
+    private int loginType = 0;
 
     //글쓰기용 변수들.
     private static final int PICK_FROM_CAMERA = 1;
@@ -86,6 +95,11 @@ public class MyPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_page);
+
+        Intent intent = getIntent();
+        userEmail = intent.getExtras().getString("userEmail");
+        loginType = intent.getExtras().getInt("loginType");
+
 
         // 서비스 객체 초기화
         service = ApplicationController.getInstance().getNetworkService();
@@ -128,10 +142,18 @@ public class MyPage extends AppCompatActivity {
 
 
         // fragment
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.mypage_fragment, new MyPagePhotoFragment())
-                .commit();
+        fragmentPhoto = new MyPagePhotoFragment();
+        fragmentPoem = new MyPagePoemFragment();
+        Bundle bundle = new Bundle(2);
+        bundle.putString("userEmail", userEmail);
+        bundle.putInt("loginType", loginType);
+        fragmentPhoto.setArguments(bundle);
+        fragmentPoem.setArguments(bundle);
+
+        final FragmentTransaction transactionPhoto = getFragmentManager().beginTransaction();
+        transactionPhoto.replace(R.id.mypage_fragment, fragmentPhoto);
+        transactionPhoto.addToBackStack(null);
+        transactionPhoto.commit();
 
         mypage_photo_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,10 +161,10 @@ public class MyPage extends AppCompatActivity {
 
                 mypage_poem_btn.setImageResource(R.drawable.mypage_poem_un_btn);
                 mypage_photo_btn.setImageResource(R.drawable.mypage_photo_on_btn);
-               getFragmentManager()
-                       .beginTransaction()
-                       .replace(R.id.mypage_fragment, new MyPagePhotoFragment())
-                       .commit();
+                FragmentTransaction transactionPhoto = getFragmentManager().beginTransaction();
+                transactionPhoto.replace(R.id.mypage_fragment, fragmentPhoto);
+                transactionPhoto.addToBackStack(null);
+                transactionPhoto.commit();
             }
         });
 
@@ -152,10 +174,11 @@ public class MyPage extends AppCompatActivity {
 
                 mypage_poem_btn.setImageResource(R.drawable.mypage_poem_on_btn);
                 mypage_photo_btn.setImageResource(R.drawable.mypage_photo_un);
-                getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.mypage_fragment, new MyPagePoemFragment())
-                        .commit();
+
+                FragmentTransaction transactionPoem = getFragmentManager().beginTransaction();
+                transactionPoem.replace(R.id.mypage_fragment, fragmentPoem);
+                transactionPoem.addToBackStack(null);
+                transactionPoem.commit();
             }
         });
 
@@ -167,6 +190,8 @@ public class MyPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyPageShowImage.class);
                 intent.putExtra("status", "profile");
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
             }
         });
@@ -176,6 +201,8 @@ public class MyPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyPageShowImage.class);
                 intent.putExtra("status", "background");
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
             }
         });
@@ -184,7 +211,7 @@ public class MyPage extends AppCompatActivity {
 
     /******************* mypage 정보 가져오기 ******************/
     public void getMypage(){
-        Call<MyPageResult> requestMyPage = service.getMyPage("godz33@naver.com", 1);
+        Call<MyPageResult> requestMyPage = service.getMyPage(userEmail, loginType);
 
         requestMyPage.enqueue(new Callback<MyPageResult>() {
             @Override
@@ -194,12 +221,26 @@ public class MyPage extends AppCompatActivity {
                     if(response.body().status.equals("success")){
                         mypage_name_txt.setText(response.body().msg.pen_name);
                         mypage_message_txt.setText(response.body().msg.inform);
-                        Glide.with(getApplicationContext())
-                                .load(response.body().msg.profile)
-                                .into(mypage_profile_img);
-                        Glide.with(getApplicationContext())
-                                .load(response.body().msg.background)
-                                .into(mypage_bg_iv);
+
+
+                        if(response.body().msg.profile == null){
+                            mypage_profile_img.setImageResource(R.drawable.profile_tmp);
+                        }
+
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().msg.profile)
+                                    .into(mypage_profile_img);
+                        }
+
+                        if(response.body().msg.background == null){
+                            mypage_bg_iv.setImageResource(R.drawable.profile_background);
+                        }
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().msg.background)
+                                    .into(mypage_bg_iv);
+                        }
                     }
                 }
             }
@@ -238,6 +279,8 @@ public class MyPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
             }
         });
@@ -246,6 +289,10 @@ public class MyPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TodaySeoul.class);
+
+                Log.i("userEmail", "userEmail " + userEmail);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -255,6 +302,9 @@ public class MyPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SettingPage.class);
+
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -265,6 +315,8 @@ public class MyPage extends AppCompatActivity {
             public void onClick(View v) {
                 drawerLayout.closeDrawers();
                 Intent intent = new Intent(getApplicationContext(), Notice.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -274,6 +326,8 @@ public class MyPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), WriterList.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -282,7 +336,7 @@ public class MyPage extends AppCompatActivity {
 
     /******************* mypage 정보 가져오기 ******************/
     public void getMenuMypage(){
-        Call<MyPageResult> requestMyPage = service.getMyPage("godz33@naver.com", 1);
+        Call<MyPageResult> requestMyPage = service.getMyPage(userEmail, loginType);
 
         requestMyPage.enqueue(new Callback<MyPageResult>() {
             @Override
@@ -292,12 +346,26 @@ public class MyPage extends AppCompatActivity {
                     if(response.body().status.equals("success")){
                         hamburger_name.setText(response.body().msg.pen_name);
                         hamburger_message.setText(response.body().msg.inform);
-                        Glide.with(getApplicationContext())
-                                .load(response.body().msg.profile)
-                                .into(hamburger_profile);
-                        Glide.with(getApplicationContext())
-                                .load(response.body().msg.background)
-                                .into(hamburger_bg);
+
+                        if(response.body().msg.profile == null){
+                            hamburger_profile.setImageResource(R.drawable.profile_tmp);
+                        }
+
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().msg.profile)
+                                    .into(hamburger_profile);
+                        }
+
+                        if(response.body().msg.background == null){
+                            hamburger_bg.setImageResource(R.drawable.profile_background);
+                        }
+
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().msg.background)
+                                    .into(hamburger_bg);
+                        }
                     }
                 }
             }

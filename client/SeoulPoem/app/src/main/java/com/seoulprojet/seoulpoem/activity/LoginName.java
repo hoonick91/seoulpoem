@@ -43,7 +43,7 @@ public class LoginName extends AppCompatActivity {
         // get intent
         Intent intent = getIntent();
         userEmail = intent.getExtras().getString("userEmail");
-        loginType = intent.getExtras().getInt("type");
+        loginType = intent.getExtras().getInt("loginType");
         contentType = intent.getExtras().getString("contentType");
 
         // find view
@@ -71,11 +71,23 @@ public class LoginName extends AppCompatActivity {
         requestName.enqueue(new Callback<SignInResult>() {
             @Override
             public void onResponse(Call<SignInResult> call, Response<SignInResult> response) {
-                if(response.isSuccessful()){
-                    tempView.setText(response.body().status);
+                if(response.code()==401) {
+                    tempView.setText("중복");
+                }
+
+                else if(response.code() == 403){
+                    tempView.setText("제대로 안 보내짐");
+                }
+
+                else if(response.code() == 500){
+                    tempView.setText("DBerror");
                 }
                 else{
-                    Log.i("", "응답코드 " + response.code());
+                    Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                    intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("loginType", loginType);
+                    startActivity(intent);
+                    finish();
                 }
             }
 
