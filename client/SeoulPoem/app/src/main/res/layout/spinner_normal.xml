@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_vertical"
+    android:layout_marginLeft="10dp"
+    android:layout_width="50dp"
+    android:layout_height="24dp">
+<LinearLayout
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:layout_marginLeft="10dp"
+    android:layout_width="24dp"
+    android:layout_height="24dp">
+
+    <ImageView
+        android:background="@drawable/paint_bucket"
+        android:layout_width="18dp"
+        android:layout_height="17dp" />
+
+    <ImageView
+        android:id="@+id/spinnerColor"
+        android:gravity="center"
+        android:layout_marginTop="3dp"
+        android:layout_width="18dp"
+        android:layout_height="4dp"
+        android:background="#000000"/>
+</LinearLayout>
+
+    <ImageView
+        android:background="@drawable/path_6"
+        android:layout_width="10dp"
+        android:layout_height="5dp" />
+
+
+
+</LinearLayout>
+
+
