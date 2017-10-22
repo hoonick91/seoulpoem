@@ -36,6 +36,9 @@ import retrofit2.Response;
 
 public class MyPageSetting extends AppCompatActivity {
 
+    private String userEmail = null;
+    private int loginType = 0;
+
     private static int GALLERY_CODE = 1;
     private int camNum = 1; //1-bg 2-profile
 
@@ -60,6 +63,10 @@ public class MyPageSetting extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_page_setting);
+
+        Intent intent = getIntent();
+        userEmail = intent.getStringExtra("userEmail");
+        loginType = intent.getExtras().getInt("loginType");
 
         // 객체 초기화
         mypage_setting_back_btn = (ImageButton)findViewById(R.id.mypage_setting_back_btn);
@@ -99,6 +106,8 @@ public class MyPageSetting extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplication(), MyPage.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -107,23 +116,37 @@ public class MyPageSetting extends AppCompatActivity {
 
     /****************** mypage 정보 가져오기 *****************/
     public void getMyPagePhotos(){
-        final Call<MyPageResult> requestPhoto = service.getMyPage("godz33@naver.com", 1);
+        final Call<MyPageResult> requestPhoto = service.getMyPage(userEmail, loginType);
         requestPhoto.enqueue(new Callback<MyPageResult>() {
             @Override
             public void onResponse(Call<MyPageResult> call, Response<MyPageResult> response) {
                 if(response.isSuccessful()){
                     if(response.body().status.equals("success")){
 
-                        Glide.with(getApplicationContext())
-                                .load(response.body().msg.background)
-                                .into(mypage_setting_background_img);
-                        Glide.with(getApplicationContext())
-                                .load(response.body().msg.profile)
-                                .into(mypage_setting_profile_img);
+                        if(response.body().msg.profile == null){
+                            mypage_setting_profile_img.setImageResource(R.drawable.profile_tmp);
+                        }
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().msg.profile)
+                                    .into(mypage_setting_profile_img);
+                        }
 
+                        if(response.body().msg.background == null){
+                            mypage_setting_background_img.setImageResource(R.drawable.profile_background);
+                        }
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().msg.background)
+                                    .into(mypage_setting_background_img);
 
+                        }
+
+                        if(!response.body().msg.inform.equals("")){
+                            Log.i("inform", "inform : " + response.body().msg.inform);
+                            mypage_setting_message_et.setHint(response.body().msg.inform);
+                        }
                         mypage_setting_name_et.setHint(response.body().msg.pen_name);
-                        mypage_setting_message_et.setHint(response.body().msg.inform);
                     }
                 }
             }

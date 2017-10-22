@@ -131,6 +131,8 @@ public class MyPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyPageSetting.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
              }
         });
@@ -155,7 +157,6 @@ public class MyPage extends AppCompatActivity {
 
         final FragmentTransaction transactionPhoto = getFragmentManager().beginTransaction();
         transactionPhoto.replace(R.id.mypage_fragment, fragmentPhoto);
-        transactionPhoto.addToBackStack(null);
         transactionPhoto.commit();
 
         mypage_photo_btn.setOnClickListener(new View.OnClickListener() {
@@ -166,7 +167,6 @@ public class MyPage extends AppCompatActivity {
                 mypage_photo_btn.setImageResource(R.drawable.mypage_photo_on_btn);
                 FragmentTransaction transactionPhoto = getFragmentManager().beginTransaction();
                 transactionPhoto.replace(R.id.mypage_fragment, fragmentPhoto);
-                transactionPhoto.addToBackStack(null);
                 transactionPhoto.commit();
             }
         });
@@ -180,7 +180,6 @@ public class MyPage extends AppCompatActivity {
 
                 FragmentTransaction transactionPoem = getFragmentManager().beginTransaction();
                 transactionPoem.replace(R.id.mypage_fragment, fragmentPoem);
-                transactionPoem.addToBackStack(null);
                 transactionPoem.commit();
             }
         });
