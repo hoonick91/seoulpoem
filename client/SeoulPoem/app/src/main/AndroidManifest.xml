@@ -2,16 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.seoulprojet.seoulpoem">
 
-
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
 
     <application
         android:name=".network.ApplicationController"
@@ -29,6 +26,7 @@
         <activity android:name=".activity.Notice" />
         <activity android:name=".activity.SettingPage" />
         <activity android:name=".activity.TodaySeoul" />
+
         <activity android:name=".activity.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,6 +34,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".activity.DetailActivity" />
         <activity android:name=".activity.AddActivity" />
         <activity android:name=".activity.SearchActivity"></activity>
@@ -62,7 +61,6 @@
         <activity android:name=".activity.LoginName" />
         <activity android:name=".activity.MyPageShowImage" />
         <activity android:name=".activity.NoticeDetail"></activity>
-        <activity android:name=".activity.LoginName"></activity>
 
     </application>
 

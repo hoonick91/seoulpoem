@@ -104,22 +104,20 @@ public interface NetworkService {
     Call<DetailResult> getDetail(@Path("articleid") int articleid);
 
     //작품 리스트 가져오기
-
     @GET("/article/simple/{articleid}")
     Call<AddResult> getWorks(@Path("articleid") int articleid);
-    
 
     // login
     @POST("/users/login")
     Call<LoginResult> postLogin(@Header("email") String email,
-                               @Header("type") int type,
-                               @Header("Content-Type") String Content_type);
+                                @Header("type") int type,
+                                @Header("Content-Type") String Content_type);
 
     // login (필명 입력)=
     @POST("/users/signin")
     Call<SignInResult> postName(@Header("type") int type,
-                          @Header("email") String email,
-                          @Body LoginPenName pen_name);
+                                @Header("email") String email,
+                                @Body LoginPenName pen_name);
 
     // mypage poem
     @GET("/mypage/poem")
@@ -141,7 +139,7 @@ public interface NetworkService {
                                   @Header("type") int type,
                                   @Part("inform") RequestBody inform,
                                   @Part("pen_name") RequestBody pen_name,
-                                  @Part("profile")MultipartBody.Part profile,
+                                  @Part("profile") MultipartBody.Part profile,
                                   @Part("background") MultipartBody.Part background);
 
     // notice
@@ -158,7 +156,7 @@ public interface NetworkService {
 
     // writer apply
     @POST("/author")
-    Call<WriterApplyResult> postWriterApply(@Header ("email") String email);
+    Call<WriterApplyResult> postWriterApply(@Header("email") String email);
 
     @GET("/bookmark/search")
     Call<AddResult> getWorks(@Header("email") String email,
