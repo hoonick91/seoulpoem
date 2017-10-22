@@ -1,6 +1,7 @@
 package com.seoulprojet.seoulpoem.activity;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.model.MyPageResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
@@ -29,7 +35,7 @@ public class SettingPage extends AppCompatActivity {
     private String userEmail = null;
     private int loginType = 0;
 
-    private ImageButton hamburger_btn,share_btn;
+    private ImageButton hamburger_btn,share_btn, logout_btn;
 
     // drawer 선언
     private ImageButton hamburger_setting_btn, hamburger_mypage_btn, hamburger_scrab_btn, hamburger_today_btn, hamburger_writer_btn,hamburger_notice_btn;
@@ -39,7 +45,7 @@ public class SettingPage extends AppCompatActivity {
     private DrawerLayout drawerLayout;
 
     NetworkService service;
-    private ArrayList<MyPageResult> myPageResults;
+    GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +57,7 @@ public class SettingPage extends AppCompatActivity {
         loginType = intent.getExtras().getInt("loginType");
 
         // find view
+        logout_btn = (ImageButton)findViewById(R.id.setting_logout_btn);
         hamburger_btn = (ImageButton)findViewById(R.id.setting_hamburger_btn);
         share_btn = (ImageButton)findViewById(R.id.setting_share_btn);
 
@@ -68,6 +75,22 @@ public class SettingPage extends AppCompatActivity {
                 showHamburger();
                 getMenuMypage();
                 drawerLayout.openDrawer(drawerView);
+            }
+        });
+
+        logout_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                        new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(@NonNull Status status) {
+                                Log.i("logout", userEmail + "logout");
+                                Intent intent = new Intent(getApplicationContext(), Login.class);
+                                startActivity(intent);
+                            }
+                        }
+                );
             }
         });
     }
@@ -144,6 +167,18 @@ public class SettingPage extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
     /******************* mypage 정보 가져오기 ******************/
     public void getMenuMypage(){
         Call<MyPageResult> requestMyPage = service.getMyPage(userEmail, loginType);
@@ -156,12 +191,26 @@ public class SettingPage extends AppCompatActivity {
                     if(response.body().status.equals("success")){
                         hamburger_name.setText(response.body().msg.pen_name);
                         hamburger_message.setText(response.body().msg.inform);
-                        Glide.with(getApplicationContext())
-                                .load(response.body().msg.profile)
-                                .into(hamburger_profile);
-                        Glide.with(getApplicationContext())
-                                .load(response.body().msg.background)
-                                .into(hamburger_bg);
+
+                        if(response.body().msg.profile == null){
+                            hamburger_profile.setImageResource(R.drawable.profile_tmp);
+                        }
+
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().msg.profile)
+                                    .into(hamburger_profile);
+                        }
+
+                        if(response.body().msg.background == null){
+                            hamburger_bg.setImageResource(R.drawable.profile_background);
+                        }
+
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().msg.background)
+                                    .into(hamburger_bg);
+                        }
                     }
                 }
             }

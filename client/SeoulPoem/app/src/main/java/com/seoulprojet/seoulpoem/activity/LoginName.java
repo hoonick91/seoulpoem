@@ -27,6 +27,7 @@ public class LoginName extends AppCompatActivity {
     private NetworkService service;
     private String userEmail;
     private int loginType;
+    private String userName;
     private String contentType;
     private RequestBody penName;
     private LoginPenName loginPenName;
@@ -45,11 +46,14 @@ public class LoginName extends AppCompatActivity {
         userEmail = intent.getExtras().getString("userEmail");
         loginType = intent.getExtras().getInt("loginType");
         contentType = intent.getExtras().getString("contentType");
+        userName = intent.getExtras().getString("penName");
 
         // find view
         tempView = (TextView)findViewById(R.id.login_name_temp_tv);
         next_btn = (ImageButton)findViewById(R.id.login_name_next_btn);
         inputName_et = (EditText)findViewById(R.id.login_name_et);
+
+        inputName_et.setHint(userName);
 
         // service
         service = ApplicationController.getInstance().getNetworkService();
@@ -58,6 +62,10 @@ public class LoginName extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loginPenName = new LoginPenName();
+
+                if(inputName_et.getText() == null){
+                    inputName_et.setText(userName);
+                }
                 loginPenName.pen_name = inputName_et.getText().toString();
                 postName();
             }
