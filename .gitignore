@@ -1,3 +1,6 @@
 server/.idea/
 client/SeoulPoem/.idea/
 server/config/
+server/new.pem
+server/new_cert.pem
+
