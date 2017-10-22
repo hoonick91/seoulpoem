@@ -20,6 +20,7 @@ var author = require('./routes/author');
 var notice = require('./routes/notice');
 var expressVaildator = require('express-validator');
 
+
 var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'vi   ews'));
@@ -34,7 +35,7 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded({limit: '10mb', extended: false }));
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');

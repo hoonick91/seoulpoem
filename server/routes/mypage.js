@@ -33,24 +33,24 @@ const upload = multer({
 });
 
 // 프로필 정보 조회
-router.post('/', async (req, res)=> {
-  try {
-      var connection = await pool.getConnection();
-      await connection.beginTransaction();
+router.get('/', async (req, res)=> {
+    try {
+        var connection = await pool.getConnection();
+        await connection.beginTransaction();
 
-      let email = req.headers.email;
-      let type = req.headers.type;
-
-
-      //idusers 수정할것!
-      let query1 = 'select profile,background,inform,pen_name from seoul_poem.users where users.email = ? and users.foreign_key_type = ?';
-      let mypage = await connection.query(query1, [email,type]);
-
-      let result =mypage[0];
+        let email = req.headers.email;
+        let type = req.headers.type;
 
 
-      res.status(201).json({status :"success" ,msg : result});
-      await connection.commit();
+        //idusers 수정할것!
+        let query1 = 'select profile,background,inform,pen_name from seoul_poem.users where users.email = ? and users.foreign_key_type = ?';
+        let mypage = await connection.query(query1, [email,type]);
+
+        let result =mypage[0];
+
+
+        res.status(201).json({status :"success" ,msg : result});
+        await connection.commit();
 
     }
     catch(err) {
@@ -63,26 +63,26 @@ router.post('/', async (req, res)=> {
 });
 
 // 사용자의 그림을 조회
-router.post('/photo', async (req, res) => {
-  try {
-      var connection = await pool.getConnection();
-      await connection.beginTransaction();
+router.get('/photo', async (req, res) => {
+    try {
+        var connection = await pool.getConnection();
+        await connection.beginTransaction();
 
-      let email = req.headers.email;
-      let type = req.headers.type;
+        let email = req.headers.email;
+        let type = req.headers.type;
 
-      //idusers 수정할것!
-      let query1 = 'SELECT articles.idarticles as idarticles, pictures.photo as photo, articles.poem_idpoem as idpoem FROM seoul_poem.articles, seoul_poem.pictures where articles.users_email = ? and articles.users_foreign_key_type = ? and articles.pictures_idpictures = pictures.idpictures';
-      let myphoto = await connection.query(query1,[email,type]);
+        //idusers 수정할것!
+        let query1 = 'SELECT articles.idarticles as idarticles, pictures.photo as photo, if(articles.poem_idpoem IS NULL,-1,articles.poem_idpoem )as idpoem FROM seoul_poem.articles, seoul_poem.pictures where articles.users_email = ? and articles.users_foreign_key_type = ? and articles.pictures_idpictures = pictures.idpictures';
+        let myphoto = await connection.query(query1,[email,type]);
 
-      let result ={};
-      result.counts = myphoto.length;
+        let result ={};
+        result.counts = myphoto.length;
 
 
-      result.photos = myphoto;
+        result.photos = myphoto;
 
-      res.status(201).json({status :"success", msg : result});
-      await connection.commit();
+        res.status(201).json({status :"success", msg : result});
+        await connection.commit();
 
     }
     catch(err) {
@@ -95,28 +95,28 @@ router.post('/photo', async (req, res) => {
 });
 
 // 사용자의 시 조회
-router.post('/poem', async (req, res) => {
-  try {
-      var connection = await pool.getConnection();
-      await connection.beginTransaction();
+router.get('/poem', async (req, res) => {
+    try {
+        var connection = await pool.getConnection();
+        await connection.beginTransaction();
 
-      let email = req.headers.email;
-      let type = req.headers.type;
+        let email = req.headers.email;
+        let type = req.headers.type;
 
-      let query1 = 'SELECT articles.idarticles, articles.title FROM seoul_poem.articles where users_email = ? and users_foreign_key_type = ? and poem_idpoem IS NOT NULL';
-      let mypoem = await connection.query(query1,[email,type]);
+        let query1 = 'SELECT articles.idarticles, articles.title FROM seoul_poem.articles where users_email = ? and users_foreign_key_type = ? and poem_idpoem IS NOT NULL';
+        let mypoem = await connection.query(query1,[email,type]);
 
-      let result ={};
-      result.counts = mypoem.length;
-      result.poems = mypoem;
+        let result ={};
+        result.counts = mypoem.length;
+        result.poems = mypoem;
 
-      res.status(201).json({status : "success", msg :result });
-      await connection.commit();
+        res.status(201).json({status : "success", msg :result });
+        await connection.commit();
 
     }
     catch(err) {
         console.log(err);
-    res.status(500).send({status : "fail", msg: err });
+        res.status(500).send({status : "fail", msg: err });
     }
     finally {
         pool.releaseConnection(connection);

@@ -79,15 +79,15 @@ router.get('/all', async ( req, res) => {
 router.get('/search',async(req, res) => {
 
     try{
-
         var connection = await pool.getConnection();
         await connection.beginTransaction();
         req.checkQuery({tag : {notEmpty: true,errorMessage : 'error message'}});
 
         let errors = req.validationErrors();
         if (errors) {
+            console.log(errors);
             res.status(501);
-            res.json({status : "fail",msg:err});
+            res.json({status : "fail",msg:errors});
             return;
         }
         else
