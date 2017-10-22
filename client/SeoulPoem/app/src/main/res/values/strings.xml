@@ -3,7 +3,6 @@
     <string name="choice01">공유하기</string>
     <string name="choice02">상세정보</string>
     <string name="choice03">수정하기</string>
-    <string name="app_name">SeoulPoem</string>
 
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_preview">PreviewActivity</string>
