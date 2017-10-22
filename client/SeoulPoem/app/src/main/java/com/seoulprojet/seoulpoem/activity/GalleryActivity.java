@@ -1,25 +1,37 @@
 package com.seoulprojet.seoulpoem.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.model.GalleryListData;
+import com.seoulprojet.seoulpoem.model.GalleryResult;
+import com.seoulprojet.seoulpoem.network.ApplicationController;
+import com.seoulprojet.seoulpoem.network.NetworkService;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GalleryActivity extends AppCompatActivity {
 
 
     //tool_bar
-    private ImageView ivHamberger, ivPictures, ivSearch;
+    private RelativeLayout rlBack, rlSearch;
     private TextView tvPlaceName;
 
     private RecyclerView recyclerView;
@@ -28,6 +40,11 @@ public class GalleryActivity extends AppCompatActivity {
 
     private ArrayList<GalleryListData> gallerys;
 
+    private RelativeLayout rlToWrite;
+
+
+    //네트워크
+    NetworkService service;
 
 
     @Override
@@ -35,59 +52,49 @@ public class GalleryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
 
+
+        //서비스 객체 초기화
+        service = ApplicationController.getInstance().getNetworkService();
+
         //findView
         findView();
 
-
-        //makeDummy
-        makeDummy();
 
         //레이아웃 매니저 설정
         recyclerView = (RecyclerView) findViewById(R.id.rvGallery);
         layoutManager = new GridLayoutManager(GalleryActivity.this, 3);
         recyclerView.setLayoutManager(layoutManager);
 
+        gallerys = new ArrayList<>();
+
         //어뎁터 생성, 리사이클러뷰에 붙임
         recyclerAdapter = new RecyclerAdapter(gallerys);
         recyclerView.setAdapter(recyclerAdapter);
+
+        //네트워크
+        getPhotos();
+
+        //메인으로
+        toMain();
+
+        //검색으로
+        toSearch();
+
+        //작성하기로
+        toWrite();
+
+
     }
 
 
     /***************************************findView***********************************************/
     public void findView() {
-        ivHamberger = (ImageView) findViewById(R.id.ivHamberger);
-        ivPictures = (ImageView) findViewById(R.id.ivPictures);
-        ivSearch = (ImageView) findViewById(R.id.ivSearch);
+        rlBack = (RelativeLayout) findViewById(R.id.rlBack);
+        rlSearch = (RelativeLayout) findViewById(R.id.rlSearch);
         tvPlaceName = (TextView) findViewById(R.id.tvPlaceName);
+        rlToWrite = (RelativeLayout) findViewById(R.id.rlToWrite);
 
     }
-
-    /***************************************dummy data ***********************************************/
-    public void makeDummy() {
-        gallerys = new ArrayList<>();
-
-        gallerys.add(new GalleryListData(R.drawable.testimg));
-        gallerys.add(new GalleryListData(R.drawable.testimg02));
-        gallerys.add(new GalleryListData(R.drawable.testimg03));
-        gallerys.add(new GalleryListData(R.drawable.testimg04));
-        gallerys.add(new GalleryListData(R.drawable.testimg05));
-        gallerys.add(new GalleryListData(R.drawable.testimg));
-        gallerys.add(new GalleryListData(R.drawable.testimg02));
-        gallerys.add(new GalleryListData(R.drawable.testimg03));
-        gallerys.add(new GalleryListData(R.drawable.testimg04));
-        gallerys.add(new GalleryListData(R.drawable.testimg05));
-        gallerys.add(new GalleryListData(R.drawable.testimg));
-        gallerys.add(new GalleryListData(R.drawable.testimg02));
-        gallerys.add(new GalleryListData(R.drawable.testimg03));
-        gallerys.add(new GalleryListData(R.drawable.testimg04));
-        gallerys.add(new GalleryListData(R.drawable.testimg05));
-        gallerys.add(new GalleryListData(R.drawable.testimg));
-        gallerys.add(new GalleryListData(R.drawable.testimg02));
-        gallerys.add(new GalleryListData(R.drawable.testimg03));
-        gallerys.add(new GalleryListData(R.drawable.testimg04));
-        gallerys.add(new GalleryListData(R.drawable.testimg05));
-    }
-
 
 
     /***********************************Adapter**********************************/
@@ -117,7 +124,19 @@ public class GalleryActivity extends AppCompatActivity {
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
             final GalleryListData galleryListData = galleryListDatas.get(position);
 
-            holder.ivPhoto.setImageResource(galleryListData.imgResourceID);
+            Glide.with(getApplicationContext())
+                    .load(galleryListData.photo)
+                    .into(holder.ivPhoto);
+
+            //detail 화면으로 이동
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(GalleryActivity.this, DetailActivity.class);
+                    intent.putExtra("articleId", galleryListData.idarticles);
+                    startActivity(intent);
+                }
+            });
 
         }
 
@@ -139,4 +158,74 @@ public class GalleryActivity extends AppCompatActivity {
             ivPhoto = (ImageView) itemView.findViewById(R.id.ivPhoto);
         }
     }
+
+
+    /***********************************갤러리 리스트 가져오기*********************************/
+    public void getPhotos() {
+        Call<GalleryResult> requestGalleryLists = service.getPhotos("그리움");
+        Log.d("test", "before galley call");
+        requestGalleryLists.enqueue(new Callback<GalleryResult>() {
+            @Override
+            public void onResponse(Call<GalleryResult> call, Response<GalleryResult> response) {
+                Log.d("test", "before galley success");
+                if (response.isSuccessful()) {
+                    if (response.body().sucess.equals("success")) {
+                        Log.d("test", "after galley success");
+                        gallerys = response.body().data;
+                        Log.d("tag", gallerys.get(0).photo);
+                        Log.d("tag", "fsddfa");
+                        recyclerAdapter.setAdapter(gallerys);
+                    }
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<GalleryResult> call, Throwable t) {
+                Log.i("err", t.getMessage());
+            }
+        });
+    }
+
+
+    /**********************************to main**********************************/
+    public void toMain() {
+        rlBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //main 이동
+                Intent intent = new Intent(GalleryActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+
+
+    /**********************************search**********************************/
+    public void toSearch() {
+        rlSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //갤러리로 이동
+                Intent intent = new Intent(GalleryActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    /**********************************Write**********************************/
+    public void toWrite() {
+        rlToWrite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //작성하기로 이동
+                //Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                //startActivity(intent);
+                Toast.makeText(GalleryActivity.this, "call write activity", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 }

@@ -5,9 +5,6 @@ package com.seoulprojet.seoulpoem.model;
  */
 
 public class GalleryListData {
-    public int imgResourceID;
-
-    public GalleryListData(int imgResourceID) {
-        this.imgResourceID = imgResourceID;
-    }
+    public String photo;
+    public int idarticles;
 }

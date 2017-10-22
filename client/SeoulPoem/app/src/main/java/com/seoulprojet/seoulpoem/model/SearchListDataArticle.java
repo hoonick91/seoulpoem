@@ -1,11 +1,11 @@
 package com.seoulprojet.seoulpoem.model;
 
 /**
- * Created by junhee on 2017. 9. 17..
+ * Created by junhee on 2017. 10. 14..
  */
 
-public class PoemListData {
-    public String photo;
+public class SearchListDataArticle {
     public int idarticles;
     public String title;
+    public String contents;
 }
