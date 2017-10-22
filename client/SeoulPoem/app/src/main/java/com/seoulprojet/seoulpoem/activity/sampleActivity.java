@@ -28,7 +28,9 @@ import android.widget.Toast;
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.component.Preview;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -90,10 +92,10 @@ public class sampleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-               // dialog();
-                Intent intent = new Intent(sampleActivity.this, WritePoemActivity.class);
+                 dialog();
+           /*     Intent intent = new Intent(sampleActivity.this, WritePoemActivity.class);
                 intent.putExtra("type","0");
-                startActivity(intent);
+                startActivity(intent);*/
 
             }
         });
@@ -133,6 +135,7 @@ public class sampleActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
+        Log.e("**gotoalbum","startActivity");
     }
 
     @Override
@@ -181,7 +184,7 @@ public class sampleActivity extends AppCompatActivity {
                 return;
             }
             photoUri = data.getData();
-            Log.e("Before crop photoUri",""+photoUri);
+            Log.e("**Before crop photoUri",""+photoUri);
             getImageNameToUri(photoUri);
 
             cropImage();
@@ -195,7 +198,7 @@ public class sampleActivity extends AppCompatActivity {
                     });
         } else if (requestCode == CROP_FROM_CAMERA) {
             photoUri=data.getData();
-            Log.e("final crop photoUripath",""+photoUri);
+            Log.e("**final crop photoUri",""+photoUri);
           Toast.makeText(sampleActivity.this,"사진이 저장되었습니다.",Toast.LENGTH_LONG).show();
             Intent intent = new Intent(sampleActivity.this, WritePoemActivity.class);
             intent.putExtra("type","0");
@@ -205,18 +208,18 @@ public class sampleActivity extends AppCompatActivity {
 
     //Android N crop image
     public void cropImage() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+    //    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { //버전이 누가보다 크거나 같을 때
             this.grantUriPermission("com.android.camera", photoUri,
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }
+    //    }
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(photoUri, "image/*");
 
         List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, 0);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+     //   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { //버전이 누가보다 크거나 같을 때
             grantUriPermission(list.get(0).activityInfo.packageName, photoUri,
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }
+     //   }
         int size = list.size();
         if (size == 0) {
             Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
@@ -224,10 +227,10 @@ public class sampleActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "용량이 큰 사진의 경우 시간이 오래 걸릴 수 있습니다.", Toast.LENGTH_SHORT).show();
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+         //   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { //버전이 누가보다 크거나 같을 때
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            }
+         //   }
             intent.putExtra("crop", "true");
             intent.putExtra("aspectX", 10);
             intent.putExtra("aspectY", 17);
@@ -240,27 +243,29 @@ public class sampleActivity extends AppCompatActivity {
             }
 
             File folder = new File(Environment.getExternalStorageDirectory() + "/SeoulPoem/");
-            Log.e("folder",folder.getPath());
+            Log.e("**folder",folder.getPath());
             File tempFile = new File(folder.toString(), croppedFileName.getName());
-            Log.e("folder",tempFile.getPath());
+            Log.e("**tempFile",tempFile.getPath());
 
             albumUri = Uri.fromFile(croppedFileName);
-            Log.e("albumUri",""+albumUri);
+            Log.e("**albumUri",""+albumUri);
 
             Preview.photo_location = tempFile.getPath();
             Preview.photoName = tempFile.getName();
 
             photoUri = FileProvider.getUriForFile(sampleActivity.this,
                     "com.seoulprojet.seoulpoem.activity.provider", tempFile);
-            Log.e("after cropphotoUripath",""+photoUri);
+
+
+            Log.e("**aftercropphotoUripath",""+photoUri);
 
             Preview.photo = photoUri;
 
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+          //  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//버전이 누가보다 크거나 같을 때
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            }
+          //  }
 
             intent.putExtra("return-data", false);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
@@ -268,13 +273,13 @@ public class sampleActivity extends AppCompatActivity {
 
             Intent i = new Intent(intent);
             ResolveInfo res = list.get(0);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      //      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//버전이 누가보다 크거나 같을 때
                 i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
                 grantUriPermission(res.activityInfo.packageName, photoUri,
                         Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            }
+        //    }
             i.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
             startActivityForResult(i, CROP_FROM_CAMERA);
         }
@@ -294,6 +299,7 @@ public class sampleActivity extends AppCompatActivity {
 
                         }else{ //갤러리 클릭시
                             goToAlbum();
+                            Log.e("**갤러리","갤러리시작");
 
                         }
                     }
@@ -317,5 +323,30 @@ public class sampleActivity extends AppCompatActivity {
 
         return imgName;
     }
+
+    private void storeCropImage(Bitmap bitmap, String filePath) {
+        File copyFile = new File(filePath);
+        BufferedOutputStream out = null;
+
+
+        try {
+
+            copyFile.createNewFile();
+            out = new BufferedOutputStream(new FileOutputStream(copyFile));
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+
+            out.flush();
+
+            out.close();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
+
 
 }
