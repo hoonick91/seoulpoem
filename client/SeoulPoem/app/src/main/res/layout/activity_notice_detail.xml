@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.seoulprojet.seoulpoem.activity.NoticeDetail">
+    
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:orientation="vertical"
+        android:weightSum="10">
+
+
+        <!-- 상단바 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/black_back_btn"
+                android:background="@android:color/transparent"
+                android:id="@+id/notice_detail_back_btn" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5">
+
+                <ImageView
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/notice_share"
+                    android:layout_gravity="center_vertical"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="9"
+            android:padding="35dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/notice_detail_alarm_img"
+                    android:layout_marginRight="3dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/notice_detail_title_tv"
+                    android:text="17.09.08 업데이트"
+                    android:textColor="#000000"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2017. 00. 00 12:34"
+                android:textSize="14sp"
+                android:layout_marginLeft="3dp"
+                android:id="@+id/notice_detail_time_tv"
+                android:textColor="#61000000"
+                android:layout_marginTop="8dp"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/setting_line"/>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp"
+                android:overScrollMode="never">
+
+                <TextView
+                    android:layout_marginLeft="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#88000000"
+                    android:textSize="14sp"
+                    android:id="@+id/notice_detail_content_tv"
+                    android:text="9월 8일서거점검 업데이트 이후..."/>
+
+            </ScrollView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

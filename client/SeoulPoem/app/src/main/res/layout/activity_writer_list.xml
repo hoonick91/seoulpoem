@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.seoulprojet.seoulpoem.activity.WriterList">
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/writerlist_drawer_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:weightSum="10">
+
+
+            <!-- 상단바 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.2"
+                android:gravity="center_vertical">
+
+                <ImageButton
+                    android:id="@+id/writerlist_hamburger_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:scaleType="center"
+                    android:src="@drawable/black_menu_btn" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="5"
+                    android:gravity="bottom"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/writerlist_title" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/writerlist_writer_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="# 총 5명의 작가" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="30dp"
+                            android:background="@android:color/transparent"
+                            android:id="@+id/writerlist_apply_btn"
+                            android:src="@drawable/writerlist_apply" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- middle -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="8.8"
+                android:paddingBottom="20dp"
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingRight="20dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/writerlist_rv"
+                    android:layout_width="match_parent"
+                    android:overScrollMode="never"
+                    android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <include layout="@layout/hamburger_drawer"></include>
+
+    </android.support.v4.widget.DrawerLayout>
+
+</android.support.constraint.ConstraintLayout>

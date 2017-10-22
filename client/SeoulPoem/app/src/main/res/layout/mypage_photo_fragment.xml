@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:paddingLeft="10dp"
+    android:paddingBottom="10dp"
+    android:paddingRight="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/mypage_photo_num_tv"
+        android:text="#총 n장"
+        android:layout_marginBottom="10dp"/>
+
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:id="@+id/mypage_photo_gv"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        android:numColumns="3"
+        android:gravity="center"></GridView>
+
+</LinearLayout>

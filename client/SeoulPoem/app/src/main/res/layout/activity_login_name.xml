@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.seoulprojet.seoulpoem.activity.LoginName">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:orientation="vertical"
+        android:background="#ffa6be"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dialog_bg"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:paddingLeft="35dp"
+            android:paddingRight="35dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/login_name_title"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="자신의 필명을 입력해 주세요"
+                android:layout_marginTop="30dp"
+                android:textSize="14sp"
+                android:maxLength="10"
+                android:lines="1"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:textCursorDrawable="@android:color/black"
+                android:backgroundTint="#95989a"
+                android:id="@+id/login_name_et"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/login_name_next_btn"
+                android:layout_gravity="right"
+                android:id="@+id/login_name_next_btn"
+                android:paddingLeft="20dp"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="TextView"
+            android:textSize="16sp"
+            android:id="@+id/login_name_temp_tv"/>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

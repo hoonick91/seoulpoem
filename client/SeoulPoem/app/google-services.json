@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "666717725695",
+    "project_id": "firebase-seoulpoem"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666717725695:android:81127b55d0438212",
+        "android_client_info": {
+          "package_name": "com.seoulprojet.seoulpoem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "666717725695-fmeo514nduclhqo84rk0ucojcd4qfhs9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.seoulprojet.seoulpoem",
+            "certificate_hash": "bcf49a88b81636086a02d4867128034c125ccded"
+          }
+        },
+        {
+          "client_id": "666717725695-p1v5gu283u7gand2u0s2p98p75rgcrj2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIkrZhCB8ThInAe1-9QDrUyS7NqpHjFgw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

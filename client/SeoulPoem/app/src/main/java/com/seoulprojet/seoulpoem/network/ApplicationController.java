@@ -13,7 +13,7 @@ public class ApplicationController extends Application {
 
     //전역
     private static ApplicationController instance;
-    private static String baseUrl;
+    private static String baseUrl = "http://52.79.189.178:3000";
     private NetworkService networkService;
 
 

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="284dp"
+    android:layout_height="match_parent"
+    android:weightSum="10"
+    android:orientation="vertical"
+    android:id="@+id/drawer"
+    android:layout_gravity="start"
+    android:background="#ffffff">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="2"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:id="@+id/hamburger_bg"
+                android:scaleType="centerCrop"
+                android:background="#ffa6be" />
+
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/hamburger_profile_img"
+            android:layout_width="82dp"
+            android:layout_height="82dp"
+            android:src="@drawable/profile_tmp"
+            android:scaleType="centerCrop"
+            android:layout_centerInParent="true" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hamburger_profile_img"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="별명"
+                android:id="@+id/hamburger_name"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:id="@+id/hamburger_message"
+                android:text="꽃과 시"
+                android:textColor="#000000"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:orientation="vertical"
+        android:paddingLeft="23dp"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitStart"
+            android:padding="10dp"
+            android:src="@drawable/menu_mypage"
+            android:background="@android:color/transparent"
+            android:id="@+id/hamburger_mypage_btn"/>
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitStart"
+            android:src="@drawable/menu_scrab"
+            android:id="@+id/hamburger_scrab_btn"
+            android:padding="10dp"
+            android:background="@android:color/transparent"
+            android:layout_marginTop="10dp"/>
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitStart"
+            android:src="@drawable/menu_today"
+            android:padding="10dp"
+            android:background="@android:color/transparent"
+            android:id="@+id/hamburger_todayseoul_btn"
+            android:layout_marginTop="10dp"/>
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitStart"
+            android:src="@drawable/menu_writerlist"
+            android:background="@android:color/transparent"
+            android:id="@+id/hamburger_writerlist_btn"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"/>
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitStart"
+            android:src="@drawable/menu_notice"
+            android:padding="10dp"
+            android:id="@+id/hamburger_notice_btn"
+            android:background="@android:color/transparent"
+            android:layout_marginTop="10dp"/>
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:scaleType="fitStart"
+            android:layout_height="wrap_content"
+            android:src="@drawable/menu_setting"
+            android:padding="10dp"
+            android:background="@android:color/transparent"
+            android:id="@+id/hamburger_setting_btn"
+            android:layout_marginTop="10dp"/>
+    </LinearLayout>
+
+</LinearLayout>

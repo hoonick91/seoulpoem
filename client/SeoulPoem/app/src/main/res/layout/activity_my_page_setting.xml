@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.seoulprojet.seoulpoem.activity.MyPageSetting">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:weightSum="10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <!-- 상단바 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:id="@+id/mypage_setting_back_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/black_back_btn" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/profile_setting_title"
+                    android:layout_gravity="center_vertical"/>
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/mypage_setting_ok_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/black_check_btn" />
+
+        </LinearLayout>
+
+        <!-- top -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4">
+
+            <ImageView
+                android:id="@+id/mypage_setting_background_img"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="#ffa6be"
+                android:layout_alignParentTop="true"
+                android:scaleType="centerCrop"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/mypage_setting_background_img"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/mypage_cam_btn" />
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/mypage_setting_profile_img"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/profile_tmp"
+                android:layout_marginTop="100dp"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/mypage_setting_profile_img"
+                android:layout_alignRight="@+id/mypage_setting_profile_img"
+                android:src="@drawable/mypage_cam_btn" />
+
+        </RelativeLayout>
+
+        <!-- bottom -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:orientation="vertical"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="필 명"
+                android:textColor="#000000"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/mypage_setting_name_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="10"
+                android:lines="1"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="필명을 입력해주세요"
+                android:textCursorDrawable="@android:color/black"
+                android:backgroundTint="#95989a"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="한 줄 소개"
+                android:textColor="#000000"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/mypage_setting_message_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="한 줄 소개를 입력해주세요"
+                android:maxLines="3"
+                android:maxLength="45"
+                android:backgroundTint="#95989a"
+                android:focusable="true"
+                android:textCursorDrawable="@android:color/black"
+                android:focusableInTouchMode="true"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

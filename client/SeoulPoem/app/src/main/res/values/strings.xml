@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">SeoulPoem</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="signed_in_fmt">Signed in as: %s</string>
+    <string name="server_client_id">666717725695-p1v5gu283u7gand2u0s2p98p75rgcrj2.apps.googleusercontent.com</string>
 </resources>
