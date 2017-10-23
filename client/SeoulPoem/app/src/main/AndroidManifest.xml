@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+
     <application
         android:name=".network.ApplicationController"
         android:allowBackup="true"
@@ -62,6 +63,8 @@
         <activity android:name=".activity.NoticeDetail"></activity>
         <activity android:name=".activity.SubwayPoemActivity"></activity>
 
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
     </application>
 
 </manifest>
