@@ -72,7 +72,7 @@ router.get('/photo', async (req, res) => {
         let type = req.headers.type;
 
         //idusers 수정할것!
-        let query1 = 'SELECT articles.idarticles as idarticles, pictures.photo as photo, if(articles.poem_idpoem IS NULL,-1,articles.poem_idpoem )as idpoem FROM seoul_poem.articles, seoul_poem.pictures where articles.users_email = ? and articles.users_foreign_key_type = ? and articles.pictures_idpictures = pictures.idpictures';
+        let query1 = 'SELECT articles.idarticles as idarticles, pictures.photo as photo, if(articles.poem_idpoem IS NULL,-1,articles.poem_idpoem )as idpoem FROM seoul_poem.articles, seoul_poem.pictures where articles.users_email = ? and articles.users_foreign_key_type = ? and articles.pictures_idpictures = pictures.idpictures  order by seoul_poem.articles.idarticles DESC';
         let myphoto = await connection.query(query1,[email,type]);
 
         let result ={};
@@ -103,7 +103,7 @@ router.get('/poem', async (req, res) => {
         let email = req.headers.email;
         let type = req.headers.type;
 
-        let query1 = 'SELECT articles.idarticles, articles.title FROM seoul_poem.articles where users_email = ? and users_foreign_key_type = ? and poem_idpoem IS NOT NULL';
+        let query1 = 'SELECT articles.idarticles, articles.title FROM seoul_poem.articles where users_email = ? and users_foreign_key_type = ? and poem_idpoem IS NOT NULL order by seoul_poem.articles.idarticles DESC';
         let mypoem = await connection.query(query1,[email,type]);
 
         let result ={};

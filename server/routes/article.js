@@ -93,7 +93,6 @@ router.post('/',multiupload, async (req, res) => {
             result =  await connection.query(article_q, article);
         }
         else{
-
             let article ={
                 tags: req.body.tags,
                 background: req.body.background,
@@ -138,7 +137,6 @@ router.get('/:idarticles', async (req, res) => {
 
         let article={};
         if(queryresult[0].idpoem){
-            // 占시곤옙 占쏙옙占쏙옙占쏙옙
             let query2 = 'SELECT content, setting_idsettings from poem where idpoem = ?'
             let query2_result = await connection.query(query2,queryresult[0].idpoem);
             console.log(query2_result);
@@ -158,6 +156,14 @@ router.get('/:idarticles', async (req, res) => {
             article.content = query2_result[0].content;
         }
         else{
+            let setting={};
+            setting.font_size  = 0;
+            setting.bold  = 0;
+            setting.inclination = 0;
+            setting.underline = 0;
+            setting.color = 0;
+            setting.sort = 0;
+            article.setting = setting;
             article.content = "";
         }
 
@@ -221,44 +227,6 @@ router.get('/:idarticles', async (req, res) => {
 
 
 
-/*
-//占쏙옙 占싹놂옙 占쏙옙회 /article/{articleid}
-router.get('/:idarticles', async (req, res) => {
-    try {
-        //
-        // let token = req.headers.token; //클占쏙옙占싱억옙트占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙 占쏙옙큰占쏙옙 占쏙옙占쏙옙占심니댐옙.
-        // let decoded = jwt.verify(token, req.app.get('jwt-secret')); //占쏙옙占쏙옙 占쏙옙큰占쏙옙 占쏙옙효占쏙옙 占쏙옙큰占쏙옙占쏙옙 占쏙옙占쏙옙占쌌니댐옙.(占쏙옙큰 占쌩깍옙 占쏙옙 占쏙옙占쏙옙占쌩댐옙 key占쏙옙);
-        //
-        // if(!decoded) res.status(400).send({ result: 'wrong token '}); //占쏙옙효占쏙옙占쏙옙 占십다몌옙 占쌨쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占싹댐옙.
-        // else {
-        // var decoded_pk = jwt.decode(token, {complete: true});
-
-        var connection = await pool.getConnection();
-        await connection.beginTransaction();
-
-        let query1 = 'SELECT * FROM seoul_poem.articles, seoul_poem.poem, seoul_poem.pictures, seoul_poem.setting where seoul_poem.articles.idarticles=? and seoul_poem.articles.poem_idpoem=seoul_poem.poem.idpoem and seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures and seoul_poem.poem.setting_idsettings=seoul_poem.setting.idsettings';
-        let article_list = await connection.query(query1, req.params.idarticles);
-
-        res.status(200).send( { article_list: article_list });
-        await connection.commit();
-        //}
-
-    }
-    catch(err){
-        console.log(err);
-        res.status(500).send( { result: err });
-        connection.rollback();
-    }
-    finally{
-        pool.releaseConnection(connection);
-    }
-
-});
-*/
-
-
-
-//占쏙옙 占싹놂옙 占쏙옙占쏙옙 占쏙옙회 /article/simple/{articleid}
 router.get('/simple/:idarticles', async (req, res) => {
     try {
 
@@ -305,7 +273,7 @@ router.get('/simple/:idarticles', async (req, res) => {
 
 });
 
-// 占쏙옙 占쏙옙占쏙옙
+
 router.put('/:idarticles', upload.single('photo'), async (req, res, next) => {
     try {
         var connection = await pool.getConnection();
@@ -315,54 +283,112 @@ router.put('/:idarticles', upload.single('photo'), async (req, res, next) => {
 
         let query = 'select * from seoul_poem.users where users.email = ? and users.foreign_key_type = ?';
         let login = await connection.query(query, [email,type]);
-        if(login.length==0) res.status(403).send({result: '議댁옱?섏? ?딅뒗 email'});
+
+        if(login.length==0) res.status(403).send({result: 'not member'});
         else{
 
-            let query1 = 'select * from seoul_poem.articles where idarticles = ?';
+            let query1 = 'select tags,title,background,inform,date,if(poem_idpoem is null, -1,poem_idpoem) as poem_idpoem from seoul_poem.articles where idarticles = ?';
             let article_data = await connection.query(query1, req.params.idarticles);
-            if(article_data.length==0) res.status(403).send({result: '議댁옱?섏? ?딅뒗 id'});
+            if(article_data.length==0) {
+                res.status(403).send({result: 'not exist idarticles'});
+            }
+            else{
+                var dt = new Date();
+                var d = dt.toFormat('YYYY-MM-DD HH24:MI:SS');
 
-            let query1_1 = 'select * from seoul_poem.poem where idpoem = ?';
-            let poem_data = await connection.query(query1_1, article_data[0].poem_idpoem);
+                if(article_data[0].poem_idpoem == -1){
+                    if(req.body.content!=""){
+                        let setting = {
+                            font_size: req.body.font_size,
+                            bold: req.body.bold,
+                            inclination: req.body.inclination,
+                            underline: req.body.underline,
+                            color: req.body.color,
+                            sort: req.body.sortinfo
+                        };
 
-            let query1_2 = 'SELECT * FROM seoul_poem.setting where idsettings = ?';
-            let setting_data = await connection.query(query1_2, poem_data[0].setting_idsettings);
+                        let query = 'insert into seoul_poem.setting set ?;';
+                        let output_ = await connection.query(query, setting);
+                        let poem = {
+                            content: req.body.content,
+                            setting_idsettings : output_.insertId
+                        };
+                        let query_poem = 'insert into seoul_poem.poem set ?;';
+                        let poem_output = await connection.query(query_poem, poem);
+
+                        let article ={
+                            tags: req.body.tags,
+                            background: req.body.background,
+                            inform: req.body.inform,
+                            date: d,
+                            title : req.body.title,
+                            poem_idpoem: poem_output.insertId
+                        };
+                        let query5 = 'update seoul_poem.articles set ? where idarticles = ?';
+                        await connection.query(query5, [article, req.params.idarticles]);
+
+                        res.status(201).send({result: "update article success"});
+                        await connection.commit();
+
+                    }else{
+                        let article = {
+                            title: req.body.title? req.body.title: article_data[0].title,
+                            tags: req.body.tags? req.body.tags: article_data[0].tags,
+                            background: req.body.background? req.body.background: article_data[0].background,
+                            inform: req.body.inform? req.body.inform: article_data[0].inform,
+                            date: d
+                        };
+                        let query5 = 'update seoul_poem.articles set ? where idarticles = ?';
+                        await connection.query(query5, [article, req.params.idarticles]);
+
+                        res.status(201).send({result: "update article success"});
+                        await connection.commit();
+                    }
+                }
+                else{
+                    let query1_1 = 'select * from seoul_poem.poem where idpoem = ?';
+                    let poem_data = await connection.query(query1_1, article_data[0].poem_idpoem);
+
+                    let query1_2 = 'SELECT * FROM seoul_poem.setting where idsettings = ?';
+                    let setting_data = await connection.query(query1_2, poem_data[0].setting_idsettings);
 
 
-            let poem = {
-                content: req.body.content?  req.body.content: poem_data[0].content
-            };
+                    let poem = {
+                        content: req.body.content?  req.body.content: poem_data[0].content
+                    };
 
-            let setting = {
-                font_size: req.body.font_size? req.body.font_size: setting_data[0].font_size,
-                bold: req.body.bold? req.body.bold: setting_data[0].bold,
-                inclination: req.body.inclination? req.body.inclination: setting_data[0].inclination,
-                underline: req.body.underline? req.body.underline: setting_data[0].underline,
-                color: req.body.color? req.body.color: setting_data[0].color,
-                sort: req.body.sort?  req.body.sort: setting_data[0].sort
-            };
-
-
-            let query3 = 'update seoul_poem.setting set ? where idsettings = ?';
-            await connection.query(query3, [setting, poem_data[0].setting_idsettings]);
+                    let setting = {
+                        font_size: req.body.font_size? req.body.font_size: setting_data[0].font_size,
+                        bold: req.body.bold? req.body.bold: setting_data[0].bold,
+                        inclination: req.body.inclination? req.body.inclination: setting_data[0].inclination,
+                        underline: req.body.underline? req.body.underline: setting_data[0].underline,
+                        color: req.body.color? req.body.color: setting_data[0].color,
+                        sort: req.body.sort?  req.body.sort: setting_data[0].sort
+                    };
 
 
-            let query4 = 'update seoul_poem.poem set ? where idpoem = ?';
-            await connection.query(query4, [poem, article_data[0].poem_idpoem]);
+                    let query3 = 'update seoul_poem.setting set ? where idsettings = ?';
+                    await connection.query(query3, [setting, poem_data[0].setting_idsettings]);
 
-            let article = {
-                title: req.body.title? req.body.title: article_data[0].title,
-                tags: req.body.tags? req.body.tags: article_data[0].tags,
-                background: req.body.background? req.body.background: article_data[0].background,
-                inform: req.body.inform? req.body.inform: article_data[0].inform,
-                date: req.body.date? req.body.date: article_data[0].date
-            };
 
-            let query5 = 'update seoul_poem.articles set ? where idarticles = ?';
-            await connection.query(query5, [article, req.params.idarticles]);
+                    let query4 = 'update seoul_poem.poem set ? where idpoem = ?';
+                    await connection.query(query4, [poem, article_data[0].poem_idpoem]);
 
-            res.status(201).send({result: "update article success"});
-            await connection.commit();
+                    let article = {
+                        title: req.body.title? req.body.title: article_data[0].title,
+                        tags: req.body.tags? req.body.tags: article_data[0].tags,
+                        background: req.body.background? req.body.background: article_data[0].background,
+                        inform: req.body.inform? req.body.inform: article_data[0].inform,
+                        date: d
+                    };
+
+                    let query5 = 'update seoul_poem.articles set ? where idarticles = ?';
+                    await connection.query(query5, [article, req.params.idarticles]);
+
+                    res.status(201).send({result: "update article success"});
+                    await connection.commit();
+                }
+            }
         }
 
     }

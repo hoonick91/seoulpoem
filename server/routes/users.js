@@ -203,7 +203,7 @@ router.post('/modify',multiupload,  async (req, res) => {
                     var check_penname = await connection.query(check_penname_query, pen_name);
 
                     if (check_penname.length) {
-                        res.status(401);
+                        res.status(402);
                         res.json({status: "fail", msg: "Already in use pen_name"});
                         return
                     }
@@ -279,7 +279,7 @@ router.post('/modify',multiupload,  async (req, res) => {
             }
         }
         else{
-            res.status(401);
+            res.status(403);
             res.json({status: "fail", msg: errors});
         }
     }catch (err) {
