@@ -216,6 +216,17 @@ public class Notice extends AppCompatActivity {
                 finish();
             }
         });
+
+        hamburger_scrab_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddActivity.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     /******************* mypage 정보 가져오기 ******************/

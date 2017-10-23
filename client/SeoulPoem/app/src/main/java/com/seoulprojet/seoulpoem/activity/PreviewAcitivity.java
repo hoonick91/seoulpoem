@@ -49,6 +49,10 @@ import retrofit2.Response;
 
 public class PreviewAcitivity extends AppCompatActivity {
 
+    PbReference pref;
+    String userEmail = null;
+    int loginType = 0;
+
     //네트워킹
     NetworkService service;
 
@@ -65,6 +69,10 @@ public class PreviewAcitivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview);
+
+        pref = new PbReference(this);
+        userEmail = pref.getValue("userEmail", "");
+        loginType = pref.getValue("loginType", 0);
         initNetwork(); // 네트워크 초기화
         setId();
         click(); //클릭리스너 등록
@@ -195,7 +203,7 @@ public class PreviewAcitivity extends AppCompatActivity {
             photo = getPhoto();
 
             /****************************************서버에 정보 보냄**************************************/
-            Call<SavePoemResult> request = service.savePoem("godz33@naver.com", 1,
+            Call<SavePoemResult> request = service.savePoem(userEmail, loginType,
                     photo, title, font_size, bold, inclination, underline,
                     color, sortinfo, content, tags, inform, background);
             request.enqueue(new Callback<SavePoemResult>() {
@@ -223,7 +231,7 @@ public class PreviewAcitivity extends AppCompatActivity {
         } else {
             Log.e("수정시작","수정시작!!");
             /****************************************서버에 정보 보냄**************************************/
-            Call<ModifyPoem> request = service.modifyPoem("godz33@naver.com", 1, article_id,
+            Call<ModifyPoem> request = service.modifyPoem(userEmail, loginType, article_id,
                     content, tags, inform, sortinfo, color, underline, inclination,
                     bold, background, font_size, title,date);
             request.enqueue(new Callback<ModifyPoem>() {
