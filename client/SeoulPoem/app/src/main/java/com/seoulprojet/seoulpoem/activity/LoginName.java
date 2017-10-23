@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.seoulprojet.seoulpoem.R;
@@ -29,7 +30,6 @@ public class LoginName extends AppCompatActivity {
     private int loginType;
     private String userName;
     private String contentType;
-    private RequestBody penName;
     private LoginPenName loginPenName;
 
     private TextView tempView;
@@ -63,10 +63,14 @@ public class LoginName extends AppCompatActivity {
             public void onClick(View v) {
                 loginPenName = new LoginPenName();
 
-                if(inputName_et.getText() == null){
-                    inputName_et.setText(userName);
+                if(inputName_et.getText().toString().length() == 0){
+                    Log.i("빈 화면", "빈 인풋");
+                    loginPenName.pen_name = userName;
                 }
-                loginPenName.pen_name = inputName_et.getText().toString();
+
+                else{
+                    loginPenName.pen_name = inputName_et.getText().toString();
+                }
                 postName();
             }
         });
@@ -80,6 +84,8 @@ public class LoginName extends AppCompatActivity {
             @Override
             public void onResponse(Call<SignInResult> call, Response<SignInResult> response) {
                 if(response.code()==401) {
+                    ImageView imageView = (ImageView)findViewById(R.id.login_name_already);
+                    imageView.setVisibility(View.VISIBLE);
                     tempView.setText("중복");
                 }
 
@@ -91,11 +97,15 @@ public class LoginName extends AppCompatActivity {
                     tempView.setText("DBerror");
                 }
                 else{
+                    tempView.setText("success" + Integer.toString(loginType));
+                    /*
                     Intent intent = new Intent(getApplicationContext(), MyPage.class);
                     intent.putExtra("userEmail", userEmail);
                     intent.putExtra("loginType", loginType);
                     startActivity(intent);
                     finish();
+                    */
+
                 }
             }
 

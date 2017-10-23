@@ -32,12 +32,12 @@
             android:visibility="visible"
             android:layout_marginTop="30dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <com.facebook.login.widget.LoginButton
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textSize="18sp"
-            android:id="@+id/login_tv"/>
+            android:id="@+id/sign_in_facebook_btn"
+            android:visibility="visible"
+            android:layout_marginTop="10dp"/>
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.seoulprojet.seoulpoem.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookActivity;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -44,13 +49,26 @@ public class SettingPage extends AppCompatActivity {
     private View drawerView;
     private DrawerLayout drawerLayout;
 
-    NetworkService service;
-    GoogleApiClient mGoogleApiClient;
+    private NetworkService service;
+    private GoogleApiClient mGoogleApiClient;
+    private LoginManager loginManager;
+    private CallbackManager callbackManager;
+
+    private PbReference pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_page);
+
+        pref = new PbReference(this);
+
+        if(pref.getValue("loginStatus", true)){
+            Log.i("로그인", "로그인 인");
+        }
+        else{
+            Log.i("로그인", "로그인 불");
+        }
 
         Intent intent = getIntent();
         userEmail = intent.getStringExtra("userEmail");
@@ -61,10 +79,8 @@ public class SettingPage extends AppCompatActivity {
         hamburger_btn = (ImageButton)findViewById(R.id.setting_hamburger_btn);
         share_btn = (ImageButton)findViewById(R.id.setting_share_btn);
 
-
         // network
         service = ApplicationController.getInstance().getNetworkService();
-
 
         // drawer
         drawerLayout = (DrawerLayout)findViewById(R.id.setting_drawer_layout);
@@ -78,19 +94,38 @@ public class SettingPage extends AppCompatActivity {
             }
         });
 
+        // logout
         logout_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                        new ResultCallback<Status>() {
-                            @Override
-                            public void onResult(@NonNull Status status) {
-                                Log.i("logout", userEmail + "logout");
-                                Intent intent = new Intent(getApplicationContext(), Login.class);
-                                startActivity(intent);
+
+                // google logout
+                if(loginType == 1){
+                    Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                            new ResultCallback<Status>() {
+                                @Override
+                                public void onResult(@NonNull Status status) {
+                                    pref.removeAll();
+
+                                    Intent intent = new Intent(getApplicationContext(), Login.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
                             }
-                        }
-                );
+                    );
+                }
+
+                // facebook logout
+                else{
+                    callbackManager = CallbackManager.Factory.create();
+                    loginManager = LoginManager.getInstance();
+                    loginManager.logOut();
+
+                    pref.removeAll();
+                    Intent intent = new Intent(getApplicationContext(), Login.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
     }

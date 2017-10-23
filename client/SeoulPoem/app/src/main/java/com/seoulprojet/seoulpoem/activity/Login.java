@@ -10,6 +10,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -22,7 +28,11 @@ import com.seoulprojet.seoulpoem.model.LoginResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+
+import javax.crypto.spec.PBEParameterSpec;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,20 +40,27 @@ import retrofit2.Response;
 
 public class Login extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
+
+    // google
     private GoogleApiClient mGoogleApiClient;
     private SignInButton google_btn;
     private int RC_SIGN_IN = 1000;
     private String TAG = "TAG";
     private TextView mStatusTextView;
     private String idToken = null;
-
     private String userGoogleEmail = null;
     private int loginType = -1;
     private String contentType = null;
     private String penName = null;
 
+    // facebook
+    private LoginButton loginButton = null;
+    private CallbackManager callbackManager;
+
     private NetworkService service;
     private LoginResult loginResults;
+
+    private PbReference pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +69,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
         // service
         service = ApplicationController.getInstance().getNetworkService();
+
+        // sharedpreference ( 자동 로그인 )
+        pref = new PbReference(this);
 
         // google login
         // Configure sign-in to request the user's ID, email address, and basic
@@ -72,9 +92,50 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         google_btn.setScopes(gso.getScopeArray());
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-        mStatusTextView = (TextView) findViewById(R.id.login_tv);
 
         // facebook login
+        callbackManager = CallbackManager.Factory.create();
+        loginButton = (LoginButton)findViewById(R.id.sign_in_facebook_btn);
+        loginButton.setReadPermissions("email");
+
+        // fb callback registration
+        loginButton.registerCallback(callbackManager, new FacebookCallback<com.facebook.login.LoginResult>() {
+            @Override
+            public void onSuccess(final com.facebook.login.LoginResult loginResult) {
+                loginType = 2;
+                userGoogleEmail = loginResult.getAccessToken().getUserId().toString();
+
+                // set login
+                pref.put("loginType", loginType);
+                pref.put("loginStatus", true);
+                pref.put("userEmail", userGoogleEmail);
+
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback(){
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                try{
+                                    penName = object.getString("name");
+
+                                    postLogin();
+                                }catch(Exception e){
+                                    Log.e("requestError", e.getMessage());
+                                }
+                            }
+                        });
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.i("facebook callback error", "facebook callback error");
+            }
+        });
     }
 
     @Override
@@ -95,12 +156,15 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // google
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
-
         }
+
+        // facebook
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
 
@@ -119,25 +183,20 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
             Log.e("", "userEmail : " + userGoogleEmail);
             loginType = 1;
 
+            // set login
+            pref.put("loginType", loginType);
+            pref.put("loginStatus", true);
+            pref.put("userEmail", userGoogleEmail);
+
+            Log.i("pref", "pref type : " + pref.getValue("loginType", 0) + pref.getValue("userEmail", ""));
 
             postLogin();
-            updateUI(true);
+
         } else {
 
             // Signed out, show unauthenticated UI.
             // mStatusTextView.setText("ID token : null");
-            updateUI(false);
-        }
-    }
 
-    private void updateUI(boolean signedIn) {
-        if (signedIn) {
-            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-            mStatusTextView.setText(userGoogleEmail);
-            Log.i("login success", "google success");
-        } else {
-            // findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-            Log.i("login fail", "google fail");
         }
     }
 
@@ -171,12 +230,17 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
                         startActivity(intent);
                         finish();
+
                     } else {
-                        Intent intent = new Intent(getApplicationContext(), TagActivity.class);
+
+
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+
                         intent.putExtra("userEmail", userGoogleEmail);
                         intent.putExtra("loginType", loginType);
                         startActivity(intent);
                         finish();
+
                     }
                 } else {
                     Log.i("fail response", "code : " + response.code());
