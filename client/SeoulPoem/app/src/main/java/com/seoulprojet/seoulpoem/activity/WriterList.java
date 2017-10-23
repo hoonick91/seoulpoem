@@ -177,6 +177,17 @@ public class WriterList extends AppCompatActivity {
         hamburger_profile = (ImageView)findViewById(R.id.hamburger_profile_img);
         hamburger_bg = (ImageView)findViewById(R.id.hamburger_bg);
 
+        hamburger_scrab_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddActivity.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
         hamburger_mypage_btn.setOnClickListener(new View.OnClickListener(){
             @Override

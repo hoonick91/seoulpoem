@@ -277,6 +277,17 @@ public class MyPage extends AppCompatActivity {
             }
         });
 
+        hamburger_scrab_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddActivity.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         hamburger_mypage_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -284,6 +295,7 @@ public class MyPage extends AppCompatActivity {
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
                 startActivity(intent);
+                finish();
             }
         });
 

@@ -241,55 +241,68 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
-        hamburger_mypage_btn.setOnClickListener(new View.OnClickListener() {
+        hamburger_mypage_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
+                finish();
             }
         });
 
-        hamburger_scrab_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), AddActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-        hamburger_today_btn.setOnClickListener(new View.OnClickListener() {
+        hamburger_today_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TodaySeoul.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
         });
 
-        hamburger_setting_btn.setOnClickListener(new View.OnClickListener() {
+        hamburger_setting_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SettingPage.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
         });
 
-        hamburger_notice_btn.setOnClickListener(new View.OnClickListener() {
+        hamburger_notice_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 drawerLayout.closeDrawers();
                 Intent intent = new Intent(getApplicationContext(), Notice.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
         });
 
-        hamburger_writer_btn.setOnClickListener(new View.OnClickListener() {
+        hamburger_writer_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), WriterList.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        hamburger_scrab_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddActivity.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -299,7 +312,7 @@ public class AddActivity extends AppCompatActivity {
 
     /*************************************** mypage 정보 가져오기 *************************************/
     public void getMenuMypage() {
-        Call<MyPageResult> requestMyPage = service.getMyPage("godz33@naver.com", 1);
+        Call<MyPageResult> requestMyPage = service.getMyPage(userEmail, loginType);
 
         requestMyPage.enqueue(new Callback<MyPageResult>() {
             @Override
@@ -309,12 +322,26 @@ public class AddActivity extends AppCompatActivity {
                     if (response.body().status.equals("success")) {
                         hamburger_name.setText(response.body().msg.pen_name);
                         hamburger_message.setText(response.body().msg.inform);
-                        Glide.with(getApplicationContext())
-                                .load(response.body().msg.profile)
-                                .into(hamburger_profile);
-                        Glide.with(getApplicationContext())
-                                .load(response.body().msg.background)
-                                .into(hamburger_bg);
+                        if(response.body().msg.profile == null){
+                            hamburger_profile.setImageResource(R.drawable.profile_tmp);
+                        }
+
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().msg.profile)
+                                    .into(hamburger_profile);
+                        }
+
+                        if(response.body().msg.background == null){
+                            hamburger_bg.setImageResource(R.drawable.profile_background);
+                        }
+
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().msg.background)
+                                    .into(hamburger_bg);
+                        }
+                        
                     }
                 }
             }
