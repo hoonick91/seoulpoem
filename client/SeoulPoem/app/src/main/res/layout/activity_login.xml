@@ -27,15 +27,21 @@
 
         <com.google.android.gms.common.SignInButton
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:id="@+id/sign_in_button"
             android:visibility="visible"
             android:layout_marginTop="30dp" />
 
         <com.facebook.login.widget.LoginButton
+            xmlns:facebook="http://schemas.android.com/apk/res-auto"
+            facebook:com_facebook_login_text="Facebook 계정으로 로그인"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/sign_in_facebook_btn"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
             android:visibility="visible"
             android:layout_marginTop="10dp"/>
 

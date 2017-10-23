@@ -34,6 +34,7 @@ public class MyPagePoemFragment extends Fragment {
     private int loginType = 0;
 
     private TextView poemCount;
+    private View view;
 
     private RecyclerView recyclerView;
     private RecyclerAdapter recyclerAdapter;
@@ -49,7 +50,7 @@ public class MyPagePoemFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-      View view = inflater.inflate(R.layout.mypage_poem_fragment, container, false);
+      view = inflater.inflate(R.layout.mypage_poem_fragment, container, false);
       poemCount = (TextView)view.findViewById(R.id.poem_frag_count_txt);
 
         Bundle extra = getArguments();
@@ -129,6 +130,16 @@ public class MyPagePoemFragment extends Fragment {
             public void onResponse(Call<MyPagePoemResult> call, Response<MyPagePoemResult> response) {
                 poemResults = response.body().msg.poems;
                 poemCount.setText("# 총 " + response.body().msg.counts + "개");
+
+                if(response.body().msg.counts == 0){
+                    TextView textView = (TextView)view.findViewById(R.id.frag_none_poem_tv);
+                    textView.setVisibility(View.VISIBLE);
+                }
+                else{
+                    TextView textView = (TextView)view.findViewById(R.id.frag_none_poem_tv);
+                    textView.setVisibility(View.INVISIBLE);
+                }
+
                 recyclerAdapter = new RecyclerAdapter(poemResults);
                 recyclerView.setAdapter(recyclerAdapter);
             }

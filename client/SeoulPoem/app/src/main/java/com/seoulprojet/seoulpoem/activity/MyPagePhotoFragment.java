@@ -134,6 +134,15 @@ public class MyPagePhotoFragment extends Fragment{
                     photoListDatas = response.body().msg.photos;
                     numTV.setText("# 총 " + response.body().msg.counts + "장");
 
+                    if(response.body().msg.counts == 0){
+                        TextView textView = (TextView)view.findViewById(R.id.frag_none_photo_tv);
+                        textView.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        TextView textView = (TextView)view.findViewById(R.id.frag_none_photo_tv);
+                        textView.setVisibility(View.INVISIBLE);
+                    }
+
                     // adapter
                     gridViewAdapter = new GridViewAdapter(getActivity().getApplicationContext(), photoListDatas);
                     gridView.setAdapter(gridViewAdapter);
