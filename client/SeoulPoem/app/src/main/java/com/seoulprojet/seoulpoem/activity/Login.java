@@ -172,7 +172,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                         startActivity(intent);
                         finish();
                     } else {
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), TagActivity.class);
                         intent.putExtra("userEmail", userGoogleEmail);
                         intent.putExtra("loginType", loginType);
                         startActivity(intent);

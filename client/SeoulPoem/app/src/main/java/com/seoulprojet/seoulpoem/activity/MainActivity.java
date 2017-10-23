@@ -136,6 +136,8 @@ public class MainActivity extends AppCompatActivity {
         userEmail = intent.getExtras().getString("userEmail");
         loginType = intent.getExtras().getInt("loginType");
 
+        Log.d("test" ,userEmail );
+
 
         //서비스 객체 초기화
         service = ApplicationController.getInstance().getNetworkService();
@@ -171,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /********************************* mypage 정보 가져오기 ****************************************/
+    /*********************************  정보 가져오기 ****************************************/
     public void getMenuMypage(){
         Call<MyPageResult> requestMyPage = service.getMyPage(userEmail, loginType);
 
@@ -181,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     Log.d("error", "xxx");
                     if(response.body().status.equals("success")){
+                        Log.d("test", response.body().msg.pen_name);
                         hamburger_name.setText(response.body().msg.pen_name);
                         hamburger_message.setText(response.body().msg.inform);
 
@@ -239,16 +242,16 @@ public class MainActivity extends AppCompatActivity {
 
         //hash tag
         hashtags = new ArrayList<>();
-        hashtags.add(new HashtagListData(R.drawable.testimg, "거리"));
-        hashtags.add(new HashtagListData(R.drawable.testimg02, "이벤트"));
-        hashtags.add(new HashtagListData(R.drawable.testimg03, "푸드"));
-        hashtags.add(new HashtagListData(R.drawable.testimg04, "쇼핑"));
-        hashtags.add(new HashtagListData(R.drawable.testimg05, "기타"));
-        hashtags.add(new HashtagListData(R.drawable.testimg, "거리"));
-        hashtags.add(new HashtagListData(R.drawable.testimg02, "이벤트"));
-        hashtags.add(new HashtagListData(R.drawable.testimg03, "푸드"));
-        hashtags.add(new HashtagListData(R.drawable.testimg04, "쇼핑"));
-        hashtags.add(new HashtagListData(R.drawable.testimg05, "기타"));
+        hashtags.add(new HashtagListData(R.drawable.a, "거리"));
+        hashtags.add(new HashtagListData(R.drawable.b, "이벤트"));
+        hashtags.add(new HashtagListData(R.drawable.c, "푸드"));
+        hashtags.add(new HashtagListData(R.drawable.d, "쇼핑"));
+        hashtags.add(new HashtagListData(R.drawable.e, "기타"));
+        hashtags.add(new HashtagListData(R.drawable.f, "거리"));
+        hashtags.add(new HashtagListData(R.drawable.g, "이벤트"));
+        hashtags.add(new HashtagListData(R.drawable.h, "푸드"));
+        hashtags.add(new HashtagListData(R.drawable.i, "쇼핑"));
+        hashtags.add(new HashtagListData(R.drawable.j, "기타"));
 
     }
 
@@ -407,17 +410,14 @@ public class MainActivity extends AppCompatActivity {
     /***********************************main 리스트 가져오기*********************************/
     public void getLists() {
         Call<MainResult> requestMainLists = service.getPoems("그리움");
-        Log.d("test", "before call");
 
         requestMainLists.enqueue(new Callback<MainResult>() {
             @Override
             public void onResponse(Call<MainResult> call, Response<MainResult> response) {
-                Log.d("test", "after call");
                 if (response.isSuccessful()) {
                     if (response.body().status.equals("success")) {
                         poems = response.body().data;
 
-                        Log.d("test", "after success");
 
                         //view pager 설정
                         paPoem = new PageAdapterPoems(poems);
@@ -429,14 +429,12 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 } else {
-                    Log.d("test", response.toString());
                 }
             }
 
 
             @Override
             public void onFailure(Call<MainResult> call, Throwable t) {
-                Log.i("test -> err : ", t.getMessage());
             }
         });
     }

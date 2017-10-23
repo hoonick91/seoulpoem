@@ -434,6 +434,8 @@ public class DetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ReadingPoemActivity.class);
                 intent.putExtra("articles_id", "" + articleId);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
             }
         });
