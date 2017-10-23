@@ -1,6 +1,8 @@
 package com.seoulprojet.seoulpoem.activity;
 
+import android.app.Dialog;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,11 +16,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
@@ -63,12 +67,62 @@ public class ReadingPoemActivity extends AppCompatActivity {
     String photo;
     ArrayList<ReadingPoem.Otherinfo> another_photo;
 
+    //유저 정보
+    private String userEmail = null;
+    private int loginType = 0;
+
+    //다이얼로그
+    private AddWorkDialog addWorkDialog;
+    private SettingDialog settingDialog;
+    private SettingDialog02 settingDialog02;
+    private InfoDialog infoDialog;
+
+    //작품담기 다이얼로그 리스너
+    private View.OnClickListener addDialog_leftListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            Intent intent = new Intent(ReadingPoemActivity.this, AddActivity.class);
+            intent.putExtra("userEmail", userEmail);
+            intent.putExtra("loginType", loginType);
+            startActivity(intent);
+            addWorkDialog.dismiss();
+        }
+    };
+    private View.OnClickListener addDialog_rightListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            addWorkDialog.dismiss();
+        }
+    };
+
+    //설정 다이얼로그 리스너
+    private View.OnClickListener settingDialog_listener02 = new View.OnClickListener() {
+        public void onClick(View v) {
+            //원래 뜬 다이얼로그 없애고
+            settingDialog02.dismiss();
+
+            infoDialog = new InfoDialog(ReadingPoemActivity.this);
+            infoDialog.setCanceledOnTouchOutside(true);
+            infoDialog.show();
+        }
+    };
+
+    private View.OnClickListener settingDialog_listener03 = new View.OnClickListener() {
+        public void onClick(View v) {
+            Toast.makeText(ReadingPoemActivity.this, "333", Toast.LENGTH_SHORT).show();
+        }
+    };
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reading_poem);
+
+
+        //유저 정보 가져오기
+        Intent intent = getIntent();
+        userEmail = intent.getExtras().getString("userEmail");
+        loginType = intent.getExtras().getInt("loginType");
 
         String temp = getIntent().getStringExtra("articles_id");
         articles_id  = Integer.parseInt(temp);
@@ -136,15 +190,42 @@ public class ReadingPoemActivity extends AppCompatActivity {
         another.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //더보기 dailog
+
+                //작품을 쓴 사람이 현재 사용자라면
+//                settingDialog = new SettingDialog(DetailActivity.this,
+//                        "상세정보",
+//                        "수정하기",
+//                        settingDialog_listener02,
+//                        settingDialog_listener03);
+//                settingDialog.setCanceledOnTouchOutside(true);
+//                settingDialog.show();
+
+                //작품을 쓴 쓴 사람이 현재 사용자가 아니라면
+                settingDialog02 = new SettingDialog02(ReadingPoemActivity.this,
+                        "상세정보",
+                        settingDialog_listener02);
+                settingDialog02.setCanceledOnTouchOutside(true);
+                settingDialog02.show();
+
             }
         });
+
+
         download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //다운받기 dialog
+                addWorkDialog = new AddWorkDialog(ReadingPoemActivity.this,
+                        "#작품 담기",
+                        "작품 담기에 작품을 담았습니다.",
+                        "작품 담기로 이동하시겠습니까?",
+                        addDialog_leftListener,
+                        addDialog_rightListener);
+                addWorkDialog.setCanceledOnTouchOutside(true);
+
+                addWorkDialog.show();
             }
         });
+
     }
 
     /****************************************네트워크 초기화*****************************************/
@@ -317,6 +398,191 @@ public class ReadingPoemActivity extends AppCompatActivity {
             another_poem_img = (ImageView)itemView.findViewById(R.id.another_poem_img);
         }
     }
+
+
+
+
+
+
+
+    /***************************************작품 담기 다이얼로그***********************************************/
+
+    public class AddWorkDialog extends Dialog {
+
+        private TextView text01, text02, text03;
+        private TextView mLeftButton, mRightButton;
+        String str01, str02, str03;
+        private View.OnClickListener addDialog_leftListener, addDialog_rightListener;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            // 다이얼로그 외부 화면 흐리게 표현
+            WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
+            lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            lpWindow.dimAmount = 0.8f;
+            getWindow().setAttributes(lpWindow);
+
+            //view mapping
+            setContentView(R.layout.dialog_share);
+
+            //findView
+            text01 = (TextView) findViewById(R.id.text01);
+            text02 = (TextView) findViewById(R.id.text02);
+            text03 = (TextView) findViewById(R.id.text03);
+            mLeftButton = (TextView) findViewById(R.id.btnMove);
+            mRightButton = (TextView) findViewById(R.id.btnBack);
+
+            // 제목과 내용을 생성자에서 셋팅
+            text01.setText(str01);
+            text02.setText(str02);
+            text03.setText(str03);
+
+            // 클릭 이벤트 셋팅
+            mLeftButton.setOnClickListener(addDialog_leftListener);
+            mRightButton.setOnClickListener(addDialog_rightListener);
+        }
+
+
+        // 생성자
+        public AddWorkDialog(Context context, String str01, String str02, String str03,
+                             View.OnClickListener addDialog_leftListener,
+                             View.OnClickListener addDialog_rightListener) {
+            super(context, android.R.style.Theme_Translucent_NoTitleBar);
+            this.str01 = str01;
+            this.str02 = str02;
+            this.str03 = str03;
+            this.addDialog_leftListener = addDialog_leftListener;
+            this.addDialog_rightListener = addDialog_rightListener;
+        }
+    }
+
+    /***************************************설정 다이얼로그***********************************************/
+
+    public class SettingDialog extends Dialog {
+
+        private TextView text02, text03;
+        private String str02, str03;
+        private View.OnClickListener settingDialog_listener02, settingDialog_listener03;
+        private LinearLayout llRow02, llRow03;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            // 다이얼로그 외부 화면 흐리게 표현
+            WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
+            lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            lpWindow.dimAmount = 0.8f;
+            getWindow().setAttributes(lpWindow);
+
+            //view mapping
+            setContentView(R.layout.dialog_setting);
+
+            //findView
+            text02 = (TextView) findViewById(R.id.tv02);
+            text03 = (TextView) findViewById(R.id.tv03);
+            llRow02 = (LinearLayout) findViewById(R.id.llRow02);
+            llRow03 = (LinearLayout) findViewById(R.id.llRow03);
+
+
+            // 제목과 내용을 생성자에서 셋팅
+            text02.setText(str02);
+            text03.setText(str03);
+
+            // 클릭 이벤트 셋팅
+            llRow02.setOnClickListener(settingDialog_listener02);
+            llRow03.setOnClickListener(settingDialog_listener03);
+        }
+
+
+        // 생성자
+        public SettingDialog(Context context, String str02, String str03,
+                             View.OnClickListener settingDialog_listener02,
+                             View.OnClickListener settingDialog_listener03) {
+            super(context, android.R.style.Theme_Translucent_NoTitleBar);
+            this.str02 = str02;
+            this.str03 = str03;
+            this.settingDialog_listener02 = settingDialog_listener02;
+            this.settingDialog_listener03 = settingDialog_listener03;
+        }
+    }
+
+    /***************************************설정 다이얼로그02***********************************************/
+
+    public class SettingDialog02 extends Dialog {
+
+        private TextView text02;
+        private String str02;
+        private View.OnClickListener settingDialog_listener02;
+        private LinearLayout llRow02;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            // 다이얼로그 외부 화면 흐리게 표현
+            WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
+            lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            lpWindow.dimAmount = 0.8f;
+            getWindow().setAttributes(lpWindow);
+
+            //view mapping
+            setContentView(R.layout.dialog_setting02);
+
+            //findView
+            text02 = (TextView) findViewById(R.id.tv02);
+            llRow02 = (LinearLayout) findViewById(R.id.llRow02);
+
+
+            // 제목과 내용을 생성자에서 셋팅
+            text02.setText(str02);
+
+            // 클릭 이벤트 셋팅
+            llRow02.setOnClickListener(settingDialog_listener02);
+        }
+
+
+        // 생성자
+        public SettingDialog02(Context context, String str02,
+                               View.OnClickListener settingDialog_listener02) {
+            super(context, android.R.style.Theme_Translucent_NoTitleBar);
+            this.str02 = str02;
+            this.settingDialog_listener02 = settingDialog_listener02;
+        }
+    }
+
+
+    /***************************************상세정보 다이얼로그***********************************************/
+
+    public class InfoDialog extends Dialog {
+
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            // 다이얼로그 외부 화면 흐리게 표현
+            WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
+            lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            lpWindow.dimAmount = 0.8f;
+            getWindow().setAttributes(lpWindow);
+
+            //view mapping
+            setContentView(R.layout.dialog_info);
+
+        }
+
+
+        // 생성자
+        public InfoDialog(Context context) {
+            super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        }
+    }
+
+
+
 
 
 

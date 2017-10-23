@@ -39,7 +39,6 @@ public class AddActivity extends AppCompatActivity {
     private RelativeLayout rlHamberger;
     private TextView tvWorkNum;
 
-
     //recycler
     private RecyclerView recyclerView;
     private RecyclerAdapter recyclerAdapter;
@@ -101,7 +100,7 @@ public class AddActivity extends AppCompatActivity {
     }
 
 
-    /***************************************findView***********************************************/
+    /*************************************findView***********************************************/
     public void findView() {
         rlHamberger = (RelativeLayout) findViewById(R.id.rlHamberger);
         tvWorkNum = (TextView) findViewById(R.id.tvWorkNum);
