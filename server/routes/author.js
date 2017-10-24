@@ -47,7 +47,7 @@ router.get('/', async (req, res, next) => {
         let query1 = 'SELECT count(*) as count from seoul_poem.users where author = 1';
         var count_authors = await connection.query(query1);
 
-        let query2 = 'SELECT email, pen_name, profile, inform from seoul_poem.users where author=1';
+        let query2 = 'SELECT email,foreign_key_type as type, pen_name, profile, inform from seoul_poem.users where author=1';
         var authors_list = await connection.query(query2);
 
         res.status(200).send({count_authors: count_authors[0].count, authors_list: authors_list});
