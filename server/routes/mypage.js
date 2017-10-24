@@ -31,9 +31,8 @@ const upload = multer({
         }
     })
 });
-
-// 프로필 정보 조회
-router.get('/', async (req, res)=> {
+// 네비게이션바
+router.get('/menu', async (req, res)=> {
     try {
         var connection = await pool.getConnection();
         await connection.beginTransaction();
@@ -42,15 +41,63 @@ router.get('/', async (req, res)=> {
         let type = req.headers.type;
 
 
-        //idusers 수정할것!
         let query1 = 'select profile,background,inform,pen_name from seoul_poem.users where users.email = ? and users.foreign_key_type = ?';
         let mypage = await connection.query(query1, [email,type]);
 
         let result =mypage[0];
 
-
         res.status(201).json({status :"success" ,msg : result});
         await connection.commit();
+
+    }
+    catch(err) {
+        console.log(err);
+        res.status(500).send({status : "fail", msg: err });
+    }
+    finally {
+        pool.releaseConnection(connection);
+    }
+});
+
+
+// 프로필 정보 조회
+router.get('/', async (req, res)=> {
+    try {
+        var connection = await pool.getConnection();
+        await connection.beginTransaction();
+
+
+        let email = req.query.email;
+        let type = req.query.type;
+        let user_email = req.headers.email;
+        let user_type = req.headers.type;
+
+
+        //idusers 수정할것!
+        let query1 = 'select profile,background,inform,pen_name from seoul_poem.users where users.email = ? and users.foreign_key_type = ?';
+        let mypage = await connection.query(query1, [email,type]);
+
+        if(!mypage[0])
+        {
+            res.status(402).send({status : "fail", msg: "not member"});
+        }
+        else{
+            let result ={};
+
+            let user = mypage[0];
+
+            result.user = user;
+
+
+            if(email == user_email && type==user_type){
+                result.owner = 1;
+            }else{
+                result.owner= 0;
+            }
+
+            res.status(201).json({status :"success" ,msg : result});
+            await connection.commit();
+        }
 
     }
     catch(err) {
@@ -68,8 +115,11 @@ router.get('/photo', async (req, res) => {
         var connection = await pool.getConnection();
         await connection.beginTransaction();
 
-        let email = req.headers.email;
-        let type = req.headers.type;
+        let email = req.query.email;
+        let type = req.query.type;
+        let user_email = req.headers.email;
+        let user_type = req.headers.type;
+
 
         //idusers 수정할것!
         let query1 = 'SELECT articles.idarticles as idarticles, pictures.photo as photo, if(articles.poem_idpoem IS NULL,-1,articles.poem_idpoem )as idpoem FROM seoul_poem.articles, seoul_poem.pictures where articles.users_email = ? and articles.users_foreign_key_type = ? and articles.pictures_idpictures = pictures.idpictures  order by seoul_poem.articles.idarticles DESC';
@@ -100,8 +150,11 @@ router.get('/poem', async (req, res) => {
         var connection = await pool.getConnection();
         await connection.beginTransaction();
 
-        let email = req.headers.email;
-        let type = req.headers.type;
+        let email = req.query.email;
+        let type = req.query.type;
+        let user_email = req.headers.email;
+        let user_type = req.headers.type;
+
 
         let query1 = 'SELECT articles.idarticles, articles.title FROM seoul_poem.articles where users_email = ? and users_foreign_key_type = ? and poem_idpoem IS NOT NULL order by seoul_poem.articles.idarticles DESC';
         let mypoem = await connection.query(query1,[email,type]);

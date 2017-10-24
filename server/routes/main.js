@@ -118,7 +118,7 @@ router.get('/search',async(req, res) => {
                 arr1[i] = author;
          }
 
-            let query1 = "select seoul_poem.articles.idarticles as idarticles,seoul_poem.articles.title as title,seoul_poem.articles.poem_idpoem as idpoem from seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures and seoul_poem.articles.tags like ? order by seoul_poem.articles.idarticles Desc limit 3;"
+            let query1 = "select seoul_poem.articles.idarticles as idarticles,seoul_poem.articles.title as title,if(seoul_poem.articles.poem_idpoem IS NULL, -1,seoul_poem.articles.poem_idpoem) as idpoem from seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures and seoul_poem.articles.tags like ? order by seoul_poem.articles.idarticles Desc limit 3;"
 
             let article_list = await connection.query(query1,tag);
 
@@ -133,7 +133,7 @@ router.get('/search',async(req, res) => {
                 let articlelist= {};
                 articlelist.idarticles = article_list[i].idarticles;
                 articlelist.title = article_list[i].title;
-                if (article_list[i].idpoem == null){
+                if (article_list[i].idpoem == -1){
                     articlelist.contents=""
                 }
                 else {

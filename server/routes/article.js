@@ -185,6 +185,8 @@ router.get('/:idarticles', async (req, res) => {
         let user ={}
         user.profile = query5_result[0].profile;
         user.pen_name = query5_result[0].pen_name;
+        user.email = queryresult[0].email;
+        user.type = queryresult[0].type;
 
         let query6 = 'select pictures.photo as photo ,articles.idarticles as idarticles from articles,pictures where articles.users_email = ? and articles.users_foreign_key_type = ? and articles.idarticles != ? and articles.pictures_idpictures = pictures.idpictures order by articles.idarticles DESC limit 5;'
         let query6_result = await connection.query(query6,[queryresult[0].email,queryresult[0].type,req.params.idarticles]);
@@ -204,7 +206,11 @@ router.get('/:idarticles', async (req, res) => {
             }
         }
         user.others = others;
-        article.user = user;
+
+
+        article.writer = user;
+
+
         if(type_ == queryresult[0].type && email_ == queryresult[0].email)
             article.modifiable = 1;
         else  article.modifiable = 0;
@@ -244,18 +250,23 @@ router.get('/simple/:idarticles', async (req, res) => {
         console.log(article[0]);
         var email = article[0].email;
         var type = article[0].type;
-        let query2 = 'select seoul_poem.users.profile as profile,seoul_poem.users.pen_name as userName from seoul_poem.users where seoul_poem.users.email = ? and seoul_poem.users.foreign_key_type = ?'
+        let query2 = 'select seoul_poem.users.profile as profile,seoul_poem.users.pen_name as pen_name from seoul_poem.users where seoul_poem.users.email = ? and seoul_poem.users.foreign_key_type = ?'
         let author = await connection.query(query2,[email,type]);
 
         let detail_={};
         detail_.photo = article[0].photo;
         detail_.tags=article[0].tags;
-        detail_.profile =author[0].profile;
-        detail_.userName = author[0].userName;
+        let writer = {};
 
-        if(type_ ==article[0].type && email_ == article[0].email)
+        writer.profile =author[0].profile;
+        writer.pen_name = author[0].pen_name;
+        writer.email = email;
+        writer.type = type;
+
+        if(type_ ==type && email_ == email)
             detail_.modifiable = 1;
         else  detail_.modifiable = 0;
+        detail_.writer = writer;
 
         res.status(200);
         res.json({status:"success", data: detail_});
