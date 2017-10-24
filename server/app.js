@@ -10,18 +10,17 @@ var users = require('./routes/users');
 var config = require('./config/secretKey'); //보안
 var main = require('./routes/main');
 var mypage = require('./routes/mypage');
-var group = require('./routes/group');
-var event = require('./routes/event');
-var member = require('./routes/member');
 var article = require('./routes/article');
 var bookmark = require('./routes/bookmark');
 var subway = require('./routes/subway');
 var author = require('./routes/author');
 var notice = require('./routes/notice');
 var expressVaildator = require('express-validator');
+
+
 var app = express();
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'vi   ews'));
 app.set('view engine', 'ejs');
 app.set('jwt-secret', config.secret); //시크릿
 
@@ -33,7 +32,7 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded({limit: '10mb', extended: false }));
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -45,9 +44,6 @@ app.use(function (req, res, next) {
 app.use('/', index);
 app.use('/users', users);
 app.use('/main', main);
-app.use('/group', group);
-app.use('/event', event);
-app.use('/member', member);
 app.use('/article', article);
 app.use('/bookmark', bookmark);
 app.use('/subway', subway);
