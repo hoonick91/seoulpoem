@@ -519,7 +519,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -530,7 +529,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -542,7 +540,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -553,7 +550,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
                 startActivity(intent);
-                finish();
             }
         });
     }

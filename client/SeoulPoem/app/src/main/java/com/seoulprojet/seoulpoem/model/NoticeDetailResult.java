@@ -15,6 +15,6 @@ public class NoticeDetailResult {
         public String title;
         public String content;
         public String date;
-        public String flag;
+        public int flag;
     }
 }
