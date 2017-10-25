@@ -309,8 +309,8 @@ public class ReadingPoemActivity extends AppCompatActivity {
                     }else{
                         poem_content.setGravity(Gravity.NO_GRAVITY);
                     };
-
-                        another_photo = response.body().article.writer.others;
+                    if(response.body().article.writer.others != null)
+                    another_photo = response.body().article.writer.others;
                     recyclerAdapter.setAdapter(another_photo);
                     recyclerAdapter.notifyDataSetChanged();
 
