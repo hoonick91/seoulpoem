@@ -4,7 +4,7 @@
     android:id="@+id/rlMainBg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/mainbg">
+    android:background="@drawable/paper4">
 
 
     <android.support.v4.widget.DrawerLayout

@@ -11,9 +11,15 @@ public class DetailResult {
     public class Data {
         public String photo;
         public String tags;
-        public String profile;
-        public String userName;
+        public int modifiable;
+        public Writer writer;
     }
 
+    public class Writer{
+        public String profile;
+        public String pen_name;
+        public String email;
+        public int type;
+    }
 
 }

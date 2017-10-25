@@ -62,23 +62,42 @@ public class DetailActivity extends AppCompatActivity {
         }
     };
 
-    //설정 다이얼로그 리스너
+    //설정 다이얼로그 리스너 - 상세정보랑 수정하기 둘다 있는 다이얼로그
     private View.OnClickListener settingDialog_listener02 = new View.OnClickListener() {
         public void onClick(View v) {
             //원래 뜬 다이얼로그 없애고
-            settingDialog02.dismiss();
-
+            settingDialog.dismiss();
             infoDialog = new InfoDialog(DetailActivity.this);
             infoDialog.setCanceledOnTouchOutside(true);
             infoDialog.show();
         }
     };
 
+
+    //설정 다이얼로그 리스너 - 수정하기
     private View.OnClickListener settingDialog_listener03 = new View.OnClickListener() {
         public void onClick(View v) {
-            Toast.makeText(DetailActivity.this, "333", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(DetailActivity.this, WritePoemActivity.class);
+            intent.putExtra("type", ""+articleId);
+            intent.putExtra("userEmail", userEmail);
+            intent.putExtra("loginType", loginType);
+            startActivity(intent);
         }
     };
+
+    //설정 다이얼로그 리스너 - 수정하기만 있는 다이얼로그
+    private View.OnClickListener settingDialog_listener04 = new View.OnClickListener() {
+        public void onClick(View v) {
+            //원래 뜬 다이얼로그 없애고
+            settingDialog02.dismiss();
+            infoDialog = new InfoDialog(DetailActivity.this);
+            infoDialog.setCanceledOnTouchOutside(true);
+            infoDialog.show();
+        }
+    };
+
+    //수정 가능 불가능
+    int modifiable;
 
     /***************************************START***********************************************/
     @Override
@@ -206,7 +225,7 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    /***************************************설정 다이얼로그***********************************************/
+    /***************************************상세정보/수정하기 있는 설정 다이얼로그***********************************************/
 
     public class SettingDialog extends Dialog {
 
@@ -257,7 +276,7 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    /***************************************설정 다이얼로그02***********************************************/
+    /***************************************샹세 정보만 있는 설정 다이얼로그02***********************************************/
 
     public class SettingDialog02 extends Dialog {
 
@@ -367,22 +386,24 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //작품을 쓴 사람이 현재 사용자라면
-//                settingDialog = new SettingDialog(DetailActivity.this,
-//                        "상세정보",
-//                        "수정하기",
-//                        settingDialog_listener02,
-//                        settingDialog_listener03);
-//                settingDialog.setCanceledOnTouchOutside(true);
-//                settingDialog.show();
+                if (modifiable == 1) {
+                    //작품을 쓴 사람이 현재 사용자라면
+                    settingDialog = new SettingDialog(DetailActivity.this,
+                            "상세정보",
+                            "수정하기",
+                            settingDialog_listener02,
+                            settingDialog_listener03);
+                    settingDialog.setCanceledOnTouchOutside(true);
+                    settingDialog.show();
+                } else {
+                    //작품을 쓴 쓴 사람이 현재 사용자가 아니라면
+                    settingDialog02 = new SettingDialog02(DetailActivity.this,
+                            "상세정보",
+                            settingDialog_listener04);
+                    settingDialog02.setCanceledOnTouchOutside(true);
+                    settingDialog02.show();
 
-                //작품을 쓴 쓴 사람이 현재 사용자가 아니라면
-                settingDialog02 = new SettingDialog02(DetailActivity.this,
-                        "상세정보",
-                        settingDialog_listener02);
-                settingDialog02.setCanceledOnTouchOutside(true);
-                settingDialog02.show();
-
+                }
             }
         });
     }
@@ -390,7 +411,7 @@ public class DetailActivity extends AppCompatActivity {
 
     /***********************************main 리스트 가져오기*********************************/
     public void getDetail() {
-        Call<DetailResult> requestDetail = service.getDetail(articleId);
+        Call<DetailResult> requestDetail = service.getDetail(loginType, "godz33@naver.com", articleId);
 
         requestDetail.enqueue(new Callback<DetailResult>() {
             @Override
@@ -406,15 +427,17 @@ public class DetailActivity extends AppCompatActivity {
 
                         //유저 이미지
                         Glide.with(getApplicationContext())
-                                .load(response.body().data.profile)
+                                .load(response.body().data.writer.profile)
                                 .into(ivProfile);
 
-
                         //유저 닉네임
-                        tvName.setText(response.body().data.userName.toString());
+                        tvName.setText(response.body().data.writer.pen_name.toString());
 
                         //태그
                         tvTags.setText(response.body().data.tags.toString());
+
+                        //modifiable
+                        modifiable = response.body().data.modifiable;
                     }
                 }
             }

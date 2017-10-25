@@ -3,6 +3,12 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     signingConfigs {
+        seoul {
+            keyAlias 'seoul'
+            keyPassword '042929'
+//            storeFile file('C:/Users/lynn/.android/seoul.jks')
+            storePassword '042929'
+        }
 
     }
     compileSdkVersion 25

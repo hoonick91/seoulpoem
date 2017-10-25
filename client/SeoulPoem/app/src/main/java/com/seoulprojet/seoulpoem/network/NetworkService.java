@@ -16,8 +16,10 @@ import com.seoulprojet.seoulpoem.model.NoticeResult;
 import com.seoulprojet.seoulpoem.model.SignInResult;
 import com.seoulprojet.seoulpoem.model.SubwayPoem;
 import com.seoulprojet.seoulpoem.model.TodayResult;
+import com.seoulprojet.seoulpoem.model.UserPageResult;
 import com.seoulprojet.seoulpoem.model.WriterApplyResult;
 import com.seoulprojet.seoulpoem.model.WriterListResult;
+
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -90,7 +92,6 @@ public interface NetworkService {
                                 @Part("date") RequestBody date);
 
 
-
     //main 리스트 가져오기
 
     @GET("/main")
@@ -102,7 +103,9 @@ public interface NetworkService {
 
     //세부 정보 가져오기
     @GET("/article/simple/{articleid}")
-    Call<DetailResult> getDetail(@Path("articleid") int articleid);
+    Call<DetailResult> getDetail(@Header("type") int type,
+                                 @Header("email") String email,
+                                 @Path("articleid") int articleid);
 
     //작품 리스트 가져오기
     @GET("/article/simple/{articleid}")
@@ -114,23 +117,34 @@ public interface NetworkService {
                                 @Header("type") int type,
                                 @Header("Content-Type") String Content_type);
 
-    // login (필명 입력)=
+    // login (필명 입력)
     @POST("/users/signin")
     Call<SignInResult> postName(@Header("type") int type,
                                 @Header("email") String email,
                                 @Body LoginPenName pen_name);
 
+    // mypage
+    @GET("/mypage")
+    Call<UserPageResult> getUserPage(@Header("email") String email,
+                                     @Header("type") int type,
+                                     @Query("email") String otherEmail,
+                                     @Query("type") int otherType);
+
     // mypage poem
     @GET("/mypage/poem")
     Call<MyPagePoemResult> getMyPoem(@Header("email") String email,
-                                     @Header("type") int type);
+                                     @Header("type") int type,
+                                     @Query("email") String otherEmail,
+                                     @Query("type") int otherType);
 
     @GET("/mypage/photo")
     Call<MyPagePhotoResult> getMyPhoto(@Header("email") String email,
-                                       @Header("type") int type);
+                                       @Header("type") int type,
+                                       @Query("email") String otherEmail,
+                                       @Query("type") int otherType);
 
-    // mypage 프로필 정보
-    @GET("/mypage")
+    // mypage hamburger 프로필 정보
+    @GET("/mypage/menu")
     Call<MyPageResult> getMyPage(@Header("email") String email,
                                  @Header("type") int type);
 
@@ -162,6 +176,7 @@ public interface NetworkService {
     @GET("/bookmark/search")
     Call<AddResult> getWorks(@Header("email") String email,
                              @Header("type") int type);
+
     //test
     @GET("/main/test")
     Call<TestResult> getTest();
@@ -176,5 +191,5 @@ public interface NetworkService {
 
     //today seoul poem
     @GET("/subway/{article_id}")
-    Call<SubwayPoem> getSubwayPoem(  @Path("article_id") int article_id);
+    Call<SubwayPoem> getSubwayPoem(@Path("article_id") int article_id);
 }
