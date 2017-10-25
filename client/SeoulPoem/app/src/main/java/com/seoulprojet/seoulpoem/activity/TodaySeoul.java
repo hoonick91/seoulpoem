@@ -111,6 +111,8 @@ public class TodaySeoul extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), MyPage.class);
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
+                intent.putExtra("otherEmail", userEmail);
+                intent.putExtra("otherType", loginType);
                 startActivity(intent);
                 finish();
             }

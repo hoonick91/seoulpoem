@@ -32,6 +32,8 @@ public class MyPagePoemFragment extends Fragment {
 
     private String userEmail = null;
     private int loginType = 0;
+    private String otherEmail = null;
+    private int otherType = 0;
 
     private TextView poemCount;
     private View view;
@@ -56,6 +58,8 @@ public class MyPagePoemFragment extends Fragment {
         Bundle extra = getArguments();
         userEmail = extra.getString("userEmail");
         loginType = extra.getInt("loginType");
+        otherEmail = extra.getString("otherEmail");
+        otherType = extra.getInt("otherType");
 
         recyclerView = (RecyclerView)view.findViewById(R.id.poem_frag_rv);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -123,7 +127,7 @@ public class MyPagePoemFragment extends Fragment {
 
     /****************** 시 리스트 가져오기 **********************/
     private void getPoem(){
-        Call<MyPagePoemResult> requestPoem = service.getMyPoem(userEmail, loginType);
+        Call<MyPagePoemResult> requestPoem = service.getMyPoem(userEmail, loginType, otherEmail, otherType);
 
         requestPoem.enqueue(new Callback<MyPagePoemResult>() {
             @Override

@@ -43,6 +43,9 @@ public class MyPagePhotoFragment extends Fragment{
     private View view;
     private String userEmail = null;
     private int loginType = 0;
+    private String otherEmail = null;
+    private int otherType = 0;
+
     // network
     private NetworkService service;
     private ArrayList<MyPagePhotoListData> photoListDatas;
@@ -64,6 +67,8 @@ public class MyPagePhotoFragment extends Fragment{
         Bundle extra = getArguments();
         userEmail = extra.getString("userEmail");
         loginType = extra.getInt("loginType");
+        otherEmail = extra.getString("otherEmail");
+        otherType = extra.getInt("otherType");
 
 
         // service
@@ -124,7 +129,7 @@ public class MyPagePhotoFragment extends Fragment{
 
     /***************** 사진 리스트 가져오기 *****************/
     private void getPhoto(){
-        Call<MyPagePhotoResult> requestPhoto = service.getMyPhoto(userEmail, loginType);
+        Call<MyPagePhotoResult> requestPhoto = service.getMyPhoto(userEmail, loginType, otherEmail, otherType);
 
         requestPhoto.enqueue(new Callback<MyPagePhotoResult>() {
             @Override
