@@ -77,7 +77,7 @@ public class SubwayPoemActivity extends AppCompatActivity {
 
                         subway_title.setText(response.body().subway_list.get(i).title);
                         subway_content.setText(response.body().subway_list.get(i).content);
-                        subway_writer.setText(response.body().subway_list.get(i).author);
+                        subway_writer.setText("-"+" "+response.body().subway_list.get(i).author);
                     }
 
                 } else {
