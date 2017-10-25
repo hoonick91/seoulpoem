@@ -202,7 +202,6 @@ public class AddActivity extends AppCompatActivity {
                         //작품 개수 설정
                         tvWorkNum.setText(String.valueOf(works.size()));
 
-
                     }
                 }
             }

@@ -2,6 +2,7 @@ package com.seoulprojet.seoulpoem.network;
 
 
 import com.bumptech.glide.request.Request;
+import com.seoulprojet.seoulpoem.model.AddArticleResult;
 import com.seoulprojet.seoulpoem.model.ModifyPoem;
 import com.seoulprojet.seoulpoem.model.ReadingPoem;
 import com.seoulprojet.seoulpoem.model.SavePoemResult;
@@ -107,9 +108,12 @@ public interface NetworkService {
                                  @Header("email") String email,
                                  @Path("articleid") int articleid);
 
-    //작품 리스트 가져오기
-    @GET("/article/simple/{articleid}")
-    Call<AddResult> getWorks(@Path("articleid") int articleid);
+
+    //작품 담기
+    @POST("/bookmark/{articleid}")
+    Call<AddArticleResult> addArticle(@Header("type") int type,
+                                      @Header("email") String email,
+                                      @Path("articleid") int articleid);
 
     // login
     @POST("/users/login")

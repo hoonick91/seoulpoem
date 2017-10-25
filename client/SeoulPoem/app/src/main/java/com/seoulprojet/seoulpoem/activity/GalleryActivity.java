@@ -42,6 +42,9 @@ public class GalleryActivity extends AppCompatActivity {
 
     private RelativeLayout rlToWrite;
 
+    //유저 정보
+    private String userEmail = null;
+    private int loginType = 0;
 
     //네트워크
     NetworkService service;
@@ -51,6 +54,11 @@ public class GalleryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
+
+        //유저 정보 가져오기
+        Intent intent = getIntent();
+        userEmail = intent.getExtras().getString("userEmail");
+        loginType = intent.getExtras().getInt("loginType");
 
 
         //서비스 객체 초기화
@@ -134,6 +142,8 @@ public class GalleryActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(GalleryActivity.this, DetailActivity.class);
                     intent.putExtra("articleId", galleryListData.idarticles);
+                    intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("loginType", loginType);
                     startActivity(intent);
                 }
             });
@@ -163,17 +173,12 @@ public class GalleryActivity extends AppCompatActivity {
     /***********************************갤러리 리스트 가져오기*********************************/
     public void getPhotos() {
         Call<GalleryResult> requestGalleryLists = service.getPhotos("그리움");
-        Log.d("test", "before galley call");
         requestGalleryLists.enqueue(new Callback<GalleryResult>() {
             @Override
             public void onResponse(Call<GalleryResult> call, Response<GalleryResult> response) {
-                Log.d("test", "before galley success");
                 if (response.isSuccessful()) {
                     if (response.body().sucess.equals("success")) {
-                        Log.d("test", "after galley success");
                         gallerys = response.body().data;
-                        Log.d("tag", gallerys.get(0).photo);
-                        Log.d("tag", "fsddfa");
                         recyclerAdapter.setAdapter(gallerys);
                     }
                 }
@@ -195,6 +200,8 @@ public class GalleryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //main 이동
                 Intent intent = new Intent(GalleryActivity.this, MainActivity.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }

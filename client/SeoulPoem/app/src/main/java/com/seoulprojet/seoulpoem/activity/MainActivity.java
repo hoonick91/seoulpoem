@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
     //main bg
     private RelativeLayout rlMainBg;
 
+    //선택된 hash tag
+    private  TextView tvHash;
     //viewpager
     private PagerContainer pcPoem;
     private ViewPager vpPoems;
@@ -81,8 +83,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageView ivPoem;
     private TextView tvHashTag;
     private TabLayout tabLayout;
-
-    private RelativeLayout rlMore;
 
 
     //recycler
@@ -93,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
 
     //to Write
     private RelativeLayout rlToWrite;
+
+    //to more
+    private LinearLayout llmore;
 
     //글쓰기용 변수들.
     private static final int PICK_FROM_CAMERA = 1;
@@ -124,6 +127,10 @@ public class MainActivity extends AppCompatActivity {
     private String userEmail = null;
     private int loginType = 0;
 
+    //back key 두번
+    private long backPressedTime = 0;
+    private final long FINSH_INTERVAL_TIME = 2000;
+
 
     /***************************************START***********************************************/
     @Override
@@ -136,8 +143,6 @@ public class MainActivity extends AppCompatActivity {
         userEmail = intent.getExtras().getString("userEmail");
         loginType = intent.getExtras().getInt("loginType");
 
-        Log.d("test" ,userEmail );
-
 
         //서비스 객체 초기화
         service = ApplicationController.getInstance().getNetworkService();
@@ -146,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         //findView
         findView();
 
-        //makeDummy
+        //makeDummy - 상단 이미지들
         makeDummy();
 
         //view pager 설정
@@ -155,6 +160,8 @@ public class MainActivity extends AppCompatActivity {
         //검색
         toSearch();
 
+        //더보기
+        toMore();
 
         //recycler setting
         setRecycler();
@@ -165,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
         //네트워킹
         poems = new ArrayList<>();
-        getLists();
+        getLists("그리움");
 
 
         // drawer
@@ -174,34 +181,30 @@ public class MainActivity extends AppCompatActivity {
 
 
     /*********************************  정보 가져오기 ****************************************/
-    public void getMenuMypage(){
+    public void getMenuMypage() {
         Call<MyPageResult> requestMyPage = service.getMyPage(userEmail, loginType);
 
         requestMyPage.enqueue(new Callback<MyPageResult>() {
             @Override
             public void onResponse(Call<MyPageResult> call, Response<MyPageResult> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     Log.d("error", "xxx");
-                    if(response.body().status.equals("success")){
+                    if (response.body().status.equals("success")) {
                         Log.d("test", response.body().msg.pen_name);
                         hamburger_name.setText(response.body().msg.pen_name);
                         hamburger_message.setText(response.body().msg.inform);
 
-                        if(response.body().msg.profile == null){
+                        if (response.body().msg.profile == null) {
                             hamburger_profile.setImageResource(R.drawable.profile_tmp);
-                        }
-
-                        else{
+                        } else {
                             Glide.with(getApplicationContext())
                                     .load(response.body().msg.profile)
                                     .into(hamburger_profile);
                         }
 
-                        if(response.body().msg.background == null){
+                        if (response.body().msg.background == null) {
                             hamburger_bg.setImageResource(R.drawable.profile_background);
-                        }
-
-                        else{
+                        } else {
                             Glide.with(getApplicationContext())
                                     .load(response.body().msg.background)
                                     .into(hamburger_bg);
@@ -231,7 +234,9 @@ public class MainActivity extends AppCompatActivity {
 
         vpPoems = (ViewPager) findViewById(R.id.vpPoems);
         rlToWrite = (RelativeLayout) findViewById(R.id.rlToWrite);
-        rlMore = (RelativeLayout) findViewById(R.id.rlMore);
+        llmore = (LinearLayout) findViewById(R.id.llmore);
+
+        tvHash = (TextView) findViewById(R.id.tvHash);
 
 
     }
@@ -244,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
         hashtags = new ArrayList<>();
         hashtags.add(new HashtagListData(R.drawable.a, "거리"));
         hashtags.add(new HashtagListData(R.drawable.b, "이벤트"));
-        hashtags.add(new HashtagListData(R.drawable.c, "푸드"));
+        hashtags.add(new HashtagListData(R.drawable.c, "그리움"));
         hashtags.add(new HashtagListData(R.drawable.d, "쇼핑"));
         hashtags.add(new HashtagListData(R.drawable.e, "기타"));
         hashtags.add(new HashtagListData(R.drawable.f, "거리"));
@@ -275,7 +280,6 @@ public class MainActivity extends AppCompatActivity {
             //findView
             ivPoem = (ImageView) view.findViewById(R.id.ivPoem);
             tvHashTag = (TextView) view.findViewById(R.id.tvHashTag);
-
 
             Glide.with(getApplicationContext())
                     .load(poemListData.photo)
@@ -372,7 +376,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
-            HashtagListData hashtagListData = hashtagListDatas.get(position);
+            final HashtagListData hashtagListData = hashtagListDatas.get(position);
 
 
             //title
@@ -380,6 +384,15 @@ public class MainActivity extends AppCompatActivity {
 
             //img
             holder.ivHashtag.setImageResource(hashtagListData.imgResourceID);
+
+            //상단 태그 누르면
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tvHash.setText("# " + hashtagListData.text);
+                    getLists(hashtagListData.text);
+                }
+            });
 
         }
 
@@ -408,8 +421,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     /***********************************main 리스트 가져오기*********************************/
-    public void getLists() {
-        Call<MainResult> requestMainLists = service.getPoems("그리움");
+    public void getLists(String tag) {
+        Call<MainResult> requestMainLists = service.getPoems(tag);
 
         requestMainLists.enqueue(new Callback<MainResult>() {
             @Override
@@ -440,7 +453,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /*******************************************search******************************************/
+    /*******************************************to search******************************************/
     public void toSearch() {
         rlSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -453,7 +466,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /*************************************Write*************************************************/
+    /*************************************to More*************************************************/
+    public void toMore() {
+        llmore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //더보기로 이동
+                Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
+                startActivity(intent);
+            }
+        });
+    }
+
+    /*************************************to write*************************************************/
     public void toWrite() {
         rlToWrite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -463,6 +490,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     /******************************************* drawer ******************************************/
     public void showHamburger() {
@@ -796,6 +824,21 @@ public class MainActivity extends AppCompatActivity {
         String imgName = imgPath.substring(imgPath.lastIndexOf("/") + 1);
 
         return imgName;
+    }
+
+
+    /*********************************back 두번 누렀을 경우********************************/
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if (0 <= intervalTime && FINSH_INTERVAL_TIME >= intervalTime) {
+            super.onBackPressed();
+        } else {
+            backPressedTime = tempTime;
+            Toast.makeText(getApplicationContext(), "한 번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

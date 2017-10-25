@@ -231,8 +231,8 @@ public class SearchActivity extends AppCompatActivity {
             SearchListDataArticle searchListDataArticle = searchListDataArticles.get(position);
 
 
-            Log.d("test",searchListDataArticle.title );
-            Log.d("test",searchListDataArticle.contents );
+//            Log.d("test",searchListDataArticle.title );
+//            Log.d("test",searchListDataArticle.contents );
             holder.tvTitle.setText(searchListDataArticle.title);
             holder.tvContent.setText(searchListDataArticle.contents);
             holder.itemView.setTag(searchListDataArticle.idarticles);
@@ -285,9 +285,11 @@ public class SearchActivity extends AppCompatActivity {
                             llTv01.setVisibility(View.VISIBLE);
                             llTv02.setVisibility(View.VISIBLE);
                         }else if(response.body().author_list.size()!=0 && response.body().article_list.size()==0 ) {
+                            llTv01.setVisibility(View.INVISIBLE);
                             llTv02.setVisibility(View.VISIBLE);
                         }else if(response.body().author_list.size()==0 && response.body().article_list.size()!=0 ){
                             llTv01.setVisibility(View.VISIBLE);
+                            llTv02.setVisibility(View.INVISIBLE);
                         }else{
                             llTv01.setVisibility(View.INVISIBLE);
                             llTv02.setVisibility(View.INVISIBLE);

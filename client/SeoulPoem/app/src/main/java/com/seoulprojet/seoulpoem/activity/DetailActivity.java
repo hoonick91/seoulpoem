@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
+import com.seoulprojet.seoulpoem.model.AddArticleResult;
 import com.seoulprojet.seoulpoem.model.DetailResult;
 import com.seoulprojet.seoulpoem.model.MainResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
@@ -62,7 +63,19 @@ public class DetailActivity extends AppCompatActivity {
         }
     };
 
-    //설정 다이얼로그 리스너 - 상세정보랑 수정하기 둘다 있는 다이얼로그
+
+    //설정 - 상세정보/수정하기 있는 다이얼로그 => 수정하기 눌렀을 때
+    private View.OnClickListener settingDialog_listener03 = new View.OnClickListener() {
+        public void onClick(View v) {
+            Intent intent = new Intent(DetailActivity.this, WritePoemActivity.class);
+            intent.putExtra("type", "" + articleId);
+            intent.putExtra("userEmail", userEmail);
+            intent.putExtra("loginType", loginType);
+            startActivity(intent);
+        }
+    };
+
+    //설정 - 상세정보/수정하기 있는 다이얼로그 => 상세정보 눌렀을 때
     private View.OnClickListener settingDialog_listener02 = new View.OnClickListener() {
         public void onClick(View v) {
             //원래 뜬 다이얼로그 없애고
@@ -73,23 +86,14 @@ public class DetailActivity extends AppCompatActivity {
         }
     };
 
-
-    //설정 다이얼로그 리스너 - 수정하기
-    private View.OnClickListener settingDialog_listener03 = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent(DetailActivity.this, WritePoemActivity.class);
-            intent.putExtra("type", ""+articleId);
-            intent.putExtra("userEmail", userEmail);
-            intent.putExtra("loginType", loginType);
-            startActivity(intent);
-        }
-    };
-
-    //설정 다이얼로그 리스너 - 수정하기만 있는 다이얼로그
+    //설정 - 상세정보만 있는 다이얼로그
     private View.OnClickListener settingDialog_listener04 = new View.OnClickListener() {
         public void onClick(View v) {
+
             //원래 뜬 다이얼로그 없애고
             settingDialog02.dismiss();
+
+            //상세정보 다이얼로그
             infoDialog = new InfoDialog(DetailActivity.this);
             infoDialog.setCanceledOnTouchOutside(true);
             infoDialog.show();
@@ -98,6 +102,9 @@ public class DetailActivity extends AppCompatActivity {
 
     //수정 가능 불가능
     int modifiable;
+
+    //작품 상세 정보
+    String tags, informs;
 
     /***************************************START***********************************************/
     @Override
@@ -112,6 +119,7 @@ public class DetailActivity extends AppCompatActivity {
         articleId = intent.getExtras().getInt("articleId");
         userEmail = intent.getExtras().getString("userEmail");
         loginType = intent.getExtras().getInt("loginType");
+
 
         //findView
         findView();
@@ -131,8 +139,9 @@ public class DetailActivity extends AppCompatActivity {
         //설정 다이얼로그
         settingDialog();
 
-        //네트워킹
+        //상세정보 네트워크
         getDetail();
+
     }
 
     /***************************************findView***********************************************/
@@ -162,7 +171,7 @@ public class DetailActivity extends AppCompatActivity {
 
                 //담은 작품인지, 담지 않은 작품인지에 따라서 나누어야함
                 //우측 상단 visible
-                ivShare02.setVisibility(v.VISIBLE);
+                ivShare.setVisibility(v.VISIBLE);
                 ivSetting.setVisibility(v.VISIBLE);
 
                 //하단 visible
@@ -339,6 +348,14 @@ public class DetailActivity extends AppCompatActivity {
             //view mapping
             setContentView(R.layout.dialog_info);
 
+            //findView
+            TextView tvTags = (TextView) findViewById(R.id.tvTags);
+            TextView tvInform = (TextView) findViewById(R.id.tvInform);
+
+
+            // 제목과 내용을 생성자에서 셋팅
+            tvTags.setText(tags);
+            tvInform.setText(informs);
         }
 
 
@@ -366,14 +383,29 @@ public class DetailActivity extends AppCompatActivity {
         rlShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addWorkDialog = new AddWorkDialog(DetailActivity.this,
-                        "#작품 담기",
-                        "작품 담기에 작품을 담았습니다.",
-                        "작품 담기로 이동하시겠습니까?",
-                        addDialog_leftListener,
-                        addDialog_rightListener);
-                addWorkDialog.setCanceledOnTouchOutside(true);
 
+                //작품담기 네트워크
+                addArticle();
+
+                if(ivShare.getVisibility()==View.INVISIBLE){
+                    //작품담기 다이얼로그 생성
+                    addWorkDialog = new AddWorkDialog(DetailActivity.this,
+                            "#작품 담기",
+                            "작품 담기에서 작품을 뺐습니다.",
+                            "작품 담기로 이동하시겠습니까?",
+                            addDialog_leftListener,
+                            addDialog_rightListener);
+                }else{
+                    //작품담기 다이얼로그 생성
+                    addWorkDialog = new AddWorkDialog(DetailActivity.this,
+                            "#작품 담기",
+                            "작품 담기에 작품을 담았습니다.",
+                            "작품 담기로 이동하시겠습니까?",
+                            addDialog_leftListener,
+                            addDialog_rightListener);
+                }
+
+                addWorkDialog.setCanceledOnTouchOutside(true);
                 addWorkDialog.show();
             }
         });
@@ -409,9 +441,23 @@ public class DetailActivity extends AppCompatActivity {
     }
 
 
-    /***********************************main 리스트 가져오기*********************************/
+    /*************************** 업버튼 눌렀을시 시 내용 보기 화면으로 넘어가기 **********************/
+    public void clickUpButton() {
+        llup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ReadingPoemActivity.class);
+                intent.putExtra("articles_id", "" + articleId);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
+                startActivity(intent);
+            }
+        });
+    }
+
+    /*********************************** 작품 상세정보 가져오기*********************************/
     public void getDetail() {
-        Call<DetailResult> requestDetail = service.getDetail(loginType, "godz33@naver.com", articleId);
+        Call<DetailResult> requestDetail = service.getDetail(loginType, userEmail, articleId);
 
         requestDetail.enqueue(new Callback<DetailResult>() {
             @Override
@@ -438,6 +484,12 @@ public class DetailActivity extends AppCompatActivity {
 
                         //modifiable
                         modifiable = response.body().data.modifiable;
+
+                        //태그정보
+                        tags = response.body().data.tags;
+
+                        //추가정보
+                        informs = response.body().data.inform;
                     }
                 }
             }
@@ -450,16 +502,34 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
-    /***************************업버튼 눌렀을시 시 내용 보기 화면으로 넘어가**********************/
-    public void clickUpButton() {
-        llup.setOnClickListener(new View.OnClickListener() {
+
+    /*********************************** 작품 담기*********************************/
+    public void addArticle() {
+        Call<AddArticleResult> requestAdd = service.addArticle(loginType, userEmail, articleId);
+
+        requestAdd.enqueue(new Callback<AddArticleResult>() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ReadingPoemActivity.class);
-                intent.putExtra("articles_id", "" + articleId);
-                intent.putExtra("userEmail", userEmail);
-                intent.putExtra("loginType", loginType);
-                startActivity(intent);
+            public void onResponse(Call<AddArticleResult> call, Response<AddArticleResult> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().status.equals("success")) {
+
+                        if (response.body().mag.equals("bookmark delete")) {
+                            //담기버튼 하얀색 이미지로
+                            ivShare.setVisibility(View.VISIBLE);
+                            ivShare02.setVisibility(View.INVISIBLE);
+                        } else {
+                            //담기버튼 파란색 이미지
+                            ivShare.setVisibility(View.INVISIBLE);
+                            ivShare02.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<AddArticleResult> call, Throwable t) {
+                Log.i("err", t.getMessage());
             }
         });
     }

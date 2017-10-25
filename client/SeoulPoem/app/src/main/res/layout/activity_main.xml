@@ -59,12 +59,29 @@
                 android:layout_marginTop="31dp">
 
                 <TextView
+                    android:id="@+id/tvHash"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="# 그리움"
                     android:textColor="#488ab4"
                     android:textSize="15dp"
                     android:textStyle="bold" />
+            </LinearLayout>
+
+            <!--더보기 버튼-->
+            <LinearLayout
+                android:id="@+id/llmore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/llHashTag"
+                android:layout_marginLeft="290dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:text="더보기"
+                    android:textColor="#488ab4"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
 

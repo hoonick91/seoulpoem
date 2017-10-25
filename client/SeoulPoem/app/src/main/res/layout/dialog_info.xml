@@ -56,12 +56,12 @@
             android:layout_toRightOf="@+id/llTagText">
 
             <TextView
+                android:id="@+id/tvTags"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#383838"
                 android:textSize="14sp"
-                android:text="#자연 #거리 #너와 나
-#찜닭 #먹고싶다" />
+                tools:text="#자연 #거리 #너와 나"/>
         </LinearLayout>
 
 
@@ -91,12 +91,12 @@
             android:layout_toRightOf="@+id/llINfo">
 
             <TextView
+                android:id="@+id/tvInform"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#383838"
                 android:textSize="14sp"
-                android:text="서울 어딘가, 갤럭스 6S촬영,
-모델이름 000" />
+                android:text="서울 어딘가, 갤럭스 6S촬영,모 델이름 000" />
         </LinearLayout>
 
 

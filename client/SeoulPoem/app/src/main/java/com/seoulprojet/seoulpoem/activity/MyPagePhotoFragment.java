@@ -3,6 +3,7 @@ package com.seoulprojet.seoulpoem.activity;
 import android.app.Application;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -106,7 +107,7 @@ public class MyPagePhotoFragment extends Fragment{
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
 
             View grid;
             ImageView imageView;
@@ -122,6 +123,20 @@ public class MyPagePhotoFragment extends Fragment{
             Glide.with(grid.getContext())
                     .load(photoListDatas.get(position).photo)
                     .into(imageView);
+
+            //detail 화면으로 이동
+            grid.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), DetailActivity.class);
+                    intent.putExtra("articleId", photoListDatas.get(position).idarticles);
+                    intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("loginType", loginType);
+                    startActivity(intent);
+                }
+            });
+
+
 
             return grid;
         }

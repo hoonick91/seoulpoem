@@ -11,6 +11,7 @@ public class DetailResult {
     public class Data {
         public String photo;
         public String tags;
+        public String inform;
         public int modifiable;
         public Writer writer;
     }
