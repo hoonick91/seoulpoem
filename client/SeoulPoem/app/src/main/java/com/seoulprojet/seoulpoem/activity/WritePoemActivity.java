@@ -113,6 +113,10 @@ public class WritePoemActivity extends AppCompatActivity {
     StringBuffer sb;
     boolean text_change=false;
 
+    //유저 정보
+    private String userEmail = null;
+    private int loginType = 0;
+
 
 
 
@@ -136,6 +140,9 @@ public class WritePoemActivity extends AppCompatActivity {
             getContent();
         }
 
+        userEmail = intent.getExtras().getString("userEmail");
+        loginType = intent.getExtras().getInt("loginType");
+
     }
 
 
@@ -147,7 +154,7 @@ public class WritePoemActivity extends AppCompatActivity {
 
     /****************************************서버에 정보 받음**************************************/
     private void getContent(){
-        Call<ReadingPoem> request = service.readPoem("godz33@naver.com",1, article_id);
+        Call<ReadingPoem> request = service.readPoem(userEmail,loginType, article_id);
         request.enqueue(new Callback<ReadingPoem>() {
             @Override
             public void onResponse(Call<ReadingPoem> call, Response<ReadingPoem> response) {

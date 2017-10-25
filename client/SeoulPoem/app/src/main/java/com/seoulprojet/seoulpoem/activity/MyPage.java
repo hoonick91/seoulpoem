@@ -34,6 +34,7 @@ import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.component.Preview;
 import com.seoulprojet.seoulpoem.model.MyPageResult;
+import com.seoulprojet.seoulpoem.model.UserPageResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
 
@@ -77,6 +78,8 @@ public class MyPage extends AppCompatActivity {
     //유저 정보
     private String userEmail = null;
     private int loginType = 0;
+    private String otherEmail = null;
+    private int otherType = 0;
 
     //글쓰기용 변수들.
     private static final int PICK_FROM_CAMERA = 1;
@@ -102,6 +105,8 @@ public class MyPage extends AppCompatActivity {
         Intent intent = getIntent();
         userEmail = intent.getExtras().getString("userEmail");
         loginType = intent.getExtras().getInt("loginType");
+        otherEmail = intent.getExtras().getString("otherEmail");
+        otherType = intent.getExtras().getInt("otherType");
 
 
         // 서비스 객체 초기화
@@ -152,6 +157,8 @@ public class MyPage extends AppCompatActivity {
         Bundle bundle = new Bundle(2);
         bundle.putString("userEmail", userEmail);
         bundle.putInt("loginType", loginType);
+        bundle.putString("otherEmail", otherEmail);
+        bundle.putInt("otherType", otherType);
         fragmentPhoto.setArguments(bundle);
         fragmentPoem.setArguments(bundle);
 
@@ -165,6 +172,7 @@ public class MyPage extends AppCompatActivity {
 
                 mypage_poem_btn.setImageResource(R.drawable.mypage_poem_un_btn);
                 mypage_photo_btn.setImageResource(R.drawable.mypage_photo_on_btn);
+
                 FragmentTransaction transactionPhoto = getFragmentManager().beginTransaction();
                 transactionPhoto.replace(R.id.mypage_fragment, fragmentPhoto);
                 transactionPhoto.commit();
@@ -186,7 +194,6 @@ public class MyPage extends AppCompatActivity {
 
 
         // 이미지 디테일
-
         mypage_profile_img.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -213,43 +220,44 @@ public class MyPage extends AppCompatActivity {
 
     /******************* mypage 정보 가져오기 ******************/
     public void getMypage(){
-        Call<MyPageResult> requestMyPage = service.getMyPage(userEmail, loginType);
+        Call<UserPageResult> requestUser = service.getUserPage(userEmail, loginType, otherEmail, otherType);
 
-        requestMyPage.enqueue(new Callback<MyPageResult>() {
+        requestUser.enqueue(new Callback<UserPageResult>() {
             @Override
-            public void onResponse(Call<MyPageResult> call, Response<MyPageResult> response) {
+            public void onResponse(Call<UserPageResult> call, Response<UserPageResult> response) {
                 if(response.isSuccessful()){
-                    Log.d("error", "xxx");
                     if(response.body().status.equals("success")){
-                        mypage_name_txt.setText(response.body().msg.pen_name);
-                        mypage_message_txt.setText(response.body().msg.inform);
+                        mypage_name_txt.setText(response.body().msg.user.pen_name);
+                        mypage_message_txt.setText(response.body().msg.user.inform);
 
-
-                        if(response.body().msg.profile == null){
+                        if(response.body().msg.user.profile == null){
                             mypage_profile_img.setImageResource(R.drawable.profile_tmp);
                         }
 
                         else{
                             Glide.with(getApplicationContext())
-                                    .load(response.body().msg.profile)
+                                    .load(response.body().msg.user.profile)
                                     .into(mypage_profile_img);
                         }
 
-                        if(response.body().msg.background == null){
+                        if(response.body().msg.user.background == null){
                             mypage_bg_iv.setImageResource(R.drawable.profile_background);
                         }
                         else{
                             Glide.with(getApplicationContext())
-                                    .load(response.body().msg.background)
+                                    .load(response.body().msg.user.background)
                                     .into(mypage_bg_iv);
                         }
                     }
                 }
+                else{
+                    Log.i("error", "response error");
+                }
             }
 
             @Override
-            public void onFailure(Call<MyPageResult> call, Throwable t) {
-                Log.i("mypage error", t.getMessage());
+            public void onFailure(Call<UserPageResult> call, Throwable t) {
+                Log.e("call error", t.getMessage());
             }
         });
     }
@@ -294,6 +302,8 @@ public class MyPage extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), MyPage.class);
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
+                intent.putExtra("otherEmail", userEmail);
+                intent.putExtra("otherType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -348,7 +358,7 @@ public class MyPage extends AppCompatActivity {
         });
     }
 
-    /******************* mypage 정보 가져오기 ******************/
+    /******************* mypage hamburger 정보 가져오기 ******************/
     public void getMenuMypage(){
         Call<MyPageResult> requestMyPage = service.getMyPage(userEmail, loginType);
 

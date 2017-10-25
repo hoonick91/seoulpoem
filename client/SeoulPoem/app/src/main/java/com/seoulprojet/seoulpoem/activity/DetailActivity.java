@@ -62,25 +62,37 @@ public class DetailActivity extends AppCompatActivity {
         }
     };
 
-    //설정 다이얼로그 리스너
+    //설정 다이얼로그 리스너 - 상세정보랑 수정하기 둘다 있는 다이얼로그
     private View.OnClickListener settingDialog_listener02 = new View.OnClickListener() {
         public void onClick(View v) {
             //원래 뜬 다이얼로그 없애고
-            settingDialog02.dismiss();
-
+            settingDialog.dismiss();
             infoDialog = new InfoDialog(DetailActivity.this);
             infoDialog.setCanceledOnTouchOutside(true);
             infoDialog.show();
         }
     };
 
+
+    //설정 다이얼로그 리스너 - 수정하기
     private View.OnClickListener settingDialog_listener03 = new View.OnClickListener() {
         public void onClick(View v) {
             Intent intent = new Intent(DetailActivity.this, WritePoemActivity.class);
-            intent.putExtra("articleId", ""+articleId);
+            intent.putExtra("type", ""+articleId);
             intent.putExtra("userEmail", userEmail);
             intent.putExtra("loginType", loginType);
             startActivity(intent);
+        }
+    };
+
+    //설정 다이얼로그 리스너 - 수정하기만 있는 다이얼로그
+    private View.OnClickListener settingDialog_listener04 = new View.OnClickListener() {
+        public void onClick(View v) {
+            //원래 뜬 다이얼로그 없애고
+            settingDialog02.dismiss();
+            infoDialog = new InfoDialog(DetailActivity.this);
+            infoDialog.setCanceledOnTouchOutside(true);
+            infoDialog.show();
         }
     };
 
@@ -213,7 +225,7 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    /***************************************설정 다이얼로그***********************************************/
+    /***************************************상세정보/수정하기 있는 설정 다이얼로그***********************************************/
 
     public class SettingDialog extends Dialog {
 
@@ -264,7 +276,7 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    /***************************************설정 다이얼로그02***********************************************/
+    /***************************************샹세 정보만 있는 설정 다이얼로그02***********************************************/
 
     public class SettingDialog02 extends Dialog {
 
@@ -387,7 +399,7 @@ public class DetailActivity extends AppCompatActivity {
                     //작품을 쓴 쓴 사람이 현재 사용자가 아니라면
                     settingDialog02 = new SettingDialog02(DetailActivity.this,
                             "상세정보",
-                            settingDialog_listener02);
+                            settingDialog_listener04);
                     settingDialog02.setCanceledOnTouchOutside(true);
                     settingDialog02.show();
 
