@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
         var connection = await pool.getConnection();
         await connection.beginTransaction();
 
-        let query1 = 'SELECT idnotices, title, content,flag FROM seoul_poem.notices;';
+        let query1 = 'SELECT idnotices, title, content,flag FROM seoul_poem.notices order by flag DESC;';
         let notice_list = await connection.query(query1);
 
         res.status(200).send( { notice_list: notice_list });

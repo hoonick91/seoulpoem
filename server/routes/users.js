@@ -161,6 +161,7 @@ finally {
 }
 });
 
+
 var multiupload = upload.fields([{name:'profile',maxCount:1},{name : "background", maxCount:1}]);
 router.post('/modify',multiupload,  async (req, res) => {
     try{

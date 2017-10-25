@@ -243,19 +243,21 @@ router.get('/simple/:idarticles', async (req, res) => {
         let email_ = req.headers.email;
 
         console.log(req.params.idarticles);
-        let query1 = 'SELECT seoul_poem.pictures.photo as photo, seoul_poem.articles.users_email as email,seoul_poem.articles.users_foreign_key_type as type,seoul_poem.articles.tags as tags FROM seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.idarticles=? and seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures';
+        let query1 = 'SELECT seoul_poem.pictures.photo as photo, seoul_poem.articles.users_email as email,seoul_poem.articles.inform as inform,seoul_poem.articles.users_foreign_key_type as type,seoul_poem.articles.tags as tags FROM seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.idarticles=? and seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures';
         console.log(query1);
         let article = await connection.query(query1, req.params.idarticles);
 
         console.log(article[0]);
         var email = article[0].email;
         var type = article[0].type;
+
         let query2 = 'select seoul_poem.users.profile as profile,seoul_poem.users.pen_name as pen_name from seoul_poem.users where seoul_poem.users.email = ? and seoul_poem.users.foreign_key_type = ?'
         let author = await connection.query(query2,[email,type]);
 
         let detail_={};
         detail_.photo = article[0].photo;
         detail_.tags=article[0].tags;
+        detail_.inform=article[0].inform;
         let writer = {};
 
         writer.profile =author[0].profile;
