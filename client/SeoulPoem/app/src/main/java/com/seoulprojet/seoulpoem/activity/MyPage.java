@@ -108,6 +108,8 @@ public class MyPage extends AppCompatActivity {
         otherEmail = intent.getExtras().getString("otherEmail");
         otherType = intent.getExtras().getInt("otherType");
 
+        Log.i("otehr", "other email:" + otherEmail);
+
 
         // 서비스 객체 초기화
         service = ApplicationController.getInstance().getNetworkService();
@@ -229,6 +231,16 @@ public class MyPage extends AppCompatActivity {
                     if(response.body().status.equals("success")){
                         mypage_name_txt.setText(response.body().msg.user.pen_name);
                         mypage_message_txt.setText(response.body().msg.user.inform);
+
+                        if(response.body().msg.owner != 1){
+                            mypage_upload_btn.setVisibility(View.INVISIBLE);
+                            mypage_setting_btn.setVisibility(View.INVISIBLE);
+                        }
+
+                        else{
+                            mypage_upload_btn.setVisibility(View.VISIBLE);
+                            mypage_setting_btn.setVisibility(View.VISIBLE);
+                        }
 
                         if(response.body().msg.user.profile == null){
                             mypage_profile_img.setImageResource(R.drawable.profile_tmp);

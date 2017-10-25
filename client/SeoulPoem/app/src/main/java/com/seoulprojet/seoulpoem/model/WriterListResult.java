@@ -15,6 +15,7 @@ public class WriterListResult {
         public String pen_name;
         public String profile;
         public String inform;
+        public int type;
     }
 
 

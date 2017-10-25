@@ -174,7 +174,7 @@ public class ReadingPoemActivity extends AppCompatActivity {
                     ViewGroup.LayoutParams params = poem_img.getLayoutParams();
                     params.height = poem_img.getHeight() * 4;
                     poem_img.setLayoutParams(params);
-                    poem_img.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    poem_img.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
                     RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams) title_layout.getLayoutParams();
                     params2.topMargin = title_layout.getTop() * 3;
@@ -248,6 +248,7 @@ public class ReadingPoemActivity extends AppCompatActivity {
                     Glide.with(ReadingPoemActivity.this)
                             .load(photo)
                             .into(poem_img);
+                    if(response.body().article.writer.profile != null)
                     Glide.with(ReadingPoemActivity.this)
                             .load(response.body().article.writer.profile)
                             .into(writer_img);
@@ -309,8 +310,7 @@ public class ReadingPoemActivity extends AppCompatActivity {
                     }else{
                         poem_content.setGravity(Gravity.NO_GRAVITY);
                     };
-
-                        another_photo = response.body().article.writer.others;
+                    another_photo = response.body().article.writer.others;
                     recyclerAdapter.setAdapter(another_photo);
                     recyclerAdapter.notifyDataSetChanged();
 
