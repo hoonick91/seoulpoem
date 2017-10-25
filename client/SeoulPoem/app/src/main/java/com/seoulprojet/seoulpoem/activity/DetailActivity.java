@@ -465,16 +465,23 @@ public class DetailActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body().status.equals("success")) {
 
-
                         //사진 이미지
                         Glide.with(getApplicationContext())
                                 .load(response.body().data.photo)
                                 .into(ivPhoto);
 
+
                         //유저 이미지
-                        Glide.with(getApplicationContext())
-                                .load(response.body().data.writer.profile)
-                                .into(ivProfile);
+                        // 혜린 edit -> 이용자가 지정해둔 프로필 이미지 없을 경우 기본 이미지 지정
+                        if(response.body().data.writer.profile == null){
+                            ivProfile.setImageResource(R.drawable.profile_tmp);
+                        }
+
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().data.writer.profile)
+                                    .into(ivProfile);
+                        }
 
                         //유저 닉네임
                         tvName.setText(response.body().data.writer.pen_name.toString());

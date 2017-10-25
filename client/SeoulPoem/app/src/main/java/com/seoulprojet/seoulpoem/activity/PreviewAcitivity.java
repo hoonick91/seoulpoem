@@ -61,7 +61,7 @@ public class PreviewAcitivity extends AppCompatActivity {
     TextView preview_content; //내용
     ImageView preview_img; //이미지파일
     LinearLayout paper_background; //종이질감
-    Button complete; //확인버튼
+    ImageButton complete; //확인버튼
 
     int article_id;
 
@@ -96,7 +96,7 @@ public class PreviewAcitivity extends AppCompatActivity {
         preview_content = (TextView) findViewById(R.id.preview_content);
         preview_img = (ImageView) findViewById(R.id.preview_img);
         paper_background = (LinearLayout) findViewById(R.id.paper_background);
-        complete = (Button) findViewById(R.id.complete);
+        complete = (ImageButton) findViewById(R.id.complete);
 
     }
 
