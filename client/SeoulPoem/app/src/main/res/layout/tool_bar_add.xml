@@ -27,11 +27,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp">
-            <TextView
+
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"
-                android:text="작품담기"/>
+                android:src="@drawable/scrab_title"/>
+
         </LinearLayout>
 
 

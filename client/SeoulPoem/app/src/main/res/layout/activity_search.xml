@@ -47,6 +47,7 @@
                 android:hint="작가/태그별 검색"
                 android:textCursorDrawable="@color/black"
                 android:maxLines="1"
+                android:backgroundTint="#95989a"
                 android:layout_centerInParent="true"/>
         </RelativeLayout>
 
@@ -129,6 +130,7 @@
             android:visibility="invisible">
 
             <android.support.v7.widget.RecyclerView
+                android:overScrollMode="never"
                 android:id="@+id/rvWrites"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -188,6 +190,7 @@
             android:visibility="invisible">
 
             <android.support.v7.widget.RecyclerView
+                android:overScrollMode="never"
                 android:id="@+id/rvTitile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

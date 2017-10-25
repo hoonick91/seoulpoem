@@ -49,7 +49,6 @@ public class Notice extends AppCompatActivity {
 
     // network
     NetworkService service;
-    private ArrayList<MyPageResult> myPageResults;
     private ArrayList<NoticeResult.NoticeList> noticeLists;
 
     @Override
@@ -57,9 +56,9 @@ public class Notice extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice);
 
-        Intent intent = getIntent();
-        userEmail = intent.getStringExtra("userEmail");
-        loginType = intent.getExtras().getInt("loginType");
+        PbReference pref = new PbReference(this);
+        userEmail = pref.getValue("userEmail", "");
+        loginType = pref.getValue("loginType", 0);
 
         // network
         service = ApplicationController.getInstance().getNetworkService();
@@ -110,6 +109,7 @@ public class Notice extends AppCompatActivity {
                     int position = recyclerView.getChildLayoutPosition(v);
                     int notice_id = noticeLists.get(position).idnotices;
                     Intent intent = new Intent(getApplicationContext(), NoticeDetail.class);
+                    Log.i("notice id", "notice id : " + notice_id);
                     intent.putExtra("notice_id", notice_id);
                     startActivity(intent);
                 }

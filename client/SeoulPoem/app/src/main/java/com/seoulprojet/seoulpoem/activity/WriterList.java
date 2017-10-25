@@ -64,6 +64,12 @@ public class WriterList extends AppCompatActivity {
         userEmail = intent.getStringExtra("userEmail");
         loginType = intent.getExtras().getInt("loginType");
 
+        if(userEmail == null || loginType == 0){
+            PbReference pref = new PbReference(this);
+            userEmail = pref.getValue("userEmail", "");
+            loginType = pref.getValue("loginType", 0);
+        }
+
         // network
         service = ApplicationController.getInstance().getNetworkService();
         authorLists = new ArrayList<>();
@@ -324,6 +330,7 @@ public class WriterList extends AppCompatActivity {
         dialog_back_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                getWriterList();
                 applyDialog.dismiss();
             }
         });
@@ -349,7 +356,7 @@ public class WriterList extends AppCompatActivity {
 
     /******************* writer list ****************************/
     private void getWriterList(){
-        Call<WriterListResult> requestList = service.getWriterList();
+        Call<WriterListResult> requestList = service.getWriterList(userEmail, loginType);
 
         requestList.enqueue(new Callback<WriterListResult>() {
             @Override

@@ -45,6 +45,7 @@ public class NoticeDetail extends AppCompatActivity {
         // intent
         Intent intent = getIntent();
         notice_id = intent.getExtras().getInt("notice_id");
+        Log.i("notice ", "notice detail : " + notice_id);
 
         // service
         service = ApplicationController.getInstance().getNetworkService();
@@ -67,9 +68,12 @@ public class NoticeDetail extends AppCompatActivity {
             @Override
             public void onResponse(Call<NoticeDetailResult> call, Response<NoticeDetailResult> response) {
                 if(response.isSuccessful()){
-                    title_tv.setText(response.body().notice_list.get(0).title);
-                    content_tv.setText(response.body().notice_list.get(0).content);
-                    time_tv.setText(response.body().notice_list.get(0).date);
+                    title_tv.setText(response.body().notice.title);
+                    content_tv.setText(response.body().notice.content);
+                    time_tv.setText(response.body().notice.date);
+                }
+                else{
+                    Log.i("response", "response error");
                 }
             }
 

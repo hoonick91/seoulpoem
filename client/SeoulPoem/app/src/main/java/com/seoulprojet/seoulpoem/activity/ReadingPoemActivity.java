@@ -236,7 +236,7 @@ public class ReadingPoemActivity extends AppCompatActivity {
     /****************************************서버통신 정보 받음**************************************/
     private void getInfo(){
 
-        Call<ReadingPoem> request = service.readPoem("godz33@naver.com",1, articles_id);
+        Call<ReadingPoem> request = service.readPoem(userEmail,1, articles_id);
         request.enqueue(new Callback<ReadingPoem>() {
             @Override
             public void onResponse(Call<ReadingPoem> call, Response<ReadingPoem> response) {
