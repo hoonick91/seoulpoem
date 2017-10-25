@@ -167,7 +167,8 @@ public interface NetworkService {
 
     // writer list
     @GET("/author")
-    Call<WriterListResult> getWriterList();
+    Call<WriterListResult> getWriterList(@Header("email") String email,
+                                         @Header("type") int type);
 
     // writer apply
     @POST("/author")

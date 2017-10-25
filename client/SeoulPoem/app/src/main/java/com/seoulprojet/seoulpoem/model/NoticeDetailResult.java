@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class NoticeDetailResult {
 
-    public ArrayList<NoticeDetailList> notice_list;
+    public NoticeDetailList notice;
 
     public class NoticeDetailList{
         public int idnotices;

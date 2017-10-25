@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.seoulprojet.seoulpoem.activity.AddActivity">
+    tools:context="com.seoulprojet.seoulpoem.activity.AddActivity"
+    android:background="@drawable/paper4">
 
 
     <android.support.v4.widget.DrawerLayout
@@ -35,7 +36,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="#총"
+                    android:text="# 총 "
                     android:textColor="#5e5e5f"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -84,6 +85,7 @@
                 android:layout_marginTop="102dp">
 
                 <android.support.v7.widget.RecyclerView
+                    android:overScrollMode="never"
                     android:id="@+id/rvWorks"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />

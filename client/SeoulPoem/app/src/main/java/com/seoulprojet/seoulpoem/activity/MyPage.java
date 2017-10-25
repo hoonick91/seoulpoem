@@ -290,6 +290,7 @@ public class MyPage extends AppCompatActivity {
 
         drawerLayout = (DrawerLayout)findViewById(R.id.mypage_drawer_layout);
         drawerView = (View)findViewById(R.id.drawer);
+
         mypage_hamburger_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

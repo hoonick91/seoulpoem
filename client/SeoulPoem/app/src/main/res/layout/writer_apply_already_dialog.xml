@@ -11,13 +11,12 @@
         android:layout_height="wrap_content"
         android:src="@drawable/writer_apply_dialog_title"/>
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
-        android:layout_marginLeft="25dp"
-        android:text="이미 완료된 작가신청입니다"
-        android:textSize="16sp"/>
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/already_writerapply"/>
 
     <ImageButton
         android:layout_width="wrap_content"

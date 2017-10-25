@@ -7,12 +7,13 @@
     <ScrollView
         android:id="@+id/scroll_poem"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:overScrollMode="never">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -51,8 +52,6 @@
                 </RelativeLayout>
 
 
-
-
                 <ImageButton
                     android:id="@+id/poem_path"
                     android:layout_width="wrap_content"
@@ -71,20 +70,19 @@
             </RelativeLayout>
 
 
-
             <LinearLayout
                 android:id="@+id/reading_background"
                 android:layout_width="match_parent"
                 android:layout_height="620dp"
-                android:orientation="vertical"
-                android:background="#f99999">
+                android:background="#f99999"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/poem_content"
-                    android:layout_marginTop="50dp"
-                    android:layout_gravity="center_horizontal"
                     android:layout_width="206dp"
-                    android:layout_height="330dp"/>
+                    android:layout_height="330dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="50dp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -92,42 +90,42 @@
 
                     <ImageButton
                         android:id="@+id/download"
-                        android:src="@drawable/download"
-                        android:background="@android:color/transparent"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:paddingRight="10dp"
-                        android:paddingLeft="10dp"
+                        android:layout_marginLeft="276dp"
+                        android:background="@android:color/transparent"
                         android:paddingBottom="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:paddingTop="10dp"
-                        android:layout_marginLeft="276dp"/>
+                        android:src="@drawable/download" />
 
                     <ImageButton
                         android:id="@+id/another"
-                        android:src="@drawable/another"
-                        android:background="@android:color/transparent"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:paddingRight="10dp"
-                        android:paddingLeft="10dp"
+                        android:layout_marginLeft="319dp"
+                        android:background="@android:color/transparent"
                         android:paddingBottom="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:paddingTop="10dp"
-                        android:layout_marginLeft="319dp"/>
+                        android:src="@drawable/another" />
 
                 </RelativeLayout>
-                
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="51dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/writer_img"
                         android:layout_width="43dp"
                         android:layout_height="43dp"
-                        android:src="@drawable/group_5"
-                        android:layout_marginLeft="51dp"/>
+                        android:layout_marginLeft="51dp"
+                        android:src="@drawable/group_5" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -138,19 +136,19 @@
                             android:id="@+id/writer_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="18sp"
                             android:layout_marginLeft="15dp"
-                            android:textStyle="bold"
-                            android:textColor="#000000"/>
+                            android:textColor="#000000"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/poem_tags"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
-                            android:textColor="#000000"
+                            android:layout_marginLeft="15dp"
                             android:layout_marginTop="5dp"
-                            android:layout_marginLeft="15dp"/>
+                            android:textColor="#000000"
+                            android:textSize="15sp" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -158,25 +156,26 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="작가의 다른 작품 보기"
-                    android:textSize="13sp"
                     android:layout_marginLeft="51dp"
                     android:layout_marginTop="15dp"
-                    android:textColor="#000000"/>
+                    android:text="작가의 다른 작품 보기"
+                    android:textColor="#000000"
+                    android:textSize="13sp" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerPoem"
-                    android:layout_width="300dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="51dp"
                     android:layout_marginTop="9dp"
-                    android:layout_height="wrap_content">
+                    android:overScrollMode="never">
 
                 </android.support.v7.widget.RecyclerView>
 
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-    </LinearLayout>
+</LinearLayout>
 
 
 
