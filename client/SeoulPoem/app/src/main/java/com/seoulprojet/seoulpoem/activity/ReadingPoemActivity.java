@@ -249,10 +249,10 @@ public class ReadingPoemActivity extends AppCompatActivity {
                             .load(photo)
                             .into(poem_img);
                     Glide.with(ReadingPoemActivity.this)
-                            .load(response.body().article.user.profile)
+                            .load(response.body().article.writer.profile)
                             .into(writer_img);
                     poem_tags.setText(response.body().article.tags);
-                    writer_name.setText(response.body().article.user.pen_name);
+                    writer_name.setText(response.body().article.writer.pen_name);
                     if(response.body().article.background.equals("4"))
                         reading_background.setBackgroundResource(R.drawable.paper4);
                     else if(response.body().article.background.equals("3"))
@@ -310,7 +310,7 @@ public class ReadingPoemActivity extends AppCompatActivity {
                         poem_content.setGravity(Gravity.NO_GRAVITY);
                     };
 
-                        another_photo = response.body().article.user.others;
+                        another_photo = response.body().article.writer.others;
                     recyclerAdapter.setAdapter(another_photo);
                     recyclerAdapter.notifyDataSetChanged();
 
