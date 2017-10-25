@@ -14,7 +14,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:orientation="vertical"
-        android:background="#ffa6be"
+        android:background="@drawable/paper4"
         android:gravity="center">
 
 
@@ -81,7 +81,8 @@
             android:layout_marginTop="20dp"
             android:text="TextView"
             android:textSize="16sp"
-            android:id="@+id/login_name_temp_tv"/>
+            android:id="@+id/login_name_temp_tv"
+            android:visibility="invisible"/>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

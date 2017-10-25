@@ -121,6 +121,25 @@ public class WriterList extends AppCompatActivity {
 
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_writerlist, parent, false);
+            view.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    int position = recyclerView.getChildLayoutPosition(v);
+                    String otherEmail = authorLists.get(position).email;
+                    int otherType = authorLists.get(position).type;
+
+                    Log.i("position", "position : " + position);
+                    Log.i("들어가", "작가이메일 : " + otherEmail);
+
+                    Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                    intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("loginType", loginType);
+                    intent.putExtra("otherEmail", otherEmail);
+                    intent.putExtra("otherType", otherType);
+                    startActivity(intent);
+                }
+            });
+
             MyViewHolder viewHolder = new MyViewHolder(view);
             return viewHolder;
         }
