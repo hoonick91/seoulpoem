@@ -30,6 +30,9 @@ import retrofit2.Response;
 
 public class TodaySeoul extends AppCompatActivity {
 
+    private String userEmail = null;
+    private int loginType = 0;
+
     private ImageButton todayseoul_hamburger_btn;
 
     // drawer 선언
@@ -52,6 +55,13 @@ public class TodaySeoul extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_today_seoul);
+
+        Intent intent = getIntent();
+
+        userEmail = intent.getStringExtra("userEmail");
+        loginType = intent.getExtras().getInt("loginType");
+
+        Log.i("login", "today logintype " + loginType);
 
         todayseoul_hamburger_btn = (ImageButton)findViewById(R.id.todayseoul_hamburger_btn);
 
@@ -99,6 +109,8 @@ public class TodaySeoul extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -108,6 +120,8 @@ public class TodaySeoul extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TodaySeoul.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -117,6 +131,8 @@ public class TodaySeoul extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SettingPage.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -127,6 +143,8 @@ public class TodaySeoul extends AppCompatActivity {
             public void onClick(View v) {
                 drawerLayout.closeDrawers();
                 Intent intent = new Intent(getApplicationContext(), Notice.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -136,6 +154,19 @@ public class TodaySeoul extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), WriterList.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        hamburger_scrab_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddActivity.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -144,7 +175,7 @@ public class TodaySeoul extends AppCompatActivity {
 
     /******************* mypage 정보 가져오기 ******************/
     public void getMenuMypage(){
-        Call<MyPageResult> requestMyPage = service.getMyPage("godz33@naver.com", 1);
+        Call<MyPageResult> requestMyPage = service.getMyPage(userEmail, loginType);
 
         requestMyPage.enqueue(new Callback<MyPageResult>() {
             @Override
@@ -154,12 +185,25 @@ public class TodaySeoul extends AppCompatActivity {
                     if(response.body().status.equals("success")){
                         hamburger_name.setText(response.body().msg.pen_name);
                         hamburger_message.setText(response.body().msg.inform);
-                        Glide.with(getApplicationContext())
-                                .load(response.body().msg.profile)
-                                .into(hamburger_profile);
-                        Glide.with(getApplicationContext())
-                                .load(response.body().msg.background)
-                                .into(hamburger_bg);
+                        if(response.body().msg.profile == null){
+                            hamburger_profile.setImageResource(R.drawable.profile_tmp);
+                        }
+
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().msg.profile)
+                                    .into(hamburger_profile);
+                        }
+
+                        if(response.body().msg.background == null){
+                            hamburger_bg.setImageResource(R.drawable.profile_background);
+                        }
+
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().msg.background)
+                                    .into(hamburger_bg);
+                        }
                     }
                 }
             }
@@ -204,7 +248,6 @@ public class TodaySeoul extends AppCompatActivity {
                     Intent intent = new Intent(TodaySeoul.this, SubwayPoemActivity.class);
                     intent.putExtra("articles_id",holder.poemTitle.getTag().toString());
                     startActivity(intent);
-                    finish();
                 }
             });
         }

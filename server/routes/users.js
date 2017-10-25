@@ -52,8 +52,8 @@ var location_key_q_= "select key_ from s3key where location = ?";
 router.post('/login', async (req, res) => {
 try {
 
-    req.checkHeaders('email', '이메일 입력되지 않았습니다.').notEmpty();
-    req.checkHeaders('type', '타입을 입력해주세요.').notEmpty();
+    req.checkHeaders('email', 'empty email').notEmpty();
+    req.checkHeaders('type', 'empty type').notEmpty();
 
     let errors = req.validationErrors();
     if (!errors) {
@@ -70,12 +70,12 @@ try {
 
             if(check_emailandtype != 0){
             res.status(200);
-            res.json({status: "success", msg: "로그인을 성공하였습니다."});
+            res.json({status: "success", msg: "success login"});
             await connection.commit();
         }
         else {
             res.status(200);
-            res.json({status: "fail", msg: "회원 가입이 필요합니다."});
+            res.json({status: "fail", msg: "need to signin"});
         }
 
     }
@@ -96,15 +96,20 @@ finally {
 
 
 router.post('/signin', async (req, res) => {
+
+    console.log("siginin start");
 try{
 
-    req.checkBody("pen_name","필명을 입력해주세요.").notEmpty();
+    req.checkBody("pen_name","empty pen_name").notEmpty();
 
     let errors = req.validationErrors();
     if (!errors) {
         let pen_name = req.body.pen_name;
         let email = req.headers.email;
         let type = req.headers.type;
+        console.log(req.headers.type)
+        console.log(email);
+        console.log(pen_name);
 
         var connection = await pool.getConnection();
         await connection.beginTransaction();
@@ -113,8 +118,8 @@ try{
         var check_penname = await connection.query(check_penname_query, pen_name);
 
         if (check_penname.length != 0) {
-            res.status(401);
-            res.json({status: "fail", msg: "사용 중인 필명입니다. 다른 필명을 입력해주세요."});
+            res.status(402);
+            res.json({status: "fail", msg: "alredy in use pen_name"});
         }
         else {
             let user = {
@@ -123,25 +128,27 @@ try{
                 pen_name: pen_name,
                 author: 0,
                 inform: "",
-
             }
             let sigin_query = 'insert into seoul_poem.users set ?';
             var sigin_result = await connection.query(sigin_query, user);
 
             if (sigin_result){
                 res.status(200);
-                res.json({status: "success", msg: "회원 가입을 성공하였습니다."});
+                console.log("success siginin");
+                res.json({status: "success", msg: "success signin"});
                 await connection.commit();
             }
             else {
                 res.status(500);
-                res.json({status: "success", msg: "회원 가입에 실패하였습니다."});
+                console.log("fail to siginin");
+                res.json({status: "success", msg: "fail to signin"});
             }
 
         }
     }
     else {
-        res.status(401);
+        res.status(403);
+        console.log("empty")
         res.json({status: "fail", msg: errors});
     }
 
@@ -157,8 +164,8 @@ finally {
 var multiupload = upload.fields([{name:'profile',maxCount:1},{name : "background", maxCount:1}]);
 router.post('/modify',multiupload,  async (req, res) => {
     try{
-        req.checkHeaders('email', '이메일 입력되지 않았습니다.').notEmpty();
-        req.checkHeaders('type', '타입을 입력해주세요.').notEmpty();
+        req.checkHeaders('email', 'empty email').notEmpty();
+        req.checkHeaders('type', 'empty type').notEmpty();
 
         console.log(req.files['profile']);
         console.log(req.files['background']);
@@ -196,8 +203,8 @@ router.post('/modify',multiupload,  async (req, res) => {
                     var check_penname = await connection.query(check_penname_query, pen_name);
 
                     if (check_penname.length) {
-                        res.status(401);
-                        res.json({status: "fail", msg: "사용 중인 필명입니다. 다른 필명을 입력해주세요."});
+                        res.status(402);
+                        res.json({status: "fail", msg: "Already in use pen_name"});
                         return
                     }
                 }
@@ -243,7 +250,7 @@ router.post('/modify',multiupload,  async (req, res) => {
             }
             if(cnt == 0){
                 res.status(201);
-                res.json({status: "success", msg: "회원 정보의 변화된 내용이 없습니다."});
+                res.json({status: "success", msg: "not changed inform"});
             }
             else{
                 let update_user_query = 'update seoul_poem.users set ? where email = ? and foreign_key_type = ?';
@@ -263,16 +270,16 @@ router.post('/modify',multiupload,  async (req, res) => {
                     }
 
                     res.status(200);
-                    res.json({status: "success", msg: "회정 정보 수정 성공", user : user});
+                    res.json({status: "success", msg: "success modify", user : user});
                     await connection.commit();
                 }else {
                     res.status(500);
-                    res.json({status: "fail", msg: "회원 정보 수정 실패"});
+                    res.json({status: "fail", msg: "fail modify"});
                 }
             }
         }
         else{
-            res.status(401);
+            res.status(403);
             res.json({status: "fail", msg: errors});
         }
     }catch (err) {
@@ -288,8 +295,8 @@ router.post('/modify',multiupload,  async (req, res) => {
 
 router.post('/secession',  async (req, res) => {
     try{
-        req.checkHeaders('email', '이메일 입력되지 않았습니다.').notEmpty();
-        req.checkHeaders('type', '타입을 입력해주세요.').notEmpty();
+        req.checkHeaders('email', 'empty email').notEmpty();
+        req.checkHeaders('type', 'empty type').notEmpty();
 
         let errors = req.validationErrors();
         if (!errors) {
@@ -308,7 +315,7 @@ router.post('/secession',  async (req, res) => {
 
             if(users_select_result.length == 0){
                 res.status(402);
-                res.json({status: "fail", msg: "회원 정보 없음"});
+                res.json({status: "fail", msg: "not Member"});
                 return;
             }
 
@@ -378,7 +385,7 @@ router.post('/secession',  async (req, res) => {
             await connection.query("SET FOREIGN_KEY_CHECKS=1;");
 
             res.status(200);
-            res.json({status: "success", msg: "회정 삭제 성공"});
+            res.json({status: "success", msg: "success secession"});
             await connection.commit();
 
         }

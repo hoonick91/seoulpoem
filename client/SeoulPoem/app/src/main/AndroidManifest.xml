@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+
     <application
         android:name=".network.ApplicationController"
         android:allowBackup="true"
@@ -18,16 +19,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.sampleActivity">
-
-        </activity>
-        <activity android:name=".activity.MyPage"/>
+        <activity android:name=".activity.sampleActivity"></activity>
+        <activity android:name=".activity.MyPage" />
         <activity android:name=".activity.MyPageSetting" />
         <activity android:name=".activity.WriterList" />
         <activity android:name=".activity.Notice" />
         <activity android:name=".activity.SettingPage" />
         <activity android:name=".activity.TodaySeoul" />
-
         <activity android:name=".activity.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,15 +33,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".activity.DetailActivity" />
         <activity android:name=".activity.AddActivity" />
-        <activity android:name=".activity.SearchActivity"></activity>
+        <activity android:name=".activity.SearchActivity" />
         <activity android:name=".activity.MainActivity" />
         <activity
             android:name=".activity.WritePoemActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".activity.PreviewAcitivity" />
 
         <provider
@@ -55,14 +51,16 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-        <activity android:name=".activity.ReadingPoemActivity">
-        </activity>
+
+        <activity android:name=".activity.ReadingPoemActivity" />
         <activity android:name=".activity.Login" />
         <activity android:name=".activity.LoginName" />
         <activity android:name=".activity.MyPageShowImage" />
-        <activity android:name=".activity.NoticeDetail"></activity>
-        <activity android:name=".activity.SubwayPoemActivity"></activity>
-
+        <activity android:name=".activity.NoticeDetail" />
+        <activity android:name=".activity.SubwayPoemActivity" />
+        <activity android:name=".activity.TagActivity"></activity>
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
     </application>
 
 </manifest>

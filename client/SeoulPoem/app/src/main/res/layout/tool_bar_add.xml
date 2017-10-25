@@ -11,6 +11,7 @@
 
         <!--햄버거-->
         <RelativeLayout
+            android:id="@+id/rlHamberger"
             android:layout_width="48dp"
             android:layout_height="48dp">
             <ImageView

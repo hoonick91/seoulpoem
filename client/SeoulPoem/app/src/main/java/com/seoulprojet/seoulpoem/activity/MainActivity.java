@@ -20,6 +20,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +30,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -40,6 +42,7 @@ import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.component.Preview;
 import com.seoulprojet.seoulpoem.model.HashtagListData;
 import com.seoulprojet.seoulpoem.model.MainResult;
+import com.seoulprojet.seoulpoem.model.MyPageResult;
 import com.seoulprojet.seoulpoem.model.PoemListData;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
@@ -79,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvHashTag;
     private TabLayout tabLayout;
 
-    private  RelativeLayout rlMore;
+    private RelativeLayout rlMore;
 
 
     //recycler
@@ -109,7 +112,17 @@ public class MainActivity extends AppCompatActivity {
     //네트워크
     NetworkService service;
 
+    // drawer
+    private ImageButton hamburger_setting_btn, hamburger_mypage_btn, hamburger_scrab_btn, hamburger_today_btn, hamburger_writer_btn, hamburger_notice_btn;
+    private TextView hamburger_name, hamburger_message;
+    private ImageView hamburger_profile, hamburger_bg;
+    private View drawerView;
+    private DrawerLayout drawerLayout;
 
+
+    //유저 정보
+    private String userEmail = null;
+    private int loginType = 0;
 
 
     /***************************************START***********************************************/
@@ -117,6 +130,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //유저 정보 가져오기
+        Intent intent = getIntent();
+        userEmail = intent.getExtras().getString("userEmail");
+        loginType = intent.getExtras().getInt("loginType");
+
+        Log.d("test" ,userEmail );
+
 
         //서비스 객체 초기화
         service = ApplicationController.getInstance().getNetworkService();
@@ -130,9 +151,6 @@ public class MainActivity extends AppCompatActivity {
 
         //view pager 설정
         setViewPager();
-
-        //햄버거 toggle
-        toHamberger();
 
         //검색
         toSearch();
@@ -148,6 +166,55 @@ public class MainActivity extends AppCompatActivity {
         //네트워킹
         poems = new ArrayList<>();
         getLists();
+
+
+        // drawer
+        showHamburger();
+    }
+
+
+    /*********************************  정보 가져오기 ****************************************/
+    public void getMenuMypage(){
+        Call<MyPageResult> requestMyPage = service.getMyPage(userEmail, loginType);
+
+        requestMyPage.enqueue(new Callback<MyPageResult>() {
+            @Override
+            public void onResponse(Call<MyPageResult> call, Response<MyPageResult> response) {
+                if(response.isSuccessful()){
+                    Log.d("error", "xxx");
+                    if(response.body().status.equals("success")){
+                        Log.d("test", response.body().msg.pen_name);
+                        hamburger_name.setText(response.body().msg.pen_name);
+                        hamburger_message.setText(response.body().msg.inform);
+
+                        if(response.body().msg.profile == null){
+                            hamburger_profile.setImageResource(R.drawable.profile_tmp);
+                        }
+
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().msg.profile)
+                                    .into(hamburger_profile);
+                        }
+
+                        if(response.body().msg.background == null){
+                            hamburger_bg.setImageResource(R.drawable.profile_background);
+                        }
+
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(response.body().msg.background)
+                                    .into(hamburger_bg);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MyPageResult> call, Throwable t) {
+                Log.i("mypage error", t.getMessage());
+            }
+        });
     }
 
 
@@ -164,7 +231,9 @@ public class MainActivity extends AppCompatActivity {
 
         vpPoems = (ViewPager) findViewById(R.id.vpPoems);
         rlToWrite = (RelativeLayout) findViewById(R.id.rlToWrite);
-        rlMore = (RelativeLayout)findViewById(R.id.rlMore);
+        rlMore = (RelativeLayout) findViewById(R.id.rlMore);
+
+
     }
 
 
@@ -173,16 +242,16 @@ public class MainActivity extends AppCompatActivity {
 
         //hash tag
         hashtags = new ArrayList<>();
-        hashtags.add(new HashtagListData(R.drawable.testimg, "거리"));
-        hashtags.add(new HashtagListData(R.drawable.testimg02, "이벤트"));
-        hashtags.add(new HashtagListData(R.drawable.testimg03, "푸드"));
-        hashtags.add(new HashtagListData(R.drawable.testimg04, "쇼핑"));
-        hashtags.add(new HashtagListData(R.drawable.testimg05, "기타"));
-        hashtags.add(new HashtagListData(R.drawable.testimg, "거리"));
-        hashtags.add(new HashtagListData(R.drawable.testimg02, "이벤트"));
-        hashtags.add(new HashtagListData(R.drawable.testimg03, "푸드"));
-        hashtags.add(new HashtagListData(R.drawable.testimg04, "쇼핑"));
-        hashtags.add(new HashtagListData(R.drawable.testimg05, "기타"));
+        hashtags.add(new HashtagListData(R.drawable.a, "거리"));
+        hashtags.add(new HashtagListData(R.drawable.b, "이벤트"));
+        hashtags.add(new HashtagListData(R.drawable.c, "푸드"));
+        hashtags.add(new HashtagListData(R.drawable.d, "쇼핑"));
+        hashtags.add(new HashtagListData(R.drawable.e, "기타"));
+        hashtags.add(new HashtagListData(R.drawable.f, "거리"));
+        hashtags.add(new HashtagListData(R.drawable.g, "이벤트"));
+        hashtags.add(new HashtagListData(R.drawable.h, "푸드"));
+        hashtags.add(new HashtagListData(R.drawable.i, "쇼핑"));
+        hashtags.add(new HashtagListData(R.drawable.j, "기타"));
 
     }
 
@@ -221,6 +290,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                     intent.putExtra("articleId", poemListData.idarticles);
+                    intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("loginType", loginType);
                     startActivity(intent);
                 }
             });
@@ -310,18 +381,6 @@ public class MainActivity extends AppCompatActivity {
             //img
             holder.ivHashtag.setImageResource(hashtagListData.imgResourceID);
 
-
-//            //상세 프로필로 이동
-//            //클릭시 상세화면으로 이동, 클릭한 프로젝트 아이디 전달
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(PeopleActivity.this, OtherUserPage.class);
-//                    intent.putExtra("userID", Integer.parseInt(holder.tvUserID.getText().toString()));
-//                    Log.d("userID", "people목록에서 보내는 id 값 : " + Integer.toString(userID));
-//                    startActivity(intent);
-//                }
-//            });
         }
 
         @Override
@@ -351,17 +410,14 @@ public class MainActivity extends AppCompatActivity {
     /***********************************main 리스트 가져오기*********************************/
     public void getLists() {
         Call<MainResult> requestMainLists = service.getPoems("그리움");
-        Log.d("test", "before call");
 
         requestMainLists.enqueue(new Callback<MainResult>() {
             @Override
             public void onResponse(Call<MainResult> call, Response<MainResult> response) {
-                Log.d("test", "after call");
                 if (response.isSuccessful()) {
                     if (response.body().status.equals("success")) {
                         poems = response.body().data;
 
-                        Log.d("test", "after success");
 
                         //view pager 설정
                         paPoem = new PageAdapterPoems(poems);
@@ -373,31 +429,18 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 } else {
-                    Log.d("test", response.toString());
                 }
             }
 
 
             @Override
             public void onFailure(Call<MainResult> call, Throwable t) {
-                Log.i("test -> err : ", t.getMessage());
-            }
-        });
-    }
-
-    /***********************************hamberger**********************************/
-
-    public void toHamberger() {
-        rlHamberger.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "hamberger open", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
 
-    /**********************************search**********************************/
+    /*******************************************search******************************************/
     public void toSearch() {
         rlSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -410,13 +453,105 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /**********************************Write**********************************/
+    /*************************************Write*************************************************/
     public void toWrite() {
         rlToWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkPermissions();
                 dialog();
+            }
+        });
+    }
+
+    /******************************************* drawer ******************************************/
+    public void showHamburger() {
+
+        hamburger_mypage_btn = (ImageButton) findViewById(R.id.hamburger_mypage_btn);
+        hamburger_scrab_btn = (ImageButton) findViewById(R.id.hamburger_scrab_btn);
+        hamburger_today_btn = (ImageButton) findViewById(R.id.hamburger_todayseoul_btn);
+        hamburger_writer_btn = (ImageButton) findViewById(R.id.hamburger_writerlist_btn);
+        hamburger_notice_btn = (ImageButton) findViewById(R.id.hamburger_notice_btn);
+        hamburger_setting_btn = (ImageButton) findViewById(R.id.hamburger_setting_btn);
+        hamburger_name = (TextView) findViewById(R.id.hamburger_name);
+        hamburger_message = (TextView) findViewById(R.id.hamburger_message);
+        hamburger_profile = (ImageView) findViewById(R.id.hamburger_profile_img);
+        hamburger_bg = (ImageView) findViewById(R.id.hamburger_bg);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.mypage_drawer_layout02);
+        drawerView = findViewById(R.id.drawer);
+        rlHamberger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //햄버거 내 정보 가져오기
+                getMenuMypage();
+                drawerLayout.openDrawer(drawerView);
+            }
+        });
+
+        hamburger_mypage_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
+                startActivity(intent);
+            }
+        });
+
+        hamburger_scrab_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddActivity.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
+                startActivity(intent);
+            }
+        });
+
+
+        hamburger_today_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TodaySeoul.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        hamburger_setting_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SettingPage.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        hamburger_notice_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.closeDrawers();
+                Intent intent = new Intent(getApplicationContext(), Notice.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        hamburger_writer_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), WriterList.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
+                startActivity(intent);
+                finish();
             }
         });
     }
@@ -437,21 +572,21 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void dialog(){
+    public void dialog() {
         final CharSequence[] items = {"카메라", "갤러리"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);     // 여기서 this는 Activity의 this
 
         // 여기서 부터는 알림창의 속성 설정
         builder.setTitle("")        // 제목 설정
-                .setItems(items, new DialogInterface.OnClickListener(){    // 목록 클릭시 설정
-                    public void onClick(DialogInterface dialog, int index){
-                        if(index == 0) { // 카메라 클릭시
+                .setItems(items, new DialogInterface.OnClickListener() {    // 목록 클릭시 설정
+                    public void onClick(DialogInterface dialog, int index) {
+                        if (index == 0) { // 카메라 클릭시
                             takePhoto();
 
-                        }else{ //갤러리 클릭시
+                        } else { //갤러리 클릭시
                             goToAlbum();
-                            Log.e("**갤러리","갤러리시작");
+                            Log.e("**갤러리", "갤러리시작");
 
                         }
                     }
@@ -496,7 +631,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
-        Log.e("**gotoalbum","startActivity");
+        Log.e("**gotoalbum", "startActivity");
     }
 
     @Override
@@ -545,7 +680,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             photoUri = data.getData();
-            Log.e("**Before crop photoUri",""+photoUri);
+            Log.e("**Before crop photoUri", "" + photoUri);
             getImageNameToUri(photoUri);
 
             cropImage();
@@ -558,11 +693,11 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
         } else if (requestCode == CROP_FROM_CAMERA) {
-            photoUri=data.getData();
-            Log.e("**final crop photoUri",""+photoUri);
-            Toast.makeText(MainActivity.this,"사진이 저장되었습니다.",Toast.LENGTH_LONG).show();
+            photoUri = data.getData();
+            Log.e("**final crop photoUri", "" + photoUri);
+            Toast.makeText(MainActivity.this, "사진이 저장되었습니다.", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(MainActivity.this, WritePoemActivity.class);
-            intent.putExtra("type","0");
+            intent.putExtra("type", "0");
             startActivity(intent);
         }
     }
@@ -604,12 +739,12 @@ public class MainActivity extends AppCompatActivity {
             }
 
             File folder = new File(Environment.getExternalStorageDirectory() + "/SeoulPoem/");
-            Log.e("**folder",folder.getPath());
+            Log.e("**folder", folder.getPath());
             File tempFile = new File(folder.toString(), croppedFileName.getName());
-            Log.e("**tempFile",tempFile.getPath());
+            Log.e("**tempFile", tempFile.getPath());
 
             albumUri = Uri.fromFile(croppedFileName);
-            Log.e("**albumUri",""+albumUri);
+            Log.e("**albumUri", "" + albumUri);
 
             Preview.photo_location = tempFile.getPath();
             Preview.photoName = tempFile.getName();
@@ -618,7 +753,7 @@ public class MainActivity extends AppCompatActivity {
                     "com.seoulprojet.seoulpoem.activity.provider", tempFile);
 
 
-            Log.e("**aftercropphotoUripath",""+photoUri);
+            Log.e("**aftercropphotoUripath", "" + photoUri);
 
             Preview.photo = photoUri;
 
@@ -645,6 +780,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(i, CROP_FROM_CAMERA);
         }
     }
+
     /**************************이미지 파일 이름 가져오기******************************************/
 
     public String getImageNameToUri(Uri data) {

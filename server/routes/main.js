@@ -79,15 +79,15 @@ router.get('/all', async ( req, res) => {
 router.get('/search',async(req, res) => {
 
     try{
-
         var connection = await pool.getConnection();
         await connection.beginTransaction();
         req.checkQuery({tag : {notEmpty: true,errorMessage : 'error message'}});
 
         let errors = req.validationErrors();
         if (errors) {
+            console.log(errors);
             res.status(501);
-            res.json({status : "fail",msg:err});
+            res.json({status : "fail",msg:errors});
             return;
         }
         else
@@ -118,7 +118,7 @@ router.get('/search',async(req, res) => {
                 arr1[i] = author;
          }
 
-            let query1 = "select seoul_poem.articles.idarticles as idarticles,seoul_poem.articles.title as title,seoul_poem.articles.poem_idpoem as idpoem from seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures and seoul_poem.articles.tags like ? order by seoul_poem.articles.idarticles Desc limit 3;"
+            let query1 = "select seoul_poem.articles.idarticles as idarticles,seoul_poem.articles.title as title,if(seoul_poem.articles.poem_idpoem IS NULL, -1,seoul_poem.articles.poem_idpoem) as idpoem from seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures and seoul_poem.articles.tags like ? order by seoul_poem.articles.idarticles Desc limit 3;"
 
             let article_list = await connection.query(query1,tag);
 
@@ -133,7 +133,7 @@ router.get('/search',async(req, res) => {
                 let articlelist= {};
                 articlelist.idarticles = article_list[i].idarticles;
                 articlelist.title = article_list[i].title;
-                if (article_list[i].idpoem == null){
+                if (article_list[i].idpoem == -1){
                     articlelist.contents=""
                 }
                 else {

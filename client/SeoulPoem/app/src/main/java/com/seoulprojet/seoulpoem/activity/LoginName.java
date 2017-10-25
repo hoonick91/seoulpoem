@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.seoulprojet.seoulpoem.R;
@@ -27,8 +28,8 @@ public class LoginName extends AppCompatActivity {
     private NetworkService service;
     private String userEmail;
     private int loginType;
+    private String userName;
     private String contentType;
-    private RequestBody penName;
     private LoginPenName loginPenName;
 
     private TextView tempView;
@@ -43,13 +44,16 @@ public class LoginName extends AppCompatActivity {
         // get intent
         Intent intent = getIntent();
         userEmail = intent.getExtras().getString("userEmail");
-        loginType = intent.getExtras().getInt("type");
+        loginType = intent.getExtras().getInt("loginType");
         contentType = intent.getExtras().getString("contentType");
+        userName = intent.getExtras().getString("penName");
 
         // find view
         tempView = (TextView)findViewById(R.id.login_name_temp_tv);
         next_btn = (ImageButton)findViewById(R.id.login_name_next_btn);
         inputName_et = (EditText)findViewById(R.id.login_name_et);
+
+        inputName_et.setHint(userName);
 
         // service
         service = ApplicationController.getInstance().getNetworkService();
@@ -58,7 +62,15 @@ public class LoginName extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loginPenName = new LoginPenName();
-                loginPenName.pen_name = inputName_et.getText().toString();
+
+                if(inputName_et.getText().toString().length() == 0){
+                    Log.i("빈 화면", "빈 인풋");
+                    loginPenName.pen_name = userName;
+                }
+
+                else{
+                    loginPenName.pen_name = inputName_et.getText().toString();
+                }
                 postName();
             }
         });
@@ -71,11 +83,29 @@ public class LoginName extends AppCompatActivity {
         requestName.enqueue(new Callback<SignInResult>() {
             @Override
             public void onResponse(Call<SignInResult> call, Response<SignInResult> response) {
-                if(response.isSuccessful()){
-                    tempView.setText(response.body().status);
+                if(response.code()==401) {
+                    ImageView imageView = (ImageView)findViewById(R.id.login_name_already);
+                    imageView.setVisibility(View.VISIBLE);
+                    tempView.setText("중복");
+                }
+
+                else if(response.code() == 403){
+                    tempView.setText("제대로 안 보내짐");
+                }
+
+                else if(response.code() == 500){
+                    tempView.setText("DBerror");
                 }
                 else{
-                    Log.i("", "응답코드 " + response.code());
+                    tempView.setText("success" + Integer.toString(loginType));
+                    /*
+                    Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                    intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("loginType", loginType);
+                    startActivity(intent);
+                    finish();
+                    */
+
                 }
             }
 

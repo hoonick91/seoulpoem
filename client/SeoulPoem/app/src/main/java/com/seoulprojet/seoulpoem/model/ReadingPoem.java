@@ -21,7 +21,7 @@ public class ReadingPoem {
         public String date;
         public String title;
         public String photo;
-        public Userinfo user;
+        public Userinfo writer;
         public int modifiable;
 
     }
@@ -38,6 +38,8 @@ public class ReadingPoem {
     public class Userinfo{
         public String profile;
         public String pen_name;
+        public String email;
+        public int type;
         public ArrayList<Otherinfo> others;
     }
 

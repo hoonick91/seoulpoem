@@ -1,26 +1,28 @@
 
-    const express = require('express');
-    const aws = require('aws-sdk');
-    const moment = require('moment');
-    const jwt = require('jsonwebtoken');
-    const multer = require('multer');
-    const multerS3 = require('multer-s3');
-    const crypto = require("crypto");
-    const router = express.Router();
-    const async = require('async');
-    const date = require('date-utils');
-    aws.config.loadFromPath('./config/aws_config.json');
-    const pool = require('../config/db_pool');
-    const s3 = new aws.S3();
+const express = require('express');
+const aws = require('aws-sdk');
+const moment = require('moment');
+const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
+const crypto = require("crypto");
+const router = express.Router();
+const async = require('async');
+const date = require('date-utils');
+aws.config.loadFromPath('./config/aws_config.json');
+const pool = require('../config/db_pool');
+const s3 = new aws.S3();
 
-    // var upload = multer({ storage: multer.memoryStorage()})
+// var upload = multer({ storage: multer.memoryStorage()})
 
-    const upload = multer({
-      storage: multerS3({
+const upload = multer({
+    storage: multerS3({
         s3: s3,
         bucket: 'csr1994',
         acl: 'public-read',
         key: function (req, file, cb) {
+            console.log("s3 check");
+            console.log(file);
             let name_temp =  Date.now().toString() +  req.headers.email+ req.headers.type+ file.originalname;
             const cipher = crypto.createCipher('aes-256-cbc',req.app.get('jwt-secret'));
             let result = cipher.update(name_temp, 'utf8', 'base64'); // 'HbMtmFdroLU0arLpMflQ'
@@ -29,308 +31,198 @@
             imagename = imagename.replace(/\//g,'');
             cb(null, imagename);
         }
-      })
-   });
+    })
+});
 
 
-    var s3key_= "insert into s3key set ?";
-    var location_key_q_= "select key_ from s3key where location = ?";
+var s3key_= "insert into s3key set ?";
+var location_key_q_= "select key_ from s3key where location = ?";
 
-    // /article 글 저장 등록
-    router.post('/',upload.single('photo'), async (req, res, next) => {
-      try {
+var multiupload = upload.fields([{name:'photo',maxCount:1}]);
 
-          var connection = await pool.getConnection();
-          await connection.beginTransaction();
 
-          let email = req.headers.email;
-          let type = req.headers.type;
+router.post('/',multiupload, async (req, res) => {
+    try {
+        var connection = await pool.getConnection();
+        await connection.beginTransaction();
 
-          console.log(req.file.location);
 
-          let query_picture = 'insert into seoul_poem.pictures (photo) VALUES (?);';
-          let picture_output = await connection.query(query_picture, req.file.location);
-          await connection.query(s3key_,{location : req.file.location, key_ : req.file.key});
+        console.log(req.files['photo'][0].location);
+        let email = req.headers.email;
+        let type = req.headers.type;
 
-          var dt = new Date();
-          var d = dt.toFormat('YYYY-MM-DD HH24:MI:SS');
 
-          var result ="";
-          if(req.body.content) { //시가 있으면
-              let setting = {
-                  font_size: req.body.font_size,
-                  bold: req.body.bold,
-                  inclination: req.body.inclination,
-                  underline: req.body.underline,
-                  color: req.body.color,
-                  sort: req.body.sortinfo
-              };
-              let query = 'insert into seoul_poem.setting set ?;';
-              let output_ = await connection.query(query, setting);
-              let poem = {
-                  content: req.body.content,
-                  setting_idsettings : output_.insertId
-              };
-              let query_poem = 'insert into seoul_poem.poem set ?;';
-              let poem_output = await connection.query(query_poem, poem);
+        let query_picture = 'insert into seoul_poem.pictures (photo) VALUES (?);';
+        let picture_output = await connection.query(query_picture, req.files['photo'][0].location);
+        await connection.query(s3key_,{location : req.files['photo'][0].location, key_ : req.files['photo'][0].key});
 
-              let article ={
-                  tags: req.body.tags,
-                  background: req.body.background,
-                  inform: req.body.inform,
-                  date: d,
-                  title : req.body.title,
-                  pictures_idpictures: picture_output.insertId,
-                  poem_idpoem: poem_output.insertId,
-                  users_email: email,
-                  users_foreign_key_type: type
-              }
-              let article_q = 'insert into seoul_poem.articles set ?;'
-              result =  await connection.query(article_q, article);
-          }
-          else{
+        var dt = new Date();
+        var d = dt.toFormat('YYYY-MM-DD HH24:MI:SS');
 
-              let article ={
-                  tags: req.body.tags,
-                  background: req.body.background,
-                  inform: req.body.inform,
-                  date: d,
-                  title : req.body.title,
-                  users_email: email,
-                  users_foreign_key_type: type,
-                  pictures_idpictures: picture_output.insertId
-              }
-              let article_q = 'insert into seoul_poem.articles set ?;'
-              result =  await connection.query(article_q, article);
-          }
+        var result ="";
+        if(req.body.content) {
+            let setting = {
+                font_size: req.body.font_size,
+                bold: req.body.bold,
+                inclination: req.body.inclination,
+                underline: req.body.underline,
+                color: req.body.color,
+                sort: req.body.sortinfo
+            };
+            let query = 'insert into seoul_poem.setting set ?;';
+            let output_ = await connection.query(query, setting);
+            let poem = {
+                content: req.body.content,
+                setting_idsettings : output_.insertId
+            };
+            let query_poem = 'insert into seoul_poem.poem set ?;';
+            let poem_output = await connection.query(query_poem, poem);
 
-          res.status(201).send({status: "success"});
-          await connection.commit();
-          //}
-
+            let article ={
+                tags: req.body.tags,
+                background: req.body.background,
+                inform: req.body.inform,
+                date: d,
+                title : req.body.title,
+                pictures_idpictures: picture_output.insertId,
+                poem_idpoem: poem_output.insertId,
+                users_email: email,
+                users_foreign_key_type: type
+            }
+            let article_q = 'insert into seoul_poem.articles set ?;'
+            result =  await connection.query(article_q, article);
         }
-        catch(err) {
-            console.log(err);
-            res.status(500).send({status : "fail", msg: err });
+        else{
+            let article ={
+                tags: req.body.tags,
+                background: req.body.background,
+                inform: req.body.inform,
+                date: d,
+                title : req.body.title,
+                users_email: email,
+                users_foreign_key_type: type,
+                pictures_idpictures: picture_output.insertId
+            }
+            let article_q = 'insert into seoul_poem.articles set ?;'
+            result =  await connection.query(article_q, article);
         }
-        finally {
-            pool.releaseConnection(connection);
-        }
-    });
 
+        res.status(201).send({status: "success", articles_id :result.insertId});
+        await connection.commit();
+        //}
 
-/*
-// /article 글 저장 등록
-router.post('/',upload.single('photo'), async (req, res, next) => {
-  try {
-      // let token = req.headers.token; //클라이언트에서 헤더에 담아 보낸 토큰을 가져옵니다.
-      // let decoded = jwt.verify(token, req.app.get('jwt-secret')); //보낸 토큰이 유효한 토큰인지 검증합니다.(토큰 발급 시 사용했던 key로);
-      //
-      // if(!decoded) res.status(400).send({ result: 'wrong token '}); //유효하지 않다면 메시지를 보냅니다.
-      // else {
-      // var decoded_pk = jwt.decode(token, {complete: true});
-
-      var connection = await pool.getConnection();
-      await connection.beginTransaction();
-
-      let picture = {
-        photo: req.file ? req.file.location : null //요청 값에 파일이 있으면 파일의 주소를, 그렇지 않으면 null.
-      };
-
-      let setting = {
-        font_type: req.body.font_type,
-        font_size: req.body.font_size,
-        bold: req.body.bold,
-        inclination: req.body.inclination,
-        underline: req.body.underline,
-        color: req.body.color,
-        sort: req.body.sort
-      };
-
-
-      let query1 = 'insert into seoul_poem.pictures set ?';
-      await connection.query(query1, picture);
-
-      let query2 = 'insert into seoul_poem.setting set ?';
-      await connection.query(query2, setting);
-
-      let query2_1 = 'SELECT idsettings FROM seoul_poem.setting order by idsettings desc limit 1';
-      let selected = await connection.query(query2_1);
-
-
-      let poem = {
-        title: req.body.poem_title,
-        content: req.body.content,
-        setting_idsettings : selected[0].idsettings
-      };
-
-      let query3 = 'insert into seoul_poem.poem set ?';
-      await connection.query(query3, poem);
-
-
-
-      let query4 = 'SELECT idpictures FROM seoul_poem.pictures order by idpictures desc limit 1';
-      let selected4 = await connection.query(query4);
-
-      let query5 = 'SELECT idpoem FROM seoul_poem.poem order by idpoem desc limit 1';
-      let selected5 = await connection.query(query5);
-
-
-      let article = {
-        tags: req.body.tags,
-        background: req.body.background,
-        inform: req.body.inform,
-        date: req.body.date,
-        pictures_idpictures: selected4[0].idpictures,
-        poem_idpoem: selected5[0].idpoem,
-        users_idusers: 1 //나중에 수정할 것!
-      };
-
-
-      let query6 = 'insert into seoul_poem.articles set ?';
-      await connection.query(query6, article);
-
-      res.status(201).send({result: "success"});
-      await connection.commit();
-      //}
     }
     catch(err) {
+        console.log("")
         console.log(err);
-        res.status(500).send({result: err });
+        res.status(500).send({status : "fail", msg: err });
     }
     finally {
         pool.releaseConnection(connection);
     }
 });
-*/
 
-
-
-    //글 하나 조회 /article/{articleid}
-    router.get('/:idarticles', async (req, res) => {
-        try {
-
-            var connection = await pool.getConnection();
-            await connection.beginTransaction();
-
-            let type_ = req.headers.type;
-            let email_ = req.headers.email;
-
-            let query1 = 'SELECT tags, background,inform,date,title,users_email as email,users_foreign_key_type as type,pictures_idpictures as idpictures , poem_idpoem as idpoem FROM seoul_poem.articles where seoul_poem.articles.idarticles=?';
-            let queryresult = await connection.query(query1, req.params.idarticles);
-            console.log(queryresult);
-
-            let article={};
-            if(queryresult[0].idpoem){
-                // 시가 있으면
-                let query2 = 'SELECT content, setting_idsettings from poem where idpoem = ?'
-                let query2_result = await connection.query(query2,queryresult[0].idpoem);
-                console.log(query2_result);
-                let query3 = 'SELECT font_size,bold,inclination,underline,color,sort from setting where idsettings = ?'
-                let query3_result = await connection.query(query3,query2_result[0].setting_idsettings);
-                console.log(query3_result);
-
-                let setting={};
-                setting.font_size  = query3_result[0].font_size;
-                setting.bold  = query3_result[0].bold;
-                setting.inclination = query3_result[0].inclination;
-                setting.underline = query3_result[0].underline;
-                setting.color = query3_result[0].color;
-                setting.sort = query3_result[0].sort;
-
-                article.setting = setting;
-                article.content = query2_result[0].content;
-            }
-            else{
-                article.content = "";
-            }
-
-            article.tags = queryresult[0].tags;
-            article.background = queryresult[0].background;
-            article.inform = queryresult[0].inform;
-            article.date = queryresult[0].date;
-            article.title = queryresult[0].title;
-
-            let query4 = 'select photo from pictures where idpictures = ?'
-            let query4_result = await connection.query(query4,queryresult[0].idpictures);
-            console.log(query4_result);
-            article.photo = query4_result[0].photo;
-
-            let query5 = 'select profile,pen_name from users where email = ? and foreign_key_type = ?'
-            let query5_result = await connection.query(query5,[queryresult[0].email,queryresult[0].type]);
-            console.log(query5_result);
-
-            let user ={}
-            user.profile = query5_result[0].profile;
-            user.pen_name = query5_result[0].pen_name;
-
-            let query6 = 'select pictures.photo as photo ,articles.idarticles as idarticles from articles,pictures where articles.users_email = ? and articles.users_foreign_key_type = ? and articles.idarticles != ? and articles.pictures_idpictures = pictures.idpictures order by articles.idarticles DESC limit 5;'
-            let query6_result = await connection.query(query6,[queryresult[0].email,queryresult[0].type,req.params.idarticles]);
-            console.log(query6_result);
-
-            var i;
-            let others =[];
-            var index=0;
-            for(i=0 ; i<query6_result.length;i++ ){
-                let photo = {};
-                if(query6_result[i].idarticles != req.params.idarticles)
-                {
-                    photo.idarticles = query6_result[i].idarticles;
-                    photo.photo = query6_result[i].photo;
-                    others[index] = photo;
-                    index++;
-                }
-            }
-            user.others = others;
-            article.user = user;
-            if(type_ == queryresult[0].type && email_ == queryresult[0].email)
-                article.modifiable = 1;
-            else  article.modifiable = 0;
-
-            res.status(200).json( {status : "success",article: article});
-            await connection.commit();
-            //}
-
-        }
-        catch(err){
-            console.log(err);
-            res.status(500).send({status : "fail", msg: err });
-            connection.rollback();
-        }
-        finally{
-            pool.releaseConnection(connection);
-        }
-
-    });
-
-
-
-/*
-//글 하나 조회 /article/{articleid}
 router.get('/:idarticles', async (req, res) => {
     try {
-        //
-        // let token = req.headers.token; //클라이언트에서 헤더에 담아 보낸 토큰을 가져옵니다.
-        // let decoded = jwt.verify(token, req.app.get('jwt-secret')); //보낸 토큰이 유효한 토큰인지 검증합니다.(토큰 발급 시 사용했던 key로);
-        //
-        // if(!decoded) res.status(400).send({ result: 'wrong token '}); //유효하지 않다면 메시지를 보냅니다.
-        // else {
-        // var decoded_pk = jwt.decode(token, {complete: true});
 
         var connection = await pool.getConnection();
         await connection.beginTransaction();
 
-        let query1 = 'SELECT * FROM seoul_poem.articles, seoul_poem.poem, seoul_poem.pictures, seoul_poem.setting where seoul_poem.articles.idarticles=? and seoul_poem.articles.poem_idpoem=seoul_poem.poem.idpoem and seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures and seoul_poem.poem.setting_idsettings=seoul_poem.setting.idsettings';
-        let article_list = await connection.query(query1, req.params.idarticles);
+        let type_ = req.headers.type;
+        let email_ = req.headers.email;
 
-        res.status(200).send( { article_list: article_list });
+        let query1 = 'SELECT tags, background,inform,date,title,users_email as email,users_foreign_key_type as type,pictures_idpictures as idpictures , poem_idpoem as idpoem FROM seoul_poem.articles where seoul_poem.articles.idarticles=?';
+        let queryresult = await connection.query(query1, req.params.idarticles);
+        console.log(queryresult);
+
+        let article={};
+        if(queryresult[0].idpoem){
+            let query2 = 'SELECT content, setting_idsettings from poem where idpoem = ?'
+            let query2_result = await connection.query(query2,queryresult[0].idpoem);
+            console.log(query2_result);
+            let query3 = 'SELECT font_size,bold,inclination,underline,color,sort from setting where idsettings = ?'
+            let query3_result = await connection.query(query3,query2_result[0].setting_idsettings);
+            console.log(query3_result);
+
+            let setting={};
+            setting.font_size  = query3_result[0].font_size;
+            setting.bold  = query3_result[0].bold;
+            setting.inclination = query3_result[0].inclination;
+            setting.underline = query3_result[0].underline;
+            setting.color = query3_result[0].color;
+            setting.sort = query3_result[0].sort;
+
+            article.setting = setting;
+            article.content = query2_result[0].content;
+        }
+        else{
+            let setting={};
+            setting.font_size  = 0;
+            setting.bold  = 0;
+            setting.inclination = 0;
+            setting.underline = 0;
+            setting.color = 0;
+            setting.sort = 0;
+            article.setting = setting;
+            article.content = "";
+        }
+
+        article.tags = queryresult[0].tags;
+        article.background = queryresult[0].background;
+        article.inform = queryresult[0].inform;
+        article.date = queryresult[0].date;
+        article.title = queryresult[0].title;
+
+        let query4 = 'select photo from pictures where idpictures = ?'
+        let query4_result = await connection.query(query4,queryresult[0].idpictures);
+        console.log(query4_result);
+        article.photo = query4_result[0].photo;
+
+        let query5 = 'select profile,pen_name from users where email = ? and foreign_key_type = ?'
+        let query5_result = await connection.query(query5,[queryresult[0].email,queryresult[0].type]);
+        console.log(query5_result);
+
+        let user ={}
+        user.profile = query5_result[0].profile;
+        user.pen_name = query5_result[0].pen_name;
+        user.email = queryresult[0].email;
+        user.type = queryresult[0].type;
+
+        let query6 = 'select pictures.photo as photo ,articles.idarticles as idarticles from articles,pictures where articles.users_email = ? and articles.users_foreign_key_type = ? and articles.idarticles != ? and articles.pictures_idpictures = pictures.idpictures order by articles.idarticles DESC limit 5;'
+        let query6_result = await connection.query(query6,[queryresult[0].email,queryresult[0].type,req.params.idarticles]);
+        console.log(query6_result);
+
+        var i;
+        let others =[];
+        var index=0;
+        for(i=0 ; i<query6_result.length;i++ ){
+            let photo = {};
+            if(query6_result[i].idarticles != req.params.idarticles)
+            {
+                photo.idarticles = query6_result[i].idarticles;
+                photo.photo = query6_result[i].photo;
+                others[index] = photo;
+                index++;
+            }
+        }
+        user.others = others;
+
+
+        article.writer = user;
+
+
+        if(type_ == queryresult[0].type && email_ == queryresult[0].email)
+            article.modifiable = 1;
+        else  article.modifiable = 0;
+
+        res.status(200).json( {status : "success",article: article});
         await connection.commit();
         //}
 
     }
     catch(err){
         console.log(err);
-        res.status(500).send( { result: err });
+        res.status(500).send({status : "fail", msg: err });
         connection.rollback();
     }
     finally{
@@ -338,112 +230,177 @@ router.get('/:idarticles', async (req, res) => {
     }
 
 });
-*/
 
 
 
-    //글 하나 간단 조회 /article/simple/{articleid}
-    router.get('/simple/:idarticles', async (req, res) => {
-        try {
+router.get('/simple/:idarticles', async (req, res) => {
+    try {
 
-            var connection = await pool.getConnection();
-            await connection.beginTransaction();
+        var connection = await pool.getConnection();
+        await connection.beginTransaction();
 
-            let type_ = req.headers.type;
-            let email_ = req.headers.email;
+        let type_ = req.headers.type;
+        let email_ = req.headers.email;
 
-            console.log(req.params.idarticles);
-            let query1 = 'SELECT seoul_poem.pictures.photo as photo, seoul_poem.articles.users_email as email,seoul_poem.articles.users_foreign_key_type as type,seoul_poem.articles.tags as tags FROM seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.idarticles=? and seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures';
-            console.log(query1);
-            let article = await connection.query(query1, req.params.idarticles);
+        console.log(req.params.idarticles);
+        let query1 = 'SELECT seoul_poem.pictures.photo as photo, seoul_poem.articles.users_email as email,seoul_poem.articles.users_foreign_key_type as type,seoul_poem.articles.tags as tags FROM seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.idarticles=? and seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures';
+        console.log(query1);
+        let article = await connection.query(query1, req.params.idarticles);
 
-            console.log(article[0]);
-            var email = article[0].email;
-            var type = article[0].type;
-            let query2 = 'select seoul_poem.users.profile as profile,seoul_poem.users.pen_name as userName from seoul_poem.users where seoul_poem.users.email = ? and seoul_poem.users.foreign_key_type = ?'
-            let author = await connection.query(query2,[email,type]);
+        console.log(article[0]);
+        var email = article[0].email;
+        var type = article[0].type;
+        let query2 = 'select seoul_poem.users.profile as profile,seoul_poem.users.pen_name as pen_name from seoul_poem.users where seoul_poem.users.email = ? and seoul_poem.users.foreign_key_type = ?'
+        let author = await connection.query(query2,[email,type]);
 
-            let detail_={};
-            detail_.photo = article[0].photo;
-            detail_.tags=article[0].tags;
-            detail_.profile =author[0].profile;
-            detail_.userName = author[0].userName;
+        let detail_={};
+        detail_.photo = article[0].photo;
+        detail_.tags=article[0].tags;
+        let writer = {};
 
-            if(type_ ==article[0].type && email_ == article[0].email)
-                detail_.modifiable = 1;
-            else  detail_.modifiable = 0;
+        writer.profile =author[0].profile;
+        writer.pen_name = author[0].pen_name;
+        writer.email = email;
+        writer.type = type;
 
-            res.status(200);
-            res.json({status:"success", data: detail_});
-            await connection.commit();
+        if(type_ ==type && email_ == email)
+            detail_.modifiable = 1;
+        else  detail_.modifiable = 0;
+        detail_.writer = writer;
 
-        }
-        catch(err){
-            console.log(err);
-            res.status(500).send({status : "fail", msg: err });
-            connection.rollback();
-        }
-        finally{
-            pool.releaseConnection(connection);
-        }
+        res.status(200);
+        res.json({status:"success", data: detail_});
+        await connection.commit();
 
-    });
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).send({status : "fail", msg: err });
+        connection.rollback();
+    }
+    finally{
+        pool.releaseConnection(connection);
+    }
 
-// 글 수정
-router.put('/:idarticles',upload.single('photo'), async (req, res, next) => {
-  try {
+});
+
+
+router.put('/:idarticles', upload.single('photo'), async (req, res, next) => {
+    try {
         var connection = await pool.getConnection();
 
-        let picture = {
-          photo: req.file ? req.file.location : null //요청 값에 파일이 있으면 파일의 주소를, 그렇지 않으면 null.
-        };
+        let email = req.headers.email;
+        let type = req.headers.type;
 
-        let poem = {
-          content: req.body.content
-        };
+        let query = 'select * from seoul_poem.users where users.email = ? and users.foreign_key_type = ?';
+        let login = await connection.query(query, [email,type]);
 
-        let setting = {
-          font_size: req.body.font_size,
-          bold: req.body.bold,
-          inclination: req.body.inclination,
-          underline: req.body.underline,
-          color: req.body.color,
-          sort: req.body.sort
-        };
+        if(login.length==0) res.status(403).send({result: 'not member'});
+        else{
 
-        let query1 = 'select pictures_idpictures, poem_idpoem from seoul_poem.articles where idarticles = ?';
-        let selected = await connection.query(query1, req.params.idarticles);
+            let query1 = 'select tags,title,background,inform,date,if(poem_idpoem is null, -1,poem_idpoem) as poem_idpoem from seoul_poem.articles where idarticles = ?';
+            let article_data = await connection.query(query1, req.params.idarticles);
+            if(article_data.length==0) {
+                res.status(403).send({result: 'not exist idarticles'});
+            }
+            else{
+                var dt = new Date();
+                var d = dt.toFormat('YYYY-MM-DD HH24:MI:SS');
 
-        let query1_1 = 'select setting_idsettings from seoul_poem.poem where idpoem = ?';
-        let selected2 = await connection.query(query1_1, selected[0].poem_idpoem);
-        console.log(selected2[0].setting_idsettings);
+                if(article_data[0].poem_idpoem == -1){
+                    if(req.body.content!=""){
+                        let setting = {
+                            font_size: req.body.font_size,
+                            bold: req.body.bold,
+                            inclination: req.body.inclination,
+                            underline: req.body.underline,
+                            color: req.body.color,
+                            sort: req.body.sortinfo
+                        };
+
+                        let query = 'insert into seoul_poem.setting set ?;';
+                        let output_ = await connection.query(query, setting);
+                        let poem = {
+                            content: req.body.content,
+                            setting_idsettings : output_.insertId
+                        };
+                        let query_poem = 'insert into seoul_poem.poem set ?;';
+                        let poem_output = await connection.query(query_poem, poem);
+
+                        let article ={
+                            tags: req.body.tags,
+                            background: req.body.background,
+                            inform: req.body.inform,
+                            date: d,
+                            title : req.body.title,
+                            poem_idpoem: poem_output.insertId
+                        };
+                        let query5 = 'update seoul_poem.articles set ? where idarticles = ?';
+                        await connection.query(query5, [article, req.params.idarticles]);
+
+                        res.status(201).send({result: "update article success"});
+                        await connection.commit();
+
+                    }else{
+                        let article = {
+                            title: req.body.title? req.body.title: article_data[0].title,
+                            tags: req.body.tags? req.body.tags: article_data[0].tags,
+                            background: req.body.background? req.body.background: article_data[0].background,
+                            inform: req.body.inform? req.body.inform: article_data[0].inform,
+                            date: d
+                        };
+                        let query5 = 'update seoul_poem.articles set ? where idarticles = ?';
+                        await connection.query(query5, [article, req.params.idarticles]);
+
+                        res.status(201).send({result: "update article success"});
+                        await connection.commit();
+                    }
+                }
+                else{
+                    let query1_1 = 'select * from seoul_poem.poem where idpoem = ?';
+                    let poem_data = await connection.query(query1_1, article_data[0].poem_idpoem);
+
+                    let query1_2 = 'SELECT * FROM seoul_poem.setting where idsettings = ?';
+                    let setting_data = await connection.query(query1_2, poem_data[0].setting_idsettings);
 
 
-        let query2 = 'update seoul_poem.pictures set ? where idpictures = ?';
-        await connection.query(query2, [picture, selected[0].pictures_idpictures]);
+                    let poem = {
+                        content: req.body.content?  req.body.content: poem_data[0].content
+                    };
+
+                    let setting = {
+                        font_size: req.body.font_size? req.body.font_size: setting_data[0].font_size,
+                        bold: req.body.bold? req.body.bold: setting_data[0].bold,
+                        inclination: req.body.inclination? req.body.inclination: setting_data[0].inclination,
+                        underline: req.body.underline? req.body.underline: setting_data[0].underline,
+                        color: req.body.color? req.body.color: setting_data[0].color,
+                        sort: req.body.sort?  req.body.sort: setting_data[0].sort
+                    };
 
 
-        let query3 = 'update seoul_poem.setting set ? where idsettings = ?';
-        await connection.query(query3, [setting, selected2[0].setting_idsettings]);
+                    let query3 = 'update seoul_poem.setting set ? where idsettings = ?';
+                    await connection.query(query3, [setting, poem_data[0].setting_idsettings]);
 
 
-        let query4 = 'update seoul_poem.poem set ? where idpoem = ?';
-        await connection.query(query4, [poem, selected[0].poem_idpoem]);
+                    let query4 = 'update seoul_poem.poem set ? where idpoem = ?';
+                    await connection.query(query4, [poem, article_data[0].poem_idpoem]);
 
-        let article = {
-          title: req.body.title,
-          tags: req.body.tags,
-          background: req.body.background,
-          inform: req.body.inform,
-          date: req.body.date
-        };
+                    let article = {
+                        title: req.body.title? req.body.title: article_data[0].title,
+                        tags: req.body.tags? req.body.tags: article_data[0].tags,
+                        background: req.body.background? req.body.background: article_data[0].background,
+                        inform: req.body.inform? req.body.inform: article_data[0].inform,
+                        date: d
+                    };
 
-        let query5 = 'update seoul_poem.articles set ? where idarticles = ?';
-        await connection.query(query5, [article, req.params.idarticles]);
+                    let query5 = 'update seoul_poem.articles set ? where idarticles = ?';
+                    await connection.query(query5, [article, req.params.idarticles]);
 
-
-        res.status(201).send({result: "update article success"});
-        await connection.commit();
+                    res.status(201).send({result: "update article success"});
+                    await connection.commit();
+                }
+            }
+        }
 
     }
     catch(err) {
@@ -457,53 +414,53 @@ router.put('/:idarticles',upload.single('photo'), async (req, res, next) => {
 });
 
 router.delete('/:idarticles', async (req, res, next) => {
-  try {
-      var connection = await pool.getConnection();
-      await connection.beginTransaction();
+    try {
+        var connection = await pool.getConnection();
+        await connection.beginTransaction();
 
-      let query = 'SELECT * FROM seoul_poem.articles where idarticles = ? ';
-      let data1 = await connection.query(query, req.params.idarticles) || null;
-      if(data1.length==0) res.status(403).send({result: '존재하지 않는 글 id입니다.'});
-
-
-      let query1 = 'SELECT * FROM seoul_poem.bookmarks where articles_idarticles=?';
-      let data2 = await connection.query(query1, req.params.idarticles) || null;
-      if(data2.length>0){
-        let query2 = 'delete from seoul_poem.bookmarks where articles_idarticles = ?';
-        await connection.query(query2, req.params.idarticles);
-      }
-
-      let query3 = 'SELECT idpictures FROM seoul_poem.articles, pictures where articles.pictures_idpictures = pictures.idpictures and idarticles = ?';
-      let selected = await connection.query(query3, req.params.idarticles);
-
-      let query4 = 'SELECT idpoem, idsettings FROM seoul_poem.articles, poem, setting where articles.poem_idpoem = poem.idpoem and poem.setting_idsettings = setting.idsettings and idarticles = ?';
-      let selected2 = await connection.query(query4, req.params.idarticles);
-
-      let query5 = 'delete from seoul_poem.articles where idarticles = ?';
-      await connection.query(query5, req.params.idarticles);
-
-      let query6 = 'delete from seoul_poem.pictures where idpictures = ?';
-      await connection.query(query6, selected[0].idpictures);
-
-      let query7 = 'delete from seoul_poem.poem where idpoem = ?';
-      await connection.query(query7, selected2[0].idpoem);
-
-      let query8 = 'delete from seoul_poem.setting where idsettings = ?';
-      await connection.query(query8, selected2[0].idsettings);
+        let query = 'SELECT * FROM seoul_poem.articles where idarticles = ? ';
+        let data1 = await connection.query(query, req.params.idarticles) || null;
+        if(data1.length==0) res.status(403).send({result: '占쏙옙占쏙옙占쏙옙占쏙옙 占십댐옙 占쏙옙 id占쌉니댐옙.'});
 
 
-      res.status(200).send({result: 'delete success'});
-      await connection.commit();
-  }
+        let query1 = 'SELECT * FROM seoul_poem.bookmarks where articles_idarticles=?';
+        let data2 = await connection.query(query1, req.params.idarticles) || null;
+        if(data2.length>0){
+            let query2 = 'delete from seoul_poem.bookmarks where articles_idarticles = ?';
+            await connection.query(query2, req.params.idarticles);
+        }
 
-  catch(err){
-      console.log(err);
-      res.status(500).send({status : "fail", msg: err });
-      connection.rollback();
-  }
-  finally{
-      pool.releaseConnection(connection);
-  }
+        let query3 = 'SELECT idpictures FROM seoul_poem.articles, pictures where articles.pictures_idpictures = pictures.idpictures and idarticles = ?';
+        let selected = await connection.query(query3, req.params.idarticles);
+
+        let query4 = 'SELECT idpoem, idsettings FROM seoul_poem.articles, poem, setting where articles.poem_idpoem = poem.idpoem and poem.setting_idsettings = setting.idsettings and idarticles = ?';
+        let selected2 = await connection.query(query4, req.params.idarticles);
+
+        let query5 = 'delete from seoul_poem.articles where idarticles = ?';
+        await connection.query(query5, req.params.idarticles);
+
+        let query6 = 'delete from seoul_poem.pictures where idpictures = ?';
+        await connection.query(query6, selected[0].idpictures);
+
+        let query7 = 'delete from seoul_poem.poem where idpoem = ?';
+        await connection.query(query7, selected2[0].idpoem);
+
+        let query8 = 'delete from seoul_poem.setting where idsettings = ?';
+        await connection.query(query8, selected2[0].idsettings);
+
+
+        res.status(200).send({result: 'delete success'});
+        await connection.commit();
+    }
+
+    catch(err){
+        console.log(err);
+        res.status(500).send({status : "fail", msg: err });
+        connection.rollback();
+    }
+    finally{
+        pool.releaseConnection(connection);
+    }
 
 });
 

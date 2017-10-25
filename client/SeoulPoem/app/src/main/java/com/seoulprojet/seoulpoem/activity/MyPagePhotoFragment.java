@@ -41,7 +41,8 @@ public class MyPagePhotoFragment extends Fragment{
 
     private TextView numTV;
     private View view;
-
+    private String userEmail = null;
+    private int loginType = 0;
     // network
     private NetworkService service;
     private ArrayList<MyPagePhotoListData> photoListDatas;
@@ -59,6 +60,11 @@ public class MyPagePhotoFragment extends Fragment{
         numTV = (TextView)view.findViewById(R.id.mypage_photo_num_tv);
 
         gridView = (GridView)view.findViewById(R.id.mypage_photo_gv);
+
+        Bundle extra = getArguments();
+        userEmail = extra.getString("userEmail");
+        loginType = extra.getInt("loginType");
+
 
         // service
         service = ApplicationController.getInstance().getNetworkService();
@@ -118,7 +124,7 @@ public class MyPagePhotoFragment extends Fragment{
 
     /***************** 사진 리스트 가져오기 *****************/
     private void getPhoto(){
-        Call<MyPagePhotoResult> requestPhoto = service.getMyPhoto("godz33@naver.com", 1);
+        Call<MyPagePhotoResult> requestPhoto = service.getMyPhoto(userEmail, loginType);
 
         requestPhoto.enqueue(new Callback<MyPagePhotoResult>() {
             @Override
@@ -127,6 +133,15 @@ public class MyPagePhotoFragment extends Fragment{
                     Log.i("success network", "");
                     photoListDatas = response.body().msg.photos;
                     numTV.setText("# 총 " + response.body().msg.counts + "장");
+
+                    if(response.body().msg.counts == 0){
+                        TextView textView = (TextView)view.findViewById(R.id.frag_none_photo_tv);
+                        textView.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        TextView textView = (TextView)view.findViewById(R.id.frag_none_photo_tv);
+                        textView.setVisibility(View.INVISIBLE);
+                    }
 
                     // adapter
                     gridViewAdapter = new GridViewAdapter(getActivity().getApplicationContext(), photoListDatas);
