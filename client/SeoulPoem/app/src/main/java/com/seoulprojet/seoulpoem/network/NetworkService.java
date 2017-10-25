@@ -16,6 +16,7 @@ import com.seoulprojet.seoulpoem.model.NoticeResult;
 import com.seoulprojet.seoulpoem.model.SignInResult;
 import com.seoulprojet.seoulpoem.model.SubwayPoem;
 import com.seoulprojet.seoulpoem.model.TodayResult;
+import com.seoulprojet.seoulpoem.model.UserPageResult;
 import com.seoulprojet.seoulpoem.model.WriterApplyResult;
 import com.seoulprojet.seoulpoem.model.WriterListResult;
 import okhttp3.MultipartBody;
@@ -114,23 +115,34 @@ public interface NetworkService {
                                 @Header("type") int type,
                                 @Header("Content-Type") String Content_type);
 
-    // login (필명 입력)=
+    // login (필명 입력)
     @POST("/users/signin")
     Call<SignInResult> postName(@Header("type") int type,
                                 @Header("email") String email,
                                 @Body LoginPenName pen_name);
 
+    // mypage
+    @GET("/mypage")
+    Call<UserPageResult> getUserPage(@Header("email") String email,
+                                     @Header("type") int type,
+                                     @Query("email") String otherEmail,
+                                     @Query("type") int otherType);
+
     // mypage poem
     @GET("/mypage/poem")
     Call<MyPagePoemResult> getMyPoem(@Header("email") String email,
-                                     @Header("type") int type);
+                                     @Header("type") int type,
+                                     @Query("email") String otherEmail,
+                                     @Query("type") int otherType);
 
     @GET("/mypage/photo")
     Call<MyPagePhotoResult> getMyPhoto(@Header("email") String email,
-                                       @Header("type") int type);
+                                       @Header("type") int type,
+                                       @Query("email") String otherEmail,
+                                       @Query("type") int otherType);
 
-    // mypage 프로필 정보
-    @GET("/mypage")
+    // mypage hamburger 프로필 정보
+    @GET("/mypage/menu")
     Call<MyPageResult> getMyPage(@Header("email") String email,
                                  @Header("type") int type);
 
