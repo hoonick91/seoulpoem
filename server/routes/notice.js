@@ -14,12 +14,11 @@ router.get('/', async (req, res) => {
         var connection = await pool.getConnection();
         await connection.beginTransaction();
 
-        let query1 = 'SELECT idnotices, title, content FROM seoul_poem.notices;';
+        let query1 = 'SELECT idnotices, title, content,flag FROM seoul_poem.notices;';
         let notice_list = await connection.query(query1);
 
         res.status(200).send( { notice_list: notice_list });
         await connection.commit();
-
 
     }
     catch(err){
@@ -39,10 +38,10 @@ router.get('/:idnotices', async (req, res) => {
         var connection = await pool.getConnection();
         await connection.beginTransaction();
 
-        let query1 = 'SELECT * FROM seoul_poem.notices where idnotices = ?';
-        let notice_list = await connection.query(query1, req.params.idnotices);
+        let query1 = 'SELECT idnotices,title,content,date,flag FROM seoul_poem.notices where idnotices = ?';
+        let notice = await connection.query(query1, req.params.idnotices);
 
-        res.status(200).send( { notice_list: notice_list });
+        res.status(200).send( { notice: notice[0] });
         await connection.commit();
 
 
