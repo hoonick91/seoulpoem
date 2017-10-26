@@ -153,13 +153,14 @@ public interface NetworkService {
                                  @Header("type") int type);
 
     // mypage 수정
+    @Multipart
     @POST("/users/modify")
     Call<MyPageModify> postMyPage(@Header("email") String email,
                                   @Header("type") int type,
                                   @Part("inform") RequestBody inform,
                                   @Part("pen_name") RequestBody pen_name,
-                                  @Part("profile") MultipartBody.Part profile,
-                                  @Part("background") MultipartBody.Part background);
+                                  @Part MultipartBody.Part profile,
+                                  @Part MultipartBody.Part background);
 
     // notice
     @GET("/notice")

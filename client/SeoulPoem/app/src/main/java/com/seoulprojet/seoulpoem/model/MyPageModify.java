@@ -7,9 +7,5 @@ package com.seoulprojet.seoulpoem.model;
 public class MyPageModify {
     public String status;
     public String msg;
-    public User user;
 
-    public class User{
-        public String pen_name;
-    }
 }

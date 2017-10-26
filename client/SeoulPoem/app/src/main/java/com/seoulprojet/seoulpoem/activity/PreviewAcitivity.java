@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,6 +43,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.seoulprojet.seoulpoem.R.id.poem_img;
+
 /**
  * Created by minjeong on 2017-09-27.
  */
@@ -64,6 +66,7 @@ public class PreviewAcitivity extends AppCompatActivity {
     ImageButton complete; //확인버튼
 
     int article_id;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,6 +101,8 @@ public class PreviewAcitivity extends AppCompatActivity {
         paper_background = (LinearLayout) findViewById(R.id.paper_background);
         complete = (ImageButton) findViewById(R.id.complete);
 
+        preview_img.setColorFilter(Color.parseColor("#a0a0a0"), PorterDuff.Mode.MULTIPLY);
+
     }
 
     /************************************클릭 리스너 연결*****************************************/
@@ -113,6 +118,10 @@ public class PreviewAcitivity extends AppCompatActivity {
             public void onClick(View v) {
                 //서버에 전송하기 사진, 제목, 내용.종이질감.글자색,글자설정 등
                 savePoem();
+                finish();
+                WritePoemActivity.writePoemActivity.finish();
+
+
 
             }
         });
@@ -243,6 +252,7 @@ public class PreviewAcitivity extends AppCompatActivity {
                             Intent intent = new Intent(PreviewAcitivity.this, ReadingPoemActivity.class);
                             intent.putExtra("articles_id", ""+article_id);
                             startActivity(intent);
+
                         } else {
 
                         }
@@ -318,8 +328,11 @@ public class PreviewAcitivity extends AppCompatActivity {
 
 
             Log.e("photofile", Preview.photo_location);
+            //photofile: /storage/emulated/0/SeoulPoem/seoulpoem_090844_1018235213.jpg
             Log.e("photoname", Preview.photoName);
+            //photoname: seoulpoem_090844_1018235213.jpg
             Log.e("photo uri", "" + Preview.photo);
+            //photo uri: content://com.seoulprojet.seoulpoem.activity.provider/images/SeoulPoem/seoulpoem_090844_1018235213.jpg
 
 
         }

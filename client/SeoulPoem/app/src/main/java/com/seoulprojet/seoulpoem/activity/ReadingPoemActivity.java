@@ -1,12 +1,11 @@
 package com.seoulprojet.seoulpoem.activity;
 
 import android.app.Dialog;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.media.Image;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,6 +40,7 @@ import static android.graphics.Typeface.BOLD;
 import static android.graphics.Typeface.BOLD_ITALIC;
 import static android.graphics.Typeface.ITALIC;
 import static android.graphics.Typeface.NORMAL;
+import static android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND;
 
 public class ReadingPoemActivity extends AppCompatActivity {
 
@@ -150,6 +150,9 @@ public class ReadingPoemActivity extends AppCompatActivity {
 
         style_check = new boolean[]{false,false,false};
 
+        poem_img.setColorFilter(Color.parseColor("#8c8a8a"), PorterDuff.Mode.MULTIPLY);
+
+
     }
 
     //버튼 클릭 모션
@@ -248,6 +251,8 @@ public class ReadingPoemActivity extends AppCompatActivity {
                     Glide.with(ReadingPoemActivity.this)
                             .load(photo)
                             .into(poem_img);
+
+                    출처: http://neoroid.tistory.com/317 [그린 블로그]
                     if(response.body().article.writer.profile != null)
                     Glide.with(ReadingPoemActivity.this)
                             .load(response.body().article.writer.profile)
@@ -420,7 +425,7 @@ public class ReadingPoemActivity extends AppCompatActivity {
 
             // 다이얼로그 외부 화면 흐리게 표현
             WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
-            lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            lpWindow.flags = FLAG_DIM_BEHIND;
             lpWindow.dimAmount = 0.8f;
             getWindow().setAttributes(lpWindow);
 
@@ -473,7 +478,7 @@ public class ReadingPoemActivity extends AppCompatActivity {
 
             // 다이얼로그 외부 화면 흐리게 표현
             WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
-            lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            lpWindow.flags = FLAG_DIM_BEHIND;
             lpWindow.dimAmount = 0.8f;
             getWindow().setAttributes(lpWindow);
 
@@ -524,7 +529,7 @@ public class ReadingPoemActivity extends AppCompatActivity {
 
             // 다이얼로그 외부 화면 흐리게 표현
             WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
-            lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            lpWindow.flags = FLAG_DIM_BEHIND;
             lpWindow.dimAmount = 0.8f;
             getWindow().setAttributes(lpWindow);
 
@@ -565,7 +570,7 @@ public class ReadingPoemActivity extends AppCompatActivity {
 
             // 다이얼로그 외부 화면 흐리게 표현
             WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
-            lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            lpWindow.flags = FLAG_DIM_BEHIND;
             lpWindow.dimAmount = 0.8f;
             getWindow().setAttributes(lpWindow);
 
