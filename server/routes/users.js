@@ -167,10 +167,7 @@ router.post('/modify',multiupload,  async (req, res) => {
     try{
         req.checkHeaders('email', 'empty email').notEmpty();
         req.checkHeaders('type', 'empty type').notEmpty();
-
-        console.log(req.files['profile']);
-        console.log(req.files['background']);
-
+        
         let errors = req.validationErrors();
         if (!errors) {
 
@@ -183,6 +180,8 @@ router.post('/modify',multiupload,  async (req, res) => {
             let user={};
             let pen_name = req.body.pen_name;
             let inform = req.body.inform;
+
+            console.log(inform);
 
             let user_query = 'Select pen_name,profile,background,inform from seoul_poem.users where email = ? and foreign_key_type = ?';
             var user_before = await connection.query(user_query, [email,type]);
@@ -213,7 +212,7 @@ router.post('/modify',multiupload,  async (req, res) => {
 
             }
 
-            if(inform || inform == " "){
+            if(inform || inform == ""){
                 let flags = 0;
                 if(user_before[0].inform){
                     if( user_before[0].inform == inform)
