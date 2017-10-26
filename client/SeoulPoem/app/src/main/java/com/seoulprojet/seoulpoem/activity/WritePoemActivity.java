@@ -1,14 +1,13 @@
 package com.seoulprojet.seoulpoem.activity;
 
-import android.app.Service;
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -18,7 +17,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -117,7 +115,8 @@ public class WritePoemActivity extends AppCompatActivity {
     private String userEmail = null;
     private int loginType = 0;
 
-
+    //스택관리
+    public static WritePoemActivity writePoemActivity;
 
 
 
@@ -125,6 +124,9 @@ public class WritePoemActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_poem);
+
+        writePoemActivity = this;
+
         initNetwork();
         setId();
         CheckSelectedTag();
@@ -712,68 +714,68 @@ public class WritePoemActivity extends AppCompatActivity {
 
 
     private void EditTag(){
-        if(write_tag.getText().toString().contains("#그리움 ")){
+        if(write_tag.getText().toString().contains("#서울 ")){
         if (tag[0].getTag().toString().equals("0")){ //태그 추가인 경우
         tag[0].setTag("1");
         check_cnt++;
         CheckSelectedTag();
         }
-        } else if(write_tag.getText().toString().contains("#불안 ")) {
+        } else if(write_tag.getText().toString().contains("#홍대 ")) {
         if (tag[1].getTag().toString().equals("0")) { //태그 추가인 경우
         tag[1].setTag("1");
         check_cnt++;
         CheckSelectedTag();
         }
-        }else if(write_tag.getText().toString().contains("#감정 ")) {
+        }else if(write_tag.getText().toString().contains("#강남 ")) {
         if (tag[2].getTag().toString().equals("0")) { //태그 추가인 경우
         tag[2].setTag("1");
         check_cnt++;
         CheckSelectedTag();
         }
         }
-        else if(write_tag.getText().toString().contains("#절제 ")) {
+        else if(write_tag.getText().toString().contains("#압구정 ")) {
         if (tag[3].getTag().toString().equals("0")) { //태그 추가인 경우
         tag[3].setTag("1");
         check_cnt++;
         CheckSelectedTag();
         }
         }
-        else if(write_tag.getText().toString().contains("#사랑 ")) {
+        else if(write_tag.getText().toString().contains("#광화문 ")) {
         if (tag[4].getTag().toString().equals("0")) { //태그 추가인 경우
         tag[4].setTag("1");
         check_cnt++;
         CheckSelectedTag();
         }
         }
-        else if(write_tag.getText().toString().contains("#강남역 ")) {
+        else if(write_tag.getText().toString().contains("#한강 ")) {
         if (tag[5].getTag().toString().equals("0")) { //태그 추가인 경우
         tag[5].setTag("1");
         check_cnt++;
         CheckSelectedTag();
         }
         }
-        else if(write_tag.getText().toString().contains("#빌딩숲 ")) {
+        else if(write_tag.getText().toString().contains("#종로 ")) {
         if (tag[6].getTag().toString().equals("0")) { //태그 추가인 경우
         tag[6].setTag("1");
         check_cnt++;
         CheckSelectedTag();
         }
         }
-        else if(write_tag.getText().toString().contains("#여의나루 ")) {
+        else if(write_tag.getText().toString().contains("#빌딩숲 ")) {
         if (tag[7].getTag().toString().equals("0")) { //태그 추가인 경우
         tag[7].setTag("1");
         check_cnt++;
         CheckSelectedTag();
         }
         }
-        else if(write_tag.getText().toString().contains("#한강 ")) {
+        else if(write_tag.getText().toString().contains("#이태원 ")) {
         if (tag[8].getTag().toString().equals("0")) { //태그 추가인 경우
         tag[8].setTag("1");
         check_cnt++;
         CheckSelectedTag();
         }
         }
-        else if(write_tag.getText().toString().contains("#기타 ")) {
+        else if(write_tag.getText().toString().contains("#거리 ")) {
         if (tag[9].getTag().toString().equals("0")) { //태그 추가인 경우
         tag[9].setTag("1");
         check_cnt++;

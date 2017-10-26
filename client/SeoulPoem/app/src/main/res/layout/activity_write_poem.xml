@@ -84,7 +84,7 @@
                         android:layout_marginLeft="26dp"
                         android:id="@+id/tag1"
                         android:tag="1"
-                        android:text="그리움"
+                        android:text="서울"
                         android:textSize="13sp"
                         android:textColor="#95989a"
                         android:background="@drawable/rectangle_path"/>
@@ -95,7 +95,7 @@
                         android:layout_marginLeft="7dp"
                         android:id="@+id/tag2"
                         android:tag="0"
-                        android:text="불안"
+                        android:text="홍대"
                         android:textSize="13sp"
                         android:textColor="#95989a"
                         android:background="@drawable/rectangle_path"/>
@@ -106,7 +106,7 @@
                         android:layout_marginLeft="7dp"
                         android:id="@+id/tag3"
                         android:tag="0"
-                        android:text="감정"
+                        android:text="강남"
                         android:textSize="13sp"
                         android:textColor="#95989a"
                         android:background="@drawable/rectangle_path"/>
@@ -117,7 +117,7 @@
                         android:layout_marginLeft="7dp"
                         android:id="@+id/tag4"
                         android:tag="0"
-                        android:text="절제"
+                        android:text="압구정"
                         android:textSize="13sp"
                         android:textColor="#95989a"
                         android:background="@drawable/rectangle_path"/>
@@ -128,7 +128,7 @@
                         android:layout_marginLeft="7dp"
                         android:id="@+id/tag5"
                         android:tag="0"
-                        android:text="사랑"
+                        android:text="광화문"
                         android:textSize="13sp"
                         android:textColor="#95989a"
                         android:background="@drawable/rectangle_path"/>
@@ -148,7 +148,7 @@
                         android:layout_marginLeft="26dp"
                         android:id="@+id/tag6"
                         android:tag="0"
-                        android:text="강남역"
+                        android:text="한강"
                         android:textSize="13sp"
                         android:textColor="#95989a"
                         android:background="@drawable/rectangle_path"/>
@@ -159,7 +159,7 @@
                         android:layout_marginLeft="7dp"
                         android:id="@+id/tag7"
                         android:tag="0"
-                        android:text="빌딩숲"
+                        android:text="종로"
                         android:textSize="13sp"
                         android:textColor="#95989a"
                         android:background="@drawable/rectangle_path"/>
@@ -170,7 +170,7 @@
                         android:layout_marginLeft="7dp"
                         android:id="@+id/tag8"
                         android:tag="0"
-                        android:text="여의나루"
+                        android:text="빌딩숲"
                         android:textSize="13sp"
                         android:textColor="#95989a"
                         android:background="@drawable/rectangle_path"/>
@@ -181,7 +181,7 @@
                         android:layout_marginLeft="7dp"
                         android:id="@+id/tag9"
                         android:tag="0"
-                        android:text="한강"
+                        android:text="이태원"
                         android:textSize="13sp"
                         android:textColor="#95989a"
                         android:background="@drawable/rectangle_path"/>
@@ -192,7 +192,7 @@
                         android:layout_marginLeft="7dp"
                         android:id="@+id/tag10"
                         android:tag="0"
-                        android:text="기타"
+                        android:text="거리"
                         android:textSize="13sp"
                         android:textColor="#95989a"
                         android:background="@drawable/rectangle_path"/>

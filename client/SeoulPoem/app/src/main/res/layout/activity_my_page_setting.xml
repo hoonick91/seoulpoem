@@ -7,6 +7,7 @@
     tools:context="com.seoulprojet.seoulpoem.activity.MyPageSetting">
 
     <LinearLayout
+        android:id="@+id/total_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -121,13 +122,13 @@
                 android:id="@+id/mypage_setting_name_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="10"
-                android:lines="1"
+                android:backgroundTint="#95989a"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:hint="필명을 입력해주세요"
+                android:lines="1"
+                android:maxLength="10"
                 android:textCursorDrawable="@android:color/black"
-                android:backgroundTint="#95989a"
                 android:textSize="15sp" />
 
             <TextView
@@ -142,13 +143,13 @@
                 android:id="@+id/mypage_setting_message_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="한 줄 소개를 입력해주세요"
-                android:maxLines="3"
-                android:maxLength="45"
                 android:backgroundTint="#95989a"
                 android:focusable="true"
-                android:textCursorDrawable="@android:color/black"
                 android:focusableInTouchMode="true"
+                android:hint="한 줄 소개를 입력해주세요"
+                android:maxLength="45"
+                android:maxLines="3"
+                android:textCursorDrawable="@android:color/black"
                 android:textSize="15sp" />
 
         </LinearLayout>
