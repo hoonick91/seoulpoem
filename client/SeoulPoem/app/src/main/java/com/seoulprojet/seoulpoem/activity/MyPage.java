@@ -556,6 +556,8 @@ public class MyPage extends AppCompatActivity {
             Toast.makeText(MyPage.this,"사진이 저장되었습니다.",Toast.LENGTH_LONG).show();
             Intent intent = new Intent(MyPage.this, WritePoemActivity.class);
             intent.putExtra("type","0");
+            intent.putExtra("userEmail", userEmail);
+            intent.putExtra("loginType", loginType);
             startActivity(intent);
         }
     }

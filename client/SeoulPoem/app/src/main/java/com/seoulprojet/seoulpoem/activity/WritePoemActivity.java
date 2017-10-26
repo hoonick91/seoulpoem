@@ -289,7 +289,10 @@ public class WritePoemActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(getApplicationContext(), PreviewAcitivity.class);
                     intent.putExtra("type", "" + article_id);
+                    intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("loginType", loginType);
                     startActivity(intent);
+
                 }
             }
         });

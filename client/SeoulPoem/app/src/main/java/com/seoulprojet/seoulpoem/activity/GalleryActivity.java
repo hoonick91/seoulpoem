@@ -406,6 +406,8 @@ public class GalleryActivity extends AppCompatActivity {
             Toast.makeText(GalleryActivity.this,"사진이 저장되었습니다.",Toast.LENGTH_LONG).show();
             Intent intent = new Intent(GalleryActivity.this, WritePoemActivity.class);
             intent.putExtra("type","0");
+            intent.putExtra("userEmail", userEmail);
+            intent.putExtra("loginType", loginType);
             startActivity(intent);
         }
     }
