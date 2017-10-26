@@ -15,7 +15,7 @@ router.post('/', async (req, res, next) => {
         await connection.beginTransaction();
 
         let email =req.headers.email;
-        let type = req.headers.tyep;
+        let type = req.headers.type;
 
         let query1 = 'select email from seoul_poem.users where email = ? and foreign_key_type = ? author = 1';
         let data = await connection.query(query1, [email,type]);
