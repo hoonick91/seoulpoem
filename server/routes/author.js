@@ -58,7 +58,7 @@ router.get('/', async (req, res) => {
         var myinform = await connection.query(query3,[email,type]);
 
         console.log(myinform);
-        if(myinform){
+        if(myinform.length){
             var author_list = [];
             author_list.push(myinform[0]);
             let len = authors_list.length;
