@@ -271,7 +271,7 @@ router.post('/modify',multiupload,  async (req, res) => {
                     }
 
                     res.status(200);
-                    res.json({status: "success", msg: "success modify", user : user});
+                    res.json({status: "success", msg: "success modify"});
                     await connection.commit();
                 }else {
                     res.status(500);
