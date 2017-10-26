@@ -185,19 +185,17 @@ public class MyPageSetting extends AppCompatActivity {
 
                         }
 
-                        if(!response.body().msg.inform.equals(" ")){
-                            Log.i("inform", "inform : " + response.body().msg.inform);
-                            inform = response.body().msg.inform;
-                        }else{
-                            inform = "";
-                            mypage_setting_message_et.setHint("한 줄 소개를 입력해주세요");
-                        }
+
+                        Log.i("inform", "inform : " + response.body().msg.inform);
+                        inform = response.body().msg.inform;
                         mypage_setting_message_et.setText(inform);
-                        if(!response.body().msg.pen_name.equals("")) {
-                            Log.i("pen_name", "pen_name : " + response.body().msg.pen_name);
-                            mypage_setting_name_et.setText(response.body().msg.pen_name);
-                            penName = response.body().msg.pen_name;
-                        }
+                        mypage_setting_message_et.setHint("한 줄 소개를 입력해주세요");
+
+                        Log.i("pen_name", "pen_name : " + response.body().msg.pen_name);
+                        mypage_setting_name_et.setText(response.body().msg.pen_name);
+                        penName = response.body().msg.pen_name;
+
+
                     }
                 }
             }
@@ -349,7 +347,7 @@ public class MyPageSetting extends AppCompatActivity {
     private void postMyPage(){
 
         if(mypage_setting_message_et.getText().toString().length()==0)
-            inform = " ";
+            inform = "";
         else
             inform = mypage_setting_message_et.getText().toString();
         RequestBody informBody = RequestBody.create(MediaType.parse("multipart/form-data"),"" + inform);

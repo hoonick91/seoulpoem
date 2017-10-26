@@ -23,29 +23,7 @@
             <RelativeLayout
                 android:id="@+id/llup"
                 android:layout_width="match_parent"
-                android:layout_height="143dp"
-                android:background="#ffffff">
-
-
-                <!--툴바-->
-                <include
-                    android:id="@+id/icToolbar"
-                    layout="@layout/tool_bar_main" />
-
-                <!--hash tag toggle-->
-                <RelativeLayout
-                    android:id="@+id/rlHashTagToggle"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="70dp">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rvHashtags"
-                        android:overScrollMode="never"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </RelativeLayout>
-
+                android:layout_height="80dp">
 
             </RelativeLayout>
 
@@ -85,7 +63,24 @@
                     android:textStyle="bold"/>
             </LinearLayout>
 
+            <!--hash tag toggle-->
+            <RelativeLayout
+                android:id="@+id/rlHashTagToggle"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="-10dp">
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvHashtags"
+                    android:overScrollMode="never"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+
+            <!--툴바-->
+            <include
+                android:id="@+id/icToolbar"
+                layout="@layout/tool_bar_main" />
             <!--viewpager, indicator-->
             <RelativeLayout
                 android:id="@+id/rlViewpager"

@@ -223,6 +223,8 @@ public class PreviewAcitivity extends AppCompatActivity {
                             Toast.makeText(PreviewAcitivity.this, "등록이 완료되었습니다!", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(PreviewAcitivity.this, ReadingPoemActivity.class);
                             intent.putExtra("articles_id", ""+response.body().articles_id);
+                            intent.putExtra("userEmail", userEmail);
+                            intent.putExtra("loginType", loginType);
                             startActivity(intent);
                         } else {
 
@@ -251,6 +253,8 @@ public class PreviewAcitivity extends AppCompatActivity {
                             Toast.makeText(PreviewAcitivity.this, "수정이 완료되었습니다!", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(PreviewAcitivity.this, ReadingPoemActivity.class);
                             intent.putExtra("articles_id", ""+article_id);
+                            intent.putExtra("userEmail", userEmail);
+                            intent.putExtra("loginType", loginType);
                             startActivity(intent);
 
                         } else {

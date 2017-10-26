@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     /***************************************변수***********************************************/
 
     //tool_bar
-    private RelativeLayout rlHamberger, rlSearch;
+    private RelativeLayout rlHamberger, rlSearch, rlTags;
     private Toolbar tbMain;
 
     //hash tag
@@ -131,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
     private long backPressedTime = 0;
     private final long FINSH_INTERVAL_TIME = 2000;
 
+    //tags open 확인변수
+    private boolean showTags=false;
 
     /***************************************START***********************************************/
     @Override
@@ -159,6 +161,9 @@ public class MainActivity extends AppCompatActivity {
 
         //검색
         toSearch();
+
+        //태그 더보기
+        showTags();
 
         //더보기
         toMore();
@@ -228,6 +233,7 @@ public class MainActivity extends AppCompatActivity {
         tbMain = (Toolbar) findViewById(R.id.tbMain);
         rlHamberger = (RelativeLayout) findViewById(R.id.rlHamberger);
         rlSearch = (RelativeLayout) findViewById(R.id.rlSearch);
+        rlTags = (RelativeLayout)findViewById(R.id.rlTags);
 
         llHashTag = (LinearLayout) findViewById(R.id.llHashTag);
         rlHashTagToggle = (RelativeLayout) findViewById(R.id.rlHashTagToggle);
@@ -391,6 +397,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     tvHash.setText("# " + hashtagListData.text);
                     getLists(hashtagListData.text);
+                    rlHashTagToggle.animate().translationY(-180).withLayer();
+                    showTags = false;
                 }
             });
 
@@ -461,6 +469,24 @@ public class MainActivity extends AppCompatActivity {
                 //검색으로 이동
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
+            }
+        });
+    }
+
+    /******************************************show tags******************************************/
+    public void showTags() {
+        tbMain.bringToFront();
+
+        rlTags.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!showTags) { //보이지 않을때 보이게 함
+                    rlHashTagToggle.animate().translationY(180).withLayer();
+                    showTags = true;
+                }else{ //보일때 보이지 않게함
+                    rlHashTagToggle.animate().translationY(-180).withLayer();
+                    showTags = false;
+                }
             }
         });
     }
@@ -723,7 +749,10 @@ public class MainActivity extends AppCompatActivity {
             Log.e("**final crop photoUri", "" + photoUri);
             Toast.makeText(MainActivity.this, "사진이 저장되었습니다.", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(MainActivity.this, WritePoemActivity.class);
+            intent.putExtra("userEmail", userEmail);
+            intent.putExtra("loginType", loginType);
             intent.putExtra("type", "0");
+
             startActivity(intent);
         }
     }
