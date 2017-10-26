@@ -212,9 +212,10 @@ router.post('/modify',multiupload,  async (req, res) => {
 
             }
 
+
             if(inform || inform == ""){
                 let flags = 0;
-                if(user_before[0].inform){
+                if(user_before[0].inform|| user_before[0].inform == ""){
                     if( user_before[0].inform == inform)
                         flags = 1;
                 }

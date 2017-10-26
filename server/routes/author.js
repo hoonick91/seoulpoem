@@ -57,9 +57,8 @@ router.get('/', async (req, res) => {
         let query3 = 'SELECT email,foreign_key_type as type, pen_name, profile, inform from seoul_poem.users where author=1 and email = ? and foreign_key_type = ?';
         var myinform = await connection.query(query3,[email,type]);
 
+        console.log(myinform);
         if(myinform){
-            res.status(200).send({count_authors: count_authors[0].count, authors_list: authors_list});
-        }else {
             var author_list = [];
             author_list.push(myinform[0]);
             let len = authors_list.length;
@@ -68,7 +67,8 @@ router.get('/', async (req, res) => {
                 author_list.push(authors_list[i]);
             }
             res.status(200).send({count_authors: count_authors[0].count, authors_list: author_list});
-
+        }else {
+            res.status(200).send({count_authors: count_authors[0].count, authors_list: authors_list});
         }
 
         await connection.commit();
