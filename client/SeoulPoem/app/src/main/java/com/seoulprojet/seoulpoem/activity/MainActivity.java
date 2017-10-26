@@ -127,12 +127,18 @@ public class MainActivity extends AppCompatActivity {
     private String userEmail = null;
     private int loginType = 0;
 
+    //tag엑티비티에서 받은
+    private String tag;
+
     //back key 두번
     private long backPressedTime = 0;
     private final long FINSH_INTERVAL_TIME = 2000;
 
     //tags open 확인변수
     private boolean showTags=false;
+
+    //current tag name
+    private String currentTag;
 
     /***************************************START***********************************************/
     @Override
@@ -144,6 +150,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userEmail = intent.getExtras().getString("userEmail");
         loginType = intent.getExtras().getInt("loginType");
+        tag = intent.getExtras().getString("tag");
+        currentTag = tag;
+
 
 
         //서비스 객체 초기화
@@ -177,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
         //네트워킹
         poems = new ArrayList<>();
-        getLists("그리움");
+        getLists(tag);
 
 
         // drawer
@@ -253,16 +262,16 @@ public class MainActivity extends AppCompatActivity {
 
         //hash tag
         hashtags = new ArrayList<>();
-        hashtags.add(new HashtagListData(R.drawable.a, "거리"));
-        hashtags.add(new HashtagListData(R.drawable.b, "이벤트"));
-        hashtags.add(new HashtagListData(R.drawable.c, "그리움"));
-        hashtags.add(new HashtagListData(R.drawable.d, "쇼핑"));
-        hashtags.add(new HashtagListData(R.drawable.e, "기타"));
-        hashtags.add(new HashtagListData(R.drawable.f, "거리"));
-        hashtags.add(new HashtagListData(R.drawable.g, "이벤트"));
-        hashtags.add(new HashtagListData(R.drawable.h, "푸드"));
-        hashtags.add(new HashtagListData(R.drawable.i, "쇼핑"));
-        hashtags.add(new HashtagListData(R.drawable.j, "기타"));
+        hashtags.add(new HashtagListData(R.drawable.aaa, "강남"));
+        hashtags.add(new HashtagListData(R.drawable.bbb, "거리"));
+        hashtags.add(new HashtagListData(R.drawable.ccc, "광화문"));
+        hashtags.add(new HashtagListData(R.drawable.ddd, "빌딩숲"));
+        hashtags.add(new HashtagListData(R.drawable.eee, "서울"));
+        hashtags.add(new HashtagListData(R.drawable.fff, "압구정"));
+        hashtags.add(new HashtagListData(R.drawable.ggg, "한강"));
+        hashtags.add(new HashtagListData(R.drawable.hhh, "홍대"));
+        hashtags.add(new HashtagListData(R.drawable.iii, "종로"));
+        hashtags.add(new HashtagListData(R.drawable.jjj, "이태원"));
 
     }
 
@@ -385,9 +394,6 @@ public class MainActivity extends AppCompatActivity {
             final HashtagListData hashtagListData = hashtagListDatas.get(position);
 
 
-            //title
-            holder.tvTitle.setText(hashtagListData.text);
-
             //img
             holder.ivHashtag.setImageResource(hashtagListData.imgResourceID);
 
@@ -395,6 +401,7 @@ public class MainActivity extends AppCompatActivity {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    currentTag = hashtagListData.text;
                     tvHash.setText("# " + hashtagListData.text);
                     getLists(hashtagListData.text);
                     rlHashTagToggle.animate().translationY(-180).withLayer();
@@ -430,8 +437,8 @@ public class MainActivity extends AppCompatActivity {
 
     /***********************************main 리스트 가져오기*********************************/
     public void getLists(String tag) {
+        final String tagname = tag;
         Call<MainResult> requestMainLists = service.getPoems(tag);
-
         requestMainLists.enqueue(new Callback<MainResult>() {
             @Override
             public void onResponse(Call<MainResult> call, Response<MainResult> response) {
@@ -447,6 +454,9 @@ public class MainActivity extends AppCompatActivity {
                         vpPoems.setPageMargin(12);
                         vpPoems.setClipChildren(false);
                         vpPoems.setCurrentItem(2);
+
+                        //초기 hashtag
+                        tvHash.setText("# "+ tagname);
 
                     }
                 } else {
@@ -468,6 +478,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //검색으로 이동
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
                 startActivity(intent);
             }
         });
@@ -501,6 +513,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
+                intent.putExtra("tag", currentTag);
                 startActivity(intent);
             }
         });

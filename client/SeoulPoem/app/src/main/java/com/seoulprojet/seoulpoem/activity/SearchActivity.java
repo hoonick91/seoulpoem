@@ -47,6 +47,11 @@ public class SearchActivity extends AppCompatActivity {
     private LinearLayout llTv01, llTv02, llRv01, llRv02;
     private RelativeLayout rlSearchButton;
 
+    //유저 정보
+    private String userEmail = null;
+    private int loginType = 0;
+    private String otherEmail = null;
+    private int otherType = 0;
 
     //네트워크
     NetworkService service;
@@ -56,6 +61,11 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        //유저 정보 가져오기
+        Intent intent = getIntent();
+        userEmail = intent.getExtras().getString("userEmail");
+        loginType = intent.getExtras().getInt("loginType");
 
 
         //서비스 객체 초기화
@@ -172,9 +182,24 @@ public class SearchActivity extends AppCompatActivity {
             //content
             holder.tvPhotoNum.setText(String.valueOf(searchListDataAuthor.ac));
 
-
             //content
             holder.tvPoemNum.setText(String.valueOf(searchListDataAuthor.pc));
+
+            //otherEmail = ;
+            //otherType = ;
+
+            //작가 누르면 작가 마이페이지로 이동
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                    intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("loginType", loginType);
+                    intent.putExtra("otherEmail", otherEmail);
+                    intent.putExtra("otherType", otherType);
+                    startActivity(intent);
+                }
+            });
 
 
         }
@@ -230,9 +255,6 @@ public class SearchActivity extends AppCompatActivity {
         public void onBindViewHolder(final MyViewHolderTitle holder, int position) {
             SearchListDataArticle searchListDataArticle = searchListDataArticles.get(position);
 
-
-//            Log.d("test",searchListDataArticle.title );
-//            Log.d("test",searchListDataArticle.contents );
             holder.tvTitle.setText(searchListDataArticle.title);
             holder.tvContent.setText(searchListDataArticle.contents);
             holder.itemView.setTag(searchListDataArticle.idarticles);
@@ -240,8 +262,8 @@ public class SearchActivity extends AppCompatActivity {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getApplicationContext(),ReadingPoemActivity.class);
-                    intent.putExtra("articles_id",holder.itemView.getTag().toString());
+                    Intent intent = new Intent(getApplicationContext(), ReadingPoemActivity.class);
+                    intent.putExtra("articles_id", holder.itemView.getTag().toString());
                     startActivity(intent);
                 }
             });
@@ -281,16 +303,16 @@ public class SearchActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body().status.equals("success")) {
 
-                        if(response.body().author_list.size()==0 && response.body().article_list.size()==0 ) {
+                        if (response.body().author_list.size() == 0 && response.body().article_list.size() == 0) {
                             llTv01.setVisibility(View.VISIBLE);
                             llTv02.setVisibility(View.VISIBLE);
-                        }else if(response.body().author_list.size()!=0 && response.body().article_list.size()==0 ) {
+                        } else if (response.body().author_list.size() != 0 && response.body().article_list.size() == 0) {
                             llTv01.setVisibility(View.INVISIBLE);
                             llTv02.setVisibility(View.VISIBLE);
-                        }else if(response.body().author_list.size()==0 && response.body().article_list.size()!=0 ){
+                        } else if (response.body().author_list.size() == 0 && response.body().article_list.size() != 0) {
                             llTv01.setVisibility(View.VISIBLE);
                             llTv02.setVisibility(View.INVISIBLE);
-                        }else{
+                        } else {
                             llTv01.setVisibility(View.INVISIBLE);
                             llTv02.setVisibility(View.INVISIBLE);
                         }

@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -37,6 +38,8 @@ import com.seoulprojet.seoulpoem.model.GalleryResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -52,8 +55,11 @@ public class GalleryActivity extends AppCompatActivity {
 
 
     //tool_bar
-    private RelativeLayout rlBack, rlSearch;
-    private TextView tvPlaceName;
+    private RelativeLayout rlBack;
+
+    //플로팅버튼
+    FloatingActionButton floatingActionButton;
+
 
     private RecyclerView recyclerView;
     private RecyclerAdapter recyclerAdapter;
@@ -82,6 +88,10 @@ public class GalleryActivity extends AppCompatActivity {
 
     private String mCurrentPhotoPath;
 
+    //태그명
+    private String tagName;
+    private TextView tvTagName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +102,7 @@ public class GalleryActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userEmail = intent.getExtras().getString("userEmail");
         loginType = intent.getExtras().getInt("loginType");
+        tagName = intent.getExtras().getString("tag");
 
 
         //서비스 객체 초기화
@@ -99,6 +110,8 @@ public class GalleryActivity extends AppCompatActivity {
 
         //findView
         findView();
+
+        tvTagName.setText("# " + tagName);
 
 
         //레이아웃 매니저 설정
@@ -118,12 +131,28 @@ public class GalleryActivity extends AppCompatActivity {
         //메인으로
         toMain();
 
-        //검색으로
-        toSearch();
-
         //작성하기로
         toWrite();
 
+        //플로팅버튼 설정
+
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 || dy < 0 && floatingActionButton.isShown()) {
+                    floatingActionButton.hide();
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    floatingActionButton.show();
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
 
     }
 
@@ -131,12 +160,10 @@ public class GalleryActivity extends AppCompatActivity {
     /***************************************findView***********************************************/
     public void findView() {
         rlBack = (RelativeLayout) findViewById(R.id.rlBack);
-        rlSearch = (RelativeLayout) findViewById(R.id.rlSearch);
-        tvPlaceName = (TextView) findViewById(R.id.tvPlaceName);
         rlToWrite = (RelativeLayout) findViewById(R.id.rlToWrite);
+        tvTagName = (TextView) findViewById(R.id.tvTagName);
 
     }
-
 
     /***********************************Adapter**********************************/
     class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> {
@@ -147,6 +174,7 @@ public class GalleryActivity extends AppCompatActivity {
         public RecyclerAdapter(ArrayList<GalleryListData> galleryListDatas) {
             this.galleryListDatas = galleryListDatas;
         }
+
 
         public void setAdapter(ArrayList<GalleryListData> galleryListDatas) {
             this.galleryListDatas = galleryListDatas;
@@ -205,7 +233,7 @@ public class GalleryActivity extends AppCompatActivity {
 
     /***********************************갤러리 리스트 가져오기*********************************/
     public void getPhotos() {
-        Call<GalleryResult> requestGalleryLists = service.getPhotos("그리움");
+        Call<GalleryResult> requestGalleryLists = service.getPhotos(tagName);
         requestGalleryLists.enqueue(new Callback<GalleryResult>() {
             @Override
             public void onResponse(Call<GalleryResult> call, Response<GalleryResult> response) {
@@ -231,54 +259,38 @@ public class GalleryActivity extends AppCompatActivity {
         rlBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //main 이동
-                Intent intent = new Intent(GalleryActivity.this, MainActivity.class);
-                intent.putExtra("userEmail", userEmail);
-                intent.putExtra("loginType", loginType);
-                startActivity(intent);
-                finish();
+                onBackPressed();
+
             }
         });
     }
 
-
-    /**********************************search**********************************/
-    public void toSearch() {
-        rlSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //갤러리로 이동
-                Intent intent = new Intent(GalleryActivity.this, SearchActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
 
     /**********************************Write**********************************/
     public void toWrite() {
         rlToWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             dialog();
+                dialog();
             }
         });
     }
 
-    public void dialog(){
+    public void dialog() {
         final CharSequence[] items = {"카메라", "갤러리"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);     // 여기서 this는 Activity의 this
 
         // 여기서 부터는 알림창의 속성 설정
         builder.setTitle("")        // 제목 설정
-                .setItems(items, new DialogInterface.OnClickListener(){    // 목록 클릭시 설정
-                    public void onClick(DialogInterface dialog, int index){
-                        if(index == 0) { // 카메라 클릭시
+                .setItems(items, new DialogInterface.OnClickListener() {    // 목록 클릭시 설정
+                    public void onClick(DialogInterface dialog, int index) {
+                        if (index == 0) { // 카메라 클릭시
                             takePhoto();
 
-                        }else{ //갤러리 클릭시
+                        } else { //갤러리 클릭시
                             goToAlbum();
-                            Log.e("**갤러리","갤러리시작");
+                            Log.e("**갤러리", "갤러리시작");
 
                         }
                     }
@@ -339,7 +351,7 @@ public class GalleryActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
-        Log.e("**gotoalbum","startActivity");
+        Log.e("**gotoalbum", "startActivity");
     }
 
     @Override
@@ -388,7 +400,7 @@ public class GalleryActivity extends AppCompatActivity {
                 return;
             }
             photoUri = data.getData();
-            Log.e("**Before crop photoUri",""+photoUri);
+            Log.e("**Before crop photoUri", "" + photoUri);
             getImageNameToUri(photoUri);
 
             cropImage();
@@ -401,11 +413,11 @@ public class GalleryActivity extends AppCompatActivity {
                         }
                     });
         } else if (requestCode == CROP_FROM_CAMERA) {
-            photoUri=data.getData();
-            Log.e("**final crop photoUri",""+photoUri);
-            Toast.makeText(GalleryActivity.this,"사진이 저장되었습니다.",Toast.LENGTH_LONG).show();
+            photoUri = data.getData();
+            Log.e("**final crop photoUri", "" + photoUri);
+            Toast.makeText(GalleryActivity.this, "사진이 저장되었습니다.", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(GalleryActivity.this, WritePoemActivity.class);
-            intent.putExtra("type","0");
+            intent.putExtra("type", "0");
             intent.putExtra("userEmail", userEmail);
             intent.putExtra("loginType", loginType);
             startActivity(intent);
@@ -449,12 +461,12 @@ public class GalleryActivity extends AppCompatActivity {
             }
 
             File folder = new File(Environment.getExternalStorageDirectory() + "/SeoulPoem/");
-            Log.e("**folder",folder.getPath());
+            Log.e("**folder", folder.getPath());
             File tempFile = new File(folder.toString(), croppedFileName.getName());
-            Log.e("**tempFile",tempFile.getPath());
+            Log.e("**tempFile", tempFile.getPath());
 
             albumUri = Uri.fromFile(croppedFileName);
-            Log.e("**albumUri",""+albumUri);
+            Log.e("**albumUri", "" + albumUri);
 
             Preview.photo_location = tempFile.getPath();
             Preview.photoName = tempFile.getName();
@@ -463,7 +475,7 @@ public class GalleryActivity extends AppCompatActivity {
                     "com.seoulprojet.seoulpoem.activity.provider", tempFile);
 
 
-            Log.e("**aftercropphotoUripath",""+photoUri);
+            Log.e("**aftercropphotoUripath", "" + photoUri);
 
             Preview.photo = photoUri;
 

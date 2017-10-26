@@ -24,7 +24,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="620dp"
                     android:adjustViewBounds="true"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
 
                 <RelativeLayout
                     android:id="@+id/title_layout"
@@ -88,6 +91,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp">
 
+                    <!--작품담기 : 담가지 않았으면 검정색-->
                     <ImageButton
                         android:id="@+id/download"
                         android:layout_width="24dp"
@@ -98,7 +102,23 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:paddingTop="10dp"
-                        android:src="@drawable/download" />
+                        android:src="@drawable/download"
+                        android:visibility="invisible"/>
+
+                    <!--작품담기02 : 담겼으면 파란색으로-->
+                    <ImageButton
+                        android:id="@+id/download02"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginLeft="276dp"
+                        android:background="@android:color/transparent"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="10dp"
+                        android:src="@drawable/share02"
+                        android:visibility="invisible"/>
+
 
                     <ImageButton
                         android:id="@+id/another"

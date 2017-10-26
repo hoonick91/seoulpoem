@@ -12,6 +12,7 @@ public class DetailResult {
         public String photo;
         public String tags;
         public String inform;
+        public int bookmark;
         public int modifiable;
         public Writer writer;
     }

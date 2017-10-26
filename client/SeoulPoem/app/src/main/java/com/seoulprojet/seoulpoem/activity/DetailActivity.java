@@ -3,9 +3,13 @@ package com.seoulprojet.seoulpoem.activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -106,6 +110,9 @@ public class DetailActivity extends AppCompatActivity {
     //작품 상세 정보
     String tags, informs;
 
+    //담은 작품인지 체크
+    int bookmark;
+
     /***************************************START***********************************************/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,7 +178,14 @@ public class DetailActivity extends AppCompatActivity {
 
                 //담은 작품인지, 담지 않은 작품인지에 따라서 나누어야함
                 //우측 상단 visible
-                ivShare.setVisibility(v.VISIBLE);
+
+                //아직 안담았으면 검정색 작품담기 이미지
+                //담았으면 파란색 작품담기 이미지
+                if (bookmark == 0) {
+                    ivShare.setVisibility(v.VISIBLE);
+                } else
+                    ivShare02.setVisibility(v.VISIBLE);
+
                 ivSetting.setVisibility(v.VISIBLE);
 
                 //하단 visible
@@ -194,11 +208,19 @@ public class DetailActivity extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            // 다이얼로그 외부 화면 흐리게 표현
-            WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
-            lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-            lpWindow.dimAmount = 0.8f;
-            getWindow().setAttributes(lpWindow);
+            //dismiss
+            WindowManager.LayoutParams wlp = new WindowManager.LayoutParams();
+            wlp.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            wlp.dimAmount = 0.8f;
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+                wlp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+                wlp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            } else {
+                wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                wlp.height = WindowManager.LayoutParams.MATCH_PARENT;
+            }
+            wlp.gravity = Gravity.CENTER;
+            getWindow().setAttributes(wlp);
 
             //view mapping
             setContentView(R.layout.dialog_share);
@@ -218,6 +240,18 @@ public class DetailActivity extends AppCompatActivity {
             // 클릭 이벤트 셋팅
             mLeftButton.setOnClickListener(addDialog_leftListener);
             mRightButton.setOnClickListener(addDialog_rightListener);
+        }
+
+        //dismiss
+        @Override
+        public boolean dispatchTouchEvent(MotionEvent ev) {
+            Rect dialogBounds = new Rect();
+            getWindow().getDecorView().getHitRect(dialogBounds);
+
+            if (!dialogBounds.contains((int) ev.getX(), (int) ev.getY())) {
+                this.dismiss();
+            }
+            return super.dispatchTouchEvent(ev);
         }
 
 
@@ -247,11 +281,19 @@ public class DetailActivity extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            // 다이얼로그 외부 화면 흐리게 표현
-            WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
-            lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-            lpWindow.dimAmount = 0.8f;
-            getWindow().setAttributes(lpWindow);
+            //dismiss
+            WindowManager.LayoutParams wlp = new WindowManager.LayoutParams();
+            wlp.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            wlp.dimAmount = 0.8f;
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+                wlp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+                wlp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            } else {
+                wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                wlp.height = WindowManager.LayoutParams.MATCH_PARENT;
+            }
+            wlp.gravity = Gravity.CENTER;
+            getWindow().setAttributes(wlp);
 
             //view mapping
             setContentView(R.layout.dialog_setting);
@@ -272,6 +314,17 @@ public class DetailActivity extends AppCompatActivity {
             llRow03.setOnClickListener(settingDialog_listener03);
         }
 
+        //dismiss
+        @Override
+        public boolean dispatchTouchEvent(MotionEvent ev) {
+            Rect dialogBounds = new Rect();
+            getWindow().getDecorView().getHitRect(dialogBounds);
+
+            if (!dialogBounds.contains((int) ev.getX(), (int) ev.getY())) {
+                this.dismiss();
+            }
+            return super.dispatchTouchEvent(ev);
+        }
 
         // 생성자
         public SettingDialog(Context context, String str02, String str03,
@@ -298,11 +351,19 @@ public class DetailActivity extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            // 다이얼로그 외부 화면 흐리게 표현
-            WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
-            lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-            lpWindow.dimAmount = 0.8f;
-            getWindow().setAttributes(lpWindow);
+            //dismiss
+            WindowManager.LayoutParams wlp = new WindowManager.LayoutParams();
+            wlp.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            wlp.dimAmount = 0.8f;
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+                wlp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+                wlp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            } else {
+                wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                wlp.height = WindowManager.LayoutParams.MATCH_PARENT;
+            }
+            wlp.gravity = Gravity.CENTER;
+            getWindow().setAttributes(wlp);
 
             //view mapping
             setContentView(R.layout.dialog_setting02);
@@ -317,6 +378,18 @@ public class DetailActivity extends AppCompatActivity {
 
             // 클릭 이벤트 셋팅
             llRow02.setOnClickListener(settingDialog_listener02);
+        }
+
+        //dismiss
+        @Override
+        public boolean dispatchTouchEvent(MotionEvent ev) {
+            Rect dialogBounds = new Rect();
+            getWindow().getDecorView().getHitRect(dialogBounds);
+
+            if (!dialogBounds.contains((int) ev.getX(), (int) ev.getY())) {
+                this.dismiss();
+            }
+            return super.dispatchTouchEvent(ev);
         }
 
 
@@ -339,14 +412,24 @@ public class DetailActivity extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            // 다이얼로그 외부 화면 흐리게 표현
-            WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
-            lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-            lpWindow.dimAmount = 0.8f;
-            getWindow().setAttributes(lpWindow);
+            //dismiss
+            WindowManager.LayoutParams wlp = new WindowManager.LayoutParams();
+            wlp.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            wlp.dimAmount = 0.8f;
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+                wlp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+                wlp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            } else {
+                wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                wlp.height = WindowManager.LayoutParams.MATCH_PARENT;
+            }
+            wlp.gravity = Gravity.CENTER;
+            getWindow().setAttributes(wlp);
+
 
             //view mapping
             setContentView(R.layout.dialog_info);
+
 
             //findView
             TextView tvTags = (TextView) findViewById(R.id.tvTags);
@@ -356,6 +439,19 @@ public class DetailActivity extends AppCompatActivity {
             // 제목과 내용을 생성자에서 셋팅
             tvTags.setText(tags);
             tvInform.setText(informs);
+        }
+
+
+        //dismiss
+        @Override
+        public boolean dispatchTouchEvent(MotionEvent ev) {
+            Rect dialogBounds = new Rect();
+            getWindow().getDecorView().getHitRect(dialogBounds);
+
+            if (!dialogBounds.contains((int) ev.getX(), (int) ev.getY())) {
+                this.dismiss();
+            }
+            return super.dispatchTouchEvent(ev);
         }
 
 
@@ -387,7 +483,7 @@ public class DetailActivity extends AppCompatActivity {
                 //작품담기 네트워크
                 addArticle();
 
-                if(ivShare.getVisibility()==View.INVISIBLE){
+                if (ivShare.getVisibility() == View.INVISIBLE) {
                     //작품담기 다이얼로그 생성
                     addWorkDialog = new AddWorkDialog(DetailActivity.this,
                             "#작품 담기",
@@ -395,7 +491,7 @@ public class DetailActivity extends AppCompatActivity {
                             "작품 담기로 이동하시겠습니까?",
                             addDialog_leftListener,
                             addDialog_rightListener);
-                }else{
+                } else {
                     //작품담기 다이얼로그 생성
                     addWorkDialog = new AddWorkDialog(DetailActivity.this,
                             "#작품 담기",
@@ -450,6 +546,8 @@ public class DetailActivity extends AppCompatActivity {
                 intent.putExtra("articles_id", "" + articleId);
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
+                intent.putExtra("modifiable", modifiable);
+                intent.putExtra("bookmark", bookmark);
                 startActivity(intent);
             }
         });
@@ -473,11 +571,9 @@ public class DetailActivity extends AppCompatActivity {
 
                         //유저 이미지
                         // 혜린 edit -> 이용자가 지정해둔 프로필 이미지 없을 경우 기본 이미지 지정
-                        if(response.body().data.writer.profile == null){
+                        if (response.body().data.writer.profile == null) {
                             ivProfile.setImageResource(R.drawable.profile_tmp);
-                        }
-
-                        else{
+                        } else {
                             Glide.with(getApplicationContext())
                                     .load(response.body().data.writer.profile)
                                     .into(ivProfile);
@@ -497,6 +593,9 @@ public class DetailActivity extends AppCompatActivity {
 
                         //추가정보
                         informs = response.body().data.inform;
+
+                        //북마크
+                        bookmark = response.body().data.bookmark;
                     }
                 }
             }
@@ -524,10 +623,12 @@ public class DetailActivity extends AppCompatActivity {
                             //담기버튼 하얀색 이미지로
                             ivShare.setVisibility(View.VISIBLE);
                             ivShare02.setVisibility(View.INVISIBLE);
+                            bookmark=0;
                         } else {
                             //담기버튼 파란색 이미지
                             ivShare.setVisibility(View.INVISIBLE);
                             ivShare02.setVisibility(View.VISIBLE);
+                            bookmark=1;
                         }
                     }
                 }

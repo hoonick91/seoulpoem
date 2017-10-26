@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rlMainBg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -41,10 +42,10 @@
                     android:id="@+id/tvHash"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="# 그리움"
                     android:textColor="#488ab4"
                     android:textSize="15dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="# 그리움" />
             </LinearLayout>
 
             <!--더보기 버튼-->
@@ -53,14 +54,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/llHashTag"
-                android:layout_marginLeft="290dp">
+                android:layout_marginLeft="285dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15dp"
                     android:text="더보기"
                     android:textColor="#488ab4"
-                    android:textStyle="bold"/>
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <!--hash tag toggle-->
@@ -72,9 +74,9 @@
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rvHashtags"
-                    android:overScrollMode="never"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never" />
             </RelativeLayout>
 
             <!--툴바-->
@@ -95,11 +97,11 @@
                     android:layout_height="match_parent">
 
                     <android.support.v4.view.ViewPager
-                        android:overScrollMode="never"
                         android:id="@+id/vpPoems"
                         android:layout_width="260dp"
                         android:layout_height="300dp"
-                        android:layout_gravity="center_horizontal" />
+                        android:layout_gravity="center_horizontal"
+                        android:overScrollMode="never" />
                 </com.seoulprojet.seoulpoem.activity.PagerContainer>
 
             </RelativeLayout>
@@ -125,8 +127,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="30dp">
+                android:layout_marginBottom="26dp"
+                android:layout_marginRight="20dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -148,6 +150,7 @@
 
 
         </RelativeLayout>
+
         <include layout="@layout/hamburger_drawer" />
 
     </android.support.v4.widget.DrawerLayout>

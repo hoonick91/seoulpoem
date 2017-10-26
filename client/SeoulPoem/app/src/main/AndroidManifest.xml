@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
     <application
         android:name=".network.ApplicationController"
         android:allowBackup="true"
@@ -19,7 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.sampleActivity"></activity>
+        <activity android:name=".activity.sampleActivity" />
         <activity android:name=".activity.MyPage" />
         <activity android:name=".activity.MyPageSetting" />
         <activity android:name=".activity.WriterList" />
@@ -58,10 +57,13 @@
         <activity android:name=".activity.MyPageShowImage" />
         <activity android:name=".activity.NoticeDetail" />
         <activity android:name=".activity.SubwayPoemActivity" />
-        <activity android:name=".activity.TagActivity"></activity>
-        <activity android:name=".activity.GalleryActivity"></activity>
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
+        <activity android:name=".activity.GalleryActivity" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity android:name=".activity.TagsActivity"></activity>
     </application>
 
 </manifest>
