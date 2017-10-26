@@ -1,6 +1,7 @@
 package com.seoulprojet.seoulpoem.activity;
 
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -51,6 +52,8 @@ import retrofit2.Response;
 
 public class MyPage extends AppCompatActivity {
 
+    public static Activity myPage;
+
     private MyPagePhotoFragment fragmentPhoto;
     private MyPagePoemFragment fragmentPoem;
 
@@ -100,6 +103,8 @@ public class MyPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_page);
+
+        myPage = MyPage.this;
 
         //유저 정보 가져오기
         Intent intent = getIntent();

@@ -172,12 +172,13 @@ public interface NetworkService {
 
     // writer list
     @GET("/author")
-    Call<WriterListResult> getWriterList(@Header("email") String email,
-                                         @Header("type") int type);
+    Call<WriterListResult> getWriterList(@Header("type") int type,
+                                         @Header("email") String email);
 
     // writer apply
     @POST("/author")
-    Call<WriterApplyResult> postWriterApply(@Header("email") String email);
+    Call<WriterApplyResult> postWriterApply(@Header("email") String email,
+                                            @Header("type") int type);
 
     @GET("/bookmark/search")
     Call<AddResult> getWorks(@Header("email") String email,

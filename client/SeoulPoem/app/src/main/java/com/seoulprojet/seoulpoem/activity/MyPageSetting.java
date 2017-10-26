@@ -1,5 +1,6 @@
 package com.seoulprojet.seoulpoem.activity;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -95,6 +96,7 @@ public class MyPageSetting extends AppCompatActivity {
         loginType = intent.getExtras().getInt("loginType");
 
         // 객체 초기화
+        final MyPage myPage = (MyPage)MyPage.myPage;
         total_layout = (LinearLayout)findViewById(R.id.total_layout);
         mypage_setting_back_btn = (ImageButton)findViewById(R.id.mypage_setting_back_btn);
         mypage_setting_ok_btn = (ImageButton)findViewById(R.id.mypage_setting_ok_btn);
@@ -134,6 +136,8 @@ public class MyPageSetting extends AppCompatActivity {
                 Intent intent = new Intent(getApplication(), MyPage.class);
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
+                intent.putExtra("otherEmail", userEmail);
+                intent.putExtra("otherType", loginType);
                 startActivity(intent);
                 finish();
             }
@@ -151,8 +155,16 @@ public class MyPageSetting extends AppCompatActivity {
         mypage_setting_ok_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 postMyPage();
+                myPage.finish();
+
+                Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
+                intent.putExtra("otherEmail", userEmail);
+                intent.putExtra("otherType", loginType);
+                startActivity(intent);
+                finish();
             }
         });
     }

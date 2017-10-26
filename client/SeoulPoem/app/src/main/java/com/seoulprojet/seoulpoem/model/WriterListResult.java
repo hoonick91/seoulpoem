@@ -12,10 +12,10 @@ public class WriterListResult {
 
     public class AuthorList{
         public String email;
+        public int type;
         public String pen_name;
         public String profile;
         public String inform;
-        public int type;
     }
 
 

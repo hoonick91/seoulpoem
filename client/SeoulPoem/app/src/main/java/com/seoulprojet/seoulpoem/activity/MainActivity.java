@@ -145,6 +145,13 @@ public class MainActivity extends AppCompatActivity {
         userEmail = intent.getExtras().getString("userEmail");
         loginType = intent.getExtras().getInt("loginType");
 
+        // 혹시 모를 유저 정보 가져오기 방지
+        if(userEmail == null || loginType == 0){
+            PbReference pref = new PbReference(this);
+            userEmail = pref.getValue("userEmail", "");
+            loginType = pref.getValue("loginType", 0);
+        }
+
 
         //서비스 객체 초기화
         service = ApplicationController.getInstance().getNetworkService();
@@ -552,6 +559,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("otherEmail", userEmail);
                 intent.putExtra("otherType", loginType);
                 startActivity(intent);
+                drawerLayout.closeDrawers();
             }
         });
 
@@ -562,6 +570,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
                 startActivity(intent);
+                drawerLayout.closeDrawers();
             }
         });
 
@@ -573,6 +582,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
                 startActivity(intent);
+                drawerLayout.closeDrawers();
             }
         });
 
@@ -583,6 +593,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
                 startActivity(intent);
+                drawerLayout.closeDrawers();
             }
         });
 
@@ -594,6 +605,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
                 startActivity(intent);
+                drawerLayout.closeDrawers();
             }
         });
 
@@ -604,6 +616,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
                 startActivity(intent);
+                drawerLayout.closeDrawers();
             }
         });
     }
