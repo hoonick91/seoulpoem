@@ -17,15 +17,16 @@ router.post('/', async (req, res, next) => {
         let email =req.headers.email;
         let type = req.headers.type;
 
-        let query1 = 'select email from seoul_poem.users where email = ? and foreign_key_type = ? author = 1';
+        let query1 = 'select * from seoul_poem.users where email = ? and foreign_key_type = ? and author = 1';
         let data = await connection.query(query1, [email,type]);
         if(data.length>0) res.status(403).send({result: 'already'});
+        else{
 
+            let query2 = 'update seoul_poem.users set author=1 where email = ? and foreign_key_type = ?';
+            await connection.query(query2, [email,type]);
 
-        let query2 = 'update seoul_poem.users set author=1 where email = ? and foreign_key_type = ?';
-        await connection.query(query2, [email,type]);
-
-        res.status(201).send({result: "author apply success"});
+            res.status(201).send({result: "author apply success"});
+        }
         await connection.commit();
 
     }
