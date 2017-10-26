@@ -549,6 +549,7 @@ public class DetailActivity extends AppCompatActivity {
                 intent.putExtra("modifiable", modifiable);
                 intent.putExtra("bookmark", bookmark);
                 startActivity(intent);
+                finish();
             }
         });
     }
