@@ -36,8 +36,9 @@ router.post('/:idarticles', async (req, res) => {
       let query4 = 'select * from bookmarks where users_email = ? and users_foreign_key_type = ? and articles_idarticles = ?'
       let check_db = await connection.query(query4, [email,type,selected[0].ida]);
 
-      console.log (check_db);
-      if(check_db.length != 0 ){
+      console.log (check_db.length);
+
+      if(check_db.length){
           let query3 = 'delete from seoul_poem.bookmarks where users_email = ? and users_foreign_key_type = ? and articles_idarticles = ?';
           await connection.query(query3, [email,type,selected[0].ida]);
           res.status(201).json({status : "success", mag: "bookmark delete"});

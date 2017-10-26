@@ -180,9 +180,8 @@ router.get('/:idarticles', async (req, res) => {
 
         let query5 = 'select profile,pen_name from users where email = ? and foreign_key_type = ?'
         let query5_result = await connection.query(query5,[queryresult[0].email,queryresult[0].type]);
-        console.log(query5_result);
 
-        let user ={}
+        let user ={};
         user.profile = query5_result[0].profile;
         user.pen_name = query5_result[0].pen_name;
         user.email = queryresult[0].email;
@@ -190,12 +189,15 @@ router.get('/:idarticles', async (req, res) => {
 
         let query6 = 'select pictures.photo as photo ,articles.idarticles as idarticles from articles,pictures where articles.users_email = ? and articles.users_foreign_key_type = ? and articles.idarticles != ? and articles.pictures_idpictures = pictures.idpictures order by articles.idarticles DESC limit 5;'
         let query6_result = await connection.query(query6,[queryresult[0].email,queryresult[0].type,req.params.idarticles]);
-        console.log(query6_result);
 
-        let query7 = 'select * from bookmarks where users_email = ? and users_foreign_key_type = ? and articles_idarticles = ?'
-        let check_db = await connection.query(query7, [email_,type_,req.params.idarticles]);
-;
-        if(check_db.length){
+        console.log(email_);console.log(type_);console.log(req.params.idarticles);
+
+        let query__ = 'select * from bookmarks where users_email = ? and users_foreign_key_type = ? and articles_idarticles = ?';
+        let check_db2 = await connection.query(query__, [email_,type_,req.params.idarticles]);
+
+        console.log(check_db2);
+
+        if(check_db2.length){
             article.bookmark = 1;
         }else {
             article.bookmark = 0;
@@ -226,7 +228,6 @@ router.get('/:idarticles', async (req, res) => {
 
         res.status(200).json( {status : "success",article: article});
         await connection.commit();
-        //}
 
     }
     catch(err){
@@ -251,12 +252,11 @@ router.get('/simple/:idarticles', async (req, res) => {
         let type_ = req.headers.type;
         let email_ = req.headers.email;
 
-        console.log(req.params.idarticles);
+
         let query1 = 'SELECT seoul_poem.pictures.photo as photo, seoul_poem.articles.users_email as email,seoul_poem.articles.inform as inform,seoul_poem.articles.users_foreign_key_type as type,seoul_poem.articles.tags as tags FROM seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.idarticles=? and seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures';
-        console.log(query1);
+
         let article = await connection.query(query1, req.params.idarticles);
 
-        console.log(article[0]);
         var email = article[0].email;
         var type = article[0].type;
 
@@ -271,7 +271,7 @@ router.get('/simple/:idarticles', async (req, res) => {
 
 
         let query7 = 'select * from bookmarks where users_email = ? and users_foreign_key_type = ? and articles_idarticles = ?'
-        let check_db = await connection.query(query7, [email,type,req.params.idarticles]);
+        let check_db = await connection.query(query7, [email_,type_,req.params.idarticles]);
 
         console.log(check_db.length);
 
