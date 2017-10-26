@@ -167,7 +167,7 @@ router.post('/modify',multiupload,  async (req, res) => {
     try{
         req.checkHeaders('email', 'empty email').notEmpty();
         req.checkHeaders('type', 'empty type').notEmpty();
-        
+
         let errors = req.validationErrors();
         if (!errors) {
 

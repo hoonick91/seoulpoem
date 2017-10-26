@@ -193,7 +193,7 @@ router.get('/:idarticles', async (req, res) => {
         console.log(query6_result);
 
         let query7 = 'select * from bookmarks where users_email = ? and users_foreign_key_type = ? and articles_idarticles = ?'
-        let check_db = await connection.query(query7, [queryresult[0].email,queryresult[0].type,req.params.idarticles]);
+        let check_db = await connection.query(query7, [email_,type_,req.params.idarticles]);
 ;
         if(check_db.length){
             article.bookmark = 1;
@@ -272,6 +272,8 @@ router.get('/simple/:idarticles', async (req, res) => {
 
         let query7 = 'select * from bookmarks where users_email = ? and users_foreign_key_type = ? and articles_idarticles = ?'
         let check_db = await connection.query(query7, [email,type,req.params.idarticles]);
+
+        console.log(check_db.length);
 
         if(check_db.length){
             detail_.bookmark = 1;
