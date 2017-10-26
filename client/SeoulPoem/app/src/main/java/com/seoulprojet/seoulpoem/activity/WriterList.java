@@ -36,7 +36,6 @@ public class WriterList extends AppCompatActivity {
 
     private ImageButton writerlist_hamburger_btn;
     private ImageButton writerlist_apply_btn;
-
     private TextView writerNum_tv;
 
     // drawer 선언
@@ -48,7 +47,6 @@ public class WriterList extends AppCompatActivity {
 
     // network
     NetworkService service;
-    private ArrayList<MyPageResult> myPageResults;
     private ArrayList<WriterListResult.AuthorList> authorLists;
 
     private RecyclerView recyclerView;
@@ -60,15 +58,10 @@ public class WriterList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writer_list);
 
-        Intent intent = getIntent();
-        userEmail = intent.getStringExtra("userEmail");
-        loginType = intent.getExtras().getInt("loginType");
-
-        if(userEmail == null || loginType == 0){
-            PbReference pref = new PbReference(this);
-            userEmail = pref.getValue("userEmail", "");
-            loginType = pref.getValue("loginType", 0);
-        }
+        PbReference pref = new PbReference(this);
+        userEmail = pref.getValue("userEmail", "");
+        loginType = pref.getValue("loginType", 0);
+        Log.i("", "작가목록 : " + userEmail);
 
         // network
         service = ApplicationController.getInstance().getNetworkService();
@@ -154,6 +147,9 @@ public class WriterList extends AppCompatActivity {
         public void onBindViewHolder(MyViewHolder holder, int position) {
             WriterListResult.AuthorList writerListData = writerListDatas.get(position);
 
+            holder.writerName_tv.setText(writerListData.pen_name.toString());
+            holder.writerMessage_tv.setText(writerListData.inform.toString());
+
             if(writerListData.profile == null){
                 holder.profImg.setImageResource(R.drawable.profile_tmp);
             }
@@ -165,8 +161,7 @@ public class WriterList extends AppCompatActivity {
             }
 
             // holder.profImg.setImageResource(writerListData.profile);
-            holder.writerName_tv.setText(writerListData.pen_name);
-            holder.writerMessage_tv.setText(writerListData.inform);
+
         }
 
         @Override
@@ -356,7 +351,7 @@ public class WriterList extends AppCompatActivity {
 
     /******************* writer list ****************************/
     private void getWriterList(){
-        Call<WriterListResult> requestList = service.getWriterList(userEmail, loginType);
+        Call<WriterListResult> requestList = service.getWriterList(loginType, userEmail);
 
         requestList.enqueue(new Callback<WriterListResult>() {
             @Override
@@ -383,17 +378,20 @@ public class WriterList extends AppCompatActivity {
 
     /***************** post writer apply **********************/
     private void postWriterApply(){
-        Call<WriterApplyResult> requestApply = service.postWriterApply(userEmail);
+        Call<WriterApplyResult> requestApply = service.postWriterApply(userEmail, loginType);
 
         requestApply.enqueue(new Callback<WriterApplyResult>() {
             @Override
             public void onResponse(Call<WriterApplyResult> call, Response<WriterApplyResult> response) {
 
-                if(response.code() == 403){
-                    alreadyDialog();
-                }
-                else{
+                if(response.isSuccessful()){
                     showDialog();
+                }
+
+                else{
+                    Log.i("fail response", "fail response");
+                    alreadyDialog();
+
                 }
             }
 
