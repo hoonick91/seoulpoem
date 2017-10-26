@@ -191,6 +191,7 @@ router.post('/modify',multiupload,  async (req, res) => {
 
             var cnt = 0;
             var i = 0;
+
             if(pen_name){
                 let flags = 0;
                 if(user_before[0].pen_name){
@@ -212,7 +213,7 @@ router.post('/modify',multiupload,  async (req, res) => {
 
             }
 
-            if(inform){
+            if(inform || inform == " "){
                 let flags = 0;
                 if(user_before[0].inform){
                     if( user_before[0].inform == inform)
