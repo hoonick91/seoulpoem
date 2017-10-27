@@ -2,10 +2,7 @@ package com.seoulprojet.seoulpoem.activity;
 
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.FragmentTransaction;
-import android.content.Context;
-import android.Manifest;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +12,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -22,7 +20,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -41,10 +38,13 @@ import com.seoulprojet.seoulpoem.network.NetworkService;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import android.Manifest;
+import android.support.v7.app.AlertDialog;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -471,9 +471,14 @@ public class MyPage extends AppCompatActivity {
             e.printStackTrace();
         }
         if (photoFile != null) {
-            photoUri = FileProvider.getUriForFile(MyPage.this,
-                    "com.seoulprojet.seoulpoem.activity.provider", photoFile);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { //버전이 누가보다 크거나 같을 때
+                photoUri = FileProvider.getUriForFile(MyPage.this,
+                        "com.seoulprojet.seoulpoem.activity.provider", photoFile);
+            }else{ //버전이 누가(7.0) 보다 낮을때
+                photoUri = Uri.fromFile(photoFile);
+            }
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+            Log.e("여기여기 photoUri",""+photoUri);
             startActivityForResult(intent, PICK_FROM_CAMERA);
         }
     }

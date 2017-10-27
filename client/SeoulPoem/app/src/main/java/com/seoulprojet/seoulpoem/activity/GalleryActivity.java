@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -271,6 +272,7 @@ public class GalleryActivity extends AppCompatActivity {
         rlToWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkPermissions();
                 dialog();
             }
         });
@@ -312,9 +314,14 @@ public class GalleryActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         if (photoFile != null) {
-            photoUri = FileProvider.getUriForFile(GalleryActivity.this,
-                    "com.seoulprojet.seoulpoem.activity.provider", photoFile);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { //버전이 누가보다 크거나 같을 때
+                photoUri = FileProvider.getUriForFile(GalleryActivity.this,
+                        "com.seoulprojet.seoulpoem.activity.provider", photoFile);
+            }else{ //버전이 누가(7.0) 보다 낮을때
+                photoUri = Uri.fromFile(photoFile);
+            }
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+            Log.e("여기여기 photoUri",""+photoUri);
             startActivityForResult(intent, PICK_FROM_CAMERA);
         }
     }
