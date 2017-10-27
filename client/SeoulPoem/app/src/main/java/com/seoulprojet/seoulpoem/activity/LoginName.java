@@ -99,7 +99,7 @@ public class LoginName extends AppCompatActivity {
                 else{
                     tempView.setText("success" + Integer.toString(loginType));
 
-                    Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("userEmail", userEmail);
                     intent.putExtra("loginType", loginType);
                     startActivity(intent);

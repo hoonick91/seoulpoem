@@ -4,7 +4,7 @@
     android:id="@+id/rlbg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/mainbg"
+    android:background="@drawable/paper4"
     tools:context="com.seoulprojet.seoulpoem.activity.SearchActivity">
 
 
@@ -97,12 +97,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="32dp">
 
-            <TextView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="작가별 검색"
-                android:textColor="#000000"
-                android:textSize="15dp" />
+                android:src="@drawable/search_author"/>
         </LinearLayout>
 
         <!--검색 전 텍스트-->
@@ -156,12 +154,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="32dp">
 
-            <TextView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="태그별 검색"
-                android:textColor="#000000"
-                android:textSize="15sp" />
+                android:src="@drawable/search_title" />
         </LinearLayout>
 
         <!--검색 전 텍스트-->
