@@ -11,7 +11,11 @@ import com.seoulprojet.seoulpoem.R;
 
 public class TagsActivity extends AppCompatActivity {
 
-    /***************************************변수***********************************************/
+
+    /*************************************************************************
+     *                                  - 변수
+     *************************************************************************/
+
     //이미지
     ImageView imageView01;
     ImageView imageView02;
@@ -31,7 +35,10 @@ public class TagsActivity extends AppCompatActivity {
     private String userEmail = null;
     private int loginType = 0;
 
-    /***************************************onCreate***********************************************/
+
+    /*************************************************************************
+     *                                  - start
+     *************************************************************************/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,25 +59,30 @@ public class TagsActivity extends AppCompatActivity {
     }
 
 
-    /***************************************findView***********************************************/
+    /*************************************************************************
+     *                                  - find viwe
+     *************************************************************************/
     public void findView() {
 
-        imageView01= (ImageView)findViewById(R.id.iv01);
-        imageView02= (ImageView)findViewById(R.id.iv02);
-        imageView03= (ImageView)findViewById(R.id.iv03);
-        imageView04= (ImageView)findViewById(R.id.iv04);
-        imageView05= (ImageView)findViewById(R.id.iv05);
-        imageView06= (ImageView)findViewById(R.id.iv06);
-        imageView07= (ImageView)findViewById(R.id.iv07);
-        imageView08= (ImageView)findViewById(R.id.iv08);
-        imageView09= (ImageView)findViewById(R.id.iv09);
-        imageView10= (ImageView)findViewById(R.id.iv10);
+        imageView01 = (ImageView) findViewById(R.id.iv01);
+        imageView02 = (ImageView) findViewById(R.id.iv02);
+        imageView03 = (ImageView) findViewById(R.id.iv03);
+        imageView04 = (ImageView) findViewById(R.id.iv04);
+        imageView05 = (ImageView) findViewById(R.id.iv05);
+        imageView06 = (ImageView) findViewById(R.id.iv06);
+        imageView07 = (ImageView) findViewById(R.id.iv07);
+        imageView08 = (ImageView) findViewById(R.id.iv08);
+        imageView09 = (ImageView) findViewById(R.id.iv09);
+        imageView10 = (ImageView) findViewById(R.id.iv10);
 
         startArrow = (LinearLayout) findViewById(R.id.startArrow);
         llstartTxt = (LinearLayout) findViewById(R.id.llstartTxt);
     }
 
-    /***************************************to main***********************************************/
+
+    /*************************************************************************
+     *                                  - 메인으로
+     *************************************************************************/
     public void toMain() {
 
 
@@ -207,7 +219,6 @@ public class TagsActivity extends AppCompatActivity {
         });
 
 
-
         llstartTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -219,8 +230,6 @@ public class TagsActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
 
 
     }

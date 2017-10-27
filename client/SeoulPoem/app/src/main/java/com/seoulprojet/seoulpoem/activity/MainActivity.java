@@ -60,7 +60,9 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    /***************************************변수***********************************************/
+    /*************************************************************************
+     *                                  - 변수
+     *************************************************************************/
 
     //tool_bar
     private RelativeLayout rlHamberger, rlSearch, rlTags;
@@ -74,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout rlMainBg;
 
     //선택된 hash tag
-    private  TextView tvHash;
+    private TextView tvHash;
     //viewpager
     private PagerContainer pcPoem;
     private ViewPager vpPoems;
@@ -135,12 +137,14 @@ public class MainActivity extends AppCompatActivity {
     private final long FINSH_INTERVAL_TIME = 2000;
 
     //tags open 확인변수
-    private boolean showTags=false;
+    private boolean showTags = false;
 
     //current tag name
     private String currentTag;
 
-    /***************************************START***********************************************/
+    /*************************************************************************
+     *                               - start
+     *************************************************************************/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // 혹시 모를 유저 정보 가져오기 방지
-        if(userEmail == null || loginType == 0){
+        if (userEmail == null || loginType == 0) {
             PbReference pref = new PbReference(this);
             userEmail = pref.getValue("userEmail", "");
             loginType = pref.getValue("loginType", 0);
@@ -201,7 +205,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /*********************************  정보 가져오기 ****************************************/
+    /*************************************************************************
+     *                             - 햄버거 내 정보 가져오기
+     *************************************************************************/
     public void getMenuMypage() {
         Call<MyPageResult> requestMyPage = service.getMyPage(userEmail, loginType);
 
@@ -242,14 +248,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /***************************************findView***********************************************/
+    /*************************************************************************
+     *                             - find view
+     *************************************************************************/
     public void findView() {
 
         rlMainBg = (RelativeLayout) findViewById(R.id.rlMainBg);
         tbMain = (Toolbar) findViewById(R.id.tbMain);
         rlHamberger = (RelativeLayout) findViewById(R.id.rlHamberger);
         rlSearch = (RelativeLayout) findViewById(R.id.rlSearch);
-        rlTags = (RelativeLayout)findViewById(R.id.rlTags);
+        rlTags = (RelativeLayout) findViewById(R.id.rlTags);
 
         llHashTag = (LinearLayout) findViewById(R.id.llHashTag);
         rlHashTagToggle = (RelativeLayout) findViewById(R.id.rlHashTagToggle);
@@ -264,7 +272,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /************************************더미 데이터 생성*****************************************/
+    /*************************************************************************
+     *                             - 상댄 태그 이미지 설정
+     *************************************************************************/
     private void makeDummy() {
 
         //hash tag
@@ -282,7 +292,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /***********************************poem Adapter**********************************/
+    /*************************************************************************
+     *                              - 뷰페이저 페이지 어뎁터
+     *************************************************************************/
     public class PageAdapterPoems extends PagerAdapter {
 
         ArrayList<PoemListData> poemListDatas;
@@ -349,7 +361,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /***********************************view pager setting**********************************/
+    /*************************************************************************
+     *                             - 뷰페이저 설정
+     *************************************************************************/
     public void setViewPager() {
         pcPoem = (PagerContainer) findViewById(R.id.pcPoem);
         vpPoems = pcPoem.getViewPager();
@@ -361,7 +375,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /***********************************recycler setting**********************************/
+    /*************************************************************************
+     *                             - 리사이큘러뷰 설정
+     *************************************************************************/
     public void setRecycler() {
         //layout manager setting
         recyclerView = (RecyclerView) findViewById(R.id.rvHashtags);
@@ -375,7 +391,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /***********************************Adapter**********************************/
+    /*************************************************************************
+     *                             - 리사이클러뷰 어뎁터
+     *************************************************************************/
     class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
         ArrayList<HashtagListData> hashtagListDatas;
@@ -425,7 +443,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /**********************************ViewHolder********************************/
+    /*************************************************************************
+     *                             - 리사이클러뷰 뷰홀더
+     *************************************************************************/
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -442,7 +462,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /***********************************main 리스트 가져오기*********************************/
+    /*************************************************************************
+     *                             - home 정보 가져오기
+     *************************************************************************/
     public void getLists(String tag) {
         final String tagname = tag;
         Call<MainResult> requestMainLists = service.getPoems(tag);
@@ -463,7 +485,7 @@ public class MainActivity extends AppCompatActivity {
                         vpPoems.setCurrentItem(2);
 
                         //초기 hashtag
-                        tvHash.setText("# "+ tagname);
+                        tvHash.setText("# " + tagname);
 
                     }
                 } else {
@@ -478,7 +500,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /*******************************************to search******************************************/
+    /*************************************************************************
+     *                              - 검색으로
+     *************************************************************************/
     public void toSearch() {
         rlSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -492,26 +516,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /******************************************show tags******************************************/
-    public void showTags() {
-        tbMain.bringToFront();
 
-        rlTags.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!showTags) { //보이지 않을때 보이게 함
-                    rlHashTagToggle.animate().translationY(180).withLayer();
-                    showTags = true;
-                }else{ //보일때 보이지 않게함
-                    rlHashTagToggle.animate().translationY(-180).withLayer();
-                    showTags = false;
-                }
-            }
-        });
-    }
-
-
-    /*************************************to More*************************************************/
+    /*************************************************************************
+     *                             - 더보기로
+     *************************************************************************/
     public void toMore() {
         llmore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -526,7 +534,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /*************************************to write*************************************************/
+    /*************************************************************************
+     *                             - 글 쓰기로
+     *************************************************************************/
     public void toWrite() {
         rlToWrite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -537,8 +547,29 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /*************************************************************************
+     *                             - 상단 태그 보이게 안보이게 설정
+     *************************************************************************/
+    public void showTags() {
+        tbMain.bringToFront();
 
-    /******************************************* drawer ******************************************/
+        rlTags.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!showTags) { //보이지 않을때 보이게 함
+                    rlHashTagToggle.animate().translationY(180).withLayer();
+                    showTags = true;
+                } else { //보일때 보이지 않게함
+                    rlHashTagToggle.animate().translationY(-180).withLayer();
+                    showTags = false;
+                }
+            }
+        });
+    }
+
+    /*************************************************************************
+     *                             - 햄버거 보이게
+     *************************************************************************/
     public void showHamburger() {
 
         hamburger_mypage_btn = (ImageButton) findViewById(R.id.hamburger_mypage_btn);
@@ -862,7 +893,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**************************이미지 파일 이름 가져오기******************************************/
+    /*************************************************************************
+     *                             - 이미지 파일 이름 가져오기
+     *************************************************************************/
 
     public String getImageNameToUri(Uri data) {
         String[] proj = {MediaStore.Images.Media.DATA};
@@ -878,7 +911,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /*********************************back 두번 누렀을 경우********************************/
+    /*************************************************************************
+     *                             - back key 두 번 클릭
+     *************************************************************************/
     @Override
     public void onBackPressed() {
         long tempTime = System.currentTimeMillis();

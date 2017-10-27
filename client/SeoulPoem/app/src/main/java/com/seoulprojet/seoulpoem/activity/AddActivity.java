@@ -2,7 +2,6 @@ package com.seoulprojet.seoulpoem.activity;
 
 
 import android.content.Intent;
-import android.location.Address;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +33,9 @@ import retrofit2.Response;
 
 public class AddActivity extends AppCompatActivity {
 
+    /*************************************************************************
+     *                                  - 변수
+     *************************************************************************/
 
     //tool_bar
     private RelativeLayout rlHamberger;
@@ -60,6 +62,9 @@ public class AddActivity extends AppCompatActivity {
     private int loginType = 0;
 
 
+    /*************************************************************************
+     *                                  - start
+     *************************************************************************/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,14 +105,18 @@ public class AddActivity extends AppCompatActivity {
     }
 
 
-    /*************************************findView***********************************************/
+    /*************************************************************************
+     *                             - find view
+     *************************************************************************/
     public void findView() {
         rlHamberger = (RelativeLayout) findViewById(R.id.rlHamberger);
         tvWorkNum = (TextView) findViewById(R.id.tvWorkNum);
     }
 
 
-    /***********************************Adapter**********************************/
+    /*************************************************************************
+     *                             - 리사이클러뷰 어뎁터
+     *************************************************************************/
     class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
         ArrayList<AddListData> addListDatas;
@@ -149,8 +158,6 @@ public class AddActivity extends AppCompatActivity {
             //content
             holder.tvContent.setText(addListData.content);
 
-
-            //상세 프로필로 이동
             //클릭시 상세화면으로 이동, 클릭한 프로젝트 아이디 전달
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -169,7 +176,9 @@ public class AddActivity extends AppCompatActivity {
     }
 
 
-    /**********************************ViewHolder********************************/
+    /*************************************************************************
+     *                             - 리사이클러뷰 뷰홀더
+     *************************************************************************/
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -187,7 +196,10 @@ public class AddActivity extends AppCompatActivity {
         }
     }
 
-    /***********************************작품 리스트 가져오기*********************************/
+
+    /*************************************************************************
+     *                             - 작품 리스트 가져오기
+     *************************************************************************/
     public void getWorks() {
         Call<AddResult> requestWorkLists = service.getWorks(userEmail, loginType);
 
@@ -215,7 +227,9 @@ public class AddActivity extends AppCompatActivity {
     }
 
 
-    /*************************************** drawer **********************************************/
+    /*************************************************************************
+     *                             - 햄버거 보이게
+     *************************************************************************/
     public void showHamburger() {
 
         hamburger_mypage_btn = (ImageButton) findViewById(R.id.hamburger_mypage_btn);
@@ -240,7 +254,7 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
-        hamburger_mypage_btn.setOnClickListener(new View.OnClickListener(){
+        hamburger_mypage_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyPage.class);
@@ -253,7 +267,7 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
-        hamburger_today_btn.setOnClickListener(new View.OnClickListener(){
+        hamburger_today_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TodaySeoul.class);
@@ -264,7 +278,7 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
-        hamburger_setting_btn.setOnClickListener(new View.OnClickListener(){
+        hamburger_setting_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SettingPage.class);
@@ -275,7 +289,7 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
-        hamburger_notice_btn.setOnClickListener(new View.OnClickListener(){
+        hamburger_notice_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerLayout.closeDrawers();
@@ -287,7 +301,7 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
-        hamburger_writer_btn.setOnClickListener(new View.OnClickListener(){
+        hamburger_writer_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), WriterList.class);
@@ -298,7 +312,7 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
-        hamburger_scrab_btn.setOnClickListener(new View.OnClickListener(){
+        hamburger_scrab_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), AddActivity.class);
@@ -311,7 +325,9 @@ public class AddActivity extends AppCompatActivity {
     }
 
 
-    /*************************************** mypage 정보 가져오기 *************************************/
+    /*************************************************************************
+     *                             - 햄버거 내 정보 가져오기
+     *************************************************************************/
     public void getMenuMypage() {
         Call<MyPageResult> requestMyPage = service.getMyPage(userEmail, loginType);
 
@@ -323,26 +339,22 @@ public class AddActivity extends AppCompatActivity {
                     if (response.body().status.equals("success")) {
                         hamburger_name.setText(response.body().msg.pen_name);
                         hamburger_message.setText(response.body().msg.inform);
-                        if(response.body().msg.profile == null){
+                        if (response.body().msg.profile == null) {
                             hamburger_profile.setImageResource(R.drawable.profile_tmp);
-                        }
-
-                        else{
+                        } else {
                             Glide.with(getApplicationContext())
                                     .load(response.body().msg.profile)
                                     .into(hamburger_profile);
                         }
 
-                        if(response.body().msg.background == null){
+                        if (response.body().msg.background == null) {
                             hamburger_bg.setImageResource(R.drawable.profile_background);
-                        }
-
-                        else{
+                        } else {
                             Glide.with(getApplicationContext())
                                     .load(response.body().msg.background)
                                     .into(hamburger_bg);
                         }
-                        
+
                     }
                 }
             }

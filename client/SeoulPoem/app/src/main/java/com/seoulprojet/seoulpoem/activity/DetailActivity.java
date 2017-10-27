@@ -12,18 +12,15 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.model.AddArticleResult;
 import com.seoulprojet.seoulpoem.model.DetailResult;
-import com.seoulprojet.seoulpoem.model.MainResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
 
@@ -33,7 +30,10 @@ import retrofit2.Response;
 
 public class DetailActivity extends AppCompatActivity {
 
-    /***************************************변수***********************************************/
+
+    /*************************************************************************
+     *                                  - 변수
+     *************************************************************************/
 
     private ImageView ivShare, ivShare02, ivSetting;
     private AddWorkDialog addWorkDialog;
@@ -113,12 +113,16 @@ public class DetailActivity extends AppCompatActivity {
     //담은 작품인지 체크
     int bookmark;
 
-    /***************************************START***********************************************/
+
+    /*************************************************************************
+     *                               - start
+     *************************************************************************/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        //네트워크 서비스 초기 설정
         service = ApplicationController.getInstance().getNetworkService();
 
         //해당 프로젝트 id값, 유저 정보 가져오기
@@ -151,7 +155,10 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
-    /***************************************findView***********************************************/
+
+    /*************************************************************************
+     *                             - find view
+     *************************************************************************/
     public void findView() {
         ivShare = (ImageView) findViewById(R.id.ivShare);
         ivShare02 = (ImageView) findViewById(R.id.ivShare02);
@@ -169,18 +176,16 @@ public class DetailActivity extends AppCompatActivity {
     }
 
 
-    /***************************************click photo***********************************************/
+    /*************************************************************************
+     *                             - 사진 누르면 상단 하단 노출
+     *************************************************************************/
     public void clickPhoto() {
 
         llPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                //담은 작품인지, 담지 않은 작품인지에 따라서 나누어야함
-                //우측 상단 visible
-
-                //아직 안담았으면 검정색 작품담기 이미지
-                //담았으면 파란색 작품담기 이미지
+                //담은 작품인지 체크
                 if (bookmark == 0) {
                     ivShare.setVisibility(v.VISIBLE);
                 } else
@@ -195,7 +200,9 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
-    /***************************************작품 담기 다이얼로그***********************************************/
+    /*************************************************************************
+     *                             - 작품 담기 다이얼로그
+     *************************************************************************/
 
     public class AddWorkDialog extends Dialog {
 
@@ -268,7 +275,9 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    /***************************************상세정보/수정하기 있는 설정 다이얼로그***********************************************/
+    /*************************************************************************
+     *                        - 상세정보 / 수정하기 설정 다이얼로그
+     *************************************************************************/
 
     public class SettingDialog extends Dialog {
 
@@ -338,7 +347,10 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    /***************************************샹세 정보만 있는 설정 다이얼로그02***********************************************/
+
+    /*************************************************************************
+     *                        - 상세정보 설정 다이얼로그
+     *************************************************************************/
 
     public class SettingDialog02 extends Dialog {
 
@@ -403,8 +415,9 @@ public class DetailActivity extends AppCompatActivity {
     }
 
 
-    /***************************************상세정보 다이얼로그***********************************************/
-
+    /*************************************************************************
+     *                        - 상세정보 다이얼로그
+     *************************************************************************/
     public class InfoDialog extends Dialog {
 
 
@@ -462,7 +475,9 @@ public class DetailActivity extends AppCompatActivity {
     }
 
 
-    /***************************************툴바에서 뒤로가기 누르면***********************************************/
+    /*************************************************************************
+     *                        - 툴바 : 뒤로가기
+     *************************************************************************/
     public void goBack() {
         RelativeLayout rlback = (RelativeLayout) findViewById(R.id.rlBack);
         rlback.setOnClickListener(new View.OnClickListener() {
@@ -473,7 +488,10 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
-    /***************************************툴바에서 작품담기 누르면 ***********************************************/
+
+    /*************************************************************************
+     *                        - 툴바 : 작품담기
+     *************************************************************************/
     public void addDialog() {
         RelativeLayout rlShare = (RelativeLayout) findViewById(R.id.rlShare);
         rlShare.setOnClickListener(new View.OnClickListener() {
@@ -507,7 +525,10 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
-    /***************************************툴바에서 설정 누르면***********************************************/
+
+    /*************************************************************************
+     *                        - 툴바 : 설정
+     *************************************************************************/
     public void settingDialog() {
         RelativeLayout rlSetting = (RelativeLayout) findViewById(R.id.rlSetting);
         rlSetting.setOnClickListener(new View.OnClickListener() {
@@ -536,8 +557,9 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
-
-    /*************************** 업버튼 눌렀을시 시 내용 보기 화면으로 넘어가기 **********************/
+    /*************************************************************************
+     *                        - 업버튼 클릭
+     *************************************************************************/
     public void clickUpButton() {
         llup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -554,7 +576,9 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
-    /*********************************** 작품 상세정보 가져오기*********************************/
+    /*************************************************************************
+     *                        - 작품 상세정보 가져오기
+     *************************************************************************/
     public void getDetail() {
         Call<DetailResult> requestDetail = service.getDetail(loginType, userEmail, articleId);
 
@@ -610,7 +634,9 @@ public class DetailActivity extends AppCompatActivity {
     }
 
 
-    /*********************************** 작품 담기*********************************/
+    /*************************************************************************
+     *                        - 작품 담기
+     *************************************************************************/
     public void addArticle() {
         Call<AddArticleResult> requestAdd = service.addArticle(loginType, userEmail, articleId);
 
@@ -624,12 +650,12 @@ public class DetailActivity extends AppCompatActivity {
                             //담기버튼 하얀색 이미지로
                             ivShare.setVisibility(View.VISIBLE);
                             ivShare02.setVisibility(View.INVISIBLE);
-                            bookmark=0;
+                            bookmark = 0;
                         } else {
                             //담기버튼 파란색 이미지
                             ivShare.setVisibility(View.INVISIBLE);
                             ivShare02.setVisibility(View.VISIBLE);
-                            bookmark=1;
+                            bookmark = 1;
                         }
                     }
                 }

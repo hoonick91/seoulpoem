@@ -33,6 +33,11 @@ import retrofit2.Response;
 
 public class SearchActivity extends AppCompatActivity {
 
+
+    /*************************************************************************
+     *                                - 변수
+     *************************************************************************/
+
     RelativeLayout rlSearch, rlbg;
     TextView tv01, tv02;
     EditText et;
@@ -57,6 +62,9 @@ public class SearchActivity extends AppCompatActivity {
     NetworkService service;
 
 
+    /*************************************************************************
+     *                               - start
+     *************************************************************************/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +115,10 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
-    /***************************************findView***********************************************/
+
+    /*************************************************************************
+     *                          - find view
+     *************************************************************************/
     public void findView() {
 
         rlSearch = (RelativeLayout) findViewById(R.id.rlSearch);
@@ -123,7 +134,9 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-    /***********************************뒤로가기**********************************/
+    /*************************************************************************
+     *                             - 뒤로가기
+     *************************************************************************/
     public void toBack() {
         rlSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +146,10 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    /***********************************배경 터치**********************************/
+
+    /*************************************************************************
+     *                             - 키보드 내려가기
+     *************************************************************************/
     public void onTouchBg() {
         rlbg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,7 +161,9 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-    /***********************************Adapter**********************************/
+    /*************************************************************************
+     *                             - 작가 리사이클러뷰 어뎁터
+     *************************************************************************/
     class RecyclerAdapterWriter extends RecyclerView.Adapter<MyViewHolderWriter> {
 
         ArrayList<SearchListDataAuthor> searchListDataAuthors;
@@ -185,8 +203,9 @@ public class SearchActivity extends AppCompatActivity {
             //content
             holder.tvPoemNum.setText(String.valueOf(searchListDataAuthor.pc));
 
-            //otherEmail = ;
-            //otherType = ;
+            //이메일, type
+            otherEmail = searchListDataAuthor.email;
+            otherType = searchListDataAuthor.type;
 
             //작가 누르면 작가 마이페이지로 이동
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -211,7 +230,9 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-    /**********************************ViewHolder********************************/
+    /*************************************************************************
+     *                            - 작가 리사이클러뷰 뷰홀더
+     *************************************************************************/
 
     class MyViewHolderWriter extends RecyclerView.ViewHolder {
 
@@ -230,7 +251,9 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-    /***********************************Adapter**********************************/
+    /*************************************************************************
+     *                            - 태그 리사이클러뷰 어뎁터
+     *************************************************************************/
     class RecyclerAdapterTitle extends RecyclerView.Adapter<MyViewHolderTitle> {
 
         ArrayList<SearchListDataArticle> searchListDataArticles;
@@ -277,7 +300,9 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-    /**********************************ViewHolder********************************/
+    /*************************************************************************
+     *                              - 태그 리사이클러뷰 뷰홀더
+     *************************************************************************/
 
     class MyViewHolderTitle extends RecyclerView.ViewHolder {
 
@@ -293,7 +318,9 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-    /***********************************검색 결과 가져오기*********************************/
+    /*************************************************************************
+     *                            - 검색 결과 가져오기
+     *************************************************************************/
     public void getResults(String tag) {
         Call<SearchResult> requestSearchResult = service.getSearchResults(tag);
 
@@ -303,6 +330,7 @@ public class SearchActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body().status.equals("success")) {
 
+                        //검색결과 없습니다
                         if (response.body().author_list.size() == 0 && response.body().article_list.size() == 0) {
                             llTv01.setVisibility(View.VISIBLE);
                             llTv02.setVisibility(View.VISIBLE);
@@ -318,12 +346,15 @@ public class SearchActivity extends AppCompatActivity {
                         }
 
 
+                        //검색 결과 보이게
                         llRv01.setVisibility(View.VISIBLE);
                         llRv02.setVisibility(View.VISIBLE);
 
+                        //작가
                         authors = response.body().author_list;
                         raWriter.setAdapter(authors);
 
+                        //태그
                         articles = response.body().article_list;
                         raTtile.setAdapter(articles);
 
@@ -340,12 +371,17 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-    /***********************************검색 버튼 클릭**********************************/
+    /*************************************************************************
+     *                                  - 검색 누르면
+     *************************************************************************/
     public void search() {
         rlSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //서버
                 getResults(et.getText().toString());
+
+                //키보드 내려가게
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
             }

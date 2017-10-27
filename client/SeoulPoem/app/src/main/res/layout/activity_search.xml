@@ -13,9 +13,9 @@
         android:id="@+id/llSearchBar"
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <!--뒤로가기-->
         <RelativeLayout
@@ -43,12 +43,12 @@
                 android:id="@+id/et"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:layout_centerInParent="true"
                 android:background="@null"
-                android:hint="작가/태그별 검색"
-                android:textCursorDrawable="@color/black"
-                android:maxLines="1"
                 android:backgroundTint="#95989a"
-                android:layout_centerInParent="true"/>
+                android:hint="작가/태그별 검색"
+                android:maxLines="1"
+                android:textCursorDrawable="@color/black" />
         </RelativeLayout>
 
         <!--검색 버튼-->
@@ -76,7 +76,7 @@
         android:layout_height="2dp"
         android:layout_below="@+id/llSearchBar"
         android:background="#80a8a8a8"
-        android:orientation="vertical"/>
+        android:orientation="vertical" />
 
 
     <!--작가별 검색 부분-->
@@ -84,10 +84,10 @@
         android:id="@+id/llup"
         android:layout_width="match_parent"
         android:layout_height="224dp"
-        android:layout_marginTop="31dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/linearLayout">
+        android:layout_below="@+id/linearLayout"
+        android:layout_marginTop="31dp">
 
 
         <!--텍스트-->
@@ -130,10 +130,10 @@
             android:visibility="invisible">
 
             <android.support.v7.widget.RecyclerView
-                android:overScrollMode="never"
                 android:id="@+id/rvWrites"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:overScrollMode="never" />
         </LinearLayout>
 
 
@@ -169,9 +169,9 @@
             android:id="@+id/llText02"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
+            android:layout_marginLeft="127dp"
             android:layout_marginTop="105dp"
-            android:layout_marginLeft="127dp">
+            android:visibility="invisible">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -190,10 +190,10 @@
             android:visibility="invisible">
 
             <android.support.v7.widget.RecyclerView
-                android:overScrollMode="never"
                 android:id="@+id/rvTitile"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:overScrollMode="never" />
         </LinearLayout>
 
     </RelativeLayout>

@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.seoulprojet.seoulpoem.activity.AddActivity"
-    android:background="@drawable/paper4">
+    android:background="@drawable/paper4"
+    tools:context="com.seoulprojet.seoulpoem.activity.AddActivity">
 
 
     <android.support.v4.widget.DrawerLayout
@@ -85,10 +85,10 @@
                 android:layout_marginTop="102dp">
 
                 <android.support.v7.widget.RecyclerView
-                    android:overScrollMode="never"
                     android:id="@+id/rvWorks"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never" />
             </LinearLayout>
 
         </RelativeLayout>

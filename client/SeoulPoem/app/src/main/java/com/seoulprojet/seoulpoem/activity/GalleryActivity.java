@@ -38,7 +38,6 @@ import com.seoulprojet.seoulpoem.model.GalleryResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
 
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,6 +53,9 @@ import retrofit2.Response;
 public class GalleryActivity extends AppCompatActivity {
 
 
+    /*************************************************************************
+     *                                  - 변수
+     *************************************************************************/
     //tool_bar
     private RelativeLayout rlBack;
 
@@ -93,6 +95,9 @@ public class GalleryActivity extends AppCompatActivity {
     private TextView tvTagName;
 
 
+    /*************************************************************************
+     *                                  - start
+     *************************************************************************/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,7 +162,9 @@ public class GalleryActivity extends AppCompatActivity {
     }
 
 
-    /***************************************findView***********************************************/
+    /*************************************************************************
+     *                                  - find view
+     *************************************************************************/
     public void findView() {
         rlBack = (RelativeLayout) findViewById(R.id.rlBack);
         rlToWrite = (RelativeLayout) findViewById(R.id.rlToWrite);
@@ -165,7 +172,10 @@ public class GalleryActivity extends AppCompatActivity {
 
     }
 
-    /***********************************Adapter**********************************/
+
+    /*************************************************************************
+     *                             - 리사이클러뷰 어뎁터
+     *************************************************************************/
     class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
         ArrayList<GalleryListData> galleryListDatas;
@@ -218,7 +228,9 @@ public class GalleryActivity extends AppCompatActivity {
     }
 
 
-    /**********************************ViewHolder********************************/
+    /*************************************************************************
+     *                             - 리사이클러뷰 뷰홀더
+     *************************************************************************/
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivPhoto;
@@ -231,7 +243,9 @@ public class GalleryActivity extends AppCompatActivity {
     }
 
 
-    /***********************************갤러리 리스트 가져오기*********************************/
+    /*************************************************************************
+     *                             - 갤러리 리스트 가져오기
+     *************************************************************************/
     public void getPhotos() {
         Call<GalleryResult> requestGalleryLists = service.getPhotos(tagName);
         requestGalleryLists.enqueue(new Callback<GalleryResult>() {
@@ -254,7 +268,9 @@ public class GalleryActivity extends AppCompatActivity {
     }
 
 
-    /**********************************to main**********************************/
+    /*************************************************************************
+     *                             - 메인으로
+     *************************************************************************/
     public void toMain() {
         rlBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -266,7 +282,9 @@ public class GalleryActivity extends AppCompatActivity {
     }
 
 
-    /**********************************Write**********************************/
+    /*************************************************************************
+     *                             - 글쓰기로
+     *************************************************************************/
     public void toWrite() {
         rlToWrite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -275,6 +293,7 @@ public class GalleryActivity extends AppCompatActivity {
             }
         });
     }
+
 
     public void dialog() {
         final CharSequence[] items = {"카메라", "갤러리"};

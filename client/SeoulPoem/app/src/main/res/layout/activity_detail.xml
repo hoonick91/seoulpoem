@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,17 +23,17 @@
             android:id="@+id/ivPhoto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:src="@drawable/testimg"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter"
+            tools:src="@drawable/testimg" />
     </LinearLayout>
 
     <!--회원 정보-->
     <RelativeLayout
-        android:layout_marginTop="20dp"
         android:id="@+id/rlBottomPart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/llPhoto"
+        android:layout_marginTop="20dp"
         android:visibility="invisible">
 
         <!--user img-->
@@ -43,10 +42,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="26dp">
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivProfile"
                 android:layout_width="43dp"
-                android:layout_height="43dp"/>
+                android:layout_height="43dp" />
         </LinearLayout>
 
         <!--user nickname-->
@@ -62,9 +62,9 @@
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="구덧흐얌"
+                android:textColor="#ffffff"
                 android:textSize="18dp"
-                android:textColor="#ffffff" />
+                tools:text="구덧흐얌" />
         </LinearLayout>
 
         <!--hash tag-->
@@ -79,23 +79,25 @@
                 android:id="@+id/tvTags"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="#aaaa #bbbbb #ccccc"
+                android:textColor="#ffffff"
                 android:textSize="15sp"
-                android:textColor="#ffffff"/>
+                tools:text="#aaaa #bbbbb #ccccc" />
         </LinearLayout>
 
 
+        <!--업버튼-->
         <RelativeLayout
             android:id="@+id/llup"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/up"
-                android:layout_centerInParent="true"/>
+                android:layout_centerInParent="true"
+                android:src="@drawable/up" />
         </RelativeLayout>
 
     </RelativeLayout>
