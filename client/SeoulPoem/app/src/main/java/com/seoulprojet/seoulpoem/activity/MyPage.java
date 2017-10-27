@@ -1,14 +1,7 @@
 package com.seoulprojet.seoulpoem.activity;
 
 
-<<<<<<< HEAD
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.FragmentTransaction;
-import android.content.Context;
-=======
->>>>>>> kmj
-import android.Manifest;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -27,7 +20,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -46,10 +38,13 @@ import com.seoulprojet.seoulpoem.network.NetworkService;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import android.Manifest;
+import android.support.v7.app.AlertDialog;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -272,10 +272,7 @@ public class GalleryActivity extends AppCompatActivity {
         rlToWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-<<<<<<< HEAD
-=======
                 checkPermissions();
->>>>>>> kmj
                 dialog();
             }
         });
