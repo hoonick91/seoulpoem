@@ -49,7 +49,9 @@
                 android:focusableInTouchMode="true"
                 android:textCursorDrawable="@android:color/black"
                 android:backgroundTint="#95989a"
-                android:id="@+id/login_name_et"/>
+                android:id="@+id/login_name_et"
+                  android:imeOptions="actionDone"
+                  android:inputType="text"/>
 
             <ImageButton
                 android:layout_width="wrap_content"
