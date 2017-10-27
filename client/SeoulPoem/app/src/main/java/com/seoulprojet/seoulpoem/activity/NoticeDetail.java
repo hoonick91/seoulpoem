@@ -23,7 +23,6 @@ import retrofit2.Response;
 public class NoticeDetail extends AppCompatActivity {
 
     private TextView title_tv, content_tv, time_tv;
-    private ImageView alarm_iv;
     private ImageButton back_btn;
 
     private int notice_id = 0;
@@ -39,7 +38,6 @@ public class NoticeDetail extends AppCompatActivity {
         title_tv = (TextView)findViewById(R.id.notice_detail_title_tv);
         content_tv = (TextView)findViewById(R.id.notice_detail_content_tv);
         time_tv = (TextView)findViewById(R.id.notice_detail_time_tv);
-        alarm_iv = (ImageView)findViewById(R.id.notice_detail_alarm_img);
         back_btn = (ImageButton)findViewById(R.id.notice_detail_back_btn);
 
         // intent
