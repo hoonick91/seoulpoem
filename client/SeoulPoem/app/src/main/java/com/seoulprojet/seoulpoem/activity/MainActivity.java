@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -686,9 +687,14 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         if (photoFile != null) {
-            photoUri = FileProvider.getUriForFile(MainActivity.this,
-                    "com.seoulprojet.seoulpoem.activity.provider", photoFile);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { //버전이 누가보다 크거나 같을 때
+                    photoUri = FileProvider.getUriForFile(MainActivity.this,
+                            "com.seoulprojet.seoulpoem.activity.provider", photoFile);
+                }else{ //버전이 누가(7.0) 보다 낮을때
+                    photoUri = Uri.fromFile(photoFile);
+                }
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+            Log.e("여기여기 photoUri",""+photoUri);
             startActivityForResult(intent, PICK_FROM_CAMERA);
         }
     }
@@ -709,7 +715,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
-        Log.e("**gotoalbum", "startActivity");
     }
 
     @Override
@@ -750,7 +755,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) {
-            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
+            Log.e("resultCode",""+resultCode);
+            Toast.makeText(this, "취소 되었습니다.꺄륵쿠스투스", Toast.LENGTH_SHORT).show();
             return;
         }
         if (requestCode == PICK_FROM_ALBUM) {
@@ -789,14 +795,15 @@ public class MainActivity extends AppCompatActivity {
         this.grantUriPermission("com.android.camera", photoUri,
                 Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         //    }
+
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(photoUri, "image/*");
 
         List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, 0);
-        //   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { //버전이 누가보다 크거나 같을 때
+           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { //버전이 누가보다 크거나 같을 때
         grantUriPermission(list.get(0).activityInfo.packageName, photoUri,
                 Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        //   }
+           }
         int size = list.size();
         if (size == 0) {
             Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
