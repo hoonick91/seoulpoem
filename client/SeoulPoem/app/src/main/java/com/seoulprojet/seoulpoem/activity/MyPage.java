@@ -10,12 +10,14 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -29,6 +31,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.facebook.CallbackManager;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.component.Preview;
 import com.seoulprojet.seoulpoem.model.MyPageResult;
@@ -73,6 +82,11 @@ public class MyPage extends AppCompatActivity {
     private ImageView hamburger_profile, hamburger_bg;
     private View drawerView;
     private DrawerLayout drawerLayout;
+    private GoogleApiClient mGoogleApiClient;
+    private LoginManager loginManager;
+    private CallbackManager callbackManager;
+    private MainActivity mainActivity = (MainActivity)MainActivity.main;
+    private PbReference pref;
 
 
     // network
@@ -105,6 +119,7 @@ public class MyPage extends AppCompatActivity {
         setContentView(R.layout.activity_my_page);
 
         myPage = MyPage.this;
+        pref = new PbReference(this);
 
         //유저 정보 가져오기
         Intent intent = getIntent();
@@ -112,6 +127,8 @@ public class MyPage extends AppCompatActivity {
         loginType = intent.getExtras().getInt("loginType");
         otherEmail = intent.getExtras().getString("otherEmail");
         otherType = intent.getExtras().getInt("otherType");
+
+
 
         Log.i("otehr", "other email:" + otherEmail);
 
@@ -133,6 +150,9 @@ public class MyPage extends AppCompatActivity {
         mypage_photo_btn = (ImageButton)findViewById(R.id.mypage_photo_btn);
         mypage_poem_btn = (ImageButton)findViewById(R.id.mypage_poem_btn);
         mypage_bg_iv = (ImageView)findViewById(R.id.mypage_bg_iv);
+
+        // 이름 굵게
+        mypage_name_txt.setPaintFlags(mypage_name_txt.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
 
         // drawer
         showHamburger();
@@ -279,6 +299,18 @@ public class MyPage extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
     /********* drawer **********/
     public void showHamburger(){
 
@@ -343,12 +375,35 @@ public class MyPage extends AppCompatActivity {
         hamburger_setting_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SettingPage.class);
+                if(loginType == 1){
+                    Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                            new ResultCallback<Status>() {
+                                @Override
+                                public void onResult(@NonNull Status status) {
+                                    pref.removeAll();
+                                    mainActivity.finish();
 
-                intent.putExtra("userEmail", userEmail);
-                intent.putExtra("loginType", loginType);
-                startActivity(intent);
-                finish();
+                                    Intent intent = new Intent(getApplicationContext(), Login.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                    );
+                }
+
+                // facebook logout
+                else{
+                    callbackManager = CallbackManager.Factory.create();
+                    loginManager = LoginManager.getInstance();
+                    loginManager.logOut();
+
+                    pref.removeAll();
+                    mainActivity.finish();
+
+                    Intent intent = new Intent(getApplicationContext(), Login.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
 

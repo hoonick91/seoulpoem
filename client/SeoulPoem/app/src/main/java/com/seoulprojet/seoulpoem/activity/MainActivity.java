@@ -2,6 +2,7 @@ package com.seoulprojet.seoulpoem.activity;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -40,6 +42,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.facebook.CallbackManager;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.component.Preview;
 import com.seoulprojet.seoulpoem.model.HashtagListData;
@@ -65,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
     /*************************************************************************
      *                                  - 변수
      *************************************************************************/
+
+    public static Activity main;
 
     //tool_bar
     private RelativeLayout rlHamberger, rlSearch, rlTags;
@@ -125,6 +136,10 @@ public class MainActivity extends AppCompatActivity {
     private ImageView hamburger_profile, hamburger_bg;
     private View drawerView;
     private DrawerLayout drawerLayout;
+    private PbReference pref;
+    private GoogleApiClient mGoogleApiClient;
+    private LoginManager loginManager;
+    private CallbackManager callbackManager;
 
 
     //유저 정보
@@ -152,6 +167,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        main = MainActivity.this;
+
         //유저 정보 가져오기
         Intent intent = getIntent();
         userEmail = intent.getExtras().getString("userEmail");
@@ -160,9 +177,10 @@ public class MainActivity extends AppCompatActivity {
         currentTag = tag;
 
 
+
         // 혹시 모를 유저 정보 가져오기 방지
+        pref = new PbReference(this);
         if (userEmail == null || loginType == 0) {
-            PbReference pref = new PbReference(this);
             userEmail = pref.getValue("userEmail", "");
             loginType = pref.getValue("loginType", 0);
         }
@@ -573,6 +591,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*************************************************************************
+     *                             - 구글 로그인 onstart
+     *************************************************************************/
+
+    @Override
+    protected void onStart() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    /*************************************************************************
      *                             - 햄버거 보이게
      *************************************************************************/
     public void showHamburger() {
@@ -638,11 +672,33 @@ public class MainActivity extends AppCompatActivity {
         hamburger_setting_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SettingPage.class);
-                intent.putExtra("userEmail", userEmail);
-                intent.putExtra("loginType", loginType);
-                startActivity(intent);
-                drawerLayout.closeDrawers();
+                if(loginType == 1){
+                    Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                            new ResultCallback<Status>() {
+                                @Override
+                                public void onResult(@NonNull Status status) {
+                                    pref.removeAll();
+
+                                    Intent intent = new Intent(getApplicationContext(), Login.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                    );
+                }
+
+                // facebook logout
+                else{
+                    callbackManager = CallbackManager.Factory.create();
+                    loginManager = LoginManager.getInstance();
+                    loginManager.logOut();
+
+                    pref.removeAll();
+
+                    Intent intent = new Intent(getApplicationContext(), Login.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
 
