@@ -47,6 +47,7 @@ import retrofit2.Response;
 import static com.seoulprojet.seoulpoem.R.drawable.e;
 import static com.seoulprojet.seoulpoem.R.drawable.f;
 import static com.seoulprojet.seoulpoem.R.drawable.i;
+import static java.lang.System.in;
 
 public class MyPageSetting extends AppCompatActivity {
 
@@ -73,6 +74,8 @@ public class MyPageSetting extends AppCompatActivity {
     public  Uri imageUri;
     private Uri backUri;
     private Uri profileUri;
+    private double size=1;
+    private double size2=1;
 
     //기본이미지 선택시
     private Uri defBackUri;
@@ -284,16 +287,15 @@ public class MyPageSetting extends AppCompatActivity {
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
                 // resize 및 imageview 지정
-                if(width > 1080){
+                if(width > 1000){
+                    Log.e("width",""+width);
                     Bitmap resized = null;
 
-                    while(width > 1080){
-                        resized = Bitmap.createScaledBitmap(selectedImage, 1080, (height * 1080) / width, true);
-                        height = resized.getHeight();
-                        width = resized.getWidth();
-                    }
 
                     if(camNum == 1){
+                        size = width / 1000.0 ;
+                        resized = Bitmap.createScaledBitmap(selectedImage, 1000, (int)(height / size), true);
+
                         mypage_setting_background_img.setImageBitmap(resized);
                         backUri = imageUri;
                         selectionBack = 2;
@@ -303,6 +305,8 @@ public class MyPageSetting extends AppCompatActivity {
                     }
 
                     else if(camNum == 2){
+                        size2 = width / 1000.0 ;
+                        resized = Bitmap.createScaledBitmap(selectedImage, 1000, (int)(height / size2), true);
                         mypage_setting_profile_img.setImageBitmap(resized);
                         profileUri = imageUri;
                         selectionProfile = 2;
@@ -354,17 +358,19 @@ public class MyPageSetting extends AppCompatActivity {
         MultipartBody.Part background;
 
         if(selectionBack == 1){ // 기본이미지
-            background = getMultipartBody(defBackUri,"profile_background","background");
+            background = getMultipartBody(defBackUri,"profile_background","background",1);
         }else if (selectionBack == 2){ //앨범
-            background = getMultipartBody(backUri,getImageNameToUri(backUri),"background");
+            background = getMultipartBody(backUri,getImageNameToUri(backUri),"background",size);
+            size=1;
         }else{ //변경하지 않음
             background = null;
         }
 
         if(selectionProfile == 1){// 기본이미지
-            profile = getMultipartBody(defProfileUri,"profile_tmp","profile");
+            profile = getMultipartBody(defProfileUri,"profile_tmp","profile",1);
         }else if(selectionProfile == 2){//앨범
-            profile = getMultipartBody(profileUri,getImageNameToUri(profileUri),"profile");
+            profile = getMultipartBody(profileUri,getImageNameToUri(profileUri),"profile", size2);
+            size2=1;
         }else{//변경하지 않음
             profile = null;
         }
@@ -440,8 +446,9 @@ public class MyPageSetting extends AppCompatActivity {
 
     }
 
-    public MultipartBody.Part getMultipartBody(Uri uri, String name,String model){
+    public MultipartBody.Part getMultipartBody(Uri uri, String name,String model,double size){
         BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = (int) Math.round(size);
         InputStream in = null; // here, you need to get your context.
         try {
 

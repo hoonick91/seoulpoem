@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:visibility="visible"
-    android:background="#ffffff">
+    android:background="@android:color/transparent">
 
 
     <android.support.v7.widget.Toolbar

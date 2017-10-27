@@ -12,21 +12,41 @@
         android:id="@+id/mypage_drawer_layout02"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentStart="true">
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!--툴바-->
+            <include
+                android:id="@+id/icToolbar"
+                layout="@layout/tool_bar_main" />
+
             <RelativeLayout
                 android:id="@+id/llup"
+                android:layout_below="@id/icToolbar"
                 android:layout_width="match_parent"
-                android:layout_height="100dp">
+                android:layout_height="52dp">
+                <!--hash tag toggle-->
+                <RelativeLayout
+                    android:id="@+id/rlHashTagToggle"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:translationY="-56dp">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvHashtags"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:overScrollMode="never" />
+                </RelativeLayout>
 
             </RelativeLayout>
+
 
 
             <!--해쉬테그-->
@@ -48,6 +68,7 @@
                     tools:text="# 그리움" />
             </LinearLayout>
 
+
             <!--더보기 버튼-->
             <LinearLayout
                 android:id="@+id/llmore"
@@ -65,24 +86,10 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!--hash tag toggle-->
-            <RelativeLayout
-                android:id="@+id/rlHashTagToggle"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="-10dp">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvHashtags"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:overScrollMode="never" />
-            </RelativeLayout>
 
-            <!--툴바-->
-            <include
-                android:id="@+id/icToolbar"
-                layout="@layout/tool_bar_main" />
+
+
             <!--viewpager, indicator-->
             <RelativeLayout
                 android:id="@+id/rlViewpager"
