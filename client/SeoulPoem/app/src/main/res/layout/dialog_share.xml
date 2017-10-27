@@ -24,13 +24,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <ImageView
                     android:id="@+id/text01"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#000000"
-                    android:textSize="18dp"
-                    tools:text="#작품 담기" />
+                    android:src="@drawable/share_dialog_title"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -42,49 +40,28 @@
             android:layout_width="195dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/llRow01"
-            android:layout_marginLeft="24dp"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="19dp">
 
-            <TextView
+            <ImageView
                 android:id="@+id/text02"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#8a000000"
-                android:textSize="16sp"
-                tools:text="작품 담기에 작품을 담았습니다." />
+                android:src="@drawable/share_dialog_content" />
         </LinearLayout>
 
 
         <!--row03-->
-        <LinearLayout
-            android:id="@+id/llRow03"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/llRow02"
-            android:layout_marginLeft="24dp">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/text03"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#8a000000"
-                    android:textSize="16sp"
-                    tools:text="작품 담기로 이동하시겠습니까?" />
-            </LinearLayout>
-        </LinearLayout>
 
         <!--row04-->
         <RelativeLayout
             android:id="@+id/rlRow04"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/llRow03"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp">
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp">
 
 
             <!--이동하기 텍스트-->
@@ -93,14 +70,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="48dp">
 
-                <TextView
+                <ImageView
                     android:id="@+id/btnMove"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="이동하기"
-                    android:textColor="#8a000000"
-                    android:textSize="16dp" />
+                    android:src="@drawable/share_dialog_move" />
             </RelativeLayout>
 
             <!--돌아가기 텍스트-->
@@ -112,14 +87,12 @@
                 android:layout_marginLeft="74dp"
                 android:layout_toRightOf="@+id/llMove">
 
-                <TextView
+                <ImageView
                     android:id="@+id/btnBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="계속보기"
-                    android:textColor="#000000"
-                    android:textSize="16sp" />
+                    android:src="@drawable/share_dialog_back" />
             </RelativeLayout>
 
 

@@ -513,8 +513,8 @@ public class ReadingPoemActivity extends AppCompatActivity {
 
     public class AddWorkDialog extends Dialog {
 
-        private TextView text01, text02, text03;
-        private TextView mLeftButton, mRightButton;
+        private ImageView text01, text02, text03;
+        private ImageView mLeftButton, mRightButton;
         String str01, str02, str03;
         private View.OnClickListener addDialog_leftListener, addDialog_rightListener;
 
@@ -540,16 +540,16 @@ public class ReadingPoemActivity extends AppCompatActivity {
             setContentView(R.layout.dialog_share);
 
             //findView
-            text01 = (TextView) findViewById(R.id.text01);
-            text02 = (TextView) findViewById(R.id.text02);
-            text03 = (TextView) findViewById(R.id.text03);
-            mLeftButton = (TextView) findViewById(R.id.btnMove);
-            mRightButton = (TextView) findViewById(R.id.btnBack);
+            text01 = (ImageView) findViewById(R.id.text01);
+            text02 = (ImageView) findViewById(R.id.text02);
+            //text03 = (TextView) findViewById(R.id.text03);
+            mLeftButton = (ImageView) findViewById(R.id.btnMove);
+            mRightButton = (ImageView) findViewById(R.id.btnBack);
 
             // 제목과 내용을 생성자에서 셋팅
-            text01.setText(str01);
-            text02.setText(str02);
-            text03.setText(str03);
+            //text01.setText(str01);
+            //text02.setText(str02);
+            //text03.setText(str03);
 
             // 클릭 이벤트 셋팅
             mLeftButton.setOnClickListener(addDialog_leftListener);

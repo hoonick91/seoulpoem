@@ -96,7 +96,6 @@ public class MyPageSetting extends AppCompatActivity {
         loginType = intent.getExtras().getInt("loginType");
 
         // 객체 초기화
-        final MyPage myPage = (MyPage)MyPage.myPage;
         total_layout = (LinearLayout)findViewById(R.id.total_layout);
         mypage_setting_back_btn = (ImageButton)findViewById(R.id.mypage_setting_back_btn);
         mypage_setting_ok_btn = (ImageButton)findViewById(R.id.mypage_setting_ok_btn);
@@ -156,15 +155,6 @@ public class MyPageSetting extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 postMyPage();
-                myPage.finish();
-
-                Intent intent = new Intent(getApplicationContext(), MyPage.class);
-                intent.putExtra("userEmail", userEmail);
-                intent.putExtra("loginType", loginType);
-                intent.putExtra("otherEmail", userEmail);
-                intent.putExtra("otherType", loginType);
-                startActivity(intent);
-                finish();
             }
         });
     }
@@ -396,9 +386,30 @@ public class MyPageSetting extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "수정을 완료했습니다", Toast.LENGTH_LONG).show();
                                 selectionProfile = 0;
                                 selectionBack = 0;
-                                getMyPagePhotos();
+
+                                final MyPage myPage = (MyPage)MyPage.myPage;
+                                myPage.finish();
+
+                                Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                                intent.putExtra("userEmail", userEmail);
+                                intent.putExtra("loginType", loginType);
+                                intent.putExtra("otherEmail", userEmail);
+                                intent.putExtra("otherType", loginType);
+                                startActivity(intent);
+                                finish();
+
                             }else{
                                 Log.e("변경사항 없음!","변경사항 없음!");
+                                final MyPage myPage = (MyPage)MyPage.myPage;
+                                myPage.finish();
+
+                                Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                                intent.putExtra("userEmail", userEmail);
+                                intent.putExtra("loginType", loginType);
+                                intent.putExtra("otherEmail", userEmail);
+                                intent.putExtra("otherType", loginType);
+                                startActivity(intent);
+                                finish();
                             }
                         } else {
 
