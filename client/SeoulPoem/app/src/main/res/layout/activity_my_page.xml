@@ -38,13 +38,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="4"
-                    android:background="#ffa6be">
+                    android:background="#64000000">
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
                         android:src="@drawable/profile_background"
+                        android:alpha="80"
                         android:id="@+id/mypage_bg_iv"/>
 
                     <LinearLayout
