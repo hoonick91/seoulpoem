@@ -56,10 +56,8 @@
                     android:id="@+id/poem_path"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-
-                    android:layout_marginBottom="38dp"
-                    android:layout_marginLeft="174dp"
+                    android:layout_marginTop="570dp"
+                    android:layout_centerHorizontal="true"
                     android:background="@android:color/transparent"
                     android:paddingBottom="15dp"
                     android:paddingLeft="15dp"

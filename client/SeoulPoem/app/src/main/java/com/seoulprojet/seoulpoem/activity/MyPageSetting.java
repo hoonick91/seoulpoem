@@ -219,7 +219,6 @@ public class MyPageSetting extends AppCompatActivity {
 
         ImageButton cam_album_btn = (ImageButton)dialogLayout.findViewById(R.id.cam_album_btn);
         ImageButton cam_default_btn = (ImageButton)dialogLayout.findViewById(R.id.cam_default_btn);
-        ImageButton cam_cancel_btn = (ImageButton)dialogLayout.findViewById(R.id.cam_cancel_btn);
 
         cam_album_btn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -260,12 +259,6 @@ public class MyPageSetting extends AppCompatActivity {
             }
         });
 
-        cam_cancel_btn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                camDialog.cancel();
-            }
-        });
     }
 
     // album
