@@ -48,6 +48,8 @@
                 android:backgroundTint="#95989a"
                 android:hint="작가/태그별 검색"
                 android:maxLines="1"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
                 android:textCursorDrawable="@color/black" />
         </RelativeLayout>
 

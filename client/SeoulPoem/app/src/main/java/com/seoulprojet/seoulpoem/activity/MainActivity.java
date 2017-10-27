@@ -559,10 +559,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!showTags) { //보이지 않을때 보이게 함
-                    rlHashTagToggle.animate().translationY(180).withLayer();
+                    rlHashTagToggle.animate().translationY(0).withLayer();
                     showTags = true;
                 } else { //보일때 보이지 않게함
-                    rlHashTagToggle.animate().translationY(-180).withLayer();
+                    DisplayMetrics dm = getResources().getDisplayMetrics();
+                    int size = Math.round( 56 * dm.density); //숫자가 넣고싶은 dp값
+                    size = 0 - size;
+                    rlHashTagToggle.animate().translationY(size).withLayer();
                     showTags = false;
                 }
             }
@@ -788,7 +791,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) {
             Log.e("resultCode",""+resultCode);
-            Toast.makeText(this, "취소 되었습니다.꺄륵쿠스투스", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
         if (requestCode == PICK_FROM_ALBUM) {

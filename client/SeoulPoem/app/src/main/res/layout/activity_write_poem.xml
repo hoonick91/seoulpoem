@@ -207,7 +207,9 @@
                 android:textCursorDrawable="@android:color/black"
                 android:backgroundTint="#95989a"
                 android:textSize="14sp"
-                android:hint="제목을 입력하세요"/>
+                android:hint="제목을 입력하세요"
+                android:imeOptions="actionNext"
+                android:inputType="text"/>
 
             <LinearLayout
                 android:id="@+id/write_content_wrap"
@@ -224,7 +226,9 @@
                     android:backgroundTint="#95989a"
                     android:hint="내용을 입력하세요"
                     android:textColor="#000000"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"/>
             </LinearLayout>
 
 
@@ -293,7 +297,9 @@
                 android:backgroundTint="#95989a"
                 android:bufferType="spannable"
                 android:textSize="14sp"
-                android:hint="태그를 입력하세요"/>
+                android:hint="태그를 입력하세요"
+                android:imeOptions="actionNext"
+                android:inputType="text"/>
 
             <EditText
                 android:layout_width="308dp"
@@ -303,7 +309,9 @@
                 android:layout_marginLeft="25dp"
                 android:id="@+id/write_detail"
                 android:textSize="14sp"
-                android:hint="기타 상세정보를 입력하세요"/>
+                android:hint="기타 상세정보를 입력하세요"
+                android:imeOptions="actionDone"
+                android:inputType="text"/>
 
 
         </LinearLayout>

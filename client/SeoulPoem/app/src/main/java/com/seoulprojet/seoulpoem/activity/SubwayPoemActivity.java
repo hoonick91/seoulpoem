@@ -76,7 +76,8 @@ public class SubwayPoemActivity extends AppCompatActivity {
                             subway_background.setBackgroundResource(R.drawable.paper1);
 
                         subway_title.setText(response.body().subway_list.get(i).title);
-                        subway_content.setText(response.body().subway_list.get(i).content);
+                        subway_content.setText(response.body().subway_list.get(i).content.replace("*","\n"));
+                        //앞의 변수를 뒤의 변수로 바꿈
                         subway_writer.setText("-"+" "+response.body().subway_list.get(i).author);
                     }
 
