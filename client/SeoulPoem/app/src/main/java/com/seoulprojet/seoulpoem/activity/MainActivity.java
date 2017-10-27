@@ -518,32 +518,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-<<<<<<< HEAD
-=======
-    /******************************************show tags******************************************/
-    public void showTags() {
-        tbMain.bringToFront();
-
-        rlTags.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!showTags) { //보이지 않을때 보이게 함
-                    DisplayMetrics dm = getResources().getDisplayMetrics();
-                    int size = Math.round(56 * dm.density); //숫자가 넣고싶은 dp값임
-                    rlHashTagToggle.animate().translationY(0).withLayer();
-                    showTags = true;
-                }else{ //보일때 보이지 않게함
-                    DisplayMetrics dm = getResources().getDisplayMetrics();
-                    int size = Math.round(56 * dm.density); //숫자가 넣고싶은 dp값임
-                    size = 0 - size;
-                    rlHashTagToggle.animate().translationY(size).withLayer();
-                    showTags = false;
-                }
-            }
-        });
-    }
-
->>>>>>> kmj
 
     /*************************************************************************
      *                             - 더보기로
