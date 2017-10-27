@@ -123,7 +123,7 @@ public class Notice extends AppCompatActivity {
             NoticeResult.NoticeList noticeResult = noticeResults.get(position);
 
             holder.noticeTitle_tv.setText(noticeResult.title.toString());
-            holder.noticeContent_tv.setText(noticeResult.content.toString());
+            holder.noticeContent_tv.setText(noticeResult.date.toString());
         }
 
         @Override
