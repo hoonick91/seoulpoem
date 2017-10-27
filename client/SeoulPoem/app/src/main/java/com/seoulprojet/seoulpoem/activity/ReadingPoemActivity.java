@@ -25,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
@@ -45,7 +44,6 @@ import static android.graphics.Typeface.BOLD;
 import static android.graphics.Typeface.BOLD_ITALIC;
 import static android.graphics.Typeface.ITALIC;
 import static android.graphics.Typeface.NORMAL;
-import static android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND;
 
 public class ReadingPoemActivity extends AppCompatActivity {
 
