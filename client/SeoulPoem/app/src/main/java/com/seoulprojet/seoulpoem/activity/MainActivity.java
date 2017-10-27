@@ -27,6 +27,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -501,10 +502,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!showTags) { //보이지 않을때 보이게 함
-                    rlHashTagToggle.animate().translationY(180).withLayer();
+                    DisplayMetrics dm = getResources().getDisplayMetrics();
+                    int size = Math.round(56 * dm.density); //숫자가 넣고싶은 dp값임
+                    rlHashTagToggle.animate().translationY(0).withLayer();
                     showTags = true;
                 }else{ //보일때 보이지 않게함
-                    rlHashTagToggle.animate().translationY(-180).withLayer();
+                    DisplayMetrics dm = getResources().getDisplayMetrics();
+                    int size = Math.round(56 * dm.density); //숫자가 넣고싶은 dp값임
+                    size = 0 - size;
+                    rlHashTagToggle.animate().translationY(size).withLayer();
                     showTags = false;
                 }
             }
