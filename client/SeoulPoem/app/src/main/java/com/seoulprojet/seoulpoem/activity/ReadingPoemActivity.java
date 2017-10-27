@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -212,7 +213,11 @@ public class ReadingPoemActivity extends AppCompatActivity {
                     RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams) title_layout.getLayoutParams();
                     params2.topMargin = title_layout.getTop() / 3;
                     title_layout.setLayoutParams(params2);
-
+                    RelativeLayout.LayoutParams mlayoutParams = (RelativeLayout.LayoutParams) poem_path.getLayoutParams();
+                    DisplayMetrics dm = getResources().getDisplayMetrics();
+                    int size = Math.round(110 * dm.density); //숫자가 넣고싶은 dp값
+                    mlayoutParams.topMargin = size;
+                    poem_path.setLayoutParams(mlayoutParams);
                     poem_title.setTextSize(18);
                     poem_path.setImageResource(R.drawable.path3);
                     openPoem = true;
@@ -225,7 +230,11 @@ public class ReadingPoemActivity extends AppCompatActivity {
                     RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams) title_layout.getLayoutParams();
                     params2.topMargin = title_layout.getTop() * 3;
                     title_layout.setLayoutParams(params2);
-
+                    RelativeLayout.LayoutParams mlayoutParams = (RelativeLayout.LayoutParams) poem_path.getLayoutParams();
+                    DisplayMetrics dm = getResources().getDisplayMetrics();
+                    int size = Math.round(570 * dm.density);//숫자가 넣고싶은 dp값
+                    mlayoutParams.topMargin = size;
+                    poem_path.setLayoutParams(mlayoutParams);
                     poem_title.setTextSize(30);
                     poem_path.setImageResource(R.drawable.path2);
                     openPoem = false;
