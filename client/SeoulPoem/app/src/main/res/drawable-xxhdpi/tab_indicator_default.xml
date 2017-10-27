@@ -6,9 +6,14 @@
         <shape
             android:innerRadius="0dp"
             android:shape="ring"
-            android:thickness="2dp"
+            android:thickness="4dp"
             android:useLevel="false">
             <solid android:color="#ffff"/>
+            <stroke
+                android:width="0.02dp"
+                android:color="#838282" />
+
+
         </shape>
     </item>
 </layer-list>
