@@ -37,6 +37,8 @@ import retrofit2.Response;
 
 public class SettingPage extends AppCompatActivity {
 
+    private MainActivity main;
+
     private String userEmail = null;
     private int loginType = 0;
 
@@ -61,6 +63,7 @@ public class SettingPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_page);
 
+        final MainActivity main = (MainActivity)MainActivity.main;
         pref = new PbReference(this);
 
         if(pref.getValue("loginStatus", true)){
@@ -106,6 +109,7 @@ public class SettingPage extends AppCompatActivity {
                                 @Override
                                 public void onResult(@NonNull Status status) {
                                     pref.removeAll();
+                                    main.finish();
 
                                     Intent intent = new Intent(getApplicationContext(), Login.class);
                                     startActivity(intent);
@@ -122,6 +126,8 @@ public class SettingPage extends AppCompatActivity {
                     loginManager.logOut();
 
                     pref.removeAll();
+                    main.finish();
+
                     Intent intent = new Intent(getApplicationContext(), Login.class);
                     startActivity(intent);
                     finish();

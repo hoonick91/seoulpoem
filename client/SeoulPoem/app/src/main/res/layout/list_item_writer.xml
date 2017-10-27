@@ -106,6 +106,13 @@
             tools:text="20"
             android:textColor="#95989a"
             android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="#95989a"
+            android:text="개"/>
     </LinearLayout>
 
     <!--'개' 텍스트-->

@@ -1,6 +1,7 @@
 package com.seoulprojet.seoulpoem.activity;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.CallbackManager;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.model.MyPagePoemListData;
 import com.seoulprojet.seoulpoem.model.MyPageResult;
@@ -41,6 +49,11 @@ public class TodaySeoul extends AppCompatActivity {
     private ImageView hamburger_profile, hamburger_bg;
     private View drawerView;
     private DrawerLayout drawerLayout;
+    private GoogleApiClient mGoogleApiClient;
+    private LoginManager loginManager;
+    private CallbackManager callbackManager;
+    private MainActivity mainActivity = (MainActivity)MainActivity.main;
+    private PbReference pref;
 
     private RecyclerView recyclerView;
     private RecyclerAdapter recyclerAdapter;
@@ -60,6 +73,12 @@ public class TodaySeoul extends AppCompatActivity {
 
         userEmail = intent.getStringExtra("userEmail");
         loginType = intent.getExtras().getInt("loginType");
+
+        pref = new PbReference(this);
+        if(userEmail == null || loginType == 0){
+            userEmail = pref.getValue("userEmail", "");
+            loginType = pref.getValue("loginType", 0);
+        }
 
         Log.i("login", "today logintype " + loginType);
 
@@ -88,6 +107,18 @@ public class TodaySeoul extends AppCompatActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
+    }
+
+    @Override
+    protected void onStart() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        mGoogleApiClient.connect();
+        super.onStart();
     }
 
     /********* drawer **********/
@@ -132,11 +163,35 @@ public class TodaySeoul extends AppCompatActivity {
         hamburger_setting_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SettingPage.class);
-                intent.putExtra("userEmail", userEmail);
-                intent.putExtra("loginType", loginType);
-                startActivity(intent);
-                finish();
+                if(loginType == 1){
+                    Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                            new ResultCallback<Status>() {
+                                @Override
+                                public void onResult(@NonNull Status status) {
+                                    pref.removeAll();
+                                    mainActivity.finish();
+
+                                    Intent intent = new Intent(getApplicationContext(), Login.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                    );
+                }
+
+                // facebook logout
+                else{
+                    callbackManager = CallbackManager.Factory.create();
+                    loginManager = LoginManager.getInstance();
+                    loginManager.logOut();
+
+                    pref.removeAll();
+                    mainActivity.finish();
+
+                    Intent intent = new Intent(getApplicationContext(), Login.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
 

@@ -106,6 +106,13 @@
         </LinearLayout>
 
         <!--검색 전 텍스트-->
+        <TextView
+            android:id="@+id/author_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="원하는 작가를 검색해보세요" />
+
         <LinearLayout
             android:id="@+id/llText01"
             android:layout_width="wrap_content"
@@ -163,6 +170,13 @@
         </LinearLayout>
 
         <!--검색 전 텍스트-->
+        <TextView
+            android:id="@+id/tag_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="원하는 태그를 검색해보세요" />
+
         <LinearLayout
             android:id="@+id/llText02"
             android:layout_width="wrap_content"

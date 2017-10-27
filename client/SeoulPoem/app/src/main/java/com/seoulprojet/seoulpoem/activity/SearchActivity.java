@@ -53,6 +53,7 @@ public class SearchActivity extends AppCompatActivity {
     private ArrayList<SearchListDataArticle> articles;
     private LinearLayout llTv01, llTv02, llRv01, llRv02;
     private RelativeLayout rlSearchButton;
+    private TextView tag_tv, author_tv;
 
     //유저 정보
     private String userEmail = null;
@@ -123,6 +124,8 @@ public class SearchActivity extends AppCompatActivity {
      *************************************************************************/
     public void findView() {
 
+        tag_tv = (TextView)findViewById(R.id.tag_tv);
+        author_tv = (TextView)findViewById(R.id.author_tv);
         rlSearch = (RelativeLayout) findViewById(R.id.rlSearch);
         rlbg = (RelativeLayout) findViewById(R.id.rlbg);
         et = (EditText) findViewById(R.id.et);
@@ -192,9 +195,15 @@ public class SearchActivity extends AppCompatActivity {
 
 
             //사진 이미지
-            Glide.with(getApplicationContext())
-                    .load(searchListDataAuthor.profile)
-                    .into(holder.ivLeftImg);
+            if(searchListDataAuthor.profile == null){
+                holder.ivLeftImg.setImageResource(R.drawable.profile_tmp);
+            }
+
+            else{
+                Glide.with(getApplicationContext())
+                        .load(searchListDataAuthor.profile)
+                        .into(holder.ivLeftImg);
+            }
 
             //title
             holder.tvName.setText(searchListDataAuthor.name_);
@@ -331,6 +340,9 @@ public class SearchActivity extends AppCompatActivity {
             public void onResponse(Call<SearchResult> call, Response<SearchResult> response) {
                 if (response.isSuccessful()) {
                     if (response.body().status.equals("success")) {
+
+                        author_tv.setVisibility(View.INVISIBLE);
+                        tag_tv.setVisibility(View.INVISIBLE);
 
                         //검색결과 없습니다
                         if (response.body().author_list.size() == 0 && response.body().article_list.size() == 0) {
