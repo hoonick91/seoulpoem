@@ -1,22 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/paper4">
 
     <!--태그 텍스트-->
     <LinearLayout
         android:id="@+id/lltxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="29dp"
-        android:layout_marginTop="46dp">
+        android:layout_marginLeft="13dp"
+        android:layout_marginTop="46dp"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:layout_alignLeft="@+id/relativeLayout"
+        android:layout_alignStart="@+id/relativeLayout"
+        android:layout_marginStart="13dp">
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="#\n당신의 서울 스팟을 선택해주세요."
-            android:textColor="#488ab4"
-            android:textSize="20sp" />
+            android:src="@drawable/tag_sharp" />
+
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/tag_title"/>
     </LinearLayout>
 
     <!--태그 이미지들-->
@@ -26,7 +36,8 @@
         android:layout_below="@+id/lltxt"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="29dp"
-        android:layout_marginTop="23dp">
+        android:layout_marginTop="23dp"
+        android:id="@+id/relativeLayout">
 
         <GridLayout
             android:layout_width="match_parent"
@@ -34,6 +45,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+
             android:columnCount="2"
             android:rowCount="5">
 

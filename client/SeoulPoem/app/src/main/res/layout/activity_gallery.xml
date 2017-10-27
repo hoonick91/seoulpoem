@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/mainbg"
+    android:background="@drawable/paper4"
     tools:context="com.seoulprojet.seoulpoem.activity.GalleryActivity">
 
     <!--툴바-->
@@ -17,7 +17,7 @@
         android:id="@+id/llSharpText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="111dp">
 
         <TextView
@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#488ab4"
-            android:textSize="15dp"
+            android:textSize="18dp"
             android:textStyle="bold"
             tools:text="# 그리움" />
     </LinearLayout>
@@ -37,7 +37,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/llSharpText"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="44dp">
+        android:layout_marginTop="25dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvGallery"

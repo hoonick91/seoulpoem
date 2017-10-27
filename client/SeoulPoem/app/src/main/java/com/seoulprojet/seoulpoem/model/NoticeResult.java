@@ -12,7 +12,6 @@ public class NoticeResult {
     public class NoticeList{
         public int idnotices;
         public String title;
-        public String content;
-        public String flag;
+        public String date;
     }
 }
