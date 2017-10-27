@@ -114,7 +114,7 @@ public class MyPagePhotoFragment extends Fragment{
 
             grid = LayoutInflater.from(mContext).inflate(R.layout.list_item_mypage_photo, null);
 
-            if(photoListDatas.get(position).idpoem < 0){
+            if(photoListDatas.get(position).idpoem > 0){
                 ImageView hamburgerView = (ImageView)grid.findViewById(R.id.item_mypage_hamburger);
                 hamburgerView.setVisibility(grid.VISIBLE);
             }
