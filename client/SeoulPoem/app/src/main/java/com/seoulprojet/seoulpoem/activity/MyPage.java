@@ -226,8 +226,8 @@ public class MyPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyPageShowImage.class);
                 intent.putExtra("status", "profile");
-                intent.putExtra("userEmail", userEmail);
-                intent.putExtra("loginType", loginType);
+                intent.putExtra("userEmail", otherEmail);
+                intent.putExtra("loginType", otherType);
                 startActivity(intent);
             }
         });
@@ -237,8 +237,8 @@ public class MyPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyPageShowImage.class);
                 intent.putExtra("status", "background");
-                intent.putExtra("userEmail", userEmail);
-                intent.putExtra("loginType", loginType);
+                intent.putExtra("userEmail", otherEmail);
+                intent.putExtra("loginType", otherType);
                 startActivity(intent);
             }
         });

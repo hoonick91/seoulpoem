@@ -190,6 +190,11 @@ public class MainActivity extends AppCompatActivity {
         service = ApplicationController.getInstance().getNetworkService();
 
 
+        drawerLayout = (DrawerLayout) findViewById(R.id.mypage_drawer_layout02);
+        drawerView = findViewById(R.id.drawer);
+        getMenuMypage();
+
+
         //findView
         findView();
 
