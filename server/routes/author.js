@@ -66,9 +66,9 @@ router.get('/', async (req, res) => {
             for(i=0;i<len;i++){
                 author_list.push(authors_list[i]);
             }
-            res.status(200).send({count_authors: count_authors[0].count, authors_list: author_list});
+            res.status(200).send({count_authors: count_authors[0].count,done : 1, authors_list: author_list });
         }else {
-            res.status(200).send({count_authors: count_authors[0].count, authors_list: authors_list});
+            res.status(200).send({count_authors: count_authors[0].count,done : 0, authors_list: authors_list});
         }
 
         await connection.commit();
