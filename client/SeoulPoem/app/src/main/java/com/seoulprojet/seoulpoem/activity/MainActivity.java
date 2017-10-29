@@ -581,7 +581,7 @@ public class MainActivity extends AppCompatActivity {
                     showTags = true;
                 } else { //보일때 보이지 않게함
                     DisplayMetrics dm = getResources().getDisplayMetrics();
-                    int size = Math.round( 56 * dm.density); //숫자가 넣고싶은 dp값
+                    int size = Math.round( 70 * dm.density); //숫자가 넣고싶은 dp값
                     size = 0 - size;
                     rlHashTagToggle.animate().translationY(size).withLayer();
                     showTags = false;

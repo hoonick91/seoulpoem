@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
-import com.seoulprojet.seoulpoem.component.Preview;
 import com.seoulprojet.seoulpoem.model.NoticeDetailResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
@@ -19,8 +18,6 @@ import com.seoulprojet.seoulpoem.network.NetworkService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.seoulprojet.seoulpoem.R.id.preview_img;
 
 public class NoticeDetail extends AppCompatActivity {
 
@@ -71,7 +68,7 @@ public class NoticeDetail extends AppCompatActivity {
             public void onResponse(Call<NoticeDetailResult> call, Response<NoticeDetailResult> response) {
                 if(response.isSuccessful()){
                     title_tv.setText(response.body().notice.title);
-                    content_tv.setText(response.body().notice.content);
+                    content_tv.setText(response.body().notice.content.replace("*","\n"));
                     time_tv.setText(response.body().notice.date);
                     Glide.with(NoticeDetail.this)
                             .load(response.body().notice.photo)

@@ -74,6 +74,8 @@ public class ReadingPoemActivity extends AppCompatActivity {
     //유저 정보
     private String userEmail = null;
     private int loginType = 0;
+    private String otherEmail = null;
+    private int otherType = 0;
 
     //다이얼로그
     private AddWorkDialog addWorkDialog;
@@ -334,6 +336,32 @@ public class ReadingPoemActivity extends AppCompatActivity {
             }
         });
 
+        writer_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
+                intent.putExtra("otherEmail", otherEmail);
+                intent.putExtra("otherType", otherType);
+                startActivity(intent);
+            }
+        });
+
+        writer_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
+                intent.putExtra("otherEmail", otherEmail);
+                intent.putExtra("otherType", otherType);
+                startActivity(intent);
+            }
+        });
+
+
+
 
     }
 
@@ -419,8 +447,9 @@ public class ReadingPoemActivity extends AppCompatActivity {
                         poem_content.setGravity(Gravity.CENTER_HORIZONTAL);
                     } else {
                         poem_content.setGravity(Gravity.NO_GRAVITY);
-                    }
-                    ;
+                    };
+                    otherEmail=response.body().article.writer.email;
+                    otherType = response.body().article.writer.type;
                     another_photo = response.body().article.writer.others;
                     recyclerAdapter.setAdapter(another_photo);
                     recyclerAdapter.notifyDataSetChanged();
