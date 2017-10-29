@@ -418,19 +418,15 @@ public class WritePoemActivity extends AppCompatActivity {
             }
         });
         size_spinner = (Spinner)findViewById(R.id.size_spinner);
-
- /*       for(int i=0;i<size_spinner.getChildCount();i++) {
-            ((TextView)size_spinner.getChildAt(i)).setTextSize(13+i);
-        }*/
-
         size_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                write_content.setTextSize(((TextView)parent.getItemAtPosition(position)).getTextSize());
+                write_content.setTextSize(Integer.parseInt(parent.getItemAtPosition(position).toString()));
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
