@@ -41,11 +41,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.R.attr.data;
 import static android.R.attr.type;
 import static android.graphics.Typeface.BOLD;
 import static android.graphics.Typeface.BOLD_ITALIC;
 import static android.graphics.Typeface.ITALIC;
 import static android.graphics.Typeface.NORMAL;
+import static com.seoulprojet.seoulpoem.R.id.dropdown_fontitem;
 
 /**
  * Created by minjeong on 2017-09-17.
@@ -85,6 +87,7 @@ public class WritePoemActivity extends AppCompatActivity {
     Button underline;
     Spinner paint_spinner;
     AdapterSpinner adapterSpinner;
+    AdapterSizeSpinner adapterSizeSpinner;
     boolean style_check[];
 
     RelativeLayout back;
@@ -428,11 +431,24 @@ public class WritePoemActivity extends AppCompatActivity {
                 main_toolbar.setVisibility(View.VISIBLE);
             }
         });
+
         size_spinner = (Spinner)findViewById(R.id.size_spinner);
+
+        List<String> data2 = new ArrayList<>();
+        data2.add(" 가");
+        data2.add(" 가");
+        data2.add(" 가");
+        data2.add(" 가");
+        data2.add(" 가");
+        adapterSizeSpinner = new AdapterSizeSpinner(this, data2);
+        size_spinner.setAdapter(adapterSizeSpinner);
+        adapterSizeSpinner.notifyDataSetChanged();
+        size_spinner.setSelection(1);
+
         size_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                write_content.setTextSize(Integer.parseInt(parent.getItemAtPosition(position).toString()));
+               // write_content.setTextSize(Integer.parseInt(parent.getItemAtPosition(position).toString()));
             }
 
             @Override
@@ -713,6 +729,65 @@ public class WritePoemActivity extends AppCompatActivity {
             //데이터세팅
             int color = img.get(position);
             ((ImageView)convertView.findViewById(R.id.colorImg)).setImageResource(color);
+
+            return convertView;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return data.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+    }
+
+    /*******************************
+     * font size adapter
+    * ********************************/
+    public class AdapterSizeSpinner extends BaseAdapter {
+
+        Context context;
+        List<String> data;
+        LayoutInflater inflater;
+
+        public AdapterSizeSpinner(Context context, List<String> data){
+            this.context = context;
+            this.data = data;
+            inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public int getCount() {
+            if(data!=null) return data.size();
+            else return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if(convertView==null) {
+                convertView = inflater.inflate(R.layout.spinner_layout, parent, false);
+            }
+
+            if(data!=null){
+                //데이터세팅
+                ((TextView)convertView.findViewById(R.id.text_size_view)).setText(""+(13+position));
+                write_content.setTextSize(13+position);
+            }
+
+            return convertView;
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            if(convertView==null){
+                convertView = inflater.inflate(R.layout.list_item_font_size, parent, false);
+            }
+
+            //데이터세팅
+            ((TextView)convertView.findViewById(R.id.dropdown_fontitem)).setTextSize(13+position);
 
             return convertView;
         }
