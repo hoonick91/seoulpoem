@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import com.seoulprojet.seoulpoem.R;
 
+
 public class TagsActivity extends AppCompatActivity {
 
 
@@ -17,19 +18,16 @@ public class TagsActivity extends AppCompatActivity {
      *************************************************************************/
 
     //이미지
-    ImageView imageView01;
-    ImageView imageView02;
-    ImageView imageView03;
-    ImageView imageView04;
-    ImageView imageView05;
-    ImageView imageView06;
-    ImageView imageView07;
-    ImageView imageView08;
-    ImageView imageView09;
-    ImageView imageView10;
-
-    //시작히기
-    LinearLayout startArrow, llstartTxt;
+    ImageView imageView01; //홍대
+    ImageView imageView02; //강남
+    ImageView imageView03; //압구정
+    ImageView imageView04; //광화문
+    ImageView imageView05; //한강
+    ImageView imageView06; //종로
+    ImageView imageView07; //이태원
+    ImageView imageView08; //빌딩숲
+    ImageView imageView09; //거리
+    ImageView imageView10; //서울
 
     //유저 정보
     private String userEmail = null;
@@ -75,8 +73,6 @@ public class TagsActivity extends AppCompatActivity {
         imageView09 = (ImageView) findViewById(R.id.iv09);
         imageView10 = (ImageView) findViewById(R.id.iv10);
 
-        startArrow = (LinearLayout) findViewById(R.id.startArrow);
-        llstartTxt = (LinearLayout) findViewById(R.id.llstartTxt);
     }
 
 
@@ -92,7 +88,7 @@ public class TagsActivity extends AppCompatActivity {
                 Intent intent = new Intent(TagsActivity.this, MainActivity.class);
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
-                intent.putExtra("tag", "이태원");
+                intent.putExtra("tag", "홍대");
                 startActivity(intent);
                 finish();
             }
@@ -104,7 +100,7 @@ public class TagsActivity extends AppCompatActivity {
                 Intent intent = new Intent(TagsActivity.this, MainActivity.class);
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
-                intent.putExtra("tag", "압구정");
+                intent.putExtra("tag", "강남");
                 startActivity(intent);
                 finish();
             }
@@ -116,7 +112,7 @@ public class TagsActivity extends AppCompatActivity {
                 Intent intent = new Intent(TagsActivity.this, MainActivity.class);
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
-                intent.putExtra("tag", "서울");
+                intent.putExtra("tag", "압구정");
                 startActivity(intent);
                 finish();
             }
@@ -128,7 +124,7 @@ public class TagsActivity extends AppCompatActivity {
                 Intent intent = new Intent(TagsActivity.this, MainActivity.class);
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
-                intent.putExtra("tag", "빌딩숲");
+                intent.putExtra("tag", "광화문");
                 startActivity(intent);
                 finish();
             }
@@ -140,7 +136,7 @@ public class TagsActivity extends AppCompatActivity {
                 Intent intent = new Intent(TagsActivity.this, MainActivity.class);
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
-                intent.putExtra("tag", "강남");
+                intent.putExtra("tag", "한강");
                 startActivity(intent);
                 finish();
             }
@@ -152,7 +148,7 @@ public class TagsActivity extends AppCompatActivity {
                 Intent intent = new Intent(TagsActivity.this, MainActivity.class);
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
-                intent.putExtra("tag", "거리");
+                intent.putExtra("tag", "종로");
                 startActivity(intent);
                 finish();
             }
@@ -164,7 +160,7 @@ public class TagsActivity extends AppCompatActivity {
                 Intent intent = new Intent(TagsActivity.this, MainActivity.class);
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
-                intent.putExtra("tag", "광화문");
+                intent.putExtra("tag", "이태원");
                 startActivity(intent);
                 finish();
             }
@@ -176,7 +172,7 @@ public class TagsActivity extends AppCompatActivity {
                 Intent intent = new Intent(TagsActivity.this, MainActivity.class);
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
-                intent.putExtra("tag", "종로");
+                intent.putExtra("tag", "빌딩숲");
                 startActivity(intent);
                 finish();
             }
@@ -188,38 +184,13 @@ public class TagsActivity extends AppCompatActivity {
                 Intent intent = new Intent(TagsActivity.this, MainActivity.class);
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("loginType", loginType);
-                intent.putExtra("tag", "홍대");
+                intent.putExtra("tag", "거리");
                 startActivity(intent);
                 finish();
             }
         });
 
         imageView10.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TagsActivity.this, MainActivity.class);
-                intent.putExtra("userEmail", userEmail);
-                intent.putExtra("loginType", loginType);
-                intent.putExtra("tag", "한강");
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        startArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TagsActivity.this, MainActivity.class);
-                intent.putExtra("userEmail", userEmail);
-                intent.putExtra("loginType", loginType);
-                intent.putExtra("tag", "서울");
-                startActivity(intent);
-                finish();
-            }
-        });
-
-
-        llstartTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TagsActivity.this, MainActivity.class);
