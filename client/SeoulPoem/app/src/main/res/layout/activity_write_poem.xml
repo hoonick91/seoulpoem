@@ -221,13 +221,13 @@
                     android:layout_width="308dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="25dp"
-                    android:backgroundTint="#95989a"
                     android:gravity="top"
-                    android:hint="내용을 입력하세요"
-                    android:inputType="text"
-                    android:textColor="#000000"
                     android:textCursorDrawable="@android:color/black"
-                    android:textSize="14sp" />
+                    android:backgroundTint="#95989a"
+                    android:hint="내용을 입력하세요"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:inputType="text"/>
             </LinearLayout>
 
 
