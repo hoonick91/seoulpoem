@@ -1,29 +1,32 @@
 package com.seoulprojet.seoulpoem.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
+import com.seoulprojet.seoulpoem.component.Preview;
 import com.seoulprojet.seoulpoem.model.NoticeDetailResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.seoulprojet.seoulpoem.R.id.preview_img;
+
 public class NoticeDetail extends AppCompatActivity {
 
     private TextView title_tv, content_tv, time_tv;
     private ImageButton back_btn;
+    private ImageView notice_detail_img;
 
     private int notice_id = 0;
 
@@ -39,6 +42,7 @@ public class NoticeDetail extends AppCompatActivity {
         content_tv = (TextView)findViewById(R.id.notice_detail_content_tv);
         time_tv = (TextView)findViewById(R.id.notice_detail_time_tv);
         back_btn = (ImageButton)findViewById(R.id.notice_detail_back_btn);
+        notice_detail_img = (ImageView)findViewById(R.id.notice_detail_img);
 
         // intent
         Intent intent = getIntent();
@@ -69,6 +73,9 @@ public class NoticeDetail extends AppCompatActivity {
                     title_tv.setText(response.body().notice.title);
                     content_tv.setText(response.body().notice.content);
                     time_tv.setText(response.body().notice.date);
+                    Glide.with(NoticeDetail.this)
+                            .load(response.body().notice.photo)
+                            .into(notice_detail_img);
                 }
                 else{
                     Log.i("response", "response error");

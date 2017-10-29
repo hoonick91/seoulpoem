@@ -1,12 +1,10 @@
 package com.seoulprojet.seoulpoem.activity;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -719,72 +718,73 @@ public class WritePoemActivity extends AppCompatActivity {
     private void EditTag(){
         if(write_tag.getText().toString().contains("#서울 ")){
         if (tag[0].getTag().toString().equals("0")){ //태그 추가인 경우
-        tag[0].setTag("1");
-        check_cnt++;
-        CheckSelectedTag();
-        }
-        } else if(write_tag.getText().toString().contains("#홍대 ")) {
+            tag[0].setTag("1");
+            write_tag.setText(write_tag.getText().toString().replace("#서울 ",""));
+            check_cnt++;
+            CheckSelectedTag();
+        }}
+        if(write_tag.getText().toString().contains("#홍대 ")) {
         if (tag[1].getTag().toString().equals("0")) { //태그 추가인 경우
-        tag[1].setTag("1");
-        check_cnt++;
+            tag[1].setTag("1");
+            write_tag.setText(write_tag.getText().toString().replace("#홍대 ",""));
+            check_cnt++;
         CheckSelectedTag();
-        }
-        }else if(write_tag.getText().toString().contains("#강남 ")) {
+        }} if(write_tag.getText().toString().contains("#강남 ")) {
         if (tag[2].getTag().toString().equals("0")) { //태그 추가인 경우
-        tag[2].setTag("1");
-        check_cnt++;
-        CheckSelectedTag();
-        }
-        }
-        else if(write_tag.getText().toString().contains("#압구정 ")) {
+            tag[2].setTag("1");
+            write_tag.setText(write_tag.getText().toString().replace("#강남 ",""));
+            check_cnt++;
+            CheckSelectedTag();
+        }}
+        if(write_tag.getText().toString().contains("#압구정 ")) {
         if (tag[3].getTag().toString().equals("0")) { //태그 추가인 경우
-        tag[3].setTag("1");
-        check_cnt++;
-        CheckSelectedTag();
-        }
-        }
-        else if(write_tag.getText().toString().contains("#광화문 ")) {
+            tag[3].setTag("1");
+            write_tag.setText(write_tag.getText().toString().replace("#압구정 ",""));
+            check_cnt++;
+            CheckSelectedTag();
+        }}
+        if(write_tag.getText().toString().contains("#광화문 ")) {
         if (tag[4].getTag().toString().equals("0")) { //태그 추가인 경우
-        tag[4].setTag("1");
-        check_cnt++;
-        CheckSelectedTag();
-        }
-        }
-        else if(write_tag.getText().toString().contains("#한강 ")) {
+            tag[4].setTag("1");
+            write_tag.setText(write_tag.getText().toString().replace("#광화문 ",""));
+            check_cnt++;
+            CheckSelectedTag();
+        }}
+        if(write_tag.getText().toString().contains("#한강 ")) {
         if (tag[5].getTag().toString().equals("0")) { //태그 추가인 경우
-        tag[5].setTag("1");
-        check_cnt++;
-        CheckSelectedTag();
-        }
-        }
-        else if(write_tag.getText().toString().contains("#종로 ")) {
+            tag[5].setTag("1");
+            write_tag.setText(write_tag.getText().toString().replace("#한강 ",""));
+            check_cnt++;
+            CheckSelectedTag();
+        }}
+        if(write_tag.getText().toString().contains("#종로 ")) {
         if (tag[6].getTag().toString().equals("0")) { //태그 추가인 경우
-        tag[6].setTag("1");
-        check_cnt++;
-        CheckSelectedTag();
-        }
-        }
-        else if(write_tag.getText().toString().contains("#빌딩숲 ")) {
+            tag[6].setTag("1");
+            write_tag.setText(write_tag.getText().toString().replace("#종로 ",""));
+            check_cnt++;
+            CheckSelectedTag();
+        }}
+        if(write_tag.getText().toString().contains("#빌딩숲 ")) {
         if (tag[7].getTag().toString().equals("0")) { //태그 추가인 경우
-        tag[7].setTag("1");
-        check_cnt++;
-        CheckSelectedTag();
-        }
-        }
-        else if(write_tag.getText().toString().contains("#이태원 ")) {
+            tag[7].setTag("1");
+            write_tag.setText(write_tag.getText().toString().replace("#빌딩숲 ",""));
+            check_cnt++;
+            CheckSelectedTag();
+        }}
+        if(write_tag.getText().toString().contains("#이태원 ")) {
         if (tag[8].getTag().toString().equals("0")) { //태그 추가인 경우
-        tag[8].setTag("1");
-        check_cnt++;
-        CheckSelectedTag();
-        }
-        }
-        else if(write_tag.getText().toString().contains("#거리 ")) {
+            tag[8].setTag("1");
+            write_tag.setText(write_tag.getText().toString().replace("#이태원 ",""));
+            check_cnt++;
+            CheckSelectedTag();
+        }}
+        if(write_tag.getText().toString().contains("#거리 ")) {
         if (tag[9].getTag().toString().equals("0")) { //태그 추가인 경우
-        tag[9].setTag("1");
-        check_cnt++;
-        CheckSelectedTag();
-        }
-        }
+            tag[9].setTag("1");
+            write_tag.setText(write_tag.getText().toString().replace("#거리 ",""));
+            check_cnt++;
+            CheckSelectedTag();
+        }}
         }
 
         private void CheckSpace() {
