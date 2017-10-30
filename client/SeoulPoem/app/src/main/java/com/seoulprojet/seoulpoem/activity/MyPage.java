@@ -200,6 +200,13 @@ public class MyPage extends AppCompatActivity {
                 FragmentTransaction transactionPhoto = getFragmentManager().beginTransaction();
                 transactionPhoto.replace(R.id.mypage_fragment, fragmentPhoto);
                 transactionPhoto.commit();
+
+                mypage_poem_btn.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mypage_poem_btn.setEnabled(true);
+                    }
+                }, 2000);
             }
         });
 
@@ -213,6 +220,13 @@ public class MyPage extends AppCompatActivity {
                 FragmentTransaction transactionPoem = getFragmentManager().beginTransaction();
                 transactionPoem.replace(R.id.mypage_fragment, fragmentPoem);
                 transactionPoem.commit();
+
+                mypage_photo_btn.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mypage_photo_btn.setEnabled(true);
+                    }
+                }, 2000);
             }
         });
 
