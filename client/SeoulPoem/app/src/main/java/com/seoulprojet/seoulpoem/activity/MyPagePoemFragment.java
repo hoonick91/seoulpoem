@@ -48,6 +48,9 @@ public class MyPagePoemFragment extends Fragment {
     private ArrayList<MyPagePoemResult> myPagePoemResults;
     private ArrayList<MyPagePoemListData> poemResults;
 
+    //담은 작품인지 체크
+    int bookmark;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -94,6 +97,8 @@ public class MyPagePoemFragment extends Fragment {
                     int notice_id = poemResults.get(position).idarticles;
                     Intent intent = new Intent(getActivity().getApplicationContext(), ReadingPoemActivity.class);
                     intent.putExtra("articles_id", ""+notice_id);
+                    intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("loginType", loginType);
                     startActivity(intent);
                 }
             });

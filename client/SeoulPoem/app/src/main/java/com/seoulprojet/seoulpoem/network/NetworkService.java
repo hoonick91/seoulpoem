@@ -3,6 +3,7 @@ package com.seoulprojet.seoulpoem.network;
 
 import com.bumptech.glide.request.Request;
 import com.seoulprojet.seoulpoem.model.AddArticleResult;
+import com.seoulprojet.seoulpoem.model.DeleteArticleResult;
 import com.seoulprojet.seoulpoem.model.ModifyPoem;
 import com.seoulprojet.seoulpoem.model.ReadingPoem;
 import com.seoulprojet.seoulpoem.model.SavePoemResult;
@@ -26,6 +27,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -94,7 +96,6 @@ public interface NetworkService {
 
 
     //main 리스트 가져오기
-
     @GET("/main")
     Call<MainResult> getPoems(@Query("tag") String tag);
 
@@ -120,6 +121,15 @@ public interface NetworkService {
     Call<LoginResult> postLogin(@Header("email") String email,
                                 @Header("type") int type,
                                 @Header("Content-Type") String Content_type);
+
+
+    //작품삭제
+    //세부 정보 가져오기
+    @DELETE("/article/{articleid}")
+    Call<DeleteArticleResult> deleteArticle(@Header("type") int type,
+                                            @Header("email") String email,
+                                            @Path("articleid") int articleid);
+
 
     // login (필명 입력)
     @POST("/users/signin")

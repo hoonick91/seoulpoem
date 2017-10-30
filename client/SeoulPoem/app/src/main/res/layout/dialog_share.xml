@@ -28,7 +28,7 @@
                     android:id="@+id/text01"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/share_dialog_title"/>
+                    android:src="@drawable/share_dialog_title" />
             </LinearLayout>
 
         </LinearLayout>
@@ -43,15 +43,28 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="19dp">
 
-            <ImageView
-                android:id="@+id/text02"
+            <TextView
+                android:id="@+id/text022"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/share_dialog_content" />
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
 
         <!--row03-->
+        <LinearLayout
+            android:id="@+id/llRow03"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llRow02"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/text0333"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="작품담기로 이동하시겠습니까?" />
+        </LinearLayout>
 
 
         <!--row04-->
@@ -59,9 +72,9 @@
             android:id="@+id/rlRow04"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp">
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp">
 
 
             <!--이동하기 텍스트-->

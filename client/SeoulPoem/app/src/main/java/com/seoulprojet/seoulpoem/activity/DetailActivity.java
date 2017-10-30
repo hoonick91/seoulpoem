@@ -16,10 +16,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.model.AddArticleResult;
+import com.seoulprojet.seoulpoem.model.DeleteArticleResult;
 import com.seoulprojet.seoulpoem.model.DetailResult;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
@@ -40,6 +42,7 @@ public class DetailActivity extends AppCompatActivity {
     private SettingDialog settingDialog;
     private SettingDialog02 settingDialog02;
     private InfoDialog infoDialog;
+    private DeleteDaialog deleteDialog;
     private LinearLayout llPhoto;
     private NetworkService service;
     private ImageView ivPhoto, ivProfile;
@@ -68,7 +71,7 @@ public class DetailActivity extends AppCompatActivity {
     };
 
 
-    //설정 - 상세정보/수정하기 있는 다이얼로그 => 수정하기 눌렀을 때
+    //설정 - 상세정보/수정하기/삭제하기 다이얼로그 => 수정하기 눌렀을 때
     private View.OnClickListener settingDialog_listener03 = new View.OnClickListener() {
         public void onClick(View v) {
             Intent intent = new Intent(DetailActivity.this, WritePoemActivity.class);
@@ -79,7 +82,7 @@ public class DetailActivity extends AppCompatActivity {
         }
     };
 
-    //설정 - 상세정보/수정하기 있는 다이얼로그 => 상세정보 눌렀을 때
+    //설정 - 상세정보/수정하기/삭제하기 다이얼로그 => 상세정보 눌렀을 때
     private View.OnClickListener settingDialog_listener02 = new View.OnClickListener() {
         public void onClick(View v) {
             //원래 뜬 다이얼로그 없애고
@@ -87,6 +90,41 @@ public class DetailActivity extends AppCompatActivity {
             infoDialog = new InfoDialog(DetailActivity.this);
             infoDialog.setCanceledOnTouchOutside(true);
             infoDialog.show();
+        }
+    };
+
+    //설정 - 상세정보/수정하기/삭제하기 다이얼로그 => 삭젝하기 눌렀을 때
+    private View.OnClickListener settingDialog_listener05 = new View.OnClickListener() {
+        public void onClick(View v) {
+
+            //원래 뜬 다이얼로그 없애고
+            settingDialog.dismiss();
+            deleteDialog = new DeleteDaialog(DetailActivity.this, settingDialog_listener06, settingDialog_listener07);
+            deleteDialog.setCanceledOnTouchOutside(true);
+            deleteDialog.show();
+        }
+    };
+
+    //설정 - 삭제하기 다이얼로그 => 취소 눌렀을 때
+    private View.OnClickListener settingDialog_listener06 = new View.OnClickListener() {
+        public void onClick(View v) {
+            deleteDialog.dismiss();
+        }
+    };
+
+    //설정 - 삭제하기 다이얼로그 => 삭제 눌렀을 때
+    private View.OnClickListener settingDialog_listener07 = new View.OnClickListener() {
+        public void onClick(View v) {
+            //원래 뜬 다이얼로그 없애고
+            settingDialog.dismiss();
+
+            deleteArticle();
+            finish();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.putExtra("userEmail", userEmail);
+            intent.putExtra("loginType", loginType);
+            intent.putExtra("tag", "서울");
+            startActivity(intent);
         }
     };
 
@@ -130,7 +168,6 @@ public class DetailActivity extends AppCompatActivity {
         articleId = intent.getExtras().getInt("articleId");
         userEmail = intent.getExtras().getString("userEmail");
         loginType = intent.getExtras().getInt("loginType");
-
 
         //findView
         findView();
@@ -206,7 +243,7 @@ public class DetailActivity extends AppCompatActivity {
 
     public class AddWorkDialog extends Dialog {
 
-        private ImageView text01, text02, text03;
+        private TextView text022;
         private ImageView mLeftButton, mRightButton;
         String str01, str02, str03;
         private View.OnClickListener addDialog_leftListener, addDialog_rightListener;
@@ -233,16 +270,12 @@ public class DetailActivity extends AppCompatActivity {
             setContentView(R.layout.dialog_share);
 
             //findView
-            text01 = (ImageView) findViewById(R.id.text01);
-            text02 = (ImageView) findViewById(R.id.text02);
-            //text03 = (TextView) findViewById(R.id.text03);
+            text022 = (TextView) findViewById(R.id.text022);
             mLeftButton = (ImageView) findViewById(R.id.btnMove);
             mRightButton = (ImageView) findViewById(R.id.btnBack);
 
-            // 제목과 내용을 생성자에서 셋팅
-            //text01.setText(str01);
-            //text02.setText(str02);
-            //text03.setText(str03);
+            //생성자에서 셋팅
+            text022.setText(str02);
 
             // 클릭 이벤트 셋팅
             mLeftButton.setOnClickListener(addDialog_leftListener);
@@ -283,8 +316,8 @@ public class DetailActivity extends AppCompatActivity {
 
         private TextView text02, text03;
         private String str02, str03;
-        private View.OnClickListener settingDialog_listener02, settingDialog_listener03;
-        private LinearLayout llRow02, llRow03;
+        private View.OnClickListener settingDialog_listener02, settingDialog_listener03, settingDialog_listener05;
+        private LinearLayout llRow02, llRow03, llRow04;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -312,6 +345,7 @@ public class DetailActivity extends AppCompatActivity {
             text03 = (TextView) findViewById(R.id.tv03);
             llRow02 = (LinearLayout) findViewById(R.id.llRow02);
             llRow03 = (LinearLayout) findViewById(R.id.llRow03);
+            llRow04 = (LinearLayout) findViewById(R.id.llRow04);
 
 
             // 제목과 내용을 생성자에서 셋팅
@@ -321,6 +355,8 @@ public class DetailActivity extends AppCompatActivity {
             // 클릭 이벤트 셋팅
             llRow02.setOnClickListener(settingDialog_listener02);
             llRow03.setOnClickListener(settingDialog_listener03);
+            llRow04.setOnClickListener(settingDialog_listener05);
+
         }
 
         //dismiss
@@ -338,12 +374,14 @@ public class DetailActivity extends AppCompatActivity {
         // 생성자
         public SettingDialog(Context context, String str02, String str03,
                              View.OnClickListener settingDialog_listener02,
-                             View.OnClickListener settingDialog_listener03) {
+                             View.OnClickListener settingDialog_listener03,
+                             View.OnClickListener settingDialog_listener05) {
             super(context, android.R.style.Theme_Translucent_NoTitleBar);
             this.str02 = str02;
             this.str03 = str03;
             this.settingDialog_listener02 = settingDialog_listener02;
             this.settingDialog_listener03 = settingDialog_listener03;
+            this.settingDialog_listener05 = settingDialog_listener05;
         }
     }
 
@@ -474,6 +512,68 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    /*************************************************************************
+     *                        - 삭제하기 다이얼로그
+     *************************************************************************/
+    public class DeleteDaialog extends Dialog {
+
+        private View.OnClickListener settingDialog_listener05, settingDialog_listener06;
+        private LinearLayout llcancel, lldelete;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            //dismiss
+            WindowManager.LayoutParams wlp = new WindowManager.LayoutParams();
+            wlp.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            wlp.dimAmount = 0.8f;
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+                wlp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+                wlp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            } else {
+                wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                wlp.height = WindowManager.LayoutParams.MATCH_PARENT;
+            }
+            wlp.gravity = Gravity.CENTER;
+            getWindow().setAttributes(wlp);
+
+
+            //view mapping
+            setContentView(R.layout.dialog_delete);
+
+            //findview
+            llcancel = (LinearLayout) findViewById(R.id.llcancel);
+            lldelete = (LinearLayout) findViewById(R.id.lldelete);
+
+            // 클릭 이벤트 셋팅
+            llcancel.setOnClickListener(settingDialog_listener05);
+            lldelete.setOnClickListener(settingDialog_listener06);
+        }
+
+
+        //dismiss
+        @Override
+        public boolean dispatchTouchEvent(MotionEvent ev) {
+            Rect dialogBounds = new Rect();
+            getWindow().getDecorView().getHitRect(dialogBounds);
+
+            if (!dialogBounds.contains((int) ev.getX(), (int) ev.getY())) {
+                this.dismiss();
+            }
+            return super.dispatchTouchEvent(ev);
+        }
+
+
+        // 생성자
+        public DeleteDaialog(Context context,
+                             View.OnClickListener settingDialog_listener06, View.OnClickListener settingDialog_listener07) {
+            super(context, android.R.style.Theme_Translucent_NoTitleBar);
+            this.settingDialog_listener05 = settingDialog_listener06;
+            this.settingDialog_listener06 = settingDialog_listener07;
+        }
+    }
+
 
     /*************************************************************************
      *                        - 툴바 : 뒤로가기
@@ -501,7 +601,7 @@ public class DetailActivity extends AppCompatActivity {
                 //작품담기 네트워크
                 addArticle();
 
-                if (ivShare.getVisibility() == View.INVISIBLE) {
+                if (bookmark == 1) {
                     //작품담기 다이얼로그 생성
                     addWorkDialog = new AddWorkDialog(DetailActivity.this,
                             "#작품 담기",
@@ -541,7 +641,9 @@ public class DetailActivity extends AppCompatActivity {
                             "상세정보",
                             "수정하기",
                             settingDialog_listener02,
-                            settingDialog_listener03);
+                            settingDialog_listener03,
+                            settingDialog_listener05
+                    );
                     settingDialog.setCanceledOnTouchOutside(true);
                     settingDialog.show();
                 } else {
@@ -595,7 +697,6 @@ public class DetailActivity extends AppCompatActivity {
 
 
                         //유저 이미지
-                        // 혜린 edit -> 이용자가 지정해둔 프로필 이미지 없을 경우 기본 이미지 지정
                         if (response.body().data.writer.profile == null) {
                             ivProfile.setImageResource(R.drawable.profile_tmp);
                         } else {
@@ -668,6 +769,33 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    /*************************************************************************
+     *                        - 작품 삭제
+     *************************************************************************/
+    public void deleteArticle() {
+        Call<DeleteArticleResult> requestDelete = service.deleteArticle(loginType, userEmail, articleId);
+
+        requestDelete.enqueue(new Callback<DeleteArticleResult>() {
+            @Override
+            public void onResponse(Call<DeleteArticleResult> call, Response<DeleteArticleResult> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().status.equals("success")) {
+                        Toast.makeText(DetailActivity.this, "삭제 완료하였습니다", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<DeleteArticleResult> call, Throwable t) {
+                Log.i("err", t.getMessage());
+            }
+        });
+    }
 }
+
+
 
 

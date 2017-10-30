@@ -23,6 +23,7 @@ public class ReadingPoem {
         public String photo;
         public Userinfo writer;
         public int modifiable;
+        public int bookmark;
 
     }
 

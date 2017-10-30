@@ -67,7 +67,7 @@ public class AddActivity extends AppCompatActivity {
     private GoogleApiClient mGoogleApiClient;
     private LoginManager loginManager;
     private CallbackManager callbackManager;
-    private MainActivity mainActivity = (MainActivity)MainActivity.main;
+    private MainActivity mainActivity = (MainActivity) MainActivity.main;
     private PbReference pref;
 
     //유저 정보
@@ -89,11 +89,10 @@ public class AddActivity extends AppCompatActivity {
         loginType = intent.getExtras().getInt("loginType");
 
         pref = new PbReference(this);
-        if(userEmail == null || loginType == 0){
+        if (userEmail == null || loginType == 0) {
             userEmail = pref.getValue("userEmail", "");
             loginType = pref.getValue("loginType", 0);
         }
-
 
         //서비스 객체 초기화
         service = ApplicationController.getInstance().getNetworkService();
@@ -166,11 +165,6 @@ public class AddActivity extends AppCompatActivity {
                     .load(addListData.photo)
                     .into(holder.ivLeftImg);
 
-            //동그란 이미지
-            Glide.with(getApplicationContext())
-                    .load(addListData.profile)
-                    .into(holder.ivCirclerImg);
-
             //title
             holder.tvTitle.setText(addListData.title);
 
@@ -183,6 +177,8 @@ public class AddActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(AddActivity.this, DetailActivity.class);
                     intent.putExtra("articleId", addListData.idarticles);
+                    intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("loginType", loginType);
                     startActivity(intent);
                 }
             });
@@ -202,7 +198,7 @@ public class AddActivity extends AppCompatActivity {
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvTitle, tvContent;
-        ImageView ivLeftImg, ivCirclerImg;
+        ImageView ivLeftImg;
 
 
         public MyViewHolder(View itemView) {
@@ -211,7 +207,6 @@ public class AddActivity extends AppCompatActivity {
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             tvContent = (TextView) itemView.findViewById(R.id.tvContent);
             ivLeftImg = (ImageView) itemView.findViewById(R.id.ivLeftImg);
-            ivCirclerImg = (ImageView) itemView.findViewById(R.id.ivCirclerImg);
         }
     }
 
@@ -279,7 +274,6 @@ public class AddActivity extends AppCompatActivity {
         rlHamberger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //햄버거 내 정보 가져오기
                 getMenuMypage();
                 drawerLayout.openDrawer(drawerView);
             }
@@ -312,7 +306,7 @@ public class AddActivity extends AppCompatActivity {
         hamburger_setting_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(loginType == 1){
+                if (loginType == 1) {
                     Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                             new ResultCallback<Status>() {
                                 @Override
@@ -329,7 +323,7 @@ public class AddActivity extends AppCompatActivity {
                 }
 
                 // facebook logout
-                else{
+                else {
                     callbackManager = CallbackManager.Factory.create();
                     loginManager = LoginManager.getInstance();
                     loginManager.logOut();
@@ -394,6 +388,7 @@ public class AddActivity extends AppCompatActivity {
                     if (response.body().status.equals("success")) {
                         hamburger_name.setText(response.body().msg.pen_name);
                         hamburger_message.setText(response.body().msg.inform);
+
                         if (response.body().msg.profile == null) {
                             hamburger_profile.setImageResource(R.drawable.profile_tmp);
                         } else {

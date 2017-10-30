@@ -110,6 +110,9 @@ public class GalleryActivity extends AppCompatActivity {
         loginType = intent.getExtras().getInt("loginType");
         tagName = intent.getExtras().getString("tag");
 
+        Log.d("test", userEmail);
+        Log.d("test", Integer.toString(loginType));
+
 
         //서비스 객체 초기화
         service = ApplicationController.getInstance().getNetworkService();

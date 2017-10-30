@@ -51,6 +51,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.component.Preview;
+import com.seoulprojet.seoulpoem.model.AddArticleResult;
 import com.seoulprojet.seoulpoem.model.HashtagListData;
 import com.seoulprojet.seoulpoem.model.MainResult;
 import com.seoulprojet.seoulpoem.model.MyPageResult;
@@ -85,11 +86,9 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout llHashTag;
     private RelativeLayout rlHashTagToggle;
 
-    //main bg
-    private RelativeLayout rlMainBg;
-
     //선택된 hash tag
     private TextView tvHash;
+
     //viewpager
     private PagerContainer pcPoem;
     private ViewPager vpPoems;
@@ -193,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
         //findView
         findView();
 
-        //makeDummy - 상단 이미지들
+        //상단이미지들
         makeDummy();
 
         //view pager 설정
@@ -273,7 +272,6 @@ public class MainActivity extends AppCompatActivity {
      *************************************************************************/
     public void findView() {
 
-        rlMainBg = (RelativeLayout) findViewById(R.id.rlMainBg);
         tbMain = (Toolbar) findViewById(R.id.tbMain);
         rlHamberger = (RelativeLayout) findViewById(R.id.rlHamberger);
         rlSearch = (RelativeLayout) findViewById(R.id.rlSearch);
@@ -287,8 +285,6 @@ public class MainActivity extends AppCompatActivity {
         llmore = (LinearLayout) findViewById(R.id.llmore);
 
         tvHash = (TextView) findViewById(R.id.tvHash);
-
-
     }
 
 
@@ -387,7 +383,6 @@ public class MainActivity extends AppCompatActivity {
     public void setViewPager() {
         pcPoem = (PagerContainer) findViewById(R.id.pcPoem);
         vpPoems = pcPoem.getViewPager();
-
 
         //indicator 설정
         tabLayout = (TabLayout) findViewById(R.id.tabDots);

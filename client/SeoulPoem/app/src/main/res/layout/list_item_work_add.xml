@@ -9,8 +9,8 @@
     <!--왼쪽 이미지-->
     <LinearLayout
         android:id="@+id/llLeftImg"
-        android:layout_width="111dp"
-        android:layout_height="111dp">
+        android:layout_width="80dp"
+        android:layout_height="80dp">
 
         <ImageView
             android:id="@+id/ivLeftImg"
@@ -21,28 +21,14 @@
     </LinearLayout>
 
 
-    <!--동그란 이미지-->
-    <LinearLayout
-        android:id="@+id/llTItle"
-        android:layout_width="29dp"
-        android:layout_height="29dp"
-        android:layout_alignTop="@+id/llLeftImg"
-        android:layout_marginLeft="11dp"
-        android:layout_toRightOf="@+id/llLeftImg">
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/ivCirclerImg"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:src="@drawable/testimg05" />
-    </LinearLayout>
-
     <!--제목-->
     <LinearLayout
+        android:id="@+id/llTItle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/llLeftImg"
         android:layout_marginLeft="11dp"
-        android:layout_toRightOf="@+id/llTItle">
+        android:layout_toRightOf="@+id/llLeftImg">
 
         <TextView
             android:id="@+id/tvTitle"
