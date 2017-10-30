@@ -384,6 +384,7 @@ router.post('/secession',  async (req, res) => {
             let delete_users = "delete from seoul_poem.users where email = ? and foreign_key_type = ?";
             var delete_users_result =  await connection.query(delete_users,[email,type]);
             console.log(delete_users_result);
+
             await connection.query("SET FOREIGN_KEY_CHECKS=1;");
 
             res.status(200);

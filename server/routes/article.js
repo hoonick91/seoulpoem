@@ -439,46 +439,66 @@ router.put('/:idarticles', upload.single('photo'), async (req, res, next) => {
     }
 });
 
-router.delete('/:idarticles', async (req, res, next) => {
+router.delete('/:idarticles', async (req, res) => {
     try {
+
+
+        req.checkHeaders('email', 'empty email').notEmpty();
+        req.checkHeaders('type', 'empty type').notEmpty();
+
         var connection = await pool.getConnection();
         await connection.beginTransaction();
 
-        let query = 'SELECT * FROM seoul_poem.articles where idarticles = ? ';
-        let data1 = await connection.query(query, req.params.idarticles) || null;
-        if(data1.length==0) res.status(403).send({result: '占쏙옙占쏙옙占쏙옙占쏙옙 占십댐옙 占쏙옙 id占쌉니댐옙.'});
+
+        let errors = req.validationErrors();
+        if (!errors) {
+
+            let type_ = req.headers.type;
+            let email_ = req.headers.email;
+
+            let query = 'SELECT * FROM seoul_poem.articles where idarticles = ? and users_email = ? and users_foreign_key_type = ?';
+            let data1 = await connection.query(query, [req.params.idarticles,email_,type_]) || null;
+            if(data1.length==0) res.status(403).send({result: 'not found articles'});
 
 
-        let query1 = 'SELECT * FROM seoul_poem.bookmarks where articles_idarticles=?';
-        let data2 = await connection.query(query1, req.params.idarticles) || null;
-        if(data2.length>0){
-            let query2 = 'delete from seoul_poem.bookmarks where articles_idarticles = ?';
-            await connection.query(query2, req.params.idarticles);
+            let query1 = 'SELECT * FROM seoul_poem.bookmarks where articles_idarticles=?';
+            let data2 = await connection.query(query1, req.params.idarticles) || null;
+            if(data2.length>0){
+                let query2 = 'delete from seoul_poem.bookmarks where articles_idarticles = ?';
+                await connection.query(query2, req.params.idarticles);
+            }
+
+            let query3 = 'SELECT idpictures FROM seoul_poem.articles, pictures where articles.pictures_idpictures = pictures.idpictures and idarticles = ?';
+            let selected = await connection.query(query3, req.params.idarticles);
+
+            let query4 = 'SELECT idpoem, idsettings FROM seoul_poem.articles, poem, setting where articles.poem_idpoem = poem.idpoem and poem.setting_idsettings = setting.idsettings and idarticles = ?';
+            let selected2 = await connection.query(query4, req.params.idarticles);
+
+
+            let query5 = 'delete from seoul_poem.articles where idarticles = ?';
+            await connection.query(query5, req.params.idarticles);
+
+            let query6 = 'delete from seoul_poem.pictures where idpictures = ?';
+            await connection.query(query6, selected[0].idpictures);
+
+
+            if(selected2.length){
+                let query7 = 'delete from seoul_poem.poem where idpoem = ?';
+                await connection.query(query7, selected2[0].idpoem);
+
+                let query8 = 'delete from seoul_poem.setting where idsettings = ?';
+                await connection.query(query8, selected2[0].idsettings);
+
+            }
+
+            res.status(200).send({result: 'delete success'});
+            await connection.commit();
         }
-
-        let query3 = 'SELECT idpictures FROM seoul_poem.articles, pictures where articles.pictures_idpictures = pictures.idpictures and idarticles = ?';
-        let selected = await connection.query(query3, req.params.idarticles);
-
-        let query4 = 'SELECT idpoem, idsettings FROM seoul_poem.articles, poem, setting where articles.poem_idpoem = poem.idpoem and poem.setting_idsettings = setting.idsettings and idarticles = ?';
-        let selected2 = await connection.query(query4, req.params.idarticles);
-
-        let query5 = 'delete from seoul_poem.articles where idarticles = ?';
-        await connection.query(query5, req.params.idarticles);
-
-        let query6 = 'delete from seoul_poem.pictures where idpictures = ?';
-        await connection.query(query6, selected[0].idpictures);
-
-        let query7 = 'delete from seoul_poem.poem where idpoem = ?';
-        await connection.query(query7, selected2[0].idpoem);
-
-        let query8 = 'delete from seoul_poem.setting where idsettings = ?';
-        await connection.query(query8, selected2[0].idsettings);
-
-
-        res.status(200).send({result: 'delete success'});
-        await connection.commit();
-    }
-
+        else {
+            res.status(401);
+            res.json({status: "fail", msg: errors});
+        }
+ }
     catch(err){
         console.log(err);
         res.status(500).send({status : "fail", msg: err });
