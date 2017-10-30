@@ -16,30 +16,45 @@
         android:icon="@drawable/seoul_poem_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.sampleActivity" />
-        <activity android:name=".activity.MyPage" />
-        <activity android:name=".activity.MyPageSetting" />
-        <activity android:name=".activity.WriterList" />
-        <activity android:name=".activity.Notice" />
-        <activity android:name=".activity.SettingPage" />
-        <activity android:name=".activity.TodaySeoul" />
-        <activity android:name=".activity.Splash">
+        <activity android:name=".activity.sampleActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyPage"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyPageSetting"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.WriterList"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.Notice"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SettingPage"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.TodaySeoul"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.Splash"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.DetailActivity" />
-        <activity android:name=".activity.AddActivity" />
-        <activity android:name=".activity.SearchActivity" />
-        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.DetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AddActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SearchActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MainActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.WritePoemActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".activity.PreviewAcitivity" />
+        <activity android:name=".activity.PreviewAcitivity"
+            android:screenOrientation="portrait"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -51,19 +66,27 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".activity.ReadingPoemActivity" />
-        <activity android:name=".activity.Login" />
-        <activity android:name=".activity.LoginName" />
-        <activity android:name=".activity.MyPageShowImage" />
-        <activity android:name=".activity.NoticeDetail" />
-        <activity android:name=".activity.SubwayPoemActivity" />
-        <activity android:name=".activity.GalleryActivity" />
+        <activity android:name=".activity.ReadingPoemActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.Login"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.LoginName"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyPageShowImage"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.NoticeDetail"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SubwayPoemActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.GalleryActivity"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".activity.TagsActivity"></activity>
+        <activity android:name=".activity.TagsActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

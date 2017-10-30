@@ -25,6 +25,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -226,8 +227,8 @@ public class MyPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyPageShowImage.class);
                 intent.putExtra("status", "profile");
-                intent.putExtra("userEmail", userEmail);
-                intent.putExtra("loginType", loginType);
+                intent.putExtra("userEmail", otherEmail);
+                intent.putExtra("loginType", otherType);
                 startActivity(intent);
             }
         });
@@ -237,8 +238,8 @@ public class MyPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyPageShowImage.class);
                 intent.putExtra("status", "background");
-                intent.putExtra("userEmail", userEmail);
-                intent.putExtra("loginType", loginType);
+                intent.putExtra("userEmail", otherEmail);
+                intent.putExtra("loginType", otherType);
                 startActivity(intent);
             }
         });
@@ -326,6 +327,7 @@ public class MyPage extends AppCompatActivity {
         hamburger_bg = (ImageView)findViewById(R.id.hamburger_bg);
 
         drawerLayout = (DrawerLayout)findViewById(R.id.mypage_drawer_layout);
+        drawerLayout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         drawerView = (View)findViewById(R.id.drawer);
 
         mypage_hamburger_btn.setOnClickListener(new View.OnClickListener(){

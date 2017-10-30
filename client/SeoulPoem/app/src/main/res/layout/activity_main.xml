@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#488ab4"
-                    android:textSize="15dp"
+                    android:textSize="16dp"
                     android:textStyle="bold"
                     tools:text="# 그리움" />
             </LinearLayout>
@@ -74,7 +74,7 @@
                 android:id="@+id/llmore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/llHashTag"
+                android:layout_alignBottom="@+id/llHashTag"
                 android:layout_marginLeft="285dp">
 
                 <TextView
@@ -82,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:text="더보기"
                     android:textColor="#488ab4"
-                    android:textSize="15dp"
+                    android:textSize="13dp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -133,8 +133,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="444dp"
-                android:layout_marginRight="55dp">
+                android:layout_marginBottom="50dp"
+                android:layout_marginRight="30dp">
+
 
                 <ImageView
                     android:layout_width="wrap_content"

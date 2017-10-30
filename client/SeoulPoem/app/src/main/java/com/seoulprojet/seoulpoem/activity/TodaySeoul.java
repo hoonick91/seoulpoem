@@ -90,6 +90,7 @@ public class TodaySeoul extends AppCompatActivity {
 
         //********************drawer*******************//
         drawerLayout = (DrawerLayout)findViewById(R.id.todayseoul_drawer_layout);
+        drawerLayout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         drawerView = (View)findViewById(R.id.drawer);
         todayseoul_hamburger_btn.setOnClickListener(new View.OnClickListener(){
             @Override
