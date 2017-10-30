@@ -209,10 +209,10 @@ public class SearchActivity extends AppCompatActivity {
             holder.tvName.setText(searchListDataAuthor.name_);
 
             //content
-            holder.tvPhotoNum.setText(String.valueOf(searchListDataAuthor.ac));
+            holder.tvPhotoNum.setText(String.valueOf(searchListDataAuthor.pc));
 
             //content
-            holder.tvPoemNum.setText(String.valueOf(searchListDataAuthor.pc));
+            holder.tvPoemNum.setText(String.valueOf(searchListDataAuthor.ac));
 
             //이메일, type
             otherEmail = searchListDataAuthor.email;

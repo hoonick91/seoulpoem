@@ -11,6 +11,7 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.media.Image;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
     //tool_bar
     private RelativeLayout rlHamberger, rlSearch, rlTags;
     private Toolbar tbMain;
+    private ImageView rlTagImg;
 
     //hash tag
     private LinearLayout llHashTag;
@@ -293,6 +295,7 @@ public class MainActivity extends AppCompatActivity {
         llmore = (LinearLayout) findViewById(R.id.llmore);
 
         tvHash = (TextView) findViewById(R.id.tvHash);
+        rlTagImg = (ImageView)findViewById(R.id.rlTagImg);
 
 
     }
@@ -457,6 +460,7 @@ public class MainActivity extends AppCompatActivity {
                     tvHash.setText("# " + hashtagListData.text);
                     getLists(hashtagListData.text);
                     rlHashTagToggle.animate().translationY(-180).withLayer();
+                    rlTagImg.setImageResource(R.drawable.path_32);
                     showTags = false;
                 }
             });
@@ -585,12 +589,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!showTags) { //보이지 않을때 보이게 함
                     rlHashTagToggle.animate().translationY(0).withLayer();
+                    rlTagImg.setImageResource(R.drawable.path_33);
                     showTags = true;
                 } else { //보일때 보이지 않게함
+
                     DisplayMetrics dm = getResources().getDisplayMetrics();
                     int size = Math.round( 70 * dm.density); //숫자가 넣고싶은 dp값
                     size = 0 - size;
                     rlHashTagToggle.animate().translationY(size).withLayer();
+                    rlTagImg.setImageResource(R.drawable.path_32);
                     showTags = false;
                 }
             }

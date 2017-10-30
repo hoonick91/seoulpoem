@@ -67,11 +67,16 @@ public class PreviewAcitivity extends AppCompatActivity {
 
     int article_id;
 
+    //스택관리
+    public static PreviewAcitivity previewAcitivity;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview);
+
+        previewAcitivity = this;
 
         pref = new PbReference(this);
         userEmail = pref.getValue("userEmail", "");
@@ -118,10 +123,6 @@ public class PreviewAcitivity extends AppCompatActivity {
             public void onClick(View v) {
                 //서버에 전송하기 사진, 제목, 내용.종이질감.글자색,글자설정 등
                 savePoem();
-                finish();
-                WritePoemActivity.writePoemActivity.finish();
-
-
 
             }
         });

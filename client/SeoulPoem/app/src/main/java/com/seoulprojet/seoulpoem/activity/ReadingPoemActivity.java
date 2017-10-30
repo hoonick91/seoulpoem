@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.seoulprojet.seoulpoem.R;
+import com.seoulprojet.seoulpoem.component.Preview;
 import com.seoulprojet.seoulpoem.model.AddArticleResult;
 import com.seoulprojet.seoulpoem.model.ReadingPoem;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
@@ -151,6 +152,8 @@ public class ReadingPoemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reading_poem);
 
+        WritePoemActivity.writePoemActivity.finish();
+        PreviewAcitivity.previewAcitivity.finish();
 
         //유저 정보, 수정 가능 여부, 담은 작품인지 여부
         Intent intent = getIntent();
