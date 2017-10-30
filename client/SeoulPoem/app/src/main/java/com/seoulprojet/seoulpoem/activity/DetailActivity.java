@@ -79,6 +79,7 @@ public class DetailActivity extends AppCompatActivity {
             intent.putExtra("userEmail", userEmail);
             intent.putExtra("loginType", loginType);
             startActivity(intent);
+            settingDialog.dismiss();
         }
     };
 
@@ -151,6 +152,9 @@ public class DetailActivity extends AppCompatActivity {
     //담은 작품인지 체크
     int bookmark;
 
+    //툴바 설정 플레그
+    int flag = 0;
+
 
     /*************************************************************************
      *                               - start
@@ -221,6 +225,9 @@ public class DetailActivity extends AppCompatActivity {
         llPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //툴바 보이게
+                flag = 1;
 
                 //담은 작품인지 체크
                 if (bookmark == 0) {
@@ -594,33 +601,36 @@ public class DetailActivity extends AppCompatActivity {
      *************************************************************************/
     public void addDialog() {
         RelativeLayout rlShare = (RelativeLayout) findViewById(R.id.rlShare);
+
         rlShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                //작품담기 네트워크
-                addArticle();
+                if (flag == 1) {
+                    //작품담기 네트워크
+                    addArticle();
 
-                if (bookmark == 1) {
-                    //작품담기 다이얼로그 생성
-                    addWorkDialog = new AddWorkDialog(DetailActivity.this,
-                            "#작품 담기",
-                            "작품 담기에서 작품을 뺐습니다.",
-                            "작품 담기로 이동하시겠습니까?",
-                            addDialog_leftListener,
-                            addDialog_rightListener);
-                } else {
-                    //작품담기 다이얼로그 생성
-                    addWorkDialog = new AddWorkDialog(DetailActivity.this,
-                            "#작품 담기",
-                            "작품 담기에 작품을 담았습니다.",
-                            "작품 담기로 이동하시겠습니까?",
-                            addDialog_leftListener,
-                            addDialog_rightListener);
+                    if (bookmark == 1) {
+                        //작품담기 다이얼로그 생성
+                        addWorkDialog = new AddWorkDialog(DetailActivity.this,
+                                "#작품 담기",
+                                "작품 담기에서 작품을 뺐습니다.",
+                                "작품 담기로 이동하시겠습니까?",
+                                addDialog_leftListener,
+                                addDialog_rightListener);
+                    } else {
+                        //작품담기 다이얼로그 생성
+                        addWorkDialog = new AddWorkDialog(DetailActivity.this,
+                                "#작품 담기",
+                                "작품 담기에 작품을 담았습니다.",
+                                "작품 담기로 이동하시겠습니까?",
+                                addDialog_leftListener,
+                                addDialog_rightListener);
+                    }
+
+                    addWorkDialog.setCanceledOnTouchOutside(true);
+                    addWorkDialog.show();
                 }
-
-                addWorkDialog.setCanceledOnTouchOutside(true);
-                addWorkDialog.show();
             }
         });
     }
@@ -631,32 +641,36 @@ public class DetailActivity extends AppCompatActivity {
      *************************************************************************/
     public void settingDialog() {
         RelativeLayout rlSetting = (RelativeLayout) findViewById(R.id.rlSetting);
+
+
         rlSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (flag == 1) {
+                    if (modifiable == 1) {
+                        //작품을 쓴 사람이 현재 사용자라면
+                        settingDialog = new SettingDialog(DetailActivity.this,
+                                "상세정보",
+                                "수정하기",
+                                settingDialog_listener02,
+                                settingDialog_listener03,
+                                settingDialog_listener05
+                        );
+                        settingDialog.setCanceledOnTouchOutside(true);
+                        settingDialog.show();
+                    } else {
+                        //작품을 쓴 쓴 사람이 현재 사용자가 아니라면
+                        settingDialog02 = new SettingDialog02(DetailActivity.this,
+                                "상세정보",
+                                settingDialog_listener04);
+                        settingDialog02.setCanceledOnTouchOutside(true);
+                        settingDialog02.show();
 
-                if (modifiable == 1) {
-                    //작품을 쓴 사람이 현재 사용자라면
-                    settingDialog = new SettingDialog(DetailActivity.this,
-                            "상세정보",
-                            "수정하기",
-                            settingDialog_listener02,
-                            settingDialog_listener03,
-                            settingDialog_listener05
-                    );
-                    settingDialog.setCanceledOnTouchOutside(true);
-                    settingDialog.show();
-                } else {
-                    //작품을 쓴 쓴 사람이 현재 사용자가 아니라면
-                    settingDialog02 = new SettingDialog02(DetailActivity.this,
-                            "상세정보",
-                            settingDialog_listener04);
-                    settingDialog02.setCanceledOnTouchOutside(true);
-                    settingDialog02.show();
-
+                    }
                 }
             }
         });
+
     }
 
     /*************************************************************************
@@ -708,8 +722,8 @@ public class DetailActivity extends AppCompatActivity {
                         //유저 닉네임
                         tvName.setText(response.body().data.writer.pen_name.toString());
 
-                        //태그
                         tvTags.setText(response.body().data.tags.toString());
+
 
                         //modifiable
                         modifiable = response.body().data.modifiable;

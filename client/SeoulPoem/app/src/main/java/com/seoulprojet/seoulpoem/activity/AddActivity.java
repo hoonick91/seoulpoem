@@ -180,6 +180,7 @@ public class AddActivity extends AppCompatActivity {
                     intent.putExtra("userEmail", userEmail);
                     intent.putExtra("loginType", loginType);
                     startActivity(intent);
+                    finish();
                 }
             });
         }
