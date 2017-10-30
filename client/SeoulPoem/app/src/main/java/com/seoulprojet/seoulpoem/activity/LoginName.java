@@ -64,9 +64,12 @@ public class LoginName extends AppCompatActivity {
                 if(inputName_et.getText().toString().length() == 0){
                     loginPenName.pen_name = userName;
                 }
-
                 else{
                     loginPenName.pen_name = inputName_et.getText().toString();
+
+                    if(loginPenName.pen_name.contains(" ")){
+                        loginPenName.pen_name.replace(" ", "");
+                    }
                 }
                 postName();
             }
