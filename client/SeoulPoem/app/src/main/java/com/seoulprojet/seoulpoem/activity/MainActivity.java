@@ -458,7 +458,10 @@ public class MainActivity extends AppCompatActivity {
                     currentTag = hashtagListData.text;
                     tvHash.setText("# " + hashtagListData.text);
                     getLists(hashtagListData.text);
-                    rlHashTagToggle.animate().translationY(-180).withLayer();
+                    DisplayMetrics dm = getResources().getDisplayMetrics();
+                    int size = Math.round( 70 * dm.density); //숫자가 넣고싶은 dp값
+                    size = 0 - size;
+                    rlHashTagToggle.animate().translationY(size).withLayer();
                     rlTagImg.setImageResource(R.drawable.path_32);
                     showTags = false;
                 }

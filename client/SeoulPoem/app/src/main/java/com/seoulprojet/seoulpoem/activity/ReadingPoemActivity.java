@@ -152,8 +152,7 @@ public class ReadingPoemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reading_poem);
 
-        WritePoemActivity.writePoemActivity.finish();
-        PreviewAcitivity.previewAcitivity.finish();
+
 
         //유저 정보, 수정 가능 여부, 담은 작품인지 여부
         Intent intent = getIntent();

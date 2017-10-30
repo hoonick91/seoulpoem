@@ -873,7 +873,6 @@ public class WritePoemActivity extends AppCompatActivity {
         }
 
         private void CheckSpace() {
-
                 if (write_tag.getText().toString().contains(" ")) {
                     text = write_tag.getText().toString();
                     sb = new StringBuffer(text);
