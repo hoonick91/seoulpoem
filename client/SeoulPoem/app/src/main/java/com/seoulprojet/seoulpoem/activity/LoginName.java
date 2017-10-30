@@ -83,10 +83,9 @@ public class LoginName extends AppCompatActivity {
         requestName.enqueue(new Callback<SignInResult>() {
             @Override
             public void onResponse(Call<SignInResult> call, Response<SignInResult> response) {
-                if(response.code()==401) {
+                if(response.code()==401 || response.code()==402) {
                     ImageView imageView = (ImageView)findViewById(R.id.login_name_already);
                     imageView.setVisibility(View.VISIBLE);
-                    tempView.setText("중복");
                 }
 
                 else if(response.code() == 403){
@@ -99,7 +98,7 @@ public class LoginName extends AppCompatActivity {
                 else{
                     tempView.setText("success" + Integer.toString(loginType));
 
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), TagsActivity.class);
                     intent.putExtra("userEmail", userEmail);
                     intent.putExtra("loginType", loginType);
                     startActivity(intent);

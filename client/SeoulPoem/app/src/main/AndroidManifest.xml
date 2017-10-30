@@ -78,8 +78,12 @@
             android:screenOrientation="portrait"/>
 
         <meta-data
+            android:name="com.google.android.gms.API_KEY"
+            android:value="666717725695-btmoicqcug3kren3qfv296f5hr8bjilc.apps.googleusercontent.com"/>
+
+        <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+            android:value="2031569513739515" />
 
         <activity android:name=".activity.TagsActivity"
             android:screenOrientation="portrait"></activity>
