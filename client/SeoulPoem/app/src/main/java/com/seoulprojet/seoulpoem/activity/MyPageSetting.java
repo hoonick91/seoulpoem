@@ -1,6 +1,5 @@
 package com.seoulprojet.seoulpoem.activity;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -43,11 +42,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.seoulprojet.seoulpoem.R.drawable.e;
-import static com.seoulprojet.seoulpoem.R.drawable.f;
-import static com.seoulprojet.seoulpoem.R.drawable.i;
-import static java.lang.System.in;
 
 public class MyPageSetting extends AppCompatActivity {
 
