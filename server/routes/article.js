@@ -157,12 +157,12 @@ router.get('/:idarticles', async (req, res) => {
         }
         else{
             let setting={};
-            setting.font_size  = 0;
+            setting.font_size  = 14;
             setting.bold  = 0;
             setting.inclination = 0;
             setting.underline = 0;
-            setting.color = 0;
-            setting.sort = 0;
+            setting.color = 5;
+            setting.sort = 4;
             article.setting = setting;
             article.content = "";
         }
@@ -439,6 +439,7 @@ router.put('/:idarticles', upload.single('photo'), async (req, res, next) => {
     }
 });
 
+
 router.delete('/:idarticles', async (req, res) => {
     try {
 
@@ -461,10 +462,9 @@ router.delete('/:idarticles', async (req, res) => {
             if(data1.length==0) res.status(403).send({status : "fail", msg: 'not have permission'});
             else{
 
-
                 let query1 = 'SELECT * FROM seoul_poem.bookmarks where articles_idarticles=?';
                 let data2 = await connection.query(query1, req.params.idarticles) || null;
-                if(data2.length>0){
+                if(data2.length){
                     let query2 = 'delete from seoul_poem.bookmarks where articles_idarticles = ?';
                     await connection.query(query2, req.params.idarticles);
                 }
@@ -492,7 +492,7 @@ router.delete('/:idarticles', async (req, res) => {
 
                 }
 
-                res.status(200).send({result: 'delete success'});
+                res.status(200).send({status : "success", msg: 'delete success'});
                 await connection.commit();
             }
         }

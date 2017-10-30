@@ -73,7 +73,7 @@ router.get('/search', async (req, res) => {
       var selected = await connection.query(query1,[email,type]);
       // 이메일과 타입으로 북마크에 대한 정보를 얻어낸다.
 
-      let query2 = 'SELECT articles.idarticles as idarticles, pictures.photo as photo, users.profile as profile,users.pen_name as pen_name, articles.title as title,articles.poem_idpoem as idpoem FROM seoul_poem.articles, seoul_poem.users ,seoul_poem.pictures where idarticles = ? and articles.users_email = users.email and articles.users_foreign_key_type = users.foreign_key_type and articles.pictures_idpictures = pictures.idpictures;';
+      let query2 = 'SELECT articles.idarticles as idarticles, pictures.photo as photo, users.profile as profile,users.pen_name as pen_name, articles.title as title,if(articles.poem_idpoem is null,-1,poem_idpoem) as idpoem FROM seoul_poem.articles, seoul_poem.users ,seoul_poem.pictures where idarticles = ? and articles.users_email = users.email and articles.users_foreign_key_type = users.foreign_key_type and articles.pictures_idpictures = pictures.idpictures;';
       let bookmark_list=[];
       let query3 = "SELECT poem.content as content from poem where idpoem = ?"
       let len_ = selected.length;
@@ -85,15 +85,14 @@ router.get('/search', async (req, res) => {
           bookmark.pen_name = tmepbookmark[0].pen_name;
           bookmark.profile =tmepbookmark[0].profile;
           bookmark.title = tmepbookmark[0].title;
-          if(tmepbookmark[0].poem_idpoem==null){
+
+          if(tmepbookmark[0].idpoem == -1){
               bookmark.content = "";
           }else {
-            let temppoem = await connection.query(query3,tmepbookmark[0].poem_idpoem);
-            bookmark.content = temppoem[0].content;
+              let temppoem = await connection.query(query3,tmepbookmark[0].idpoem);
+              bookmark.content = temppoem[0].content;
           }
-
           bookmark_list[i]=bookmark;
-
       }
 
       res.status(200).json({status : "success", bookmark_list: bookmark_list});
