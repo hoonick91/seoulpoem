@@ -345,6 +345,7 @@ public class ReadingPoemActivity extends AppCompatActivity {
                 intent.putExtra("otherEmail", otherEmail);
                 intent.putExtra("otherType", otherType);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -357,6 +358,7 @@ public class ReadingPoemActivity extends AppCompatActivity {
                 intent.putExtra("otherEmail", otherEmail);
                 intent.putExtra("otherType", otherType);
                 startActivity(intent);
+                finish();
             }
         });
 

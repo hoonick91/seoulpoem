@@ -94,6 +94,10 @@ public class MyPagePoemFragment extends Fragment {
                     int notice_id = poemResults.get(position).idarticles;
                     Intent intent = new Intent(getActivity().getApplicationContext(), ReadingPoemActivity.class);
                     intent.putExtra("articles_id", ""+notice_id);
+                    intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("loginType", loginType);
+                    intent.putExtra("otherEmail", userEmail);
+                    intent.putExtra("otherType", loginType);
                     startActivity(intent);
                 }
             });
