@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -339,6 +340,7 @@ public class MainActivity extends AppCompatActivity {
             //findView
             ivPoem = (ImageView) view.findViewById(R.id.ivPoem);
             tvHashTag = (TextView) view.findViewById(R.id.tvHashTag);
+            tvHashTag.setPaintFlags(tvHashTag.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
 
             Glide.with(getApplicationContext())
                     .load(poemListData.photo)
@@ -614,6 +616,8 @@ public class MainActivity extends AppCompatActivity {
     /*************************************************************************
      *                             - 햄버거 보이게
      *************************************************************************/
+
+
     public void showHamburger() {
 
         hamburger_mypage_btn = (ImageButton) findViewById(R.id.hamburger_mypage_btn);
@@ -628,6 +632,7 @@ public class MainActivity extends AppCompatActivity {
         hamburger_bg = (ImageView) findViewById(R.id.hamburger_bg);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.mypage_drawer_layout02);
+        drawerLayout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         drawerView = findViewById(R.id.drawer);
         rlHamberger.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -637,6 +642,8 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(drawerView);
             }
         });
+
+
 
         hamburger_mypage_btn.setOnClickListener(new View.OnClickListener() {
             @Override

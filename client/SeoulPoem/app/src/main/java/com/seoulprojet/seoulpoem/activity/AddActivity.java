@@ -275,6 +275,7 @@ public class AddActivity extends AppCompatActivity {
         hamburger_bg = (ImageView) findViewById(R.id.hamburger_bg);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.mypage_drawer_layout02);
+        drawerLayout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         drawerView = findViewById(R.id.drawer);
         rlHamberger.setOnClickListener(new View.OnClickListener() {
             @Override

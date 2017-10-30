@@ -88,6 +88,8 @@ public class WriterList extends AppCompatActivity {
 
         // drawer
         drawerLayout = (DrawerLayout)findViewById(R.id.writerlist_drawer_layout);
+        drawerLayout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+
         drawerView = (View)findViewById(R.id.drawer);
         writerlist_hamburger_btn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -408,6 +410,11 @@ public class WriterList extends AppCompatActivity {
 
                 if(response.isSuccessful()){
                     authorLists = response.body().authors_list;
+
+                    if(response.body().done == 1){
+                        writerlist_apply_btn.setVisibility(View.INVISIBLE);
+                    }
+
                     writerNum_tv.setText("# 총 " + response.body().count_authors +"명");
 
                     // make adapter

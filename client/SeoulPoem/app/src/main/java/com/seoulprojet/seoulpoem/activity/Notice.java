@@ -83,6 +83,7 @@ public class Notice extends AppCompatActivity {
 
         /*************** drawer ***************/
         drawerLayout = (DrawerLayout)findViewById(R.id.notice_drawer_layout);
+        drawerLayout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         drawerView = (View)findViewById(R.id.drawer);
         notice_hamburger_btn.setOnClickListener(new View.OnClickListener(){
             @Override

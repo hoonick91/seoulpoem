@@ -25,6 +25,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -326,6 +327,7 @@ public class MyPage extends AppCompatActivity {
         hamburger_bg = (ImageView)findViewById(R.id.hamburger_bg);
 
         drawerLayout = (DrawerLayout)findViewById(R.id.mypage_drawer_layout);
+        drawerLayout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         drawerView = (View)findViewById(R.id.drawer);
 
         mypage_hamburger_btn.setOnClickListener(new View.OnClickListener(){
