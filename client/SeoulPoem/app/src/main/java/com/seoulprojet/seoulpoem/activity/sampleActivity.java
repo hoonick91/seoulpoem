@@ -135,7 +135,6 @@ public class sampleActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
-        Log.e("**gotoalbum","startActivity");
     }
 
     @Override
@@ -184,7 +183,6 @@ public class sampleActivity extends AppCompatActivity {
                 return;
             }
             photoUri = data.getData();
-            Log.e("**Before crop photoUri",""+photoUri);
             getImageNameToUri(photoUri);
 
             cropImage();
@@ -198,8 +196,6 @@ public class sampleActivity extends AppCompatActivity {
                     });
         } else if (requestCode == CROP_FROM_CAMERA) {
             photoUri=data.getData();
-            Log.e("**final crop photoUri",""+photoUri);
-          Toast.makeText(sampleActivity.this,"사진이 저장되었습니다.",Toast.LENGTH_LONG).show();
             Intent intent = new Intent(sampleActivity.this, WritePoemActivity.class);
             intent.putExtra("type","0");
             startActivity(intent);
@@ -243,21 +239,15 @@ public class sampleActivity extends AppCompatActivity {
             }
 
             File folder = new File(Environment.getExternalStorageDirectory() + "/SeoulPoem/");
-            Log.e("**folder",folder.getPath());
             File tempFile = new File(folder.toString(), croppedFileName.getName());
-            Log.e("**tempFile",tempFile.getPath());
 
             albumUri = Uri.fromFile(croppedFileName);
-            Log.e("**albumUri",""+albumUri);
 
             Preview.photo_location = tempFile.getPath();
             Preview.photoName = tempFile.getName();
 
             photoUri = FileProvider.getUriForFile(sampleActivity.this,
                     "com.seoulprojet.seoulpoem.activity.provider", tempFile);
-
-
-            Log.e("**aftercropphotoUripath",""+photoUri);
 
             Preview.photo = photoUri;
 
@@ -299,7 +289,6 @@ public class sampleActivity extends AppCompatActivity {
 
                         }else{ //갤러리 클릭시
                             goToAlbum();
-                            Log.e("**갤러리","갤러리시작");
 
                         }
                     }
