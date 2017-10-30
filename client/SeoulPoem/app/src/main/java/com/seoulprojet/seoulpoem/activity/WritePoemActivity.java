@@ -16,10 +16,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,13 +41,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.R.attr.data;
-import static android.R.attr.type;
 import static android.graphics.Typeface.BOLD;
 import static android.graphics.Typeface.BOLD_ITALIC;
 import static android.graphics.Typeface.ITALIC;
 import static android.graphics.Typeface.NORMAL;
-import static com.seoulprojet.seoulpoem.R.id.dropdown_fontitem;
 
 /**
  * Created by minjeong on 2017-09-17.
@@ -122,6 +119,8 @@ public class WritePoemActivity extends AppCompatActivity {
     //스택관리
     public static WritePoemActivity writePoemActivity;
 
+    private boolean status;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -148,8 +147,10 @@ public class WritePoemActivity extends AppCompatActivity {
         userEmail = intent.getExtras().getString("userEmail");
         loginType = intent.getExtras().getInt("loginType");
 
-    }
 
+
+
+    }
 
 
     /****************************************네트워크 초기화*****************************************/
@@ -339,42 +340,41 @@ public class WritePoemActivity extends AppCompatActivity {
         write_content = (EditText)findViewById(R.id.write_content);
 
 
-               /* InputMethodManager controlManager = (InputMethodManager) getSystemService(Service.INPUT_METHOD_SERVICE);
-                SoftKeyboard mSoftKeyboard = new SoftKeyboard(write_content_wrap, controlManager);
-                mSoftKeyboard.setSoftKeyboardCallback(new SoftKeyboard.SoftKeyboardChanged() {
-                    @Override
-                    public void onSoftKeyboardHide() {
-                        new Handler(Looper.getMainLooper())
-                                .post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        // 키보드 내려왔을때
-                                        toolbar.setVisibility(View.GONE);
-                                    }
-                                });
-                    }
 
-                    @Override
-                    public void onSoftKeyboardShow() {
-                        new Handler(Looper.getMainLooper())
-                                .post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        // 키보드 올라왔을때
-                                        toolbar.setVisibility(View.VISIBLE);
-                                    }
-                                });
-                    }
-                });
-*/
         write_content.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-        public void onFocusChange(View v, boolean hasFocus) {
+                public void onFocusChange(View v, boolean hasFocus) {
                     if(hasFocus == false) {
                        toolbar.setVisibility(View.GONE);
                     }else{
                         toolbar.setVisibility(View.VISIBLE);
+                        Log.e("키보드 foucs. ","toolbar visible");
                     }
                  }
+
+        });
+
+        final SoftKeyboardDectectorView softKeyboardDecector = new SoftKeyboardDectectorView(this);
+        addContentView(softKeyboardDecector, new FrameLayout.LayoutParams(-1, -1));
+
+        softKeyboardDecector.setOnShownKeyboard(new SoftKeyboardDectectorView.OnShownKeyboardListener() {
+
+            @Override
+            public void onShowSoftKeyboard() {
+                //키보드 등장할 때
+                if(write_content.hasFocus()){
+                    toolbar.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        softKeyboardDecector.setOnHiddenKeyboard(new SoftKeyboardDectectorView.OnHiddenKeyboardListener() {
+
+            @Override
+            public void onHiddenSoftKeyboard() {
+                // 키보드 사라질 때
+                toolbar.setVisibility(View.GONE);
+                Log.e("keboard state","gone");
+            }
         });
 
 
