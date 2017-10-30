@@ -343,7 +343,6 @@ public class MainActivity extends AppCompatActivity {
             //findView
             ivPoem = (ImageView) view.findViewById(R.id.ivPoem);
             tvHashTag = (TextView) view.findViewById(R.id.tvHashTag);
-            tvHashTag.setPaintFlags(tvHashTag.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
 
             Glide.with(getApplicationContext())
                     .load(poemListData.photo)
@@ -517,6 +516,7 @@ public class MainActivity extends AppCompatActivity {
 
                         //초기 hashtag
                         tvHash.setText("# " + tagname);
+                        tvHash.setPaintFlags(tvHash.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
 
                     }
                 } else {

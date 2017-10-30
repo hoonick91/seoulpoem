@@ -47,6 +47,8 @@ public class MyPagePhotoFragment extends Fragment{
     private String otherEmail = null;
     private int otherType = 0;
 
+    MyPage myPage;
+
     // network
     private NetworkService service;
     private ArrayList<MyPagePhotoListData> photoListDatas;
@@ -58,6 +60,8 @@ public class MyPagePhotoFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
+        myPage = (MyPage)MyPage.myPage;
 
 
         view = inflater.inflate(R.layout.mypage_photo_fragment, container, false);
@@ -150,7 +154,6 @@ public class MyPagePhotoFragment extends Fragment{
             @Override
             public void onResponse(Call<MyPagePhotoResult> call, Response<MyPagePhotoResult> response) {
                 if(response.isSuccessful()){
-                    Log.i("success network", "");
                     photoListDatas = response.body().msg.photos;
                     numTV.setText("# 총 " + response.body().msg.counts + "장");
 

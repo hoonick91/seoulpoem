@@ -29,8 +29,6 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.Notice"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activity.SettingPage"
-            android:screenOrientation="portrait"/>
         <activity android:name=".activity.TodaySeoul"
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.Splash"

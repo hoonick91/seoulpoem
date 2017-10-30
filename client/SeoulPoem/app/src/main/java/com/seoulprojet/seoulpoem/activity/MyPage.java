@@ -130,10 +130,6 @@ public class MyPage extends AppCompatActivity {
         otherType = intent.getExtras().getInt("otherType");
 
 
-
-        Log.i("otehr", "other email:" + otherEmail);
-
-
         // 서비스 객체 초기화
         service = ApplicationController.getInstance().getNetworkService();
 

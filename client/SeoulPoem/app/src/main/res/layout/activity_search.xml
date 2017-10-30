@@ -111,6 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:textSize="12sp"
             android:text="원하는 작가를 검색해보세요" />
 
         <LinearLayout
@@ -174,7 +175,9 @@
             android:id="@+id/tag_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="105dp"
+            android:textSize="12sp"
             android:text="원하는 태그를 검색해보세요" />
 
         <LinearLayout

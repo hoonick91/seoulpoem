@@ -50,7 +50,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private String idToken = null;
     private String userGoogleEmail = null;
     private int loginType = -1;
-    private String contentType = null;
     private String penName = null;
 
     // facebook
@@ -192,9 +191,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
             postLogin();
 
         } else {
-
-            // Signed out, show unauthenticated UI.
-            // mStatusTextView.setText("ID token : null");
 
         }
     }

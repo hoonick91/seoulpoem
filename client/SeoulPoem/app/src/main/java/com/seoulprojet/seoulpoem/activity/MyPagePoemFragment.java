@@ -30,6 +30,8 @@ import retrofit2.Response;
 
 public class MyPagePoemFragment extends Fragment {
 
+    MyPage myPage;
+
     private String userEmail = null;
     private int loginType = 0;
     private String otherEmail = null;
@@ -45,12 +47,13 @@ public class MyPagePoemFragment extends Fragment {
 
     // network
     NetworkService service;
-    private ArrayList<MyPagePoemResult> myPagePoemResults;
     private ArrayList<MyPagePoemListData> poemResults;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
+        myPage = (MyPage)MyPage.myPage;
 
       view = inflater.inflate(R.layout.mypage_poem_fragment, container, false);
       poemCount = (TextView)view.findViewById(R.id.poem_frag_count_txt);
