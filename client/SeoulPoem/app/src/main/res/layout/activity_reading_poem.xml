@@ -23,11 +23,12 @@
                     android:id="@+id/poem_img"
                     android:layout_width="match_parent"
                     android:layout_height="620dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
-                    android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:adjustViewBounds="true"
+                    android:background="#000000"
+                    android:scaleType="centerCrop" />
 
                 <RelativeLayout
                     android:id="@+id/title_layout"
@@ -49,7 +50,6 @@
                         android:layout_width="190dp"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/startTitle"
-                        android:text="테스트"
                         android:textColor="#ffffff"
                         android:textSize="30sp" />
                 </RelativeLayout>
@@ -59,8 +59,8 @@
                     android:id="@+id/poem_path"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="570dp"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginTop="570dp"
                     android:background="@android:color/transparent"
                     android:paddingBottom="15dp"
                     android:paddingLeft="15dp"
@@ -75,7 +75,6 @@
                 android:id="@+id/reading_background"
                 android:layout_width="match_parent"
                 android:layout_height="620dp"
-                android:background="#f99999"
                 android:orientation="vertical">
 
                 <TextView
@@ -101,7 +100,7 @@
                         android:paddingRight="10dp"
                         android:paddingTop="10dp"
                         android:src="@drawable/download"
-                        android:visibility="invisible"/>
+                        android:visibility="invisible" />
 
                     <!--작품담기02 : 담겼으면 파란색으로-->
                     <ImageButton
@@ -115,7 +114,7 @@
                         android:paddingRight="10dp"
                         android:paddingTop="10dp"
                         android:src="@drawable/share02"
-                        android:visibility="invisible"/>
+                        android:visibility="invisible" />
 
 
                     <ImageButton
@@ -165,6 +164,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="15dp"
                             android:layout_marginTop="5dp"
+                            android:ellipsize="end"
+                            android:lines="1"
                             android:textColor="#000000"
                             android:textSize="15sp" />
 

@@ -41,10 +41,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.R.attr.data;
+import static android.R.attr.type;
 import static android.graphics.Typeface.BOLD;
 import static android.graphics.Typeface.BOLD_ITALIC;
 import static android.graphics.Typeface.ITALIC;
 import static android.graphics.Typeface.NORMAL;
+import static com.seoulprojet.seoulpoem.R.id.dropdown_fontitem;
 
 /**
  * Created by minjeong on 2017-09-17.
@@ -84,6 +87,7 @@ public class WritePoemActivity extends AppCompatActivity {
     Button underline;
     Spinner paint_spinner;
     AdapterSpinner adapterSpinner;
+    AdapterSizeSpinner adapterSizeSpinner;
     boolean style_check[];
 
     RelativeLayout back;
@@ -109,6 +113,7 @@ public class WritePoemActivity extends AppCompatActivity {
     String text;
     StringBuffer sb;
     boolean text_change=false;
+    int before_tag_length;//바뀌기 전 write_tag text 길이
 
     //유저 정보
     private String userEmail = null;
@@ -116,7 +121,6 @@ public class WritePoemActivity extends AppCompatActivity {
 
     //스택관리
     public static WritePoemActivity writePoemActivity;
-
 
 
     @Override
@@ -215,8 +219,11 @@ public class WritePoemActivity extends AppCompatActivity {
                     };
 
                     write_content.setText(response.body().article.content);
-                    write_tag.setText(response.body().article.tags);
-                    EditTag();
+                    String text = response.body().article.tags;
+                    tag[0].setTag("0");
+                    text = EditTag(text);
+                    write_tag.setText(text);
+
                     write_detail.setText(response.body().article.inform);
 
                     backgroundId = Integer.parseInt(response.body().article.background);
@@ -282,6 +289,13 @@ public class WritePoemActivity extends AppCompatActivity {
                     Preview.sortinfo = gravity;
                     Log.e("sortinfo?", "" + Preview.sortinfo);
                     Preview.tags = select_tag.getText().toString();
+
+                    if(write_tag.getText().toString().length()>0){ //한글자라도 있을 때
+                        if(write_tag.getText().toString().charAt(0) != '#')
+                          write_tag.setText( "#"+ write_tag.getText().toString());
+                    }
+                    CheckSpace();
+                    Log.e("tags",write_tag.getText().toString());
                     Preview.tags += write_tag.getText().toString();
                     Preview.inform = write_detail.getText().toString();
                     Preview.background = backgroundId;
@@ -417,11 +431,24 @@ public class WritePoemActivity extends AppCompatActivity {
                 main_toolbar.setVisibility(View.VISIBLE);
             }
         });
+
         size_spinner = (Spinner)findViewById(R.id.size_spinner);
+
+        List<String> data2 = new ArrayList<>();
+        data2.add(" 가");
+        data2.add(" 가");
+        data2.add(" 가");
+        data2.add(" 가");
+        data2.add(" 가");
+        adapterSizeSpinner = new AdapterSizeSpinner(this, data2);
+        size_spinner.setAdapter(adapterSizeSpinner);
+        adapterSizeSpinner.notifyDataSetChanged();
+        size_spinner.setSelection(1);
+
         size_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                write_content.setTextSize(Integer.parseInt(parent.getItemAtPosition(position).toString()));
+               // write_content.setTextSize(Integer.parseInt(parent.getItemAtPosition(position).toString()));
             }
 
             @Override
@@ -598,6 +625,7 @@ public class WritePoemActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //입력되는 텍스트에 변화가 있을 때
+
             }
 
             @Override
@@ -628,8 +656,10 @@ public class WritePoemActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                CheckSpace();
-
+                if(before_tag_length < write_tag.length()) { //글자수가 한개 더 입력됐을 때
+                    CheckSpace();
+                }
+                before_tag_length = write_tag.length();
             }
         });
     }
@@ -714,108 +744,183 @@ public class WritePoemActivity extends AppCompatActivity {
         }
     }
 
+    /*******************************
+     * font size adapter
+    * ********************************/
+    public class AdapterSizeSpinner extends BaseAdapter {
 
-    private void EditTag(){
-        if(write_tag.getText().toString().contains("#서울 ")){
+        Context context;
+        List<String> data;
+        LayoutInflater inflater;
+
+        public AdapterSizeSpinner(Context context, List<String> data){
+            this.context = context;
+            this.data = data;
+            inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public int getCount() {
+            if(data!=null) return data.size();
+            else return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if(convertView==null) {
+                convertView = inflater.inflate(R.layout.spinner_layout, parent, false);
+            }
+
+            if(data!=null){
+                //데이터세팅
+                ((TextView)convertView.findViewById(R.id.text_size_view)).setText(""+(13+position));
+                write_content.setTextSize(13+position);
+            }
+
+            return convertView;
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            if(convertView==null){
+                convertView = inflater.inflate(R.layout.list_item_font_size, parent, false);
+            }
+
+            //데이터세팅
+            ((TextView)convertView.findViewById(R.id.dropdown_fontitem)).setTextSize(13+position);
+
+            return convertView;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return data.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+    }
+
+
+    private String EditTag(String text){
+        Log.e("서울 들어가?",text);
+        if(text.contains("#서울 ")){
         if (tag[0].getTag().toString().equals("0")){ //태그 추가인 경우
             tag[0].setTag("1");
-            write_tag.setText(write_tag.getText().toString().replace("#서울 ",""));
+            text = text.replace("#서울 ","");
             check_cnt++;
             CheckSelectedTag();
         }}
-        if(write_tag.getText().toString().contains("#홍대 ")) {
+        if(text.contains("#홍대 ")) {
         if (tag[1].getTag().toString().equals("0")) { //태그 추가인 경우
             tag[1].setTag("1");
-            write_tag.setText(write_tag.getText().toString().replace("#홍대 ",""));
+           text = text.replace("#홍대 ","");
             check_cnt++;
         CheckSelectedTag();
-        }} if(write_tag.getText().toString().contains("#강남 ")) {
+        }}
+        if(text.contains("#강남 ")) {
         if (tag[2].getTag().toString().equals("0")) { //태그 추가인 경우
             tag[2].setTag("1");
-            write_tag.setText(write_tag.getText().toString().replace("#강남 ",""));
+            text = text.replace("#강남 ","");
             check_cnt++;
             CheckSelectedTag();
         }}
-        if(write_tag.getText().toString().contains("#압구정 ")) {
+        if(text.contains("#압구정 ")) {
         if (tag[3].getTag().toString().equals("0")) { //태그 추가인 경우
             tag[3].setTag("1");
-            write_tag.setText(write_tag.getText().toString().replace("#압구정 ",""));
+            text = text.replace("#압구정 ","");
             check_cnt++;
             CheckSelectedTag();
         }}
-        if(write_tag.getText().toString().contains("#광화문 ")) {
+        if(text.contains("#광화문 ")) {
         if (tag[4].getTag().toString().equals("0")) { //태그 추가인 경우
             tag[4].setTag("1");
-            write_tag.setText(write_tag.getText().toString().replace("#광화문 ",""));
+            text = text.replace("#광화문 ","");
             check_cnt++;
             CheckSelectedTag();
         }}
-        if(write_tag.getText().toString().contains("#한강 ")) {
+        if(text.contains("#한강 ")) {
         if (tag[5].getTag().toString().equals("0")) { //태그 추가인 경우
             tag[5].setTag("1");
-            write_tag.setText(write_tag.getText().toString().replace("#한강 ",""));
+            text = text.replace("#한강 ","");
             check_cnt++;
             CheckSelectedTag();
         }}
-        if(write_tag.getText().toString().contains("#종로 ")) {
+        if(text.contains("#종로 ")) {
         if (tag[6].getTag().toString().equals("0")) { //태그 추가인 경우
             tag[6].setTag("1");
-            write_tag.setText(write_tag.getText().toString().replace("#종로 ",""));
+            text = text.replace("#종로 ","");
             check_cnt++;
             CheckSelectedTag();
         }}
-        if(write_tag.getText().toString().contains("#빌딩숲 ")) {
+        if(text.contains("#빌딩숲 ")) {
         if (tag[7].getTag().toString().equals("0")) { //태그 추가인 경우
             tag[7].setTag("1");
-            write_tag.setText(write_tag.getText().toString().replace("#빌딩숲 ",""));
+            text = text.replace("#빌딩숲 ","");
             check_cnt++;
             CheckSelectedTag();
         }}
-        if(write_tag.getText().toString().contains("#이태원 ")) {
+        if(text.contains("#이태원 ")) {
         if (tag[8].getTag().toString().equals("0")) { //태그 추가인 경우
             tag[8].setTag("1");
-            write_tag.setText(write_tag.getText().toString().replace("#이태원 ",""));
+            text = text.replace("#이태원 ","");
             check_cnt++;
             CheckSelectedTag();
         }}
-        if(write_tag.getText().toString().contains("#거리 ")) {
+        if(text.contains("#거리 ")) {
         if (tag[9].getTag().toString().equals("0")) { //태그 추가인 경우
             tag[9].setTag("1");
-            write_tag.setText(write_tag.getText().toString().replace("#거리 ",""));
+            text = text.replace("#거리 ","");
             check_cnt++;
             CheckSelectedTag();
         }}
+
+        text = text.replace("#"+write_title.getText().toString()+" ","");
+        return text;
         }
 
         private void CheckSpace() {
-            if (write_tag.getText().toString().contains(" ")) {
-                text = write_tag.getText().toString();
-                sb = new StringBuffer(text);
 
-                if (text.charAt(0) != '#'){//맨처음에 #이 없을시
-                    sb.insert(0,"#");
-                    text_change = true;
-                }
-                for (int i = 0; i < text.length()-1; i++) {
-                    if (text.charAt(i) == ' ') { //공백이 있을때
-                        if(i != text.length()-2) {
-                            if (text.charAt(i + 1) != '#') {
-                                sb.insert(i + 1, "#");
-                                text_change = true;
+                if (write_tag.getText().toString().contains(" ")) {
+                    text = write_tag.getText().toString();
+                    sb = new StringBuffer(text);
+
+                    for (int i = 0; i < text.length(); i++) {
+                        if (text.charAt(i) == ' ') { //공백이 있을때 처음제외 2번째글자~맨끝까지
+                            if (i == text.length() - 1) { //맨 마지막글자가 공백일 때
+                                if (text.charAt(i - 1) == '#') { //  '# ' 인 경우
+                                    sb.deleteCharAt(i);
+                                    text_change = true;
+                                } else { //글자 후 공백인 경우
+                                    sb.insert(i + 1, "#");
+                                    text_change = true;
+                                }
+                            } else { //중간 글자가 공백일 때
+                                if (text.charAt(i + 1) != '#' && text.charAt(i + 1) != ' ') { //공백 뒤에 #이나 공백이 아니라면(사용자가 #을 지워 글자일 때)
+                                    sb.insert(i + 1, "#");
+                                    text_change = true;
+                                }
                             }
-                        }else{
-                            sb.insert(i+1,"#");
                         }
+                    }
+
+                    if (text.charAt(0) != '#') {//맨처음에 #이 없을시
+                        sb.insert(0, "#");
+                        text_change = true;
                     }
                 }
 
-                if(text_change){
-                    text_change = false;
-                    write_tag.setText(sb.toString());
-                    write_tag.setSelection(sb.length());
-                }
 
-            }
+
+
+                    if (text_change) { //  write_tag.setText(sb.toString());시 다시 checkSpace()로 와서 무한굴레에 빠지지 않기위해
+                        text_change = false;
+                        write_tag.setText(sb.toString());
+                        write_tag.setSelection(sb.length());
+                    }
+
         }
 
 }
