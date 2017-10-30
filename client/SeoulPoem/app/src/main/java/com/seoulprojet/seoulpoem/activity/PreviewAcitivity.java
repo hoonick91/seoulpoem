@@ -140,10 +140,8 @@ public class PreviewAcitivity extends AppCompatActivity {
         }
 
         preview_title.setText(Preview.title);
-        Log.e("content???",""+Preview.content);
         preview_content.setText(Preview.content);
         preview_content.setTextSize(Preview.font_size);
-        Log.e("폰트사이즈 : ", "" + Preview.font_size);
 
         if(Preview.color == 1)
             preview_content.setTextColor(Color.parseColor("#ffffff"));
@@ -194,7 +192,6 @@ public class PreviewAcitivity extends AppCompatActivity {
         RequestBody underline = RequestBody.create(MediaType.parse("multipart/form-data"), "" + Preview.underline);
         RequestBody color = RequestBody.create(MediaType.parse("multipart/form-data"), "" + Preview.color);
         RequestBody sortinfo = RequestBody.create(MediaType.parse("multipart/form-data"), "" + Preview.sortinfo);
-        Log.e("sortinfo_preview",""+Preview.sortinfo);
         RequestBody content = RequestBody.create(MediaType.parse("multipart/form-data"), Preview.content);
         RequestBody tags = RequestBody.create(MediaType.parse("multipart/form-data"), Preview.tags);
         RequestBody inform = RequestBody.create(MediaType.parse("multipart/form-data"), Preview.inform);
@@ -206,7 +203,6 @@ public class PreviewAcitivity extends AppCompatActivity {
         String getTime = sdf.format(time);
 
         RequestBody date = RequestBody.create(MediaType.parse("multipart/form-data"),getTime);
-        Log.e("date",""+date);
 
         MultipartBody.Part photo = null;
         if (article_id == 0) {
@@ -241,7 +237,6 @@ public class PreviewAcitivity extends AppCompatActivity {
                 }
             });
         } else {
-            Log.e("수정시작","수정시작!!");
             /****************************************서버에 정보 보냄**************************************/
             Call<ModifyPoem> request = service.modifyPoem(userEmail, loginType, article_id,
                     content, tags, inform, sortinfo, color, underline, inclination,
@@ -312,7 +307,6 @@ public class PreviewAcitivity extends AppCompatActivity {
 
 
             } catch (FileNotFoundException e) {
-                Log.e("error!!!!", "");
                 e.printStackTrace();
             }
 
@@ -332,12 +326,11 @@ public class PreviewAcitivity extends AppCompatActivity {
             photo = MultipartBody.Part.createFormData("photo", Preview.photoName, photoBody);
 
 
-            Log.e("photofile", Preview.photo_location);
-            //photofile: /storage/emulated/0/SeoulPoem/seoulpoem_090844_1018235213.jpg
-            Log.e("photoname", Preview.photoName);
-            //photoname: seoulpoem_090844_1018235213.jpg
-            Log.e("photo uri", "" + Preview.photo);
-            //photo uri: content://com.seoulprojet.seoulpoem.activity.provider/images/SeoulPoem/seoulpoem_090844_1018235213.jpg
+            /*
+            photofile 형식: /storage/emulated/0/SeoulPoem/seoulpoem_090844_1018235213.jpg
+            photoname 형식: seoulpoem_090844_1018235213.jpg
+            photo uri 형식: content://com.seoulprojet.seoulpoem.activity.provider/images/SeoulPoem/seoulpoem_090844_1018235213.jpg
+            */
 
 
         }

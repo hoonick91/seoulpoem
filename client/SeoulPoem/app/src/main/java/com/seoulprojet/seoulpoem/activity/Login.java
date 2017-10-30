@@ -180,7 +180,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
             // mStatusTextView.setText("ID token : " + idToken);
             penName = acct.getDisplayName();
             userGoogleEmail = acct.getEmail();
-            Log.e("", "userEmail : " + userGoogleEmail);
             loginType = 1;
 
             // set login

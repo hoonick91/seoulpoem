@@ -288,9 +288,7 @@ public class MyPageSetting extends AppCompatActivity {
 
                 // resize 및 imageview 지정
                 if(width > 1000){
-                    Log.e("width",""+width);
                     Bitmap resized = null;
-
 
                     if(camNum == 1){
                         size = width / 1000.0 ;
@@ -405,7 +403,6 @@ public class MyPageSetting extends AppCompatActivity {
                                 finish();
 
                             }else{
-                                Log.e("변경사항 없음!","변경사항 없음!");
                                 final MyPage myPage = (MyPage)MyPage.myPage;
                                 myPage.finish();
 
@@ -455,7 +452,6 @@ public class MyPageSetting extends AppCompatActivity {
             in = getContentResolver().openInputStream(uri);
 
         } catch (FileNotFoundException e) {
-            Log.e("error!!!!", "");
             e.printStackTrace();
         }
         Bitmap bitmap = BitmapFactory.decodeStream(in, null, options);

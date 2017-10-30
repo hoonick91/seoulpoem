@@ -311,8 +311,6 @@ public class GalleryActivity extends AppCompatActivity {
 
                         } else { //갤러리 클릭시
                             goToAlbum();
-                            Log.e("**갤러리", "갤러리시작");
-
                         }
                     }
                 });
@@ -340,7 +338,6 @@ public class GalleryActivity extends AppCompatActivity {
                 photoUri = Uri.fromFile(photoFile);
             }
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            Log.e("여기여기 photoUri",""+photoUri);
             startActivityForResult(intent, PICK_FROM_CAMERA);
         }
     }
@@ -377,7 +374,6 @@ public class GalleryActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
-        Log.e("**gotoalbum", "startActivity");
     }
 
     @Override
@@ -426,7 +422,6 @@ public class GalleryActivity extends AppCompatActivity {
                 return;
             }
             photoUri = data.getData();
-            Log.e("**Before crop photoUri", "" + photoUri);
             getImageNameToUri(photoUri);
 
             cropImage();
@@ -440,8 +435,6 @@ public class GalleryActivity extends AppCompatActivity {
                     });
         } else if (requestCode == CROP_FROM_CAMERA) {
             photoUri = data.getData();
-            Log.e("**final crop photoUri", "" + photoUri);
-            Toast.makeText(GalleryActivity.this, "사진이 저장되었습니다.", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(GalleryActivity.this, WritePoemActivity.class);
             intent.putExtra("type", "0");
             intent.putExtra("userEmail", userEmail);
@@ -487,12 +480,9 @@ public class GalleryActivity extends AppCompatActivity {
             }
 
             File folder = new File(Environment.getExternalStorageDirectory() + "/SeoulPoem/");
-            Log.e("**folder", folder.getPath());
             File tempFile = new File(folder.toString(), croppedFileName.getName());
-            Log.e("**tempFile", tempFile.getPath());
 
             albumUri = Uri.fromFile(croppedFileName);
-            Log.e("**albumUri", "" + albumUri);
 
             Preview.photo_location = tempFile.getPath();
             Preview.photoName = tempFile.getName();
@@ -500,8 +490,6 @@ public class GalleryActivity extends AppCompatActivity {
             photoUri = FileProvider.getUriForFile(GalleryActivity.this,
                     "com.seoulprojet.seoulpoem.activity.provider", tempFile);
 
-
-            Log.e("**aftercropphotoUripath", "" + photoUri);
 
             Preview.photo = photoUri;
 

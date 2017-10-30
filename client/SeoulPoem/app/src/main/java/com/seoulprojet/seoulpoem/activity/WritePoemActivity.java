@@ -140,7 +140,6 @@ public class WritePoemActivity extends AppCompatActivity {
         String type = intent.getStringExtra("type");
         article_id = Integer.parseInt(type);
         if(article_id != 0 ){ //글쓰기가 아닌 글 수정인 경우 내용 받아오기
-           Log.e("article",""+article_id);
             getContent();
         }
 
@@ -288,7 +287,6 @@ public class WritePoemActivity extends AppCompatActivity {
                         Preview.color = 5;
 
                     Preview.sortinfo = gravity;
-                    Log.e("sortinfo?", "" + Preview.sortinfo);
                     Preview.tags = select_tag.getText().toString();
 
                     if(write_tag.getText().toString().length()>0){ //한글자라도 있을 때
@@ -296,7 +294,6 @@ public class WritePoemActivity extends AppCompatActivity {
                           write_tag.setText( "#"+ write_tag.getText().toString());
                     }
                     CheckSpace();
-                    Log.e("tags",write_tag.getText().toString());
                     Preview.tags += write_tag.getText().toString();
                     Preview.inform = write_detail.getText().toString();
                     Preview.background = backgroundId;
@@ -347,7 +344,6 @@ public class WritePoemActivity extends AppCompatActivity {
                        toolbar.setVisibility(View.GONE);
                     }else{
                         toolbar.setVisibility(View.VISIBLE);
-                        Log.e("키보드 foucs. ","toolbar visible");
                     }
                  }
 
@@ -373,7 +369,6 @@ public class WritePoemActivity extends AppCompatActivity {
             public void onHiddenSoftKeyboard() {
                 // 키보드 사라질 때
                 toolbar.setVisibility(View.GONE);
-                Log.e("keboard state","gone");
             }
         });
 
@@ -522,7 +517,6 @@ public class WritePoemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(style_check[0] == false) {
-                    Log.e("굵게현재상황 : ",""+style_check[0]);
                     if(style_check[1]==false)
                         write_content.setTypeface(null, BOLD);
                     else
@@ -544,7 +538,6 @@ public class WritePoemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(style_check[1] == false) {
-                    Log.e("기울임현재상황 : ",""+style_check[1]);
                     if(style_check[0]==false)
                         write_content.setTypeface(null, ITALIC);
                     else
@@ -564,7 +557,6 @@ public class WritePoemActivity extends AppCompatActivity {
         underline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("밑줄현재상황 : ",""+style_check[2]);
                 if(style_check[2] == false) {
                     write_content.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
                     style_check[2] = true;
@@ -805,7 +797,6 @@ public class WritePoemActivity extends AppCompatActivity {
 
 
     private String EditTag(String text){
-        Log.e("서울 들어가?",text);
         if(text.contains("#서울 ")){
         if (tag[0].getTag().toString().equals("0")){ //태그 추가인 경우
             tag[0].setTag("1");
