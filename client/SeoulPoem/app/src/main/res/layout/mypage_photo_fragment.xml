@@ -28,7 +28,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/mypage_photo_num_tv"
-            android:text="#총 n장"
             android:layout_marginBottom="10dp"/>
 
         <GridView

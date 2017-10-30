@@ -20,9 +20,9 @@
             android:scaleType="fitXY"/>
     </LinearLayout>
 
-
     <!--제목-->
     <LinearLayout
+        android:layout_marginTop="7dp"
         android:id="@+id/llTItle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,12 +41,12 @@
 
     <!--내용-->
     <LinearLayout
+        android:layout_marginTop="70dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_alignLeft="@+id/llTItle"
-        android:layout_below="@+id/llTItle"
-        android:layout_marginTop="17dp"
-        android:layout_toRightOf="@+id/llLeftImg">
+        android:layout_alignStart="@+id/llTItle">
 
         <TextView
             android:id="@+id/tvContent"
@@ -54,7 +54,9 @@
             android:layout_height="wrap_content"
             tools:text="test content"
             android:textSize="11sp"
-            android:textColor="#95989a"/>
+            android:textColor="#95989a"
+            android:ellipsize="end"
+            android:lines="3"/>
     </LinearLayout>
 
 

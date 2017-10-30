@@ -79,6 +79,8 @@
                 android:id="@+id/tvTags"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="2"
                 android:textColor="#ffffff"
                 android:textSize="15sp"
                 tools:text="#aaaa #bbbbb #ccccc" />

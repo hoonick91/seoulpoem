@@ -1,6 +1,7 @@
 package com.seoulprojet.seoulpoem.activity;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
@@ -22,6 +23,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -48,13 +50,10 @@ import com.seoulprojet.seoulpoem.network.NetworkService;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import android.Manifest;
-import android.support.v7.app.AlertDialog;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -200,6 +199,13 @@ public class MyPage extends AppCompatActivity {
                 FragmentTransaction transactionPhoto = getFragmentManager().beginTransaction();
                 transactionPhoto.replace(R.id.mypage_fragment, fragmentPhoto);
                 transactionPhoto.commit();
+
+                mypage_poem_btn.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mypage_poem_btn.setEnabled(true);
+                    }
+                }, 2000);
             }
         });
 
@@ -213,6 +219,13 @@ public class MyPage extends AppCompatActivity {
                 FragmentTransaction transactionPoem = getFragmentManager().beginTransaction();
                 transactionPoem.replace(R.id.mypage_fragment, fragmentPoem);
                 transactionPoem.commit();
+
+                mypage_photo_btn.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mypage_photo_btn.setEnabled(true);
+                    }
+                }, 2000);
             }
         });
 

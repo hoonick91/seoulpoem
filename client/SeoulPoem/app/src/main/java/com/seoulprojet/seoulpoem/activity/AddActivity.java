@@ -2,6 +2,7 @@ package com.seoulprojet.seoulpoem.activity;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
@@ -171,6 +172,11 @@ public class AddActivity extends AppCompatActivity {
             //content
             holder.tvContent.setText(addListData.content);
 
+            if(addListData.content.equals("")){
+                holder.tvContent.setText("사진만 등록된 작품입니다");
+                holder.tvContent.setTextColor(Color.parseColor("#30000000"));
+            }
+
             //클릭시 상세화면으로 이동, 클릭한 프로젝트 아이디 전달
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -223,7 +229,9 @@ public class AddActivity extends AppCompatActivity {
             public void onResponse(Call<AddResult> call, Response<AddResult> response) {
                 if (response.isSuccessful()) {
                     if (response.body().status.equals("success")) {
+
                         works = response.body().bookmark_list;
+
                         recyclerAdapter.setAdapter(works);
 
                         //작품 개수 설정
