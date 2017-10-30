@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class WriterListResult {
     public int count_authors;
+    public int done;
     public ArrayList<AuthorList> authors_list;
 
     public class AuthorList{

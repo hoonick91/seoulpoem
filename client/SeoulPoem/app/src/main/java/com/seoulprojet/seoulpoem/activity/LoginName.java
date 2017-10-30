@@ -29,7 +29,6 @@ public class LoginName extends AppCompatActivity {
     private String userEmail;
     private int loginType;
     private String userName;
-    private String contentType;
     private LoginPenName loginPenName;
 
     private TextView tempView;
@@ -45,7 +44,6 @@ public class LoginName extends AppCompatActivity {
         Intent intent = getIntent();
         userEmail = intent.getExtras().getString("userEmail");
         loginType = intent.getExtras().getInt("loginType");
-        contentType = intent.getExtras().getString("contentType");
         userName = intent.getExtras().getString("penName");
 
         // find view
@@ -64,7 +62,6 @@ public class LoginName extends AppCompatActivity {
                 loginPenName = new LoginPenName();
 
                 if(inputName_et.getText().toString().length() == 0){
-                    Log.i("빈 화면", "빈 인풋");
                     loginPenName.pen_name = userName;
                 }
 

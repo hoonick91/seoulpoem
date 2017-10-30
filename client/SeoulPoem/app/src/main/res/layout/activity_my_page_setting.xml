@@ -67,15 +67,15 @@
                 android:id="@+id/mypage_setting_background_img"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:background="#ffa6be"
+                android:background="@android:color/darker_gray"
                 android:layout_alignParentTop="true"
                 android:scaleType="centerCrop"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignBottom="@+id/mypage_setting_background_img"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
@@ -111,12 +111,26 @@
             android:paddingRight="25dp"
             android:paddingTop="10dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="필 명"
-                android:textColor="#000000"
-                android:textSize="15sp" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/mypage_setting_name" />
+
+                <ImageView
+                    android:visibility="invisible"
+                    android:layout_gravity="bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/already_loginname"
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/mypage_setting_name_already"/>
+
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/mypage_setting_name_et"
@@ -133,13 +147,11 @@
                 android:imeOptions="actionNext"
                 android:inputType="text"/>
 
-            <TextView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="한 줄 소개"
-                android:textColor="#000000"
-                android:textSize="15sp"/>
+                android:src="@drawable/mypage_setting_inform"/>
 
             <EditText
                 android:id="@+id/mypage_setting_message_et"

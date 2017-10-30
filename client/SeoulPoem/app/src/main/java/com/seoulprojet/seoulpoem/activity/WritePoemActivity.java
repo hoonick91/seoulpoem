@@ -1,13 +1,10 @@
 package com.seoulprojet.seoulpoem.activity;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -16,15 +13,13 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,7 +30,6 @@ import android.widget.Toast;
 
 import com.seoulprojet.seoulpoem.R;
 import com.seoulprojet.seoulpoem.component.Preview;
-import com.seoulprojet.seoulpoem.model.DeleteArticleResult;
 import com.seoulprojet.seoulpoem.model.ReadingPoem;
 import com.seoulprojet.seoulpoem.network.ApplicationController;
 import com.seoulprojet.seoulpoem.network.NetworkService;
@@ -47,13 +41,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.R.attr.data;
-import static android.R.attr.type;
 import static android.graphics.Typeface.BOLD;
 import static android.graphics.Typeface.BOLD_ITALIC;
 import static android.graphics.Typeface.ITALIC;
 import static android.graphics.Typeface.NORMAL;
-import static com.seoulprojet.seoulpoem.R.id.dropdown_fontitem;
 
 /**
  * Created by minjeong on 2017-09-17.
@@ -118,9 +109,8 @@ public class WritePoemActivity extends AppCompatActivity {
 
     String text;
     StringBuffer sb;
-    boolean text_change = false;
+    boolean text_change=false;
     int before_tag_length;//바뀌기 전 write_tag text 길이
-
 
     //유저 정보
     private String userEmail = null;
@@ -128,6 +118,8 @@ public class WritePoemActivity extends AppCompatActivity {
 
     //스택관리
     public static WritePoemActivity writePoemActivity;
+
+    private boolean status;
 
 
     @Override
@@ -147,13 +139,15 @@ public class WritePoemActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String type = intent.getStringExtra("type");
         article_id = Integer.parseInt(type);
-        if (article_id != 0) { //글쓰기가 아닌 글 수정인 경우 내용 받아오기
-            Log.e("article", "" + article_id);
+        if(article_id != 0 ){ //글쓰기가 아닌 글 수정인 경우 내용 받아오기
             getContent();
         }
 
         userEmail = intent.getExtras().getString("userEmail");
         loginType = intent.getExtras().getInt("loginType");
+
+
+
 
     }
 
@@ -164,8 +158,8 @@ public class WritePoemActivity extends AppCompatActivity {
     }
 
     /****************************************서버에 정보 받음**************************************/
-    private void getContent() {
-        Call<ReadingPoem> request = service.readPoem(userEmail, loginType, article_id);
+    private void getContent(){
+        Call<ReadingPoem> request = service.readPoem(userEmail,loginType, article_id);
         request.enqueue(new Callback<ReadingPoem>() {
             @Override
             public void onResponse(Call<ReadingPoem> call, Response<ReadingPoem> response) {
@@ -173,57 +167,56 @@ public class WritePoemActivity extends AppCompatActivity {
                     Preview.photo_location = response.body().article.photo;
                     write_title.setText(response.body().article.title);
                     write_content.setTextSize(response.body().article.setting.font_size);
-                    if (response.body().article.setting.bold == 1) {
-                        if (response.body().article.setting.inclination == 1) {
+                    if (response.body().article.setting.bold == 1){
+                        if( response.body().article.setting.inclination == 1){
                             write_content.setTypeface(null, BOLD_ITALIC);
                             style_check[0] = true;
                             style_check[1] = true;
 
-                        } else {
+                        }else {
                             style_check[0] = true;
                             write_content.setTypeface(null, BOLD);
                         }
-                    } else {
-                        if (response.body().article.setting.inclination == 1) {
+                    }else{
+                        if( response.body().article.setting.inclination == 1){
                             style_check[1] = true;
                             write_content.setTypeface(null, ITALIC);
-                        } else {
+                        }else {
                             write_content.setTypeface(null, NORMAL);
                         }
-                    }
-                    ;
-                    if (response.body().article.setting.underline == 1) {
+                    };
+                    if(response.body().article.setting.underline == 1){
                         style_check[2] = true;
                         write_content.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-                    } else {
+                    }
+                    else {
                         write_content.setPaintFlags(0);
                     }
 
-                    if (response.body().article.setting.color == 1)
+                    if(response.body().article.setting.color == 1)
                         write_content.setTextColor(Color.parseColor("#ffffff"));
-                    else if (response.body().article.setting.color == 2)
+                    else if(response.body().article.setting.color == 2)
                         write_content.setTextColor(Color.parseColor("#773511"));
-                    else if (response.body().article.setting.color == 3)
+                    else  if(response.body().article.setting.color == 3)
                         write_content.setTextColor(Color.parseColor("#765745"));
-                    else if (response.body().article.setting.color == 4)
+                    else  if(response.body().article.setting.color == 4)
                         write_content.setTextColor(Color.parseColor("#888888"));
                     else
                         write_content.setTextColor(Color.parseColor("#000000"));
 
-                    if (response.body().article.setting.sort == 1) {
+                    if(response.body().article.setting.sort==1){
                         write_content.setGravity(Gravity.LEFT);
                         gravity = 1;
-                    } else if (response.body().article.setting.sort == 2) {
+                    }else if(response.body().article.setting.sort==2){
                         write_content.setGravity(Gravity.RIGHT);
                         gravity = 2;
-                    } else if (response.body().article.setting.sort == 3) {
+                    }else if(response.body().article.setting.sort ==3){
                         write_content.setGravity(Gravity.CENTER_HORIZONTAL);
                         gravity = 3;
-                    } else {
+                    }else{
                         write_content.setGravity(Gravity.NO_GRAVITY);
                         gravity = 4;
-                    }
-                    ;
+                    };
 
                     write_content.setText(response.body().article.content);
                     String text = response.body().article.tags;
@@ -234,15 +227,15 @@ public class WritePoemActivity extends AppCompatActivity {
                     write_detail.setText(response.body().article.inform);
 
                     backgroundId = Integer.parseInt(response.body().article.background);
-                    for (int j = 0; j < 4; j++) {
-                        if (j == backgroundId - 1)
+                    for(int j=0; j<4; j++) {
+                        if(j == backgroundId-1)
                             paper[j].setBackgroundResource(paper_resource[j]);
                         else
                             paper[j].setBackgroundResource(paper_resource_orign[j]);
                     }
 
                 } else {
-                    Log.e("err", response.message());
+                    Log.e("err",response.message());
                 }
             }
 
@@ -254,17 +247,18 @@ public class WritePoemActivity extends AppCompatActivity {
     }
 
 
+
     //xml의 id값들을 java파일의 변수와 연결
-    public void setId() {
+    public void setId(){
         background = (RelativeLayout) findViewById(R.id.background);
-        finish = (ImageButton) findViewById(R.id.finish);
+        finish = (ImageButton)findViewById(R.id.finish);
 
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (write_title.getText().length() == 0) {
-                    Toast.makeText(getApplicationContext(), "제목을 입력해주세요", Toast.LENGTH_LONG).show();
-                } else {
+                if(write_title.getText().length() == 0){
+                    Toast.makeText(getApplicationContext(),"제목을 입력해주세요", Toast.LENGTH_LONG).show();
+                }else {
                     Preview.title = write_title.getText().toString();
                     Preview.content = write_content.getText().toString();
                     //만약 기기마다 다르다면 /3말고 폰트사이즈 변경하는 부분에서 Preview.font_size를 바꿀것.
@@ -293,15 +287,13 @@ public class WritePoemActivity extends AppCompatActivity {
                         Preview.color = 5;
 
                     Preview.sortinfo = gravity;
-                    Log.e("sortinfo?", "" + Preview.sortinfo);
                     Preview.tags = select_tag.getText().toString();
 
-                    if (write_tag.getText().toString().length() > 0) { //한글자라도 있을 때
-                        if (write_tag.getText().toString().charAt(0) != '#')
-                            write_tag.setText("#" + write_tag.getText().toString());
+                    if(write_tag.getText().toString().length()>0){ //한글자라도 있을 때
+                        if(write_tag.getText().toString().charAt(0) != '#')
+                            write_tag.setText( "#"+ write_tag.getText().toString());
                     }
                     CheckSpace();
-                    Log.e("tags", write_tag.getText().toString());
                     Preview.tags += write_tag.getText().toString();
                     Preview.inform = write_detail.getText().toString();
                     Preview.background = backgroundId;
@@ -317,19 +309,20 @@ public class WritePoemActivity extends AppCompatActivity {
         });
 
         tag = new Button[10];
-        tagid = new int[]{R.id.tag1, R.id.tag2, R.id.tag3, R.id.tag4, R.id.tag5, R.id.tag6, R.id.tag7, R.id.tag8, R.id.tag9, R.id.tag10};
+        tagid = new int[]{R.id.tag1,R.id.tag2,R.id.tag3,R.id.tag4,R.id.tag5,R.id.tag6,R.id.tag7,R.id.tag8,R.id.tag9,R.id.tag10};
 
-        for (int i = 0; i < 10; i++) {
-            tag[i] = (Button) findViewById(tagid[i]);
+        for(int i=0; i<10;i++){
+            tag[i] = (Button)findViewById(tagid[i]);
             tag[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (v.getTag().toString().equals("0")) { //태그 추가인 경우
+                    if (v.getTag().toString().equals("0")){ //태그 추가인 경우
                         v.setTag("1");
                         check_cnt++;
                         CheckSelectedTag();
-                    } else { // 태그 제거인 경우
-                        if (check_cnt >= 2) { //선택되어있는 태그가 2개 이상일 경우.1개일 때는 태그제거 금지.
+                    }
+                    else{ // 태그 제거인 경우
+                        if(check_cnt >= 2) { //선택되어있는 태그가 2개 이상일 경우.1개일 때는 태그제거 금지.
                             v.setTag("0");
                             check_cnt--;
                             CheckSelectedTag();
@@ -339,67 +332,66 @@ public class WritePoemActivity extends AppCompatActivity {
             });
         }
 
-        write_title = (EditText) findViewById(R.id.write_title);
-        write_content_wrap = (LinearLayout) findViewById(R.id.write_content_wrap);
-        write_content = (EditText) findViewById(R.id.write_content);
+        write_title = (EditText)findViewById(R.id.write_title);
+        write_content_wrap = (LinearLayout)findViewById(R.id.write_content_wrap) ;
+        write_content = (EditText)findViewById(R.id.write_content);
 
 
-               /* InputMethodManager controlManager = (InputMethodManager) getSystemService(Service.INPUT_METHOD_SERVICE);
-                SoftKeyboard mSoftKeyboard = new SoftKeyboard(write_content_wrap, controlManager);
-                mSoftKeyboard.setSoftKeyboardCallback(new SoftKeyboard.SoftKeyboardChanged() {
-                    @Override
-                    public void onSoftKeyboardHide() {
-                        new Handler(Looper.getMainLooper())
-                                .post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        // 키보드 내려왔을때
-                                        toolbar.setVisibility(View.GONE);
-                                    }
-                                });
-                    }
 
-                    @Override
-                    public void onSoftKeyboardShow() {
-                        new Handler(Looper.getMainLooper())
-                                .post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        // 키보드 올라왔을때
-                                        toolbar.setVisibility(View.VISIBLE);
-                                    }
-                                });
-                    }
-                });
-*/
         write_content.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus == false) {
+                if(hasFocus == false) {
                     toolbar.setVisibility(View.GONE);
-                } else {
+                }else{
+                    toolbar.setVisibility(View.VISIBLE);
+                }
+            }
+
+        });
+
+        final SoftKeyboardDectectorView softKeyboardDecector = new SoftKeyboardDectectorView(this);
+        addContentView(softKeyboardDecector, new FrameLayout.LayoutParams(-1, -1));
+
+        softKeyboardDecector.setOnShownKeyboard(new SoftKeyboardDectectorView.OnShownKeyboardListener() {
+
+            @Override
+            public void onShowSoftKeyboard() {
+                //키보드 등장할 때
+                if(write_content.hasFocus()){
                     toolbar.setVisibility(View.VISIBLE);
                 }
             }
         });
 
+        softKeyboardDecector.setOnHiddenKeyboard(new SoftKeyboardDectectorView.OnHiddenKeyboardListener() {
+
+            @Override
+            public void onHiddenSoftKeyboard() {
+                // 키보드 사라질 때
+                toolbar.setVisibility(View.GONE);
+            }
+        });
+
+
+
 
         paper = new Button[4];
-        paperid = new int[]{R.id.paper1, R.id.paper2, R.id.paper3, R.id.paper4};
-        paper_resource_orign = new int[]{R.drawable.paper1_mini, R.drawable.paper2_mini, R.drawable.paper3_mini, R.drawable.paper4_mini};
+        paperid = new int[]{R.id.paper1,R.id.paper2,R.id.paper3,R.id.paper4};
+        paper_resource_orign = new int[]{R.drawable.paper1_mini,R.drawable.paper2_mini,R.drawable.paper3_mini,R.drawable.paper4_mini};
 
-        for (int i = 0; i < 4; i++) {
-            paper[i] = (Button) findViewById(paperid[i]);
+        for(int i=0;i<4;i++){
+            paper[i] = (Button)findViewById(paperid[i]);
         }
-        paper_resource = new int[]{R.drawable.outline1, R.drawable.outline2, R.drawable.outline3, R.drawable.outline4};
+        paper_resource = new int[]{R.drawable.outline1,R.drawable.outline2,R.drawable.outline3,R.drawable.outline4};
 
-        select_tag = (TextView) findViewById(R.id.select_tag);
-        write_tag = (EditText) findViewById(R.id.write_tag);
-        write_detail = (EditText) findViewById(R.id.write_detail);
+        select_tag = (TextView)findViewById(R.id.select_tag);
+        write_tag = (EditText)findViewById(R.id.write_tag);
+        write_detail = (EditText)findViewById(R.id.write_detail);
 
-        toolbar = (RelativeLayout) findViewById(R.id.keyboard_toolbar);
+        toolbar = (RelativeLayout)findViewById(R.id.keyboard_toolbar);
 
-        main_toolbar = (LinearLayout) findViewById(R.id.main_toolbar);
-        font_button = (TextView) findViewById(R.id.font_button);
+        main_toolbar = (LinearLayout)findViewById(R.id.main_toolbar);
+        font_button = (TextView)findViewById(R.id.font_button);
         font_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -407,7 +399,7 @@ public class WritePoemActivity extends AppCompatActivity {
                 font_toolbar.setVisibility(View.VISIBLE);
             }
         });
-        effect_button = (TextView) findViewById(R.id.effect_button);
+        effect_button = (TextView)findViewById(R.id.effect_button);
         effect_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -415,7 +407,7 @@ public class WritePoemActivity extends AppCompatActivity {
                 effect_toolbar.setVisibility(View.VISIBLE);
             }
         });
-        sort_button = (TextView) findViewById(R.id.sort_button);
+        sort_button = (TextView)findViewById(R.id.sort_button);
         sort_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -425,7 +417,7 @@ public class WritePoemActivity extends AppCompatActivity {
         });
 
 
-        font_toolbar = (LinearLayout) findViewById(R.id.font_toolbar);
+        font_toolbar = (LinearLayout)findViewById(R.id.font_toolbar);
         back2 = (RelativeLayout) findViewById(R.id.back2);
         back2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -435,7 +427,7 @@ public class WritePoemActivity extends AppCompatActivity {
             }
         });
 
-        size_spinner = (Spinner) findViewById(R.id.size_spinner);
+        size_spinner = (Spinner)findViewById(R.id.size_spinner);
 
         List<String> data2 = new ArrayList<>();
         data2.add(" 가");
@@ -460,7 +452,7 @@ public class WritePoemActivity extends AppCompatActivity {
             }
         });
 
-        page_back = (ImageButton) findViewById(R.id.page_back);
+        page_back = (ImageButton)findViewById(R.id.page_back);
         page_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -468,8 +460,8 @@ public class WritePoemActivity extends AppCompatActivity {
             }
         });
 
-        sort_toolbar = (LinearLayout) findViewById(R.id.sort_toolbar);
-        back1 = (RelativeLayout) findViewById(R.id.back1);
+        sort_toolbar = (LinearLayout)findViewById(R.id.sort_toolbar);
+        back1 = (RelativeLayout)findViewById(R.id.back1);
         back1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -477,7 +469,7 @@ public class WritePoemActivity extends AppCompatActivity {
                 main_toolbar.setVisibility(View.VISIBLE);
             }
         });
-        text_center = (Button) findViewById(R.id.text_center);
+        text_center = (Button)findViewById(R.id.text_center);
         text_center.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -485,7 +477,7 @@ public class WritePoemActivity extends AppCompatActivity {
                 gravity = 3;
             }
         });
-        text_left = (Button) findViewById(R.id.text_left);
+        text_left = (Button)findViewById(R.id.text_left);
         text_left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -493,7 +485,7 @@ public class WritePoemActivity extends AppCompatActivity {
                 gravity = 1;
             }
         });
-        text_right = (Button) findViewById(R.id.text_right);
+        text_right = (Button)findViewById(R.id.text_right);
         text_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -501,7 +493,7 @@ public class WritePoemActivity extends AppCompatActivity {
                 gravity = 2;
             }
         });
-        text_default = (Button) findViewById(R.id.text_default);
+        text_default = (Button)findViewById(R.id.text_default);
         text_default.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -510,8 +502,8 @@ public class WritePoemActivity extends AppCompatActivity {
             }
         });
 
-        effect_toolbar = (LinearLayout) findViewById(R.id.effect_toolbar);
-        back3 = (RelativeLayout) findViewById(R.id.back3);
+        effect_toolbar = (LinearLayout)findViewById(R.id.effect_toolbar);
+        back3 = (RelativeLayout)findViewById(R.id.back3);
         back3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -519,20 +511,19 @@ public class WritePoemActivity extends AppCompatActivity {
                 main_toolbar.setVisibility(View.VISIBLE);
             }
         });
-        style_check = new boolean[]{false, false, false};
-        bold = (Button) findViewById(R.id.bold);
+        style_check = new boolean[]{false,false,false};
+        bold = (Button)findViewById(R.id.bold);
         bold.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (style_check[0] == false) {
-                    Log.e("굵게현재상황 : ", "" + style_check[0]);
-                    if (style_check[1] == false)
+                if(style_check[0] == false) {
+                    if(style_check[1]==false)
                         write_content.setTypeface(null, BOLD);
                     else
                         write_content.setTypeface(null, Typeface.BOLD_ITALIC);
                     style_check[0] = true;
-                } else {
-                    if (style_check[1] == false)
+                }else{
+                    if(style_check[1]==false)
                         write_content.setTypeface(null, Typeface.NORMAL);
                     else
                         write_content.setTypeface(null, ITALIC);
@@ -542,19 +533,18 @@ public class WritePoemActivity extends AppCompatActivity {
             }
         });
 
-        italic = (Button) findViewById(R.id.italic);
+        italic = (Button)findViewById(R.id.italic);
         italic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (style_check[1] == false) {
-                    Log.e("기울임현재상황 : ", "" + style_check[1]);
-                    if (style_check[0] == false)
+                if(style_check[1] == false) {
+                    if(style_check[0]==false)
                         write_content.setTypeface(null, ITALIC);
                     else
                         write_content.setTypeface(null, Typeface.BOLD_ITALIC);
                     style_check[1] = true;
-                } else {
-                    if (style_check[0] == false)
+                }else{
+                    if(style_check[0]==false)
                         write_content.setTypeface(null, Typeface.NORMAL);
                     else
                         write_content.setTypeface(null, BOLD);
@@ -563,22 +553,21 @@ public class WritePoemActivity extends AppCompatActivity {
 
             }
         });
-        underline = (Button) findViewById(R.id.underline);
+        underline = (Button)findViewById(R.id.underline);
         underline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("밑줄현재상황 : ", "" + style_check[2]);
-                if (style_check[2] == false) {
+                if(style_check[2] == false) {
                     write_content.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
                     style_check[2] = true;
-                } else {
+                }else{
                     write_content.setPaintFlags(0);
                     style_check[2] = false;
                 }
 
             }
         });
-        paint_spinner = (Spinner) findViewById(R.id.paint_spinner);
+        paint_spinner = (Spinner)findViewById(R.id.paint_spinner);
         List<String> data = new ArrayList<>();
         data.add("#ffffff");
         data.add("#888888");
@@ -591,7 +580,7 @@ public class WritePoemActivity extends AppCompatActivity {
         img.add(R.drawable.oval_3);
         img.add(R.drawable.oval_4);
         img.add(R.drawable.oval_5);
-        adapterSpinner = new AdapterSpinner(this, data, img);
+        adapterSpinner = new AdapterSpinner(this, data,img);
         paint_spinner.setAdapter(adapterSpinner);
         adapterSpinner.notifyDataSetChanged();
         paint_spinner.setSelection(4);
@@ -602,17 +591,18 @@ public class WritePoemActivity extends AppCompatActivity {
     /*  버튼을 눌러 선택한 태그들을 확인하여  태그 edittext에 입력하는 부분.
       버튼의 태그가 0일땐 선택되지 않은 것, 1일때는 선택된 태그(배경이미지와 글자색도 변경됨.)
       선택된것이 1개 이상일 때 작동*/
-    public void CheckSelectedTag() {
+    public void CheckSelectedTag(){
         select_tag.setText("");
-        if (write_title.getText().length() > 0)
-            select_tag.setText("#" + write_title.getText().toString() + " ");
-        for (int i = 0; i < 10; i++) {
-            if (tag[i].getTag().toString().equals("1")) { //선택되어있는 경우
+        if(write_title.getText().length() > 0)
+            select_tag.setText("#"+write_title.getText().toString()+" ");
+        for(int i=0;i<10;i++){
+            if(tag[i].getTag().toString().equals("1")){ //선택되어있는 경우
                 tag[i].setBackgroundResource(R.drawable.check128);
                 tag[i].setTextColor(Color.WHITE);
                 String tag_text = select_tag.getText().toString();
-                select_tag.setText("#" + tag[i].getText().toString() + " " + tag_text);
-            } else { //선택되어있지 않은 경우
+                select_tag.setText("#"+tag[i].getText().toString()+" "+tag_text);
+            }
+            else{ //선택되어있지 않은 경우
                 tag[i].setBackgroundResource(R.drawable.rectangle_path);
                 tag[i].setTextColor(Color.parseColor("#95989a"));
             }
@@ -621,7 +611,7 @@ public class WritePoemActivity extends AppCompatActivity {
     }
 
     //제목 작성지 필수태그에 제목 추가하기
-    public void addTitleTagListener() {
+    public void  addTitleTagListener(){
         write_title.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -644,7 +634,7 @@ public class WritePoemActivity extends AppCompatActivity {
     }
 
     //태그에 #표시 붙이기
-    private void addTagListener() {
+    private void addTagListener(){
         write_tag.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -658,7 +648,7 @@ public class WritePoemActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (before_tag_length < write_tag.length()) { //글자수가 한개 더 입력됐을 때
+                if(before_tag_length < write_tag.length()) { //글자수가 한개 더 입력됐을 때
                     CheckSpace();
                 }
                 before_tag_length = write_tag.length();
@@ -666,16 +656,16 @@ public class WritePoemActivity extends AppCompatActivity {
         });
     }
 
-    public void changeBackground() {
+    public void changeBackground(){
 
-        for (int i = 0; i < 4; i++) {
+        for(int i=0; i<4;i++){
             paper[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //  background.setBackgroundColor(paper_resource[Integer.parseInt(v.getTag().toString())-1]);
                     backgroundId = Integer.parseInt(v.getTag().toString());
-                    for (int j = 0; j < 4; j++) {
-                        if (j == backgroundId - 1)
+                    for(int j=0; j<4; j++) {
+                        if(j == backgroundId-1)
                             paper[j].setBackgroundResource(paper_resource[j]);
                         else
                             paper[j].setBackgroundResource(paper_resource_orign[j]);
@@ -692,29 +682,29 @@ public class WritePoemActivity extends AppCompatActivity {
         List<Integer> img;
         LayoutInflater inflater;
 
-        public AdapterSpinner(Context context, List<String> data, List<Integer> img) {
+        public AdapterSpinner(Context context, List<String> data, List<Integer> img){
             this.context = context;
             this.data = data;
             this.img = img;
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
         @Override
         public int getCount() {
-            if (data != null) return data.size();
+            if(data!=null) return data.size();
             else return 0;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
+            if(convertView==null) {
                 convertView = inflater.inflate(R.layout.spinner_normal, parent, false);
             }
 
-            if (data != null) {
+            if(data!=null){
                 //데이터세팅
                 String text = data.get(position);
-                ((ImageView) convertView.findViewById(R.id.spinnerColor)).setBackgroundColor(Color.parseColor(text));
+                ((ImageView)convertView.findViewById(R.id.spinnerColor)).setBackgroundColor(Color.parseColor(text));
                 write_content.setTextColor(Color.parseColor(text));
 
             }
@@ -724,13 +714,13 @@ public class WritePoemActivity extends AppCompatActivity {
 
         @Override
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
+            if(convertView==null){
                 convertView = inflater.inflate(R.layout.spinner_dropdown, parent, false);
             }
 
             //데이터세팅
             int color = img.get(position);
-            ((ImageView) convertView.findViewById(R.id.colorImg)).setImageResource(color);
+            ((ImageView)convertView.findViewById(R.id.colorImg)).setImageResource(color);
 
             return convertView;
         }
@@ -755,28 +745,28 @@ public class WritePoemActivity extends AppCompatActivity {
         List<String> data;
         LayoutInflater inflater;
 
-        public AdapterSizeSpinner(Context context, List<String> data) {
+        public AdapterSizeSpinner(Context context, List<String> data){
             this.context = context;
             this.data = data;
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
         @Override
         public int getCount() {
-            if (data != null) return data.size();
+            if(data!=null) return data.size();
             else return 0;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
+            if(convertView==null) {
                 convertView = inflater.inflate(R.layout.spinner_layout, parent, false);
             }
 
-            if (data != null) {
+            if(data!=null){
                 //데이터세팅
-                ((TextView) convertView.findViewById(R.id.text_size_view)).setText("" + (13 + position));
-                write_content.setTextSize(13 + position);
+                ((TextView)convertView.findViewById(R.id.text_size_view)).setText(""+(13+position));
+                write_content.setTextSize(13+position);
             }
 
             return convertView;
@@ -784,12 +774,12 @@ public class WritePoemActivity extends AppCompatActivity {
 
         @Override
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
+            if(convertView==null){
                 convertView = inflater.inflate(R.layout.list_item_font_size, parent, false);
             }
 
             //데이터세팅
-            ((TextView) convertView.findViewById(R.id.dropdown_fontitem)).setTextSize(13 + position);
+            ((TextView)convertView.findViewById(R.id.dropdown_fontitem)).setTextSize(13+position);
 
             return convertView;
         }
@@ -806,95 +796,83 @@ public class WritePoemActivity extends AppCompatActivity {
     }
 
 
-    private String EditTag(String text) {
-        Log.e("서울 들어가?", text);
-        if (text.contains("#서울 ")) {
-            if (tag[0].getTag().toString().equals("0")) { //태그 추가인 경우
+    private String EditTag(String text){
+        if(text.contains("#서울 ")){
+            if (tag[0].getTag().toString().equals("0")){ //태그 추가인 경우
                 tag[0].setTag("1");
-                text = text.replace("#서울 ", "");
+                text = text.replace("#서울 ","");
                 check_cnt++;
                 CheckSelectedTag();
-            }
-        }
-        if (text.contains("#홍대 ")) {
+            }}
+        if(text.contains("#홍대 ")) {
             if (tag[1].getTag().toString().equals("0")) { //태그 추가인 경우
                 tag[1].setTag("1");
-                text = text.replace("#홍대 ", "");
+                text = text.replace("#홍대 ","");
                 check_cnt++;
                 CheckSelectedTag();
-            }
-        }
-        if (text.contains("#강남 ")) {
+            }}
+        if(text.contains("#강남 ")) {
             if (tag[2].getTag().toString().equals("0")) { //태그 추가인 경우
                 tag[2].setTag("1");
-                text = text.replace("#강남 ", "");
+                text = text.replace("#강남 ","");
                 check_cnt++;
                 CheckSelectedTag();
-            }
-        }
-        if (text.contains("#압구정 ")) {
+            }}
+        if(text.contains("#압구정 ")) {
             if (tag[3].getTag().toString().equals("0")) { //태그 추가인 경우
                 tag[3].setTag("1");
-                text = text.replace("#압구정 ", "");
+                text = text.replace("#압구정 ","");
                 check_cnt++;
                 CheckSelectedTag();
-            }
-        }
-        if (text.contains("#광화문 ")) {
+            }}
+        if(text.contains("#광화문 ")) {
             if (tag[4].getTag().toString().equals("0")) { //태그 추가인 경우
                 tag[4].setTag("1");
-                text = text.replace("#광화문 ", "");
+                text = text.replace("#광화문 ","");
                 check_cnt++;
                 CheckSelectedTag();
-            }
-        }
-        if (text.contains("#한강 ")) {
+            }}
+        if(text.contains("#한강 ")) {
             if (tag[5].getTag().toString().equals("0")) { //태그 추가인 경우
                 tag[5].setTag("1");
-                text = text.replace("#한강 ", "");
+                text = text.replace("#한강 ","");
                 check_cnt++;
                 CheckSelectedTag();
-            }
-        }
-        if (text.contains("#종로 ")) {
+            }}
+        if(text.contains("#종로 ")) {
             if (tag[6].getTag().toString().equals("0")) { //태그 추가인 경우
                 tag[6].setTag("1");
-                text = text.replace("#종로 ", "");
+                text = text.replace("#종로 ","");
                 check_cnt++;
                 CheckSelectedTag();
-            }
-        }
-        if (text.contains("#빌딩숲 ")) {
+            }}
+        if(text.contains("#빌딩숲 ")) {
             if (tag[7].getTag().toString().equals("0")) { //태그 추가인 경우
                 tag[7].setTag("1");
-                text = text.replace("#빌딩숲 ", "");
+                text = text.replace("#빌딩숲 ","");
                 check_cnt++;
                 CheckSelectedTag();
-            }
-        }
-        if (text.contains("#이태원 ")) {
+            }}
+        if(text.contains("#이태원 ")) {
             if (tag[8].getTag().toString().equals("0")) { //태그 추가인 경우
                 tag[8].setTag("1");
-                text = text.replace("#이태원 ", "");
+                text = text.replace("#이태원 ","");
                 check_cnt++;
                 CheckSelectedTag();
-            }
-        }
-        if (text.contains("#거리 ")) {
+            }}
+        if(text.contains("#거리 ")) {
             if (tag[9].getTag().toString().equals("0")) { //태그 추가인 경우
                 tag[9].setTag("1");
-                text = text.replace("#거리 ", "");
+                text = text.replace("#거리 ","");
                 check_cnt++;
                 CheckSelectedTag();
-            }
-        }
+            }}
 
-        text = text.replace("#" + write_title.getText().toString() + " ", "");
+        text = text.replace("#"+write_title.getText().toString()+" ","");
         return text;
     }
 
     private void CheckSpace() {
-
         if (write_tag.getText().toString().contains(" ")) {
             text = write_tag.getText().toString();
             sb = new StringBuffer(text);
@@ -925,12 +903,14 @@ public class WritePoemActivity extends AppCompatActivity {
         }
 
 
+
+
         if (text_change) { //  write_tag.setText(sb.toString());시 다시 checkSpace()로 와서 무한굴레에 빠지지 않기위해
             text_change = false;
             write_tag.setText(sb.toString());
             write_tag.setSelection(sb.length());
         }
-    }
 
+    }
 
 }

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/paper4"
     tools:context="com.seoulprojet.seoulpoem.activity.GalleryActivity">
 
@@ -50,17 +51,20 @@
     <!--플로팅 버튼-->
     <RelativeLayout
         android:id="@+id/rlToWrite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="95dp"
+        android:layout_height="95dp"
+        android:gravity="center"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="14dp"
             android:scaleType="center"
+            app:borderWidth="0dp"
+            android:backgroundTint="@android:color/transparent"
             android:src="@drawable/blue_writebtn" />
     </RelativeLayout>
 

@@ -25,6 +25,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -129,10 +130,6 @@ public class MyPage extends AppCompatActivity {
         otherType = intent.getExtras().getInt("otherType");
 
 
-
-        Log.i("otehr", "other email:" + otherEmail);
-
-
         // 서비스 객체 초기화
         service = ApplicationController.getInstance().getNetworkService();
 
@@ -226,8 +223,8 @@ public class MyPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyPageShowImage.class);
                 intent.putExtra("status", "profile");
-                intent.putExtra("userEmail", userEmail);
-                intent.putExtra("loginType", loginType);
+                intent.putExtra("userEmail", otherEmail);
+                intent.putExtra("loginType", otherType);
                 startActivity(intent);
             }
         });
@@ -237,8 +234,8 @@ public class MyPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyPageShowImage.class);
                 intent.putExtra("status", "background");
-                intent.putExtra("userEmail", userEmail);
-                intent.putExtra("loginType", loginType);
+                intent.putExtra("userEmail", otherEmail);
+                intent.putExtra("loginType", otherType);
                 startActivity(intent);
             }
         });
@@ -326,6 +323,7 @@ public class MyPage extends AppCompatActivity {
         hamburger_bg = (ImageView)findViewById(R.id.hamburger_bg);
 
         drawerLayout = (DrawerLayout)findViewById(R.id.mypage_drawer_layout);
+        drawerLayout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         drawerView = (View)findViewById(R.id.drawer);
 
         mypage_hamburger_btn.setOnClickListener(new View.OnClickListener(){
@@ -504,7 +502,6 @@ public class MyPage extends AppCompatActivity {
 
                         }else{ //갤러리 클릭시
                             goToAlbum();
-                            Log.e("**갤러리","갤러리시작");
 
                         }
                     }
@@ -533,7 +530,6 @@ public class MyPage extends AppCompatActivity {
                 photoUri = Uri.fromFile(photoFile);
             }
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            Log.e("여기여기 photoUri",""+photoUri);
             startActivityForResult(intent, PICK_FROM_CAMERA);
         }
     }
@@ -554,7 +550,6 @@ public class MyPage extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
-        Log.e("**gotoalbum","startActivity");
     }
 
     @Override
@@ -603,7 +598,6 @@ public class MyPage extends AppCompatActivity {
                 return;
             }
             photoUri = data.getData();
-            Log.e("**Before crop photoUri",""+photoUri);
             getImageNameToUri(photoUri);
 
             cropImage();
@@ -617,8 +611,6 @@ public class MyPage extends AppCompatActivity {
                     });
         } else if (requestCode == CROP_FROM_CAMERA) {
             photoUri=data.getData();
-            Log.e("**final crop photoUri",""+photoUri);
-            Toast.makeText(MyPage.this,"사진이 저장되었습니다.",Toast.LENGTH_LONG).show();
             Intent intent = new Intent(MyPage.this, WritePoemActivity.class);
             intent.putExtra("type","0");
             intent.putExtra("userEmail", userEmail);
@@ -664,21 +656,15 @@ public class MyPage extends AppCompatActivity {
             }
 
             File folder = new File(Environment.getExternalStorageDirectory() + "/SeoulPoem/");
-            Log.e("**folder",folder.getPath());
             File tempFile = new File(folder.toString(), croppedFileName.getName());
-            Log.e("**tempFile",tempFile.getPath());
 
             albumUri = Uri.fromFile(croppedFileName);
-            Log.e("**albumUri",""+albumUri);
 
             Preview.photo_location = tempFile.getPath();
             Preview.photoName = tempFile.getName();
 
             photoUri = FileProvider.getUriForFile(MyPage.this,
                     "com.seoulprojet.seoulpoem.activity.provider", tempFile);
-
-
-            Log.e("**aftercropphotoUripath",""+photoUri);
 
             Preview.photo = photoUri;
 

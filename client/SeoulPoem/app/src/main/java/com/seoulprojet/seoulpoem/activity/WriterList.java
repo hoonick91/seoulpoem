@@ -2,6 +2,7 @@ package com.seoulprojet.seoulpoem.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -88,6 +89,8 @@ public class WriterList extends AppCompatActivity {
 
         // drawer
         drawerLayout = (DrawerLayout)findViewById(R.id.writerlist_drawer_layout);
+        drawerLayout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+
         drawerView = (View)findViewById(R.id.drawer);
         writerlist_hamburger_btn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -162,6 +165,8 @@ public class WriterList extends AppCompatActivity {
 
             holder.writerName_tv.setText(writerListData.pen_name.toString());
             holder.writerMessage_tv.setText(writerListData.inform.toString());
+
+            holder.writerName_tv.setPaintFlags(writerNum_tv.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
 
             if(writerListData.profile == null){
                 holder.profImg.setImageResource(R.drawable.profile_tmp);
@@ -408,6 +413,11 @@ public class WriterList extends AppCompatActivity {
 
                 if(response.isSuccessful()){
                     authorLists = response.body().authors_list;
+
+                    if(response.body().done == 1){
+                        writerlist_apply_btn.setVisibility(View.INVISIBLE);
+                    }
+
                     writerNum_tv.setText("# 총 " + response.body().count_authors +"명");
 
                     // make adapter

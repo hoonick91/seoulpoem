@@ -10,6 +10,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
+import android.media.Image;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -81,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     //tool_bar
     private RelativeLayout rlHamberger, rlSearch, rlTags;
     private Toolbar tbMain;
+    private ImageView rlTagImg;
 
     //hash tag
     private LinearLayout llHashTag;
@@ -189,6 +192,11 @@ public class MainActivity extends AppCompatActivity {
         service = ApplicationController.getInstance().getNetworkService();
 
 
+        drawerLayout = (DrawerLayout) findViewById(R.id.mypage_drawer_layout02);
+        drawerView = findViewById(R.id.drawer);
+        getMenuMypage();
+
+
         //findView
         findView();
 
@@ -285,6 +293,8 @@ public class MainActivity extends AppCompatActivity {
         llmore = (LinearLayout) findViewById(R.id.llmore);
 
         tvHash = (TextView) findViewById(R.id.tvHash);
+        rlTagImg = (ImageView)findViewById(R.id.rlTagImg);
+
     }
 
 
@@ -445,6 +455,7 @@ public class MainActivity extends AppCompatActivity {
                     tvHash.setText("# " + hashtagListData.text);
                     getLists(hashtagListData.text);
                     rlHashTagToggle.animate().translationY(-180).withLayer();
+                    rlTagImg.setImageResource(R.drawable.path_32);
                     showTags = false;
                 }
             });
@@ -501,6 +512,7 @@ public class MainActivity extends AppCompatActivity {
 
                         //초기 hashtag
                         tvHash.setText("# " + tagname);
+                        tvHash.setPaintFlags(tvHash.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
 
                     }
                 } else {
@@ -573,12 +585,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!showTags) { //보이지 않을때 보이게 함
                     rlHashTagToggle.animate().translationY(0).withLayer();
+                    rlTagImg.setImageResource(R.drawable.path_33);
                     showTags = true;
                 } else { //보일때 보이지 않게함
+
                     DisplayMetrics dm = getResources().getDisplayMetrics();
                     int size = Math.round( 70 * dm.density); //숫자가 넣고싶은 dp값
                     size = 0 - size;
                     rlHashTagToggle.animate().translationY(size).withLayer();
+                    rlTagImg.setImageResource(R.drawable.path_32);
                     showTags = false;
                 }
             }
@@ -604,6 +619,8 @@ public class MainActivity extends AppCompatActivity {
     /*************************************************************************
      *                             - 햄버거 보이게
      *************************************************************************/
+
+
     public void showHamburger() {
 
         hamburger_mypage_btn = (ImageButton) findViewById(R.id.hamburger_mypage_btn);
@@ -618,6 +635,7 @@ public class MainActivity extends AppCompatActivity {
         hamburger_bg = (ImageView) findViewById(R.id.hamburger_bg);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.mypage_drawer_layout02);
+        drawerLayout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         drawerView = findViewById(R.id.drawer);
         rlHamberger.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -627,6 +645,8 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(drawerView);
             }
         });
+
+
 
         hamburger_mypage_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -751,8 +771,6 @@ public class MainActivity extends AppCompatActivity {
 
                         } else { //갤러리 클릭시
                             goToAlbum();
-                            Log.e("**갤러리", "갤러리시작");
-
                         }
                     }
                 });
@@ -780,7 +798,6 @@ public class MainActivity extends AppCompatActivity {
                     photoUri = Uri.fromFile(photoFile);
                 }
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            Log.e("여기여기 photoUri",""+photoUri);
             startActivityForResult(intent, PICK_FROM_CAMERA);
         }
     }
@@ -841,7 +858,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) {
-            Log.e("resultCode",""+resultCode);
             Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -850,7 +866,6 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             photoUri = data.getData();
-            Log.e("**Before crop photoUri", "" + photoUri);
             getImageNameToUri(photoUri);
 
             cropImage();
@@ -864,8 +879,6 @@ public class MainActivity extends AppCompatActivity {
                     });
         } else if (requestCode == CROP_FROM_CAMERA) {
             photoUri = data.getData();
-            Log.e("**final crop photoUri", "" + photoUri);
-            Toast.makeText(MainActivity.this, "사진이 저장되었습니다.", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(MainActivity.this, WritePoemActivity.class);
             intent.putExtra("userEmail", userEmail);
             intent.putExtra("loginType", loginType);
@@ -913,21 +926,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
             File folder = new File(Environment.getExternalStorageDirectory() + "/SeoulPoem/");
-            Log.e("**folder", folder.getPath());
             File tempFile = new File(folder.toString(), croppedFileName.getName());
-            Log.e("**tempFile", tempFile.getPath());
-
             albumUri = Uri.fromFile(croppedFileName);
-            Log.e("**albumUri", "" + albumUri);
 
             Preview.photo_location = tempFile.getPath();
             Preview.photoName = tempFile.getName();
 
             photoUri = FileProvider.getUriForFile(MainActivity.this,
                     "com.seoulprojet.seoulpoem.activity.provider", tempFile);
-
-
-            Log.e("**aftercropphotoUripath", "" + photoUri);
 
             Preview.photo = photoUri;
 
