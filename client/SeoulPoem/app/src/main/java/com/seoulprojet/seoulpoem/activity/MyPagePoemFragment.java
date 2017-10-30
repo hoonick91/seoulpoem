@@ -47,7 +47,6 @@ public class MyPagePoemFragment extends Fragment {
 
     // network
     NetworkService service;
-    private ArrayList<MyPagePoemResult> myPagePoemResults;
     private ArrayList<MyPagePoemListData> poemResults;
 
     @Nullable

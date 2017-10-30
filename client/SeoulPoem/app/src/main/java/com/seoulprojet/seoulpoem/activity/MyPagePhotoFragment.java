@@ -154,7 +154,6 @@ public class MyPagePhotoFragment extends Fragment{
             @Override
             public void onResponse(Call<MyPagePhotoResult> call, Response<MyPagePhotoResult> response) {
                 if(response.isSuccessful()){
-                    Log.i("success network", "");
                     photoListDatas = response.body().msg.photos;
                     numTV.setText("# 총 " + response.body().msg.counts + "장");
 

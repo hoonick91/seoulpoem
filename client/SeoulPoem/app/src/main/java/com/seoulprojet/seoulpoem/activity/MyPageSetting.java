@@ -60,7 +60,7 @@ public class MyPageSetting extends AppCompatActivity {
     private LinearLayout total_layout;
     private ImageButton mypage_setting_back_btn;
     private ImageButton mypage_setting_ok_btn;
-    private ImageView mypage_setting_background_img;
+    private ImageView mypage_setting_background_img, already;
     private ImageView mypage_setting_profile_img;
     private EditText mypage_setting_name_et;
     private EditText mypage_setting_message_et;
@@ -106,8 +106,8 @@ public class MyPageSetting extends AppCompatActivity {
         mypage_setting_profile_img = (ImageView)findViewById(R.id.mypage_setting_profile_img);
         mypage_setting_name_et = (EditText)findViewById(R.id.mypage_setting_name_et);
         mypage_setting_message_et = (EditText)findViewById(R.id.mypage_setting_message_et);
-
         mypage_setting_background_img.setColorFilter(Color.parseColor("#a0a0a0"), PorterDuff.Mode.MULTIPLY);
+        already = (ImageView)findViewById(R.id.mypage_setting_name_already);
 
         service = ApplicationController.getInstance().getNetworkService();
         getMyPagePhotos();
@@ -389,7 +389,6 @@ public class MyPageSetting extends AppCompatActivity {
                             if (response.body().msg.equals("success modify")) {
                                 mypage_setting_name_et.setText("");
                                 mypage_setting_message_et.setText("");
-                                Toast.makeText(getApplicationContext(), "수정을 완료했습니다", Toast.LENGTH_LONG).show();
                                 selectionProfile = 0;
                                 selectionBack = 0;
 
@@ -405,7 +404,6 @@ public class MyPageSetting extends AppCompatActivity {
                                 finish();
 
                             }else{
-                                Log.e("변경사항 없음!","변경사항 없음!");
                                 final MyPage myPage = (MyPage)MyPage.myPage;
                                 myPage.finish();
 
@@ -421,7 +419,7 @@ public class MyPageSetting extends AppCompatActivity {
 
                         }
                     } else {
-                        Toast.makeText(getApplicationContext(), "이미 사용하고 있는 필명입니다", Toast.LENGTH_LONG).show();
+                        already.setVisibility(View.VISIBLE);
                     }
                 }
 
@@ -455,7 +453,6 @@ public class MyPageSetting extends AppCompatActivity {
             in = getContentResolver().openInputStream(uri);
 
         } catch (FileNotFoundException e) {
-            Log.e("error!!!!", "");
             e.printStackTrace();
         }
         Bitmap bitmap = BitmapFactory.decodeStream(in, null, options);
