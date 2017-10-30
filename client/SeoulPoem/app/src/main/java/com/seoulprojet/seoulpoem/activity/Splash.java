@@ -25,21 +25,9 @@ public class Splash extends AppCompatActivity {
 
         pref = new PbReference(this);
 
-        /*
-        if(pref.getValue("loginStatus", false)){
-
-            Log.i("splash", "splash login");
-        }
-        else{
-            Log.i("splash", "splash main");
-            intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.putExtra("userEmail", pref.getValue("userEmail", ""));
-            intent.putExtra("loginType", pref.getValue("loginType", 0));
-        }
-*/
         if(pref.getValue("loginStatus", false)){
             Log.i("로그인", "로그인 인" + pref.getValue("userEmail", ""));
-            intent = new Intent(getApplicationContext(), Login.class);
+            intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.putExtra("userEmail", pref.getValue("userEmail", ""));
             intent.putExtra("loginType", pref.getValue("loginType", 0));
             intent.putExtra("tag", "서울");
