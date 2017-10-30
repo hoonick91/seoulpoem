@@ -223,6 +223,8 @@ public class PreviewAcitivity extends AppCompatActivity {
                             intent.putExtra("userEmail", userEmail);
                             intent.putExtra("loginType", loginType);
                             startActivity(intent);
+                            WritePoemActivity.writePoemActivity.finish();
+                            PreviewAcitivity.previewAcitivity.finish();
                         } else {
 
                         }
@@ -252,6 +254,9 @@ public class PreviewAcitivity extends AppCompatActivity {
                             intent.putExtra("userEmail", userEmail);
                             intent.putExtra("loginType", loginType);
                             startActivity(intent);
+
+                            WritePoemActivity.writePoemActivity.finish();
+                            PreviewAcitivity.previewAcitivity.finish();
 
                         } else {
 
