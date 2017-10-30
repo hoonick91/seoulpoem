@@ -872,6 +872,7 @@ public class WritePoemActivity extends AppCompatActivity {
         return text;
     }
 
+<<<<<<< HEAD
     private void CheckSpace() {
         if (write_tag.getText().toString().contains(" ")) {
             text = write_tag.getText().toString();
@@ -891,6 +892,29 @@ public class WritePoemActivity extends AppCompatActivity {
                         if (text.charAt(i + 1) != '#' && text.charAt(i + 1) != ' ') { //공백 뒤에 #이나 공백이 아니라면(사용자가 #을 지워 글자일 때)
                             sb.insert(i + 1, "#");
                             text_change = true;
+=======
+        private void CheckSpace() {
+                if (write_tag.getText().toString().contains(" ")) {
+                    text = write_tag.getText().toString();
+                    sb = new StringBuffer(text);
+
+                    for (int i = 0; i < text.length(); i++) {
+                        if (text.charAt(i) == ' ') { //공백이 있을때 처음제외 2번째글자~맨끝까지
+                            if (i == text.length() - 1) { //맨 마지막글자가 공백일 때
+                                if (text.charAt(i - 1) == '#') { //  '# ' 인 경우
+                                    sb.deleteCharAt(i);
+                                    text_change = true;
+                                } else { //글자 후 공백인 경우
+                                    sb.insert(i + 1, "#");
+                                    text_change = true;
+                                }
+                            } else { //중간 글자가 공백일 때
+                                if (text.charAt(i + 1) != '#' && text.charAt(i + 1) != ' ') { //공백 뒤에 #이나 공백이 아니라면(사용자가 #을 지워 글자일 때)
+                                    sb.insert(i + 1, "#");
+                                    text_change = true;
+                                }
+                            }
+>>>>>>> kmj
                         }
                     }
                 }
