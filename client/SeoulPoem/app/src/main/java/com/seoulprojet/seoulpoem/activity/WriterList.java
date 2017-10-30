@@ -26,6 +26,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.seoulprojet.seoulpoem.R;
+import com.seoulprojet.seoulpoem.model.DetailResult;
 import com.seoulprojet.seoulpoem.model.MyPageResult;
 import com.seoulprojet.seoulpoem.model.WriterApplyResult;
 import com.seoulprojet.seoulpoem.model.WriterListResult;
@@ -381,6 +382,11 @@ public class WriterList extends AppCompatActivity {
             public void onClick(View v) {
                 getWriterList();
                 applyDialog.dismiss();
+                Intent intent = new Intent(getApplication(), WriterList.class);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("loginType", loginType);
+                startActivity(intent);
+                finish();
             }
         });
     }
