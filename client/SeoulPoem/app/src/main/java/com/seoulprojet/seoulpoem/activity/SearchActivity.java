@@ -297,6 +297,8 @@ public class SearchActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(), ReadingPoemActivity.class);
+                    intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("loginType", loginType);
                     intent.putExtra("articles_id", holder.itemView.getTag().toString());
                     startActivity(intent);
                 }
