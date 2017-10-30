@@ -370,7 +370,13 @@ public class MyPageSetting extends AppCompatActivity {
         /****************************************서버에 정보 보냄**************************************/
         Call<MyPageModify> request = service.postMyPage(userEmail, loginType, informBody, penNameBody, profile, background);
         if(mypage_setting_name_et.getText().toString().length()==0){
-            Toast.makeText(getApplicationContext(), "필명을 입력해주세요", Toast.LENGTH_SHORT).show();
+            already.setImageResource(R.drawable.not_null);
+            already.setVisibility(View.VISIBLE);
+
+        }else if(mypage_setting_name_et.getText().toString().contains(" ")){
+
+            already.setImageResource(R.drawable.no_blank);
+            already.setVisibility(View.VISIBLE);
         }else {
 
             request.enqueue(new Callback<MyPageModify>() {
@@ -411,6 +417,7 @@ public class MyPageSetting extends AppCompatActivity {
 
                         }
                     } else {
+                        already.setImageResource(R.drawable.already_loginname);
                         already.setVisibility(View.VISIBLE);
                     }
                 }
