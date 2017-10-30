@@ -2,6 +2,7 @@ package com.seoulprojet.seoulpoem.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -164,6 +165,8 @@ public class WriterList extends AppCompatActivity {
 
             holder.writerName_tv.setText(writerListData.pen_name.toString());
             holder.writerMessage_tv.setText(writerListData.inform.toString());
+
+            holder.writerName_tv.setPaintFlags(writerNum_tv.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
 
             if(writerListData.profile == null){
                 holder.profImg.setImageResource(R.drawable.profile_tmp);
