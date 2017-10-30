@@ -94,7 +94,7 @@ router.get('/search',async(req, res) => {
         {
             let tag ='%'+ req.query.tag+'%';
 
-            let query2 = "select seoul_poem.users.pen_name as pen_name,seoul_poem.users.email as email,seoul_poem.users.profile as profile,seoul_poem.users.foreign_key_type as type from seoul_poem.users where seoul_poem.users.pen_name like ? limit 3"
+            let query2 = "select seoul_poem.users.pen_name as pen_name,seoul_poem.users.email as email,seoul_poem.users.profile as profile,seoul_poem.users.foreign_key_type as type from seoul_poem.users where seoul_poem.users.pen_name like ? limit 5"
             let author_list = await connection.query(query2,tag);
 
             let counts_author = author_list.length;
@@ -110,6 +110,8 @@ router.get('/search',async(req, res) => {
                 author.name_ = author_list[i].pen_name;
                 let email = author_list[i].email;
                 let type = author_list[i].type;
+                author.email = email;
+                author.type = type;
                 author.profile =author_list[i].profile;
                 let article_count = await connection.query(query3,[email,type]);
                 author.ac = article_count[0].count;
@@ -118,12 +120,18 @@ router.get('/search',async(req, res) => {
                 arr1[i] = author;
          }
 
-            let query1 = "select seoul_poem.articles.idarticles as idarticles,seoul_poem.articles.title as title,if(seoul_poem.articles.poem_idpoem IS NULL, -1,seoul_poem.articles.poem_idpoem) as idpoem from seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures and seoul_poem.articles.tags like ? order by seoul_poem.articles.idarticles Desc limit 3;"
-
+            let query1 = "select seoul_poem.articles.idarticles as idarticles,seoul_poem.articles.title as title,if(seoul_poem.articles.poem_idpoem IS NULL, -1,seoul_poem.articles.poem_idpoem) as idpoem from seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures and seoul_poem.articles.title like ? order by seoul_poem.articles.idarticles Desc limit 5;"
             let article_list = await connection.query(query1,tag);
 
             let counting = article_list.length;
+            let query6 = "select seoul_poem.articles.idarticles as idarticles,seoul_poem.articles.title as title,if(seoul_poem.articles.poem_idpoem IS NULL, -1,seoul_poem.articles.poem_idpoem) as idpoem from seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures and seoul_poem.articles.tags like ? order by rand() limit ?;"
 
+            var article_list2;
+            if(counting <5){
+                article_list2 = await connection.query(query6,[tag,5-counting]);
+            }
+
+            let arr_check  = [];
             let arr2 = [];
 
             let query5 = "select seoul_poem.poem.content as content from  seoul_poem.poem where seoul_poem.poem.idpoem = ?";
@@ -131,6 +139,7 @@ router.get('/search',async(req, res) => {
 
             for(i=0 ; i<counting;i++){
                 let articlelist= {};
+                arr_check.push(article_list[i].idarticles);
                 articlelist.idarticles = article_list[i].idarticles;
                 articlelist.title = article_list[i].title;
                 if (article_list[i].idpoem == -1){
@@ -143,6 +152,32 @@ router.get('/search',async(req, res) => {
 
                 arr2[i] = articlelist;
             }
+
+            if(counting <5){
+                let counting2 =article_list2.length;
+                for(i=0; i<counting2;i++){
+                    let j;
+                    let flag_=0;
+                    for(j=0;j<arr_check.length;j++){
+                        if(arr_check[j]==article_list2[i].idarticles) flag_=1;
+                    }
+                    if(flag_==0){
+                        let articlelist= {};
+                        articlelist.idarticles = article_list2[i].idarticles;
+                        articlelist.title = article_list2[i].title;
+                        if (article_list2[i].idpoem == -1){
+                            articlelist.contents=""
+                        }
+                        else {
+                            let poem_ = await connection.query(query5,article_list2[i].idpoem);
+                            articlelist.contents= poem_[0].content;
+                        }
+
+                        arr2[i+counting] = articlelist;
+                    }
+                }
+            }
+
         console.log(arr2);
         res.status(200);
         res.json( { status : "success",author_list : arr1 , article_list : arr2});

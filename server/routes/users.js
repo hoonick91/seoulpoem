@@ -161,14 +161,12 @@ finally {
 }
 });
 
+
 var multiupload = upload.fields([{name:'profile',maxCount:1},{name : "background", maxCount:1}]);
 router.post('/modify',multiupload,  async (req, res) => {
     try{
         req.checkHeaders('email', 'empty email').notEmpty();
         req.checkHeaders('type', 'empty type').notEmpty();
-
-        console.log(req.files['profile']);
-        console.log(req.files['background']);
 
         let errors = req.validationErrors();
         if (!errors) {
@@ -183,6 +181,8 @@ router.post('/modify',multiupload,  async (req, res) => {
             let pen_name = req.body.pen_name;
             let inform = req.body.inform;
 
+            console.log(inform);
+
             let user_query = 'Select pen_name,profile,background,inform from seoul_poem.users where email = ? and foreign_key_type = ?';
             var user_before = await connection.query(user_query, [email,type]);
 
@@ -190,6 +190,7 @@ router.post('/modify',multiupload,  async (req, res) => {
 
             var cnt = 0;
             var i = 0;
+
             if(pen_name){
                 let flags = 0;
                 if(user_before[0].pen_name){
@@ -211,9 +212,10 @@ router.post('/modify',multiupload,  async (req, res) => {
 
             }
 
-            if(inform){
+
+            if(inform || inform == ""){
                 let flags = 0;
-                if(user_before[0].inform){
+                if(user_before[0].inform|| user_before[0].inform == ""){
                     if( user_before[0].inform == inform)
                         flags = 1;
                 }
@@ -270,7 +272,7 @@ router.post('/modify',multiupload,  async (req, res) => {
                     }
 
                     res.status(200);
-                    res.json({status: "success", msg: "success modify", user : user});
+                    res.json({status: "success", msg: "success modify"});
                     await connection.commit();
                 }else {
                     res.status(500);
@@ -382,6 +384,7 @@ router.post('/secession',  async (req, res) => {
             let delete_users = "delete from seoul_poem.users where email = ? and foreign_key_type = ?";
             var delete_users_result =  await connection.query(delete_users,[email,type]);
             console.log(delete_users_result);
+
             await connection.query("SET FOREIGN_KEY_CHECKS=1;");
 
             res.status(200);

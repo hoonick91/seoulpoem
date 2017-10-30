@@ -15,17 +15,18 @@ router.post('/', async (req, res, next) => {
         await connection.beginTransaction();
 
         let email =req.headers.email;
+        let type = req.headers.type;
 
-        let query1 = 'select email from seoul_poem.users where email = ? and author = 1';
-        let data = await connection.query(query1, email);
+        let query1 = 'select * from seoul_poem.users where email = ? and foreign_key_type = ? and author = 1';
+        let data = await connection.query(query1, [email,type]);
         if(data.length>0) res.status(403).send({result: 'already'});
+        else{
 
+            let query2 = 'update seoul_poem.users set author=1 where email = ? and foreign_key_type = ?';
+            await connection.query(query2, [email,type]);
 
-        let query2 = 'update seoul_poem.users set author=1 where email = ?';
-        await connection.query(query2, email);
-
-
-        res.status(201).send({result: "author apply success"});
+            res.status(201).send({result: "author apply success"});
+        }
         await connection.commit();
 
     }
@@ -39,18 +40,37 @@ router.post('/', async (req, res, next) => {
 });
 
 
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res) => {
     try {
         var connection = await pool.getConnection();
         await connection.beginTransaction();
 
+        let email =req.headers.email;
+        let type = req.headers.type;
+
         let query1 = 'SELECT count(*) as count from seoul_poem.users where author = 1';
         var count_authors = await connection.query(query1);
 
-        let query2 = 'SELECT email, pen_name, profile, inform from seoul_poem.users where author=1';
-        var authors_list = await connection.query(query2);
+        let query2 = 'SELECT email,foreign_key_type as type, pen_name, profile, inform from seoul_poem.users where author=1 and (not (email = ?) or not (foreign_key_type = ?)) order by rand()';
+        var authors_list = await connection.query(query2,[email,type]);
 
-        res.status(200).send({count_authors: count_authors[0].count, authors_list: authors_list});
+        let query3 = 'SELECT email,foreign_key_type as type, pen_name, profile, inform from seoul_poem.users where author=1 and email = ? and foreign_key_type = ?';
+        var myinform = await connection.query(query3,[email,type]);
+
+        console.log(myinform);
+        if(myinform.length){
+            var author_list = [];
+            author_list.push(myinform[0]);
+            let len = authors_list.length;
+            let i = 0;
+            for(i=0;i<len;i++){
+                author_list.push(authors_list[i]);
+            }
+            res.status(200).send({count_authors: count_authors[0].count,done : 1, authors_list: author_list });
+        }else {
+            res.status(200).send({count_authors: count_authors[0].count,done : 0, authors_list: authors_list});
+        }
+
         await connection.commit();
 
     }

@@ -157,12 +157,12 @@ router.get('/:idarticles', async (req, res) => {
         }
         else{
             let setting={};
-            setting.font_size  = 0;
+            setting.font_size  = 14;
             setting.bold  = 0;
             setting.inclination = 0;
             setting.underline = 0;
-            setting.color = 0;
-            setting.sort = 0;
+            setting.color = 5;
+            setting.sort = 4;
             article.setting = setting;
             article.content = "";
         }
@@ -180,9 +180,8 @@ router.get('/:idarticles', async (req, res) => {
 
         let query5 = 'select profile,pen_name from users where email = ? and foreign_key_type = ?'
         let query5_result = await connection.query(query5,[queryresult[0].email,queryresult[0].type]);
-        console.log(query5_result);
 
-        let user ={}
+        let user ={};
         user.profile = query5_result[0].profile;
         user.pen_name = query5_result[0].pen_name;
         user.email = queryresult[0].email;
@@ -190,7 +189,19 @@ router.get('/:idarticles', async (req, res) => {
 
         let query6 = 'select pictures.photo as photo ,articles.idarticles as idarticles from articles,pictures where articles.users_email = ? and articles.users_foreign_key_type = ? and articles.idarticles != ? and articles.pictures_idpictures = pictures.idpictures order by articles.idarticles DESC limit 5;'
         let query6_result = await connection.query(query6,[queryresult[0].email,queryresult[0].type,req.params.idarticles]);
-        console.log(query6_result);
+
+        console.log(email_);console.log(type_);console.log(req.params.idarticles);
+
+        let query__ = 'select * from bookmarks where users_email = ? and users_foreign_key_type = ? and articles_idarticles = ?';
+        let check_db2 = await connection.query(query__, [email_,type_,req.params.idarticles]);
+
+        console.log(check_db2);
+
+        if(check_db2.length){
+            article.bookmark = 1;
+        }else {
+            article.bookmark = 0;
+        }
 
         var i;
         let others =[];
@@ -217,7 +228,6 @@ router.get('/:idarticles', async (req, res) => {
 
         res.status(200).json( {status : "success",article: article});
         await connection.commit();
-        //}
 
     }
     catch(err){
@@ -242,20 +252,36 @@ router.get('/simple/:idarticles', async (req, res) => {
         let type_ = req.headers.type;
         let email_ = req.headers.email;
 
-        console.log(req.params.idarticles);
-        let query1 = 'SELECT seoul_poem.pictures.photo as photo, seoul_poem.articles.users_email as email,seoul_poem.articles.users_foreign_key_type as type,seoul_poem.articles.tags as tags FROM seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.idarticles=? and seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures';
-        console.log(query1);
+
+        let query1 = 'SELECT seoul_poem.pictures.photo as photo, seoul_poem.articles.users_email as email,seoul_poem.articles.inform as inform,seoul_poem.articles.users_foreign_key_type as type,seoul_poem.articles.tags as tags FROM seoul_poem.articles, seoul_poem.pictures where seoul_poem.articles.idarticles=? and seoul_poem.articles.pictures_idpictures=seoul_poem.pictures.idpictures';
+
         let article = await connection.query(query1, req.params.idarticles);
 
-        console.log(article[0]);
         var email = article[0].email;
         var type = article[0].type;
+
         let query2 = 'select seoul_poem.users.profile as profile,seoul_poem.users.pen_name as pen_name from seoul_poem.users where seoul_poem.users.email = ? and seoul_poem.users.foreign_key_type = ?'
         let author = await connection.query(query2,[email,type]);
+
 
         let detail_={};
         detail_.photo = article[0].photo;
         detail_.tags=article[0].tags;
+        detail_.inform=article[0].inform;
+
+
+        let query7 = 'select * from bookmarks where users_email = ? and users_foreign_key_type = ? and articles_idarticles = ?'
+        let check_db = await connection.query(query7, [email_,type_,req.params.idarticles]);
+
+        console.log(check_db.length);
+
+        if(check_db.length){
+            detail_.bookmark = 1;
+        }else {
+            detail_.bookmark = 0;
+        }
+
+
         let writer = {};
 
         writer.profile =author[0].profile;
@@ -413,46 +439,68 @@ router.put('/:idarticles', upload.single('photo'), async (req, res, next) => {
     }
 });
 
-router.delete('/:idarticles', async (req, res, next) => {
+
+router.delete('/:idarticles', async (req, res) => {
     try {
+
+
+        req.checkHeaders('email', 'empty email').notEmpty();
+        req.checkHeaders('type', 'empty type').notEmpty();
+
         var connection = await pool.getConnection();
         await connection.beginTransaction();
 
-        let query = 'SELECT * FROM seoul_poem.articles where idarticles = ? ';
-        let data1 = await connection.query(query, req.params.idarticles) || null;
-        if(data1.length==0) res.status(403).send({result: '占쏙옙占쏙옙占쏙옙占쏙옙 占십댐옙 占쏙옙 id占쌉니댐옙.'});
+
+        let errors = req.validationErrors();
+        if (!errors) {
+
+            let type_ = req.headers.type;
+            let email_ = req.headers.email;
+
+            let query = 'SELECT * FROM seoul_poem.articles where idarticles = ? and users_email = ? and users_foreign_key_type = ?';
+            let data1 = await connection.query(query, [req.params.idarticles,email_,type_]) || null;
+            if(data1.length==0) res.status(403).send({status : "fail", msg: 'not have permission'});
+            else{
+
+                let query1 = 'SELECT * FROM seoul_poem.bookmarks where articles_idarticles=?';
+                let data2 = await connection.query(query1, req.params.idarticles) || null;
+                if(data2.length){
+                    let query2 = 'delete from seoul_poem.bookmarks where articles_idarticles = ?';
+                    await connection.query(query2, req.params.idarticles);
+                }
+
+                let query3 = 'SELECT idpictures FROM seoul_poem.articles, pictures where articles.pictures_idpictures = pictures.idpictures and idarticles = ?';
+                let selected = await connection.query(query3, req.params.idarticles);
+
+                let query4 = 'SELECT idpoem, idsettings FROM seoul_poem.articles, poem, setting where articles.poem_idpoem = poem.idpoem and poem.setting_idsettings = setting.idsettings and idarticles = ?';
+                let selected2 = await connection.query(query4, req.params.idarticles);
 
 
-        let query1 = 'SELECT * FROM seoul_poem.bookmarks where articles_idarticles=?';
-        let data2 = await connection.query(query1, req.params.idarticles) || null;
-        if(data2.length>0){
-            let query2 = 'delete from seoul_poem.bookmarks where articles_idarticles = ?';
-            await connection.query(query2, req.params.idarticles);
+                let query5 = 'delete from seoul_poem.articles where idarticles = ?';
+                await connection.query(query5, req.params.idarticles);
+
+                let query6 = 'delete from seoul_poem.pictures where idpictures = ?';
+                await connection.query(query6, selected[0].idpictures);
+
+
+                if(selected2.length){
+                    let query7 = 'delete from seoul_poem.poem where idpoem = ?';
+                    await connection.query(query7, selected2[0].idpoem);
+
+                    let query8 = 'delete from seoul_poem.setting where idsettings = ?';
+                    await connection.query(query8, selected2[0].idsettings);
+
+                }
+
+                res.status(200).send({status : "success", msg: 'delete success'});
+                await connection.commit();
+            }
         }
-
-        let query3 = 'SELECT idpictures FROM seoul_poem.articles, pictures where articles.pictures_idpictures = pictures.idpictures and idarticles = ?';
-        let selected = await connection.query(query3, req.params.idarticles);
-
-        let query4 = 'SELECT idpoem, idsettings FROM seoul_poem.articles, poem, setting where articles.poem_idpoem = poem.idpoem and poem.setting_idsettings = setting.idsettings and idarticles = ?';
-        let selected2 = await connection.query(query4, req.params.idarticles);
-
-        let query5 = 'delete from seoul_poem.articles where idarticles = ?';
-        await connection.query(query5, req.params.idarticles);
-
-        let query6 = 'delete from seoul_poem.pictures where idpictures = ?';
-        await connection.query(query6, selected[0].idpictures);
-
-        let query7 = 'delete from seoul_poem.poem where idpoem = ?';
-        await connection.query(query7, selected2[0].idpoem);
-
-        let query8 = 'delete from seoul_poem.setting where idsettings = ?';
-        await connection.query(query8, selected2[0].idsettings);
-
-
-        res.status(200).send({result: 'delete success'});
-        await connection.commit();
-    }
-
+        else {
+            res.status(401);
+            res.json({status: "fail", msg: errors});
+        }
+ }
     catch(err){
         console.log(err);
         res.status(500).send({status : "fail", msg: err });
