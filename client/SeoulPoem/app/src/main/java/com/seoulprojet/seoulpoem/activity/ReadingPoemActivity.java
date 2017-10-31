@@ -43,6 +43,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.graphics.Typeface.BOLD;
 import static android.graphics.Typeface.BOLD_ITALIC;
 import static android.graphics.Typeface.ITALIC;
@@ -389,6 +390,7 @@ public class ReadingPoemActivity extends AppCompatActivity {
                 intent.putExtra("loginType", loginType);
                 intent.putExtra("otherEmail", otherEmail);
                 intent.putExtra("otherType", otherType);
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
             }
