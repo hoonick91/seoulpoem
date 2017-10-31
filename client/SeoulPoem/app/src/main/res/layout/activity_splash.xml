@@ -14,19 +14,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:orientation="vertical"
+        android:background="@drawable/splash"
         android:gravity="center">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1천만 서울 시인들의 사진첩"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="45dp"
-            android:layout_marginTop="10dp"
-            android:text="서울, 시"/>
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

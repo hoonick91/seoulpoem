@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/paper4"
     tools:context="com.seoulprojet.seoulpoem.activity.GalleryActivity">
 
     <!--툴바-->
@@ -18,28 +18,17 @@
         android:id="@+id/llSharpText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/icToolbar"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="111dp">
+
         <TextView
+            android:id="@+id/tvTagName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="#"/>
-    </LinearLayout>
-
-
-    <!--'#' 뒤에 텍스트-->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/llSharpText"
-        android:layout_toRightOf="@+id/llSharpText"
-        android:layout_marginLeft="10dp">
-        <TextView
-            android:id="@+id/tvPlaceName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="hangang"/>
+            android:textColor="#488ab4"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            tools:text="# 그리움" />
     </LinearLayout>
 
 
@@ -48,24 +37,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/llSharpText"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="30dp">
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvGallery"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
     </LinearLayout>
 
 
+    <!--플로팅 버튼-->
+    <RelativeLayout
+        android:id="@+id/rlToWrite"
+        android:layout_width="95dp"
+        android:layout_height="95dp"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true">
 
-
-
-
-
-
-
-
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="14dp"
+            android:scaleType="center"
+            app:borderWidth="0dp"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/blue_writebtn" />
+    </RelativeLayout>
 
 
 </RelativeLayout>

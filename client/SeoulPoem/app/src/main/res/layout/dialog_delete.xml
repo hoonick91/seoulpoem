@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lay_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="281dp"
+        android:layout_height="147dp"
+        android:layout_centerInParent="true"
+        android:background="#ffffff">
+
+
+        <!--#상세 정보=-->
+        <LinearLayout
+            android:id="@+id/llrow01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="27dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="# 삭제하기"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+
+        <!--정말 삭제하시겠습니까?-->
+        <LinearLayout
+            android:id="@+id/llTagText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingRight="30dp"
+            android:layout_below="@+id/llrow01"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="정말 삭제하시겠습니까?"
+                android:textColor="#8a000000"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!--취소버튼-->
+        <LinearLayout
+            android:id="@+id/llcancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:padding="10dp"
+            android:layout_marginTop="100dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="취소"/>
+        </LinearLayout>
+
+        <!--삭제하기 버튼-->
+        <LinearLayout
+            android:id="@+id/lldelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="166dp"
+            android:padding="10dp"
+            android:layout_marginTop="100dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="삭제하기"/>
+        </LinearLayout>
+
+
+
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
+
+

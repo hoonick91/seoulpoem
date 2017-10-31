@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="280dp"
+    android:layout_width="284dp"
     android:layout_height="match_parent"
     android:weightSum="10"
     android:orientation="vertical"
@@ -11,94 +11,130 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3.3">
+        android:layout_weight="4">
 
-        <ImageView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:background="@android:color/holo_orange_dark" />
+            android:layout_height="match_parent"
+            android:weightSum="2"
+            android:clickable="true"
+            android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/profile_rounding"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="60dp"
-            android:id="@+id/hamburger_profile_img" />
+            <ImageView
+                android:id="@+id/hamburger_bg"
+                android:layout_width="match_parent"
+                android:alpha="100"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="#64000000"
+                android:clickable="true"
+                android:scaleType="centerCrop" />
+
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/hamburger_profile_img"
+            android:layout_width="82dp"
+            android:layout_height="82dp"
+            android:src="@drawable/profile_tmp"
+            android:clickable="true"
+            android:scaleType="centerCrop"
+            android:layout_centerInParent="true" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerHorizontal="true"
             android:layout_below="@id/hamburger_profile_img"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#000000"
                 android:text="별명"
-                android:textSize="16dp"/>
+                android:id="@+id/hamburger_name"
+                android:textColor="#000000"
+                android:textSize="18sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:id="@+id/hamburger_message"
+                android:text="꽃과 시"
                 android:textColor="#000000"
-                android:textSize="12dp"
-                android:layout_marginTop="5dp"
-                android:text="꽃과 시"/>
-
+                android:textSize="15sp" />
         </LinearLayout>
+d
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6.7"
+        android:layout_weight="6"
+        android:clickable="true"
         android:orientation="vertical"
-        android:paddingLeft="25dp"
+        android:paddingLeft="23dp"
         android:gravity="center_vertical">
 
-        <Button
-            android:layout_width="wrap_content"
+        <ImageButton
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="마이페이지"
+            android:scaleType="fitStart"
+            android:padding="10dp"
+            android:src="@drawable/menu_mypage"
+            android:background="@android:color/transparent"
             android:id="@+id/hamburger_mypage_btn"/>
 
-        <Button
-            android:layout_width="wrap_content"
+        <ImageButton
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="작품담기"
+            android:scaleType="fitStart"
+            android:src="@drawable/menu_scrab"
             android:id="@+id/hamburger_scrab_btn"
+            android:padding="10dp"
+            android:background="@android:color/transparent"
             android:layout_marginTop="10dp"/>
 
-        <Button
-            android:layout_width="wrap_content"
+        <ImageButton
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="오늘 서울, 시"
+            android:scaleType="fitStart"
+            android:src="@drawable/menu_today"
+            android:padding="10dp"
+            android:background="@android:color/transparent"
             android:id="@+id/hamburger_todayseoul_btn"
             android:layout_marginTop="10dp"/>
 
-        <Button
-            android:layout_width="wrap_content"
+        <ImageButton
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="작가 목록"
+            android:scaleType="fitStart"
+            android:src="@drawable/menu_writerlist"
+            android:background="@android:color/transparent"
             android:id="@+id/hamburger_writerlist_btn"
+            android:padding="10dp"
             android:layout_marginTop="10dp"/>
 
-        <Button
-            android:layout_width="wrap_content"
+        <ImageButton
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="소식"
+            android:scaleType="fitStart"
+            android:src="@drawable/menu_notice"
+            android:padding="10dp"
             android:id="@+id/hamburger_notice_btn"
+            android:background="@android:color/transparent"
             android:layout_marginTop="10dp"/>
 
-        <Button
-            android:layout_width="wrap_content"
+        <ImageButton
+            android:layout_width="match_parent"
+            android:scaleType="fitStart"
             android:layout_height="wrap_content"
-            android:text="설정"
+            android:src="@drawable/menu_setting"
+            android:padding="10dp"
+            android:background="@android:color/transparent"
             android:id="@+id/hamburger_setting_btn"
             android:layout_marginTop="10dp"/>
     </LinearLayout>

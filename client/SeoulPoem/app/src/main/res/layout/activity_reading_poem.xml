@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+    <ScrollView
+        android:id="@+id/scroll_poem"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/poem_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="620dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:adjustViewBounds="true"
+                    android:background="#000000"
+                    android:scaleType="centerCrop" />
+
+                <RelativeLayout
+                    android:id="@+id/title_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="51dp"
+                    android:layout_marginTop="187dp">
+
+                    <TextView
+                        android:id="@+id/startTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="#"
+                        android:textColor="#ffffff"
+                        android:textSize="28sp" />
+
+                    <TextView
+                        android:id="@+id/poem_title"
+                        android:layout_width="190dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/startTitle"
+                        android:textColor="#ffffff"
+                        android:textSize="30sp" />
+                </RelativeLayout>
+
+
+                <ImageButton
+                    android:id="@+id/poem_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="570dp"
+                    android:background="@android:color/transparent"
+                    android:paddingBottom="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="15dp"
+                    android:src="@drawable/path2" />
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:id="@+id/reading_background"
+                android:layout_width="match_parent"
+                android:layout_height="620dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/poem_content"
+                    android:layout_width="308dp"
+                    android:layout_height="330dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="50dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp">
+
+                    <!--작품담기 : 담가지 않았으면 검정색-->
+                    <ImageButton
+                        android:id="@+id/download"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginLeft="276dp"
+                        android:background="@android:color/transparent"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="10dp"
+                        android:src="@drawable/download"
+                        android:visibility="invisible" />
+
+                    <!--작품담기02 : 담겼으면 파란색으로-->
+                    <ImageButton
+                        android:id="@+id/download02"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginLeft="276dp"
+                        android:background="@android:color/transparent"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="10dp"
+                        android:src="@drawable/share02"
+                        android:visibility="invisible" />
+
+
+                    <ImageButton
+                        android:id="@+id/another"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginLeft="319dp"
+                        android:background="@android:color/transparent"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="10dp"
+                        android:src="@drawable/another" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="51dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/writer_img"
+                        android:layout_width="43dp"
+                        android:layout_height="43dp"
+                        android:layout_marginLeft="51dp"
+                        android:src="@drawable/group_5" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/writer_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:textColor="#000000"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/poem_tags"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="5dp"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:textColor="#000000"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="51dp"
+                    android:layout_marginTop="15dp"
+                    android:text="작가의 다른 작품 보기"
+                    android:textColor="#000000"
+                    android:textSize="13sp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerPoem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="51dp"
+                    android:layout_marginTop="9dp"
+                    android:overScrollMode="never">
+
+                </android.support.v7.widget.RecyclerView>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+
+
+

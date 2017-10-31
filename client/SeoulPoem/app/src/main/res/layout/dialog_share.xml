@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lay_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="270dp"
+        android:layout_height="174dp"
+        android:layout_centerInParent="true"
+        android:background="#ffffff">
+
+
+        <!--row01-->
+        <LinearLayout
+            android:id="@+id/llRow01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="23dp">
+            <!--첫번째 이미지-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/text01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/share_dialog_title" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <!--row02-->
+        <LinearLayout
+            android:id="@+id/llRow02"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llRow01"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="19dp">
+
+            <TextView
+                android:id="@+id/text022"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+
+        <!--row03-->
+        <LinearLayout
+            android:id="@+id/llRow03"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llRow02"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/text0333"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="작품담기로 이동하시겠습니까?" />
+        </LinearLayout>
+
+
+        <!--row04-->
+        <RelativeLayout
+            android:id="@+id/rlRow04"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp">
+
+
+            <!--이동하기 텍스트-->
+            <RelativeLayout
+                android:id="@+id/llMove"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp">
+
+                <ImageView
+                    android:id="@+id/btnMove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/share_dialog_move" />
+            </RelativeLayout>
+
+            <!--돌아가기 텍스트-->
+            <RelativeLayout
+                android:id="@+id/llBack"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="74dp"
+                android:layout_toRightOf="@+id/llMove">
+
+                <ImageView
+                    android:id="@+id/btnBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/share_dialog_back" />
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
+
+

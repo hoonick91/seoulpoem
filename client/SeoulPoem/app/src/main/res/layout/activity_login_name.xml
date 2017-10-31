@@ -14,33 +14,77 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:orientation="vertical"
-        android:gravity="center_vertical"
-        android:paddingLeft="60dp"
-        android:paddingRight="60dp">
+        android:background="@drawable/paper4"
+        android:gravity="center">
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dialog_bg"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:paddingLeft="35dp"
+            android:paddingRight="35dp">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/login_name_title"/>
+
+              <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="자신의 필명을 입력해 주세요"
+                android:layout_marginTop="30dp"
+                android:textSize="14sp"
+                android:maxLength="10"
+                android:lines="1"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:textCursorDrawable="@android:color/black"
+                android:backgroundTint="#95989a"
+                android:id="@+id/login_name_et"
+                  android:imeOptions="actionDone"
+                  android:inputType="text"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/login_name_next_btn"
+                android:layout_gravity="right"
+                android:id="@+id/login_name_next_btn"
+                android:paddingLeft="20dp"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"/>
+
+        </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/already_loginname"
+                android:layout_marginTop="80dp"
+                android:layout_marginLeft="35dp"
+                android:id="@+id/login_name_already"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="# 필명"
-            android:textSize="20dp"
-            android:layout_marginLeft="20dp"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:paddingBottom="18dp"
-            android:hint="자신의 필명을 입력해주세요"
-            android:id="@+id/loginname_et"
-            android:textSize="14dp"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="다음"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="right"
-            android:id="@+id/loginname_next_btn"/>
+            android:text="TextView"
+            android:textSize="16sp"
+            android:id="@+id/login_name_temp_tv"
+            android:visibility="invisible"/>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
