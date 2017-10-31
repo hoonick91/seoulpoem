@@ -79,7 +79,7 @@
 
                 <TextView
                     android:id="@+id/poem_content"
-                    android:layout_width="206dp"
+                    android:layout_width="308dp"
                     android:layout_height="330dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="50dp" />

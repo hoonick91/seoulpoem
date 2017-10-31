@@ -165,18 +165,25 @@ public class PreviewAcitivity extends AppCompatActivity {
 
 
         if (Preview.bold == 1) {
-            preview_content.setTypeface(null, Typeface.BOLD);
             if (Preview.inclination == 1) {
                 preview_content.setTypeface(null, Typeface.BOLD_ITALIC);
-                if (Preview.underline == 1) {
-                    preview_content.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-                } else {
-                    preview_content.setPaintFlags(0);
-                }
             } else {
+                preview_content.setTypeface(null, Typeface.BOLD);
             }
         } else {
+            if (Preview.inclination == 1) {
+                preview_content.setTypeface(null, Typeface.ITALIC);
+            } else {
+                preview_content.setTypeface(null, Typeface.NORMAL);
+            }
         }
+
+        if (Preview.underline == 1) {
+            preview_content.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        } else {
+            preview_content.setPaintFlags(0);
+        }
+
         int[] paper = new int[]{R.drawable.paper1, R.drawable.paper2, R.drawable.paper3, R.drawable.paper4};
         paper_background.setBackgroundResource(paper[Preview.background - 1]);
 
