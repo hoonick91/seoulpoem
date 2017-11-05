@@ -107,7 +107,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
                 // set login
                 pref.put("loginType", loginType);
-                pref.put("loginStatus", true);
                 pref.put("userEmail", userGoogleEmail);
 
                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
@@ -137,6 +136,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
             }
         });
     }
+
 
     @Override
     public void onClick(View v) {
@@ -183,9 +183,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
             loginType = 1;
 
             // set login
-            pref.put("loginType", loginType);
-            pref.put("loginStatus", true);
-            pref.put("userEmail", userGoogleEmail);
+
 
             Log.i("pref", "pref type : " + pref.getValue("loginType", 0) + pref.getValue("userEmail", ""));
 
@@ -232,6 +230,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
                         Intent intent = new Intent(getApplicationContext(), TagsActivity.class);
 
+                        pref.put("loginStatus", true);
                         intent.putExtra("userEmail", userGoogleEmail);
                         intent.putExtra("loginType", loginType);
                         startActivity(intent);

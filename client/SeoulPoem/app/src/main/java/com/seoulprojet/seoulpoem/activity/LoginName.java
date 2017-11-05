@@ -35,10 +35,14 @@ public class LoginName extends AppCompatActivity {
     private ImageButton next_btn;
     private EditText inputName_et;
 
+    PbReference pref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_name);
+
+        pref = new PbReference(this);
 
         // get intent
         Intent intent = getIntent();
@@ -52,6 +56,9 @@ public class LoginName extends AppCompatActivity {
         inputName_et = (EditText)findViewById(R.id.login_name_et);
 
         inputName_et.setHint(userName);
+
+        pref.put("loginType", loginType);
+        pref.put("userEmail", userEmail);
 
         // service
         service = ApplicationController.getInstance().getNetworkService();
@@ -99,6 +106,7 @@ public class LoginName extends AppCompatActivity {
                     tempView.setText("success" + Integer.toString(loginType));
 
                     Intent intent = new Intent(getApplicationContext(), TagsActivity.class);
+                    pref.put("loginStatus", true);
                     intent.putExtra("userEmail", userEmail);
                     intent.putExtra("loginType", loginType);
                     startActivity(intent);

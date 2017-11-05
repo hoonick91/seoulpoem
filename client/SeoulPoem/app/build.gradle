@@ -6,7 +6,7 @@ android {
         seoul {
             keyAlias 'seoul'
             keyPassword '042929'
-            storeFile file('C:/Users/lynn/.android/seoul.jks')
+            storeFile file('C:/Users/godz3/.android/seoul.jks')
             storePassword '042929'
         }
 

@@ -79,7 +79,7 @@
 
         <meta-data
             android:name="com.google.android.gms.API_KEY"
-            android:value="666717725695-btmoicqcug3kren3qfv296f5hr8bjilc.apps.googleusercontent.com"/>
+            android:value="666717725695-qo1jo3c1u02fua67e3h4enab3buv1aqk.apps.googleusercontent.com"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

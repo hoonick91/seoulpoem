@@ -69,7 +69,8 @@ public class NoticeDetail extends AppCompatActivity {
                 if(response.isSuccessful()){
                     title_tv.setText(response.body().notice.title);
                     content_tv.setText(response.body().notice.content.replace("*","\n"));
-                    time_tv.setText(response.body().notice.date);
+                    String[] temp = response.body().notice.date.toString().split("T");
+                    time_tv.setText(temp[0]);
                     Glide.with(NoticeDetail.this)
                             .load(response.body().notice.photo)
                             .into(notice_detail_img);
